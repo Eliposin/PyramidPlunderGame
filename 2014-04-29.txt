@@ -1,0 +1,10 @@
+Bradley's Notes from Class on 2014-04-29
+====================================
+
+Agreed to use CamelCase.
+Github to be used for revision control.
+Commented code is a must.
+Bradley will design levels and bring designs to class on 2014-05-01.
+Huy will bring sketches of possible characters to class on 2014-05-01.
+Forums will be used to offer communication.
+Brandon will begin working on rough engine design.
