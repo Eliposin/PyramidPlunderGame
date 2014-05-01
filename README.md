@@ -9,6 +9,8 @@ Created by:
     Julian
     Brandon
     Huy
+    Josh
+    Jon
     
     
 A 2-D Platformer following the Metroid style game play designed by (Brandon?).
