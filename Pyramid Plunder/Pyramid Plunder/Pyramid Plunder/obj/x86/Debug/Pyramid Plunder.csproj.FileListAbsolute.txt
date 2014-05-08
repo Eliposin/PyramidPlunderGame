@@ -1,0 +1,6 @@
+C:\Users\Ryan\Desktop\PyramidPlunderGame\Pyramid Plunder\Pyramid Plunder\Pyramid Plunder\bin\x86\Debug\Pyramid Plunder.exe
+C:\Users\Ryan\Desktop\PyramidPlunderGame\Pyramid Plunder\Pyramid Plunder\Pyramid Plunder\bin\x86\Debug\Pyramid Plunder.pdb
+C:\Users\Ryan\Desktop\PyramidPlunderGame\Pyramid Plunder\Pyramid Plunder\Pyramid Plunder\obj\x86\Debug\Pyramid Plunder.csprojResolveAssemblyReference.cache
+C:\Users\Ryan\Desktop\PyramidPlunderGame\Pyramid Plunder\Pyramid Plunder\Pyramid Plunder\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
+C:\Users\Ryan\Desktop\PyramidPlunderGame\Pyramid Plunder\Pyramid Plunder\Pyramid Plunder\obj\x86\Debug\Pyramid Plunder.exe
+C:\Users\Ryan\Desktop\PyramidPlunderGame\Pyramid Plunder\Pyramid Plunder\Pyramid Plunder\obj\x86\Debug\Pyramid Plunder.pdb

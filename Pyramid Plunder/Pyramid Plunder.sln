@@ -1,0 +1,24 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pyramid Plunder", "Pyramid Plunder\Pyramid Plunder\Pyramid Plunder.csproj", "{5746B8B5-3CF2-4D10-B0B1-758643379C44}"
+EndProject
+Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "Pyramid PlunderContent", "Pyramid Plunder\Pyramid PlunderContent\Pyramid PlunderContent.contentproj", "{581E1FB0-BD07-4C31-B274-DEF3FFC9E478}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5746B8B5-3CF2-4D10-B0B1-758643379C44}.Debug|x86.ActiveCfg = Debug|x86
+		{5746B8B5-3CF2-4D10-B0B1-758643379C44}.Debug|x86.Build.0 = Debug|x86
+		{5746B8B5-3CF2-4D10-B0B1-758643379C44}.Release|x86.ActiveCfg = Release|x86
+		{5746B8B5-3CF2-4D10-B0B1-758643379C44}.Release|x86.Build.0 = Release|x86
+		{581E1FB0-BD07-4C31-B274-DEF3FFC9E478}.Debug|x86.ActiveCfg = Debug|x86
+		{581E1FB0-BD07-4C31-B274-DEF3FFC9E478}.Release|x86.ActiveCfg = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
