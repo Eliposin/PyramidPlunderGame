@@ -14,5 +14,13 @@ namespace Pyramid_Plunder
         SomethingElse = 1
     }
 
+    public enum MenuCallbacks : byte
+    {
+        PlayGame = 0,
+        LoadGame = 1,
+        Quit = 2
+    }
+
     delegate void DelVoid();
+    delegate void DelMenu(MenuCallbacks menuCallback);
 }
