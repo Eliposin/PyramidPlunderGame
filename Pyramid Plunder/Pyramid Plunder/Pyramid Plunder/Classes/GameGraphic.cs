@@ -12,10 +12,10 @@ namespace Pyramid_Plunder.Classes
         /// <summary>
         /// Constructor call
         /// </summary>
-        /// <param name="filepath"></param>
-        public GameGraphic(String filepath)
+        /// <param name="objType">The type of object that is represented</param>
+        public GameGraphic(GameObjectList objType)
         {
-            //TODO: Load in the object's properties
+            LoadGraphicsData(objType);
         }
 
         /// <summary>
@@ -26,6 +26,21 @@ namespace Pyramid_Plunder.Classes
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             //TODO: Drawing code
+        }
+
+        /// <summary>
+        /// Loads in the graphics data for the object from the object type
+        /// </summary>
+        /// <param name="objType">The type of object that is represented.</param>
+        private void LoadGraphicsData(GameObjectList objType)
+        {
+            switch (objType)
+            {
+                // TODO: Specifiy the filepath for each objType
+                case 0: break;
+            }
+
+            // TODO: Load the graphics data from the graphics file
         }
     }
 }

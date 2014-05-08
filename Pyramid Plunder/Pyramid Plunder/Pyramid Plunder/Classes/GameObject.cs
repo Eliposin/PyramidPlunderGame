@@ -6,26 +6,16 @@ using Microsoft.Xna.Framework;
 
 namespace Pyramid_Plunder.Classes
 {
-    /// <summary>
-    /// A list of the different types of objects the game has.
-    /// </summary>
-    public enum GameObjectList : byte
-    {
-        Rock = 0,
-        SomethingElse = 1
-    }
-
     class GameObject : GameGraphic
     {
         private GameObjectList objectType;
         private Vector2 position;
 
         /// <summary>
-        /// 
+        /// Constructor call
         /// </summary>
-        /// <param name="filepath"></param>
-        /// <param name="objType"></param>
-        public GameObject(String filepath, GameObjectList objType) : base(filepath)
+        /// <param name="objType">The type of object that is represented.</param>
+        public GameObject(GameObjectList objType) : base(objType)
         {
             
         }
