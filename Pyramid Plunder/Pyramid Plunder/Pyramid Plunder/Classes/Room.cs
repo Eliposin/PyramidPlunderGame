@@ -4,22 +4,42 @@ namespace Pyramid_Plunder.Classes
 {
     public class Room
     {
-        //An Array of Door objects representing all possible paths a player
-        //could take to exit the room.
-        /*public Door[] DoorArray
+        /// <summary>
+        /// Constructor to build a room from a file.
+        /// </summary>
+        /// <param name="path">the path to the file to load from.</param>
+        Room(String path)
+        {
+            this.filePath = path;  
+        }
+
+        /// <summary>
+        /// The path to the file that the Room object represents.
+        /// </summary>
+        /// 
+
+        private String filePath;
+        /// <summary>
+        /// An Array of Door Objects representing all possible entrances
+        /// and exits to the room.
+        /// </summary>
+        public Door[] DoorArray
         {
             get { return DoorArray; }
             //TODO Not a good setter, need to fix to account for different sized arrays.
             set { DoorArray = value; }
-        }*/
+        }
 
-        //An Array of Enemies representing all enemies that exist in the room.
-        /*public Enemy[] EnemyArray
+        /// <summary>
+        /// An Array of Enemies representing all enemies that exist in the room.
+        /// </summary>
+
+        public Enemy[] EnemyArray
         {
             get { return EnemyArray; }
             //TODO Not a good setter, need to fix to account for different sized arrays.
             set { EnemyArray = value; }
-        }*/
+        }
 
 
         public bool IsPersistant
@@ -45,7 +65,10 @@ namespace Pyramid_Plunder.Classes
         /// </summary>
         public void Dispose()
         {
-
+            if (this.IsPersistant)
+            {
+                saveToFile();
+            }
         }
 
 
