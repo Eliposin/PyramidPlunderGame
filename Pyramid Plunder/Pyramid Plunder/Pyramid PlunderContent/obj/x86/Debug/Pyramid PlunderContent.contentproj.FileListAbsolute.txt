@@ -1,2 +1,3 @@
 C:\Users\Ryan\Desktop\PyramidPlunderGame\Pyramid Plunder\Pyramid Plunder\Pyramid PlunderContent\obj\x86\Debug\Pyramid PlunderContent.contentprojResolveAssemblyReference.cache
 K:\GitHub\PyramidPlunderGame\Pyramid Plunder\Pyramid Plunder\Pyramid PlunderContent\obj\x86\Debug\Pyramid PlunderContent.contentprojResolveAssemblyReference.cache
+C:\Users\user.18\Documents\GitHub\PyramidPlunderGame\Pyramid Plunder\Pyramid Plunder\Pyramid PlunderContent\obj\x86\Debug\Pyramid PlunderContent.contentprojResolveAssemblyReference.cache

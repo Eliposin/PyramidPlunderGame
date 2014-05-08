@@ -1,9 +1,14 @@
 ﻿using System;
+using Microsoft.Xna.Framework.Storage;
 
 namespace Pyramid_Plunder.Classes
 {
     public class Room
     {
+        private Enemy[] enemyArray;
+        private Door[] doorArray;
+
+
         /// <summary>
         /// Constructor to build a room from a file.
         /// </summary>
@@ -25,9 +30,8 @@ namespace Pyramid_Plunder.Classes
         /// </summary>
         public Door[] DoorArray
         {
-            get { return DoorArray; }
-            //TODO Not a good setter, need to fix to account for different sized arrays.
-            set { DoorArray = value; }
+            get { return doorArray; }
+            
         }
 
         /// <summary>
@@ -36,16 +40,15 @@ namespace Pyramid_Plunder.Classes
 
         public Enemy[] EnemyArray
         {
-            get { return EnemyArray; }
-            //TODO Not a good setter, need to fix to account for different sized arrays.
-            set { EnemyArray = value; }
+            get { return enemyArray; }
+            
         }
 
 
         public bool IsPersistant
         {
             get { return IsPersistant; }
-            //Not sure if Setter is needed here.
+            
             set { IsPersistant = value; }
 
         }
@@ -56,6 +59,8 @@ namespace Pyramid_Plunder.Classes
         /// <param name="doorIndex">  represents which door the player is entering from </param>
         public void Load(int doorIndex)
         {
+           
+
 
         }
 

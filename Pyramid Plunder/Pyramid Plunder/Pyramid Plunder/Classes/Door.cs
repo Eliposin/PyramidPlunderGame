@@ -7,11 +7,12 @@ namespace Pyramid_Plunder.Classes
 {
     class Door : GameObject
     {
+        private bool locked;
 
-        public Boolean isLocked
+        public bool isLocked
         {
-            get { return isLocked; }
-            private set { isLocked = value; }
+            get { return locked; }
+            set { locked = value; }
         }
 
         /// <summary>
