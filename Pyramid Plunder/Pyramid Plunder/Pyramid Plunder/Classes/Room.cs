@@ -6,20 +6,20 @@ namespace Pyramid_Plunder.Classes
     {
         //An Array of Door objects representing all possible paths a player
         //could take to exit the room.
-        public Door[] DoorArray
+        /*public Door[] DoorArray
         {
             get { return DoorArray; }
             //TODO Not a good setter, need to fix to account for different sized arrays.
             set { DoorArray = value; }
-        }
+        }*/
 
         //An Array of Enemies representing all enemies that exist in the room.
-        public Enemy[] EnemyArray
+        /*public Enemy[] EnemyArray
         {
             get { return EnemyArray; }
             //TODO Not a good setter, need to fix to account for different sized arrays.
             set { EnemyArray = value; }
-        }
+        }*/
 
 
         public bool IsPersistant

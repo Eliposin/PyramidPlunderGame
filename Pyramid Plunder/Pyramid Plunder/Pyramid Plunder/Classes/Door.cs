@@ -5,14 +5,14 @@ using System.Text;
 
 namespace Pyramid_Plunder.Classes
 {
-    class Enemy : PhysicsObject
+    class Door : GameObject
     {
         /// <summary>
         /// 
         /// </summary>
         /// <param name="filepath"></param>
         /// <param name="objType"></param>
-        public Enemy(String filepath, GameObjectList objType) : base(filepath, objType)
+        public Door(String filepath, GameObjectList objType) : base(filepath, objType)
         {
             
         }

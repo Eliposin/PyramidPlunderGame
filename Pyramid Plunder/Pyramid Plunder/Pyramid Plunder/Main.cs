@@ -18,11 +18,14 @@ namespace Pyramid_Plunder
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        Classes.GameManager manager;
 
         public Main()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            this.IsFixedTimeStep = false;
+            manager = new Classes.GameManager();
         }
 
         /// <summary>
@@ -34,7 +37,7 @@ namespace Pyramid_Plunder
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            manager.Initialize();
             base.Initialize();
         }
 
@@ -66,11 +69,12 @@ namespace Pyramid_Plunder
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            // Allows the game to exit
+            /*// Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
-                this.Exit();
+                this.Exit();*/
 
-            // TODO: Add your update logic here
+
+            manager.Update(gameTime);
 
             base.Update(gameTime);
         }

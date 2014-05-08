@@ -7,7 +7,7 @@ namespace Pyramid_Plunder.Classes
 {
     static class PhysicsEngine
     {
-        public static const int GRAVITY = 0;
+        public const int GRAVITY = 0;
 
         public static void Update(PhysicsObject obj, Room room)
         {
