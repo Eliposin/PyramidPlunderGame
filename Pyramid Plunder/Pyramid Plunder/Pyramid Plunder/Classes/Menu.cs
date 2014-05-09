@@ -21,6 +21,8 @@ namespace Pyramid_Plunder.Classes
             menuCallback = menuCB;
 
             LoadMenu(menuType);
+
+            //menuCallback(MenuCallbacks.LoadGame);
         }
 
         public void Draw(SpriteBatch batch)
