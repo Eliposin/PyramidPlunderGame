@@ -15,8 +15,17 @@ namespace Pyramid_Plunder.Classes
     class GameManager
     {
         private bool isPaused;
+        private bool inGame;
         private KeyboardState keyState;
         private GamePadState gamePadState;
+        private GameSettings gameSettings;
+
+        private DelVoid exitCallback;
+
+        private struct GameSettings
+        {
+
+        }
 
         /// <summary>
         /// Constructor call
@@ -33,6 +42,7 @@ namespace Pyramid_Plunder.Classes
         {
             keyState = Keyboard.GetState();
             gamePadState = GamePad.GetState(PlayerIndex.One);
+            LoadGameSettings();
         }
 
         /// <summary>
@@ -41,7 +51,15 @@ namespace Pyramid_Plunder.Classes
         /// <param name="gameTime">The GameTime to use when calculating change over time.</param>
         public void Update(GameTime gameTime)
         {
+            CheckPaused();
+            if (!isPaused)
+            {
 
+            }
+            else
+            {
+
+            }
         }
 
         /// <summary>
@@ -49,6 +67,23 @@ namespace Pyramid_Plunder.Classes
         /// </summary>
         /// <param name="spriteBatch">The SpriteBatch to draw to.</param>
         public void Draw(SpriteBatch spriteBatch)
+        {
+
+        }
+
+        private void CheckPaused()
+        {
+            KeyboardState tempKeyState = Keyboard.GetState();
+            if (tempKeyState.IsKeyDown(Keys.Escape) && keyState.IsKeyUp(Keys.Escape))
+            {
+                if (isPaused)
+                    isPaused = false;
+                else
+                    isPaused = true;
+            }
+        }
+
+        private void LoadGameSettings()
         {
 
         }
