@@ -11,12 +11,12 @@ namespace Pyramid_Plunder.Classes
         public Door(String filepath, GameObjectList objType)
             : base(objType)
         {
-            //locked = true;
+            locked = true;
 
 
         }
 
-/*
+
         private bool locked;
         public bool isLocked
         {
@@ -41,26 +41,14 @@ namespace Pyramid_Plunder.Classes
         private enum lockType : byte
         {
 
-
-<<<<<<< HEAD
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="filepath"></param>
-        /// <param name="objType"></param>
-        public Door(String filepath, GameObjectList objType)
-            : base(objType)
-        {
-=======
         }
->>>>>>> 366fa81fdc782f0b37ab04e9b6bc2d348c3f4fc6
 
         public bool isActivated;
 
-        Boolean Open(Player Player)
+        Boolean Open(Player player)
         {
             return true;
-        }*/
+        }
     }
 }
     
