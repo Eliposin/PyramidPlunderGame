@@ -1,0 +1,11 @@
+####
+#
+# General file structure for Rooms.
+# the "#" is used to comment out lines
+# 
+####
+
+Doors
+# Linked Room, Location In Linked Room
+#
+#

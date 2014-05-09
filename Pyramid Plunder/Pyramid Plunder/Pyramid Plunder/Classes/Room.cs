@@ -41,7 +41,6 @@ namespace Pyramid_Plunder.Classes
         public Enemy[] EnemyArray
         {
             get { return enemyArray; }
-            
         }
 
 

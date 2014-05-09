@@ -1,3 +1,23 @@
+<<<<<<< HEAD
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace Pyramid_Plunder
+{
+    /// <summary>
+    /// A list of the different types of objects the game has.
+    /// </summary>
+    public enum GameObjectList : byte
+    {
+        Rock = 0,
+        SomethingElse = 1
+    }
+
+    delegate void DelVoid();
+}
+=======
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,3 +44,4 @@ namespace Pyramid_Plunder
     delegate void DelVoid();
     delegate void DelMenu(MenuCallbacks menuCallback);
 }
+>>>>>>> 66d4f66ad2bc18b506c0cb804144302a4adff1c0

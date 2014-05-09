@@ -7,8 +7,17 @@ namespace Pyramid_Plunder.Classes
 {
     class Door : GameObject
     {
-        private bool locked;
 
+        public Door(String filepath, GameObjectList objType)
+            : base(filepath, objType)
+        {
+            locked = true;
+
+
+        }
+
+
+        private bool locked;
         public bool isLocked
         {
             get { return locked; }
@@ -26,28 +35,24 @@ namespace Pyramid_Plunder.Classes
         /// </summary>
         public int connectedDoor;
 
-
-        /*
-         *Not sure what to put here for lock type.  Leaving it as Object
-         *just so code will compile and shouldn't throw issues until I can
-         *figureout what it really should be.
-         * 
-         */
-        public Object lockType;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="filepath"></param>
-        /// <param name="objType"></param>
-        public Door(String filepath, GameObjectList objType)
-            : base(filepath, objType)
+       /// <summary>
+       /// an enum representing the lockType the player needs to open the door.
+       /// </summary>
+        private enum lockType : byte
         {
 
 
         }
+
+        public bool isActivated;
+
+        Boolean Open(Player Player)
+        {
+            return true;
+        }
     }
+}
     
 
-}
+
 
