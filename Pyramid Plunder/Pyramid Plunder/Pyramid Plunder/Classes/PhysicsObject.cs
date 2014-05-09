@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace Pyramid_Plunder.Classes
 {
-    class PhysicsObject : GameObject
+    public class PhysicsObject : GameObject
     {
         public enum Alignments : byte
         {

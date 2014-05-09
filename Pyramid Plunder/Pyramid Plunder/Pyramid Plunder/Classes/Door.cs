@@ -5,18 +5,18 @@ using System.Text;
 
 namespace Pyramid_Plunder.Classes
 {
-    class Door : GameObject
+    public class Door : GameObject
     {
 
         public Door(String filepath, GameObjectList objType)
-            : base(filepath, objType)
+            : base(objType)
         {
-            locked = true;
+            //locked = true;
 
 
         }
 
-
+/*
         private bool locked;
         public bool isLocked
         {
@@ -42,14 +42,25 @@ namespace Pyramid_Plunder.Classes
         {
 
 
+<<<<<<< HEAD
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="filepath"></param>
+        /// <param name="objType"></param>
+        public Door(String filepath, GameObjectList objType)
+            : base(objType)
+        {
+=======
         }
+>>>>>>> 366fa81fdc782f0b37ab04e9b6bc2d348c3f4fc6
 
         public bool isActivated;
 
         Boolean Open(Player Player)
         {
             return true;
-        }
+        }*/
     }
 }
     

@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Pyramid_Plunder.Classes
 {
-    class GameGraphic
+    public class GameGraphic
     {
         private Texture2D sprite;
         private Vector2 coordinates;

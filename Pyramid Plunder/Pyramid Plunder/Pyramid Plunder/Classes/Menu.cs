@@ -2,17 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Pyramid_Plunder.Classes
 {
     class Menu
     {
-        public enum MenuTypes
-        {
-            Main = 0,
-            Options
-        }
-
         DelMenu menuCallback;
 
         /// <summary>
@@ -25,6 +21,11 @@ namespace Pyramid_Plunder.Classes
             menuCallback = menuCB;
 
             LoadMenu(menuType);
+        }
+
+        public void Draw(SpriteBatch batch)
+        {
+
         }
 
         /// <summary>

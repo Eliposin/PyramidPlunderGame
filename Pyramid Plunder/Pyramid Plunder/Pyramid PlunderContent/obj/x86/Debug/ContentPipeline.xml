@@ -7,10 +7,10 @@
       <TargetProfile>HiDef</TargetProfile>
       <BuildConfiguration>Debug</BuildConfiguration>
       <CompressContent>false</CompressContent>
-      <RootDirectory>C:\Users\Ryan\Desktop\PyramidPlunderGame\Pyramid Plunder\Pyramid Plunder\Pyramid PlunderContent\</RootDirectory>
-      <LoggerRootDirectory>C:\Users\Ryan\Desktop\PyramidPlunderGame\Pyramid Plunder\Pyramid Plunder\Pyramid Plunder\</LoggerRootDirectory>
-      <IntermediateDirectory>C:\Users\Ryan\Desktop\PyramidPlunderGame\Pyramid Plunder\Pyramid Plunder\Pyramid PlunderContent\obj\x86\Debug\</IntermediateDirectory>
-      <OutputDirectory>C:\Users\Ryan\Desktop\PyramidPlunderGame\Pyramid Plunder\Pyramid Plunder\Pyramid Plunder\bin\x86\Debug\Content\</OutputDirectory>
+      <RootDirectory>C:\Users\Ryan\Desktop\Projects\GitHub\PyramidPlunderGame\Pyramid Plunder\Pyramid Plunder\Pyramid PlunderContent\</RootDirectory>
+      <LoggerRootDirectory>C:\Users\Ryan\Desktop\Projects\GitHub\PyramidPlunderGame\Pyramid Plunder\Pyramid Plunder\Pyramid Plunder\</LoggerRootDirectory>
+      <IntermediateDirectory>C:\Users\Ryan\Desktop\Projects\GitHub\PyramidPlunderGame\Pyramid Plunder\Pyramid Plunder\Pyramid PlunderContent\obj\x86\Debug\</IntermediateDirectory>
+      <OutputDirectory>C:\Users\Ryan\Desktop\Projects\GitHub\PyramidPlunderGame\Pyramid Plunder\Pyramid Plunder\Pyramid Plunder\bin\x86\Debug\Content\</OutputDirectory>
     </Settings>
     <Assemblies>
       <Assembly>

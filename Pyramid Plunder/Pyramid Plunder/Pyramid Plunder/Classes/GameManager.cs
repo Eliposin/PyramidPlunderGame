@@ -19,8 +19,12 @@ namespace Pyramid_Plunder.Classes
         private KeyboardState keyState;
         private GamePadState gamePadState;
         private GameSettings gameSettings;
-
         private DelVoid exitCallback;
+
+        private Menu gameMenu;
+        private Room currentRoom;
+
+        
 
         private struct GameSettings
         {
@@ -45,6 +49,7 @@ namespace Pyramid_Plunder.Classes
             keyState = Keyboard.GetState();
             gamePadState = GamePad.GetState(PlayerIndex.One);
             LoadGameSettings();
+            gameMenu = new Menu(MenuTypes.Main, MenuCallback);
         }
 
         /// <summary>
@@ -53,14 +58,17 @@ namespace Pyramid_Plunder.Classes
         /// <param name="gameTime">The GameTime to use when calculating change over time.</param>
         public void Update(GameTime gameTime)
         {
-            CheckPaused();
-            if (!isPaused)
+            if (inGame)
             {
+                CheckPaused();
+                if (!isPaused)
+                {
 
-            }
-            else
-            {
+                }
+                else
+                {
 
+                }
             }
         }
 
@@ -70,7 +78,14 @@ namespace Pyramid_Plunder.Classes
         /// <param name="spriteBatch">The SpriteBatch to draw to.</param>
         public void Draw(SpriteBatch spriteBatch)
         {
-
+            if (!inGame)
+            {
+                gameMenu.Draw(spriteBatch);
+            }
+            else
+            {
+                currentRoom.Draw(spriteBatch);
+            }
         }
 
         private void CheckPaused()
@@ -88,6 +103,35 @@ namespace Pyramid_Plunder.Classes
         private void LoadGameSettings()
         {
 
+        }
+
+        /// <summary>
+        /// The callback method from the menu class.  Takes the required action.
+        /// </summary>
+        /// <param name="action">The type of action to take.</param>
+        private void MenuCallback(MenuCallbacks action)
+        {
+            switch (action)
+            {
+                case MenuCallbacks.PlayGame:
+                    StartNewGame();
+                    break;
+                case MenuCallbacks.LoadGame:
+                    break;
+                case MenuCallbacks.Quit:
+                    exitCallback();
+                    break;
+            }
+        }
+
+        private void StartNewGame()
+        {
+            gameMenu.Dispose();
+            gameMenu = null;
+
+            currentRoom = new Room("Test Room");
+            isPaused = false;
+            inGame = true;
         }
     }
 }

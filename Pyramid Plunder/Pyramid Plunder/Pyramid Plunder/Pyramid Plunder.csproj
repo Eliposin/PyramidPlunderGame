@@ -112,10 +112,12 @@
     <Compile Include="Classes\GameGraphic.cs" />
     <Compile Include="Classes\GameManager.cs" />
     <Compile Include="Classes\GameObject.cs" />
+    <Compile Include="Classes\Menu.cs" />
     <Compile Include="Classes\PhysicsEngine.cs" />
     <Compile Include="Classes\PhysicsObject.cs" />
     <Compile Include="Classes\Player.cs" />
     <Compile Include="Classes\Room.cs" />
+    <Compile Include="GameResources.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Main.cs" />

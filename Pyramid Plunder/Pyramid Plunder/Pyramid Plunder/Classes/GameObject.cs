@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace Pyramid_Plunder.Classes
 {
-    class GameObject : GameGraphic
+    public class GameObject : GameGraphic
     {
         private GameObjectList objectType;
         private Vector2 position;

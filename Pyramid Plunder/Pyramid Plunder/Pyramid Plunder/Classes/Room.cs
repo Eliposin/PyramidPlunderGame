@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Xna.Framework.Storage;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Pyramid_Plunder.Classes
 {
@@ -13,17 +14,17 @@ namespace Pyramid_Plunder.Classes
         /// Constructor to build a room from a file.
         /// </summary>
         /// <param name="path">the path to the file to load from.</param>
-        Room(String path)
+        public Room(String roomName)
         {
-            this.filePath = path;  
+
+            //this.filePath = path;  
         }
 
         /// <summary>
         /// The path to the file that the Room object represents.
         /// </summary>
-        /// 
-
         private String filePath;
+
         /// <summary>
         /// An Array of Door Objects representing all possible entrances
         /// and exits to the room.
@@ -37,7 +38,6 @@ namespace Pyramid_Plunder.Classes
         /// <summary>
         /// An Array of Enemies representing all enemies that exist in the room.
         /// </summary>
-
         public Enemy[] EnemyArray
         {
             get { return enemyArray; }
@@ -60,6 +60,11 @@ namespace Pyramid_Plunder.Classes
         {
            
 
+
+        }
+
+        public void Draw(SpriteBatch batch)
+        {
 
         }
 
