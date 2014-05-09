@@ -25,7 +25,7 @@ namespace Pyramid_Plunder
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             this.IsFixedTimeStep = false;
-            manager = new Classes.GameManager();
+            manager = new Classes.GameManager(ExitGame);
         }
 
         /// <summary>
@@ -90,6 +90,15 @@ namespace Pyramid_Plunder
             // TODO: Add your drawing code here
 
             base.Draw(gameTime);
+        }
+
+        /// <summary>
+        /// Exits the game, removing all game content from memory.
+        /// </summary>
+        private void ExitGame()
+        {
+            UnloadContent();
+            this.Exit();
         }
     }
 }

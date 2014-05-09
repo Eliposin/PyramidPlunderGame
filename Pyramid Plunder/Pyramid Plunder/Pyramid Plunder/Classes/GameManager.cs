@@ -30,9 +30,11 @@ namespace Pyramid_Plunder.Classes
         /// <summary>
         /// Constructor call
         /// </summary>
-        public GameManager()
+        public GameManager(DelVoid exitDel)
         {
             isPaused = false;
+            inGame = false;
+            exitCallback = exitDel;
         }
 
         /// <summary>
