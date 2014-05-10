@@ -22,8 +22,7 @@ namespace Pyramid_Plunder.Classes
         /// 
         /// </summary>
         /// <param name="spriteBatch"></param>
-        /// <param name="gameTime"></param>
-        public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
+        public void Draw(SpriteBatch spriteBatch)
         {
             //TODO: Drawing code
         }

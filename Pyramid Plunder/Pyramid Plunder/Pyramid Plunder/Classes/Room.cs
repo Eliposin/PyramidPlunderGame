@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
 
 namespace Pyramid_Plunder.Classes
 {
@@ -8,6 +9,7 @@ namespace Pyramid_Plunder.Classes
     {
         private Enemy[] enemyArray;
         private Door[] doorArray;
+        private Vector2 spawnLocation;
 
 
         /// <summary>
@@ -66,6 +68,11 @@ namespace Pyramid_Plunder.Classes
         public void Draw(SpriteBatch batch)
         {
 
+        }
+
+        public Vector2 SpawnLocation
+        {
+            get { return SpawnLocation; }
         }
 
         /// <summary>

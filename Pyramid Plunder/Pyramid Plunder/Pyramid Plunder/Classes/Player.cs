@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework;
 
 namespace Pyramid_Plunder.Classes
 {
@@ -10,11 +11,15 @@ namespace Pyramid_Plunder.Classes
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="filepath"></param>
         /// <param name="objType"></param>
-        public Player(String filepath, GameObjectList objType) : base(objType)
+        public Player(GameObjectList objType) : base(objType)
         {
             
+        }
+
+        public void Spawn(Vector2 location)
+        {
+
         }
     }
 }

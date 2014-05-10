@@ -23,7 +23,7 @@ namespace Pyramid_Plunder.Classes
 
         private Menu gameMenu;
         private Room currentRoom;
-
+        private Player player;
         
 
         private struct GameSettings
@@ -85,6 +85,7 @@ namespace Pyramid_Plunder.Classes
             else
             {
                 currentRoom.Draw(spriteBatch);
+                player.Draw(spriteBatch);
             }
         }
 
@@ -132,6 +133,9 @@ namespace Pyramid_Plunder.Classes
             currentRoom = new Room("Test Room");
             isPaused = false;
             inGame = true;
+            player = new Player(GameObjectList.Player);
+            player.Spawn(currentRoom.SpawnLocation);
+            
         }
     }
 }
