@@ -6,8 +6,9 @@ namespace Pyramid_Plunder.Classes
 {
     public class GameGraphic
     {
-        private Texture2D sprite;
-        private Vector2 coordinates;
+        protected Texture2D sprite;
+        protected Vector2 coordinates;
+        protected Rectangle hitBox;
 
         /// <summary>
         /// Constructor call
@@ -22,7 +23,7 @@ namespace Pyramid_Plunder.Classes
         /// 
         /// </summary>
         /// <param name="spriteBatch"></param>
-        public void Draw(SpriteBatch spriteBatch)
+        public virtual void Draw(SpriteBatch spriteBatch)
         {
             //TODO: Drawing code
         }
@@ -40,6 +41,14 @@ namespace Pyramid_Plunder.Classes
             }
 
             // TODO: Load the graphics data from the graphics file
+        }
+
+        /// <summary>
+        /// Accessor for the object's Coordinates (position on the screen)
+        /// </summary>
+        public Vector2 Coordinates
+        {
+            get { return coordinates; }
         }
     }
 }

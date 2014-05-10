@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Pyramid_Plunder.Classes
 {
@@ -29,31 +30,65 @@ namespace Pyramid_Plunder.Classes
 
         public const int MAX_FALLING_SPEED = 0;
 
-        private int VelocityX;
-        private int VelocityY;
-        private bool isOnGround;
-        private bool isGravityAffected;
-        private Alignments alignment;
-        private int maxHealth;
-        private int damage;
-        private float armor;
-        private int movementSpeed;
-        private Vector2[] collisionPointsArray;
+        protected float velocityX;
+        protected float velocityY;
+        protected bool isOnGround;
+        protected bool isGravityAffected;
+        protected bool isSpawned;
+        protected Alignments alignment;
+        protected int maxHealth;
+        protected int damage;
+        protected float armor;
+        protected int movementSpeed;
+        protected Vector2[] collisionPointsArray;
 
         /// <summary>
         /// Constructor call
         /// </summary>
         /// <param name="objType">The type of object that is represented.</param>
-        public PhysicsObject(GameObjectList objType) : base(objType)
+        /// <param name="spawnPosition">The default starting position.</param>
+        public PhysicsObject(GameObjectList objType)
+            : base(objType)
         {
-
+            velocityX = 0;
+            velocityY = 0;
         }
 
-        public void Update(GameTime time)
+        /// <summary>
+        /// Overrides the draw method in order to add the clause that checks to see if the object is spawned yet.
+        /// </summary>
+        /// <param name="batch">The SpriteBatch to draw to.</param>
+        public new void Draw(SpriteBatch batch)
         {
-
+            if (isSpawned)
+                base.Draw(batch);
         }
 
+        /// <summary>
+        /// Determines this frame's velocity increment based on the elapsed game time.
+        /// </summary>
+        /// <param name="time">The elapsed game time.</param>
+        public virtual void Update(GameTime time)
+        {
+            velocityX *= time.ElapsedGameTime.Seconds;
+            velocityY *= time.ElapsedGameTime.Seconds;
+        }
+
+        /// <summary>
+        /// Causes the object to be "spawned," and therefore drawable and interactable.
+        /// </summary>
+        /// <param name="location"></param>
+        public virtual void Spawn(Vector2 location)
+        {
+            isSpawned = true;
+            Position = location;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="room"></param>
+        /// <returns></returns>
         private bool checkGround(Room room)
         {
             //TODO: Actualy check for the ground
