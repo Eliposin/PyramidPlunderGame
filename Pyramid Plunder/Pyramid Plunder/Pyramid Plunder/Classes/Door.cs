@@ -12,6 +12,7 @@ namespace Pyramid_Plunder.Classes
             : base(objType)
         {
             locked = true;
+            isActivated = false;
 
 
         }
