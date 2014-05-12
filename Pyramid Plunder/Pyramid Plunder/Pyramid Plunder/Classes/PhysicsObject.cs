@@ -75,6 +75,14 @@ namespace Pyramid_Plunder.Classes
         }
 
         /// <summary>
+        /// Actually moves the object and changes the Position based on the Velocity values
+        /// </summary>
+        public void Move()
+        {
+
+        }
+
+        /// <summary>
         /// Causes the object to be "spawned," and therefore drawable and interactable.
         /// </summary>
         /// <param name="location"></param>

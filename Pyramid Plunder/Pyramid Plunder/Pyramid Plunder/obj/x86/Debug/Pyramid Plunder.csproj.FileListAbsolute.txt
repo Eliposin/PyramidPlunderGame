@@ -20,3 +20,4 @@ C:\Users\Ryan\Desktop\Projects\GitHub\PyramidPlunderGame\Pyramid Plunder\Pyramid
 C:\Users\Ryan\Desktop\Projects\GitHub\PyramidPlunderGame\Pyramid Plunder\Pyramid Plunder\Pyramid Plunder\obj\x86\Debug\Pyramid Plunder.pdb
 C:\Users\Ryan\Desktop\Projects\GitHub\PyramidPlunderGame\Pyramid Plunder\Pyramid Plunder\Pyramid Plunder\bin\x86\Debug\Pyramid Plunder.exe
 C:\Users\Ryan\Desktop\Projects\GitHub\PyramidPlunderGame\Pyramid Plunder\Pyramid Plunder\Pyramid Plunder\bin\x86\Debug\Pyramid Plunder.pdb
+C:\Users\Ryan\Desktop\Projects\GitHub\PyramidPlunderGame\Pyramid Plunder\Pyramid Plunder\Pyramid Plunder\bin\x86\Debug\Content\Images\TestRoom.xnb

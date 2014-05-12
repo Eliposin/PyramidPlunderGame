@@ -48,9 +48,12 @@ namespace Pyramid_Plunder.Classes
         /// <param name="otherObject">The other object to interact with.</param>
         public void Interact(GameObject otherObject)
         {
-
+            // TODO: Add the interaction chart for each possible object interaction.
         }
 
+        /// <summary>
+        /// The position of the object relative to the room.
+        /// </summary>
         public Vector2 Position
         {
             get { return position; }

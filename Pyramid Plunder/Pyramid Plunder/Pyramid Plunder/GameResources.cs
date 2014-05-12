@@ -10,8 +10,10 @@ namespace Pyramid_Plunder
     /// </summary>
     public enum GameObjectList : byte
     {
-        Player = 0,
-        Mummy = 1
+        NullObject,
+        Player,
+        Mummy,
+        TestRoom
     }
 
     public enum MenuCallbacks : byte
