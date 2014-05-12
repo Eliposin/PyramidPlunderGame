@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
 
 namespace Pyramid_Plunder.Classes
@@ -11,10 +12,12 @@ namespace Pyramid_Plunder.Classes
         private Door[] doorArray;
         private Vector2 spawnLocation;
         private String filePath;
+        private Texture2D collisionMap;
+        private bool hasMoreObjects;
         private GameObject background;     //Encapsulate the drawing requirements into the class already designed to do that
                                            //Needs to be a GameObject because it needs to move around with the player
 
-        private bool hasMoreObjects;
+        private ContentManager content;
 
 
         /// <summary>
@@ -71,6 +74,14 @@ namespace Pyramid_Plunder.Classes
             
             set { IsPersistant = value; }
 
+        }
+
+        /// <summary>
+        /// The bitmap containing collision information for the room
+        /// </summary>
+        public Texture2D CollisionMap
+        {
+            get { return collisionMap; }
         }
 
         /// <summary>
