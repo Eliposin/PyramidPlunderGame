@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Pyramid_Plunder.Classes
@@ -47,8 +48,8 @@ namespace Pyramid_Plunder.Classes
         /// </summary>
         /// <param name="objType">The type of object that is represented.</param>
         /// <param name="spawnPosition">The default starting position.</param>
-        public PhysicsObject(GameObjectList objType)
-            : base(objType)
+        public PhysicsObject(GameObjectList objType, ContentManager content)
+            : base(objType, content)
         {
             velocityX = 0;
             velocityY = 0;
@@ -58,10 +59,10 @@ namespace Pyramid_Plunder.Classes
         /// Overrides the draw method in order to add the clause that checks to see if the object is spawned yet.
         /// </summary>
         /// <param name="batch">The SpriteBatch to draw to.</param>
-        public new void Draw(SpriteBatch batch)
+        public new void Draw(SpriteBatch batch, GameTime time)
         {
             if (isSpawned)
-                base.Draw(batch);
+                base.Draw(batch, time);
         }
 
         /// <summary>

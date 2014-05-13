@@ -19,11 +19,13 @@ namespace Pyramid_Plunder
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Classes.GameManager manager;
+        ContentManager roomContent;
 
         public Main()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            roomContent = new ContentManager(this.Services, "Content");
             this.IsFixedTimeStep = false;
             manager = new Classes.GameManager(ExitGame);
         }
@@ -37,7 +39,7 @@ namespace Pyramid_Plunder
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            manager.Initialize();
+            manager.Initialize(Content, roomContent);
             base.Initialize();
         }
 
@@ -88,6 +90,8 @@ namespace Pyramid_Plunder
 
             // TODO: Add your drawing code here
 
+            manager.Draw(spriteBatch, gameTime);
+
             base.Draw(gameTime);
         }
 
@@ -98,6 +102,7 @@ namespace Pyramid_Plunder
         {
             UnloadContent();
             this.Exit();
+            
         }
     }
 }

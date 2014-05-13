@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -24,6 +25,9 @@ namespace Pyramid_Plunder.Classes
         private Menu gameMenu;
         private Room currentRoom;
         private Player player;
+
+        private ContentManager gameContent;
+        private ContentManager roomContent;
         
 
         private struct GameSettings
@@ -44,12 +48,15 @@ namespace Pyramid_Plunder.Classes
         /// <summary>
         /// Loads the default settings for the game from the settings file
         /// </summary>
-        public void Initialize()
+        public void Initialize(ContentManager gContent, ContentManager rContent)
         {
+            gameContent = gContent;
+            roomContent = rContent;
+
             keyState = Keyboard.GetState();
             gamePadState = GamePad.GetState(PlayerIndex.One);
             LoadGameSettings();
-            gameMenu = new Menu(MenuTypes.Main, MenuCallback);
+            gameMenu = new Menu(MenuTypes.Main, MenuCallback, gContent);
         }
 
         /// <summary>
@@ -154,8 +161,8 @@ namespace Pyramid_Plunder.Classes
             gameMenu.Dispose();
             gameMenu = null;
 
-            currentRoom = new Room("TestRoom");
-            player = new Player(GameObjectList.Player);
+            currentRoom = new Room("TestRoom", roomContent);
+            player = new Player(GameObjectList.Player, gameContent);
             player.Spawn(currentRoom.SpawnLocation);
             
             isPaused = false;

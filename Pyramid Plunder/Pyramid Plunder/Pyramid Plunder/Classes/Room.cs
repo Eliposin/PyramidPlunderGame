@@ -18,17 +18,18 @@ namespace Pyramid_Plunder.Classes
         private GameObject background;     //Encapsulate the drawing requirements into the class already designed to do that
                                            //Needs to be a GameObject because it needs to move around with the player
 
-        private ContentManager content;
+        private ContentManager Content;
 
 
         /// <summary>
         /// Constructor to build a room from a file.
         /// </summary>
         /// <param name="path">the path to the file to load from.</param>
-        public Room(String roomName)
+        public Room(String roomName, ContentManager content)
         {
+            Content = content;
             this.filePath = "Data/RoomsAndDoors/" + roomName + ".room"; //Lets add a .room extension, shall we?  It can still be a plain text file.
-            background = new GameObject(whichRoom(roomName));
+            background = new GameObject(whichRoom(roomName), Content);
         }
 
         /// <summary>

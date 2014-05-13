@@ -30,12 +30,12 @@ namespace Pyramid_Plunder
         Options
     }
 
-    delegate void DelVoid();
-    delegate void DelMenu(MenuCallbacks menuCallback);
+    public delegate void DelVoid();
+    public delegate void DelMenu(MenuCallbacks menuCallback);
 
     
 
-    static class GameResources
+    public static class GameResources
     {
         /// <summary>
         /// Returns the next line in the given stream that does not start with the designated delimiter.

@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework.Content;
 
 namespace Pyramid_Plunder.Classes
 {
     public class Door : GameObject
     {
 
-        public Door(String filepath, GameObjectList objType)
-            : base(objType)
+        public Door(String filepath, GameObjectList objType, ContentManager content)
+            : base(objType, content)
         {
             locked = true;
             isActivated = false;

@@ -1,17 +1,21 @@
 ﻿using System;
 using System.IO;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Pyramid_Plunder.Classes
 {
     public class GameGraphic
     {
+        protected ContentManager Content;
+
         protected Texture2D sprite;
         protected Vector2 coordinates;
         protected Rectangle hitBox;
 
         private String filepath;
+        private String spriteName;
         private int numAnimations;
         private int currentAnimation;
         private int[] animationLocation;
@@ -23,8 +27,10 @@ namespace Pyramid_Plunder.Classes
         /// Constructor call
         /// </summary>
         /// <param name="objType">The type of object that is represented</param>
-        public GameGraphic(GameObjectList objType)
+        public GameGraphic(GameObjectList objType, ContentManager content)
         {
+            Content = content;
+
             currentAnimation = 0;
             LoadGraphicsData(objType);
         }
@@ -58,31 +64,47 @@ namespace Pyramid_Plunder.Classes
 
             if (filepath != "" && filepath != null)
             {
-                StreamReader sr = new StreamReader(filepath);
-
-                String line = GameResources.getNextDataLine(sr, "#");
-
-                numAnimations = int.Parse(line);
-
-                animationLocation = new int[numAnimations];
-                animationDimensions = new Vector2[numAnimations];
-                animationSpeed = new float[numAnimations];
-                numberOfFrames = new int[numAnimations];
-
-                for (byte i = 0; i < numAnimations; i++)
+                try
                 {
-                    animationLocation[i] = int.Parse(GameResources.getNextDataLine(sr, "#"));
+                    StreamReader sr = new StreamReader(filepath);
 
-                    animationDimensions[i] = new Vector2(int.Parse(GameResources.getNextDataLine(sr, "#")),
-                        int.Parse(GameResources.getNextDataLine(sr, "#")));
+                    String line = GameResources.getNextDataLine(sr, "#");
 
-                    animationSpeed[i] = float.Parse(GameResources.getNextDataLine(sr, "#"));
+                    numAnimations = int.Parse(line);
 
-                    numberOfFrames[i] = int.Parse(GameResources.getNextDataLine(sr, "#"));
+                    spriteName = GameResources.getNextDataLine(sr, "#");
+
+                    animationLocation = new int[numAnimations];
+                    animationDimensions = new Vector2[numAnimations];
+                    animationSpeed = new float[numAnimations];
+                    numberOfFrames = new int[numAnimations];
+
+                    for (byte i = 0; i < numAnimations; i++)
+                    {
+                        animationLocation[i] = int.Parse(GameResources.getNextDataLine(sr, "#"));
+
+                        animationDimensions[i] = new Vector2(int.Parse(GameResources.getNextDataLine(sr, "#")),
+                            int.Parse(GameResources.getNextDataLine(sr, "#")));
+
+                        animationSpeed[i] = float.Parse(GameResources.getNextDataLine(sr, "#"));
+
+                        numberOfFrames[i] = int.Parse(GameResources.getNextDataLine(sr, "#"));
+                    }
+
+                    sr.Close();
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine("An error occurred: " + e.Message);
+                    numAnimations = 0;
+                    spriteName = "";
+                    animationLocation = new int[0];
+                    animationDimensions = new Vector2[0];
+                    animationSpeed = new float[0];
+                    numberOfFrames = new int[0];
                 }
 
-                sr.Close();
-                
+                sprite = Content.Load<Texture2D>(spriteName);
                 //System.Diagnostics.Debug.WriteLine("Number of animations for " + objType + ": " + numAnimations);
                 //System.Diagnostics.Debug.WriteLine("Animation Location for " + objType + ": " + animationLocation[0]);
                 //System.Diagnostics.Debug.WriteLine("Animation Dimensions for " + objType + ": " + animationDimensions[0]);

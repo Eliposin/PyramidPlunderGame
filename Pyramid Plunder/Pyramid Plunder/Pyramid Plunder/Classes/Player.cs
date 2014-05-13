@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Pyramid_Plunder.Classes
@@ -17,7 +18,8 @@ namespace Pyramid_Plunder.Classes
         /// 
         /// </summary>
         /// <param name="objType"></param>
-        public Player(GameObjectList objType) : base(objType)
+        public Player(GameObjectList objType, ContentManager content)
+            : base(objType, content)
         {
             isSpawned = false;
         }

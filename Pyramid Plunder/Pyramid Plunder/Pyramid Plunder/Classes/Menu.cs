@@ -3,21 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Pyramid_Plunder.Classes
 {
-    class Menu
+    public class Menu
     {
-        DelMenu menuCallback;
+        private DelMenu menuCallback;
+        private ContentManager Content;
 
         /// <summary>
         /// Constructor call
         /// </summary>
         /// <param name="menuType">The type of menu to load.</param>
         /// <param name="menuCB">The callback method to call.</param>
-        public Menu(MenuTypes menuType, DelMenu menuCB)
+        public Menu(MenuTypes menuType, DelMenu menuCB, ContentManager content)
         {
+            Content = content;
+
             menuCallback = menuCB;
 
             LoadMenu(menuType);

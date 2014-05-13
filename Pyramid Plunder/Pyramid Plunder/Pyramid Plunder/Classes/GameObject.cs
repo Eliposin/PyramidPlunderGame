@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 
 namespace Pyramid_Plunder.Classes
 {
@@ -11,12 +12,14 @@ namespace Pyramid_Plunder.Classes
         private GameObjectList objectType;
         private Vector2 position;
 
+
+
         /// <summary>
         /// Constructor call
         /// </summary>
         /// <param name="objType">The type of object that is represented.</param>
         /// <param name="spawnPosition">The default spawning position.</param>
-        public GameObject(GameObjectList objType, Vector2 spawnPosition) : base(objType)
+        public GameObject(GameObjectList objType, ContentManager content, Vector2 spawnPosition) : base(objType, content)
         {
             objectType = objType;
             position = spawnPosition;
@@ -26,7 +29,8 @@ namespace Pyramid_Plunder.Classes
         /// Constructor call
         /// </summary>
         /// <param name="objType">The type of object that is represented.</param>
-        public GameObject(GameObjectList objType) : base(objType)
+        public GameObject(GameObjectList objType, ContentManager content)
+            : base(objType, content)
         {
             objectType = objType;
             position = new Vector2(0, 0);
