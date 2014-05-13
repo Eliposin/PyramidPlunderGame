@@ -8,8 +8,7 @@ namespace Pyramid_Plunder.Classes
 {
     public class Door : GameObject
     {
-
-        public Door(String filepath, GameObjectList objType, ContentManager content)
+        public Door(GameObjectList objType, ContentManager content)
             : base(objType, content)
         {
             locked = true;
