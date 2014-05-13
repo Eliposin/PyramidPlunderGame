@@ -16,18 +16,28 @@ namespace Pyramid_Plunder
     /// </summary>
     public class Main : Microsoft.Xna.Framework.Game
     {
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
-        Classes.GameManager manager;
-        ContentManager roomContent;
+        private int DEFAULT_RESOLUTION_X = 1280;
+        private int DEFAULT_RESOLUTION_Y = 720;
+
+        private GraphicsDeviceManager graphics;
+        private SpriteBatch spriteBatch;
+        private Classes.GameManager manager;
+        private ContentManager roomContent;
 
         public Main()
         {
             graphics = new GraphicsDeviceManager(this);
+            graphics.IsFullScreen = false;
+            graphics.PreferredBackBufferWidth = DEFAULT_RESOLUTION_X;
+            graphics.PreferredBackBufferHeight = DEFAULT_RESOLUTION_Y;
+            
+            
+
             Content.RootDirectory = "Content";
             roomContent = new ContentManager(this.Services, "Content");
             this.IsFixedTimeStep = false;
             manager = new Classes.GameManager(ExitGame);
+            
         }
 
         /// <summary>

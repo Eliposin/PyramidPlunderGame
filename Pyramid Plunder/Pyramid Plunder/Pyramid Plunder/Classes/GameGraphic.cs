@@ -46,7 +46,7 @@ namespace Pyramid_Plunder.Classes
         {
             //TODO: Drawing code
             if (isLoaded)
-                spriteBatch.Draw(sprite, new Rectangle(0, 0, sprite.Width, sprite.Height), Color.White);
+                spriteBatch.Draw(sprite, new Rectangle((int)coordinates.X, (int)coordinates.Y, sprite.Width, sprite.Height), Color.White);
         }
 
         /// <summary>
@@ -60,6 +60,9 @@ namespace Pyramid_Plunder.Classes
                 // TODO: Specifiy the filepath for each objType
                 case GameObjectList.TestRoom:
                     filepath = "../Data/GraphicsData/TestRoom.gdf";
+                    break;
+                case GameObjectList.Player:
+                    filepath = "../Data/GraphicsData/Player.gdf";
                     break;
                 default:
                     filepath = "";
@@ -114,11 +117,11 @@ namespace Pyramid_Plunder.Classes
 
                 
 
-                //System.Diagnostics.Debug.WriteLine("Number of animations for " + objType + ": " + numAnimations);
-                //System.Diagnostics.Debug.WriteLine("Animation Location for " + objType + ": " + animationLocation[0]);
-                //System.Diagnostics.Debug.WriteLine("Animation Dimensions for " + objType + ": " + animationDimensions[0]);
-                //System.Diagnostics.Debug.WriteLine("Animation Speed for " + objType + ": " + animationSpeed[0]);
-                //System.Diagnostics.Debug.WriteLine("Number of Frames for " + objType + ": " + numberOfFrames[0]);
+                System.Diagnostics.Debug.WriteLine("Number of animations for " + objType + ": " + numAnimations);
+                System.Diagnostics.Debug.WriteLine("Animation Location for " + objType + ": " + animationLocation[0]);
+                System.Diagnostics.Debug.WriteLine("Animation Dimensions for " + objType + ": " + animationDimensions[0]);
+                System.Diagnostics.Debug.WriteLine("Animation Speed for " + objType + ": " + animationSpeed[0]);
+                System.Diagnostics.Debug.WriteLine("Number of Frames for " + objType + ": " + numberOfFrames[0]);
             }
             else
             {

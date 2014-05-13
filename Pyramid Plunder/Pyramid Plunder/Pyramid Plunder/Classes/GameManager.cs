@@ -116,6 +116,7 @@ namespace Pyramid_Plunder.Classes
             {
                 currentRoom.Draw(spriteBatch, time);
                 player.Draw(spriteBatch, time);
+                //System.Diagnostics.Debug.WriteLine(player.Coordinates);
             }
         }
 

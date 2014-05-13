@@ -2,13 +2,22 @@
 <XnaContent xmlns:Pipeline="Microsoft.Xna.Framework.Content.Pipeline">
   <Asset Type="Pipeline:BuildItemCollection">
     <Item>
+      <Source>Images\PlayerSprite.jpg</Source>
+      <Name>Images\PlayerSprite</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\user.16\Desktop\PyramidPlunderGame\Pyramid Plunder\Pyramid Plunder\Pyramid Plunder\bin\x86\Debug\Content\Images\PlayerSprite.xnb</Output>
+      <Time>2014-05-13T15:39:11.704818-07:00</Time>
+    </Item>
+    <Item>
       <Source>Images\TestRoom.jpg</Source>
       <Name>Images\TestRoom</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\user.18\Documents\GitHub\PyramidPlunderGame\Pyramid Plunder\Pyramid Plunder\Pyramid Plunder\bin\x86\Debug\Content\Images\TestRoom.xnb</Output>
-      <Time>2014-05-13T14:13:46.989593-07:00</Time>
+      <Output>C:\Users\user.16\Desktop\PyramidPlunderGame\Pyramid Plunder\Pyramid Plunder\Pyramid Plunder\bin\x86\Debug\Content\Images\TestRoom.xnb</Output>
+      <Time>2014-05-13T15:21:49.302196-07:00</Time>
     </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>
@@ -17,10 +26,10 @@
       <TargetProfile>HiDef</TargetProfile>
       <BuildConfiguration>Debug</BuildConfiguration>
       <CompressContent>false</CompressContent>
-      <RootDirectory>C:\Users\user.18\Documents\GitHub\PyramidPlunderGame\Pyramid Plunder\Pyramid Plunder\Pyramid PlunderContent\</RootDirectory>
-      <LoggerRootDirectory>C:\Users\user.18\Documents\GitHub\PyramidPlunderGame\Pyramid Plunder\Pyramid Plunder\Pyramid Plunder\</LoggerRootDirectory>
-      <IntermediateDirectory>C:\Users\user.18\Documents\GitHub\PyramidPlunderGame\Pyramid Plunder\Pyramid Plunder\Pyramid Plunder\obj\x86\Debug\</IntermediateDirectory>
-      <OutputDirectory>C:\Users\user.18\Documents\GitHub\PyramidPlunderGame\Pyramid Plunder\Pyramid Plunder\Pyramid Plunder\bin\x86\Debug\Content\</OutputDirectory>
+      <RootDirectory>C:\Users\user.16\Desktop\PyramidPlunderGame\Pyramid Plunder\Pyramid Plunder\Pyramid PlunderContent\</RootDirectory>
+      <LoggerRootDirectory>C:\Users\user.16\Desktop\PyramidPlunderGame\Pyramid Plunder\Pyramid Plunder\Pyramid Plunder\</LoggerRootDirectory>
+      <IntermediateDirectory>C:\Users\user.16\Desktop\PyramidPlunderGame\Pyramid Plunder\Pyramid Plunder\Pyramid Plunder\obj\x86\Debug\</IntermediateDirectory>
+      <OutputDirectory>C:\Users\user.16\Desktop\PyramidPlunderGame\Pyramid Plunder\Pyramid Plunder\Pyramid Plunder\bin\x86\Debug\Content\</OutputDirectory>
     </Settings>
     <Assemblies>
       <Assembly>
@@ -49,7 +58,7 @@
       </Assembly>
       <Assembly>
         <Key>C:\Windows\Microsoft.Net\assembly\GAC_32\Microsoft.Xna.Framework.Content.Pipeline\v4.0_4.0.0.0__842cf8be1de50553\Microsoft.Xna.Framework.Content.Pipeline.dll</Key>
-        <Value>2014-04-08T17:01:50.9700113-07:00</Value>
+        <Value>2014-04-08T16:41:45.1238606-07:00</Value>
       </Assembly>
     </Assemblies>
   </Asset>
