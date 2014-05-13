@@ -61,7 +61,7 @@ namespace Pyramid_Plunder.Classes
             if (inGame)
             {
                 CheckPaused();
-                if (!isPaused)
+                if (isPaused)
                 {
 
                 }
@@ -81,7 +81,16 @@ namespace Pyramid_Plunder.Classes
                     currentRoom.ResetObjectList();
 
                     //Finally, update the drawing position of the objects in the room.
-                    currentRoom.UpdateCoordinates(player.Position, player.Coordinates); 
+                    currentRoom.UpdateCoordinates(player.Position, player.Coordinates);
+                }
+            }
+            else
+            {
+                KeyboardState tempKeyState = Keyboard.GetState();
+                if (tempKeyState.IsKeyDown(Keys.Enter) && keyState.IsKeyUp(Keys.Enter))
+                {
+                    if (!inGame)
+                        StartNewGame();
                 }
             }
         }
@@ -90,7 +99,7 @@ namespace Pyramid_Plunder.Classes
         /// Calls the draw method on all content managed by the GameManager.
         /// </summary>
         /// <param name="spriteBatch">The SpriteBatch to draw to.</param>
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch, GameTime time)
         {
             if (!inGame)
             {
@@ -98,8 +107,8 @@ namespace Pyramid_Plunder.Classes
             }
             else
             {
-                currentRoom.Draw(spriteBatch);
-                player.Draw(spriteBatch);
+                currentRoom.Draw(spriteBatch, time);
+                player.Draw(spriteBatch, time);
             }
         }
 

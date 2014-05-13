@@ -14,6 +14,7 @@ namespace Pyramid_Plunder.Classes
         private String filePath;
         private Texture2D collisionMap;
         private bool hasMoreObjects;
+        private int totalObjects;
         private GameObject background;     //Encapsulate the drawing requirements into the class already designed to do that
                                            //Needs to be a GameObject because it needs to move around with the player
 
@@ -26,8 +27,6 @@ namespace Pyramid_Plunder.Classes
         /// <param name="path">the path to the file to load from.</param>
         public Room(String roomName)
         {
-            hasMoreObjects = true;
-
             this.filePath = "Data/RoomsAndDoors/" + roomName + ".room"; //Lets add a .room extension, shall we?  It can still be a plain text file.
             background = new GameObject(whichRoom(roomName));
         }
@@ -43,6 +42,8 @@ namespace Pyramid_Plunder.Classes
             {
                 case "TestRoom":
                     spawnLocation = new Vector2(1100, 900); //Eventually should be read from file!
+                    totalObjects = 0;
+                    hasMoreObjects = false;
                     return GameObjectList.TestRoom;
                 default:
                     return GameObjectList.NullObject;
@@ -136,9 +137,9 @@ namespace Pyramid_Plunder.Classes
         /// Draws the contents of the room to the designated SpriteBatch
         /// </summary>
         /// <param name="batch">The SpriteBatch to draw to.</param>
-        public void Draw(SpriteBatch batch)
+        public void Draw(SpriteBatch batch, GameTime time)
         {
-            background.Draw(batch);
+            background.Draw(batch, time);
             // TODO: Iterate through and update ALL objects
         }
 
@@ -147,7 +148,7 @@ namespace Pyramid_Plunder.Classes
         /// </summary>
         public Vector2 SpawnLocation
         {
-            get { return SpawnLocation; }
+            get { return spawnLocation; }
         }
 
         /// <summary>
@@ -206,7 +207,10 @@ namespace Pyramid_Plunder.Classes
         /// </summary>
         public void ResetObjectList()
         {
-            hasMoreObjects = true;
+            if (totalObjects > 0)
+                hasMoreObjects = true;
+            else
+                hasMoreObjects = false;
             // TODO: Whatever iterator you have set up, reset it to the first object here.
         }
     }

@@ -11,7 +11,7 @@ namespace Pyramid_Plunder.Classes
     {
         private int DEFAULT_SCREEN_POSITIONX = 640;
         private int DEFAULT_SCREEN_POSITIONY = 360;
-        private bool isSpawned;
+        //private bool isSpawned;
 
         /// <summary>
         /// 

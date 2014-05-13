@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -31,4 +32,24 @@ namespace Pyramid_Plunder
 
     delegate void DelVoid();
     delegate void DelMenu(MenuCallbacks menuCallback);
+
+    
+
+    static class GameResources
+    {
+        /// <summary>
+        /// Returns the next line in the given stream that does not start with the designated delimiter.
+        /// </summary>
+        /// <param name="line">The line to check and read into.</param>
+        /// <param name="sr">The StreamReader to read from.</param>
+        /// <param name="delimiter">The delimiter to check at the start of the line.</param>
+        public static String getNextDataLine(StreamReader sr, String delimiter)
+        {
+            String line;
+            do
+                line = sr.ReadLine();
+            while (line.Substring(0).StartsWith(delimiter));
+            return line;
+        }
+    }
 }
