@@ -23,12 +23,15 @@ namespace Pyramid_Plunder.Classes
         private float[] animationSpeed;
         private int[] numberOfFrames;
 
+        private bool isLoaded;
+
         /// <summary>
         /// Constructor call
         /// </summary>
         /// <param name="objType">The type of object that is represented</param>
         public GameGraphic(GameObjectList objType, ContentManager content)
         {
+            isLoaded = false;
             Content = content;
 
             currentAnimation = 0;
@@ -42,7 +45,8 @@ namespace Pyramid_Plunder.Classes
         public virtual void Draw(SpriteBatch spriteBatch, GameTime time)
         {
             //TODO: Drawing code
-
+            if (isLoaded)
+                spriteBatch.Draw(sprite, new Rectangle(0, 0, sprite.Width, sprite.Height), Color.White);
         }
 
         /// <summary>
@@ -72,7 +76,7 @@ namespace Pyramid_Plunder.Classes
 
                     numAnimations = int.Parse(line);
 
-                    spriteName = GameResources.getNextDataLine(sr, "#");
+                    spriteName = "Images/" + GameResources.getNextDataLine(sr, "#");
 
                     animationLocation = new int[numAnimations];
                     animationDimensions = new Vector2[numAnimations];
@@ -92,6 +96,10 @@ namespace Pyramid_Plunder.Classes
                     }
 
                     sr.Close();
+                    
+                    sprite = Content.Load<Texture2D>(spriteName);
+
+                    isLoaded = true;
                 }
                 catch (Exception e)
                 {
@@ -104,7 +112,8 @@ namespace Pyramid_Plunder.Classes
                     numberOfFrames = new int[0];
                 }
 
-                sprite = Content.Load<Texture2D>(spriteName);
+                
+
                 //System.Diagnostics.Debug.WriteLine("Number of animations for " + objType + ": " + numAnimations);
                 //System.Diagnostics.Debug.WriteLine("Animation Location for " + objType + ": " + animationLocation[0]);
                 //System.Diagnostics.Debug.WriteLine("Animation Dimensions for " + objType + ": " + animationDimensions[0]);

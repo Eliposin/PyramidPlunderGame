@@ -86,6 +86,8 @@ namespace Pyramid_Plunder
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
+            spriteBatch.Begin();
+
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
@@ -93,6 +95,8 @@ namespace Pyramid_Plunder
             manager.Draw(spriteBatch, gameTime);
 
             base.Draw(gameTime);
+
+            spriteBatch.End();
         }
 
         /// <summary>
