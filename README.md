@@ -13,6 +13,6 @@ Created by:
     Jon
     
     
-A 2-D Platformer following the Metroid style game play designed by (Brandon?).
+A 2-D Platformer following the Metroid style game play.
 
 ====================================
