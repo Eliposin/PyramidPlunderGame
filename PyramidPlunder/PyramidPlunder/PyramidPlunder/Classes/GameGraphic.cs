@@ -194,6 +194,7 @@ namespace Pyramid_Plunder.Classes
             get { return coordinates; }
         }
 
+
         public GameObjectList ObjectType
         {
             get { return objectType; }

@@ -35,7 +35,7 @@ namespace Pyramid_Plunder
 
             Content.RootDirectory = "Content";
             roomContent = new ContentManager(this.Services, "Content");
-            this.IsFixedTimeStep = false;
+            //IsFixedTimeStep = false;
             manager = new Classes.GameManager(ExitGame);
             
         }
