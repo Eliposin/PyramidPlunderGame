@@ -8,6 +8,7 @@ namespace Pyramid_Plunder.Classes
 {
     public class Door : GameObject
     {
+        private ContentManager content;
         public Door(GameObjectList objType, ContentManager content)
             : base(objType, content)
         {
@@ -46,9 +47,22 @@ namespace Pyramid_Plunder.Classes
 
         public bool isActivated;
 
+        private Boolean hasKey(Player player, lockType key)
+        {
+            return false;
+        }
+
         Boolean Open(Player player)
         {
-            return true;
+
+            if (!locked)
+            {
+                Room nextRoom = new Room(connectedRoom, content);
+                nextRoom.Load(connectedDoor);
+                return true;
+            }
+            else
+                return false;
         }
     }
 }
