@@ -30,13 +30,15 @@
     <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.VideoImporters, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Images\PlayerSprite.jpg">
-      <Name>PlayerSprite</Name>
+    <Compile Include="Images\TestRoom.jpg">
+      <Name>TestRoom</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Images\TestRoom.jpg">
-      <Name>TestRoom</Name>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Images\PlayerSpritesheet.png">
+      <Name>PlayerSpritesheet</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

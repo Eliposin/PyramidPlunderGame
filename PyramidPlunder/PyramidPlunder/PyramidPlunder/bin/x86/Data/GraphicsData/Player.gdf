@@ -1,7 +1,7 @@
 #Number of animations
-1
+4
 #Name of spritesheet
-PlayerSprite
+PlayerSpritesheet
 #
 #First Animation Stats
 #Location on the spritesheet (y value)
@@ -12,4 +12,37 @@ PlayerSprite
 #Animation speed
 1
 #Number of Frames
+8
+#
+#Second Animation Stats
+#Location on the spritesheet (y value)
+120
+#Dimensions of the animation (width and height)
+60
+120
+#Animation speed
 1
+#Number of Frames
+8
+#
+#Third Animation Stats
+#Location on the spritesheet (y value)
+240
+#Dimensions of the animation (width and height)
+60
+120
+#Animation speed
+1
+#Number of Frames
+8
+#
+#Fourth Animation Stats
+#Location on the spritesheet (y value)
+360
+#Dimensions of the animation (width and height)
+60
+120
+#Animation speed
+1
+#Number of Frames
+8

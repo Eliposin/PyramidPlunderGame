@@ -29,6 +29,8 @@ namespace Pyramid_Plunder.Classes
             Content = content;
             this.filePath = "Data/RoomsAndDoors/" + roomName + ".room"; //Lets add a .room extension, shall we?  It can still be a plain text file.
             background = new GameObject(whichRoom(roomName), Content);
+
+            
         }
 
         /// <summary>
