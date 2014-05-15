@@ -89,6 +89,7 @@ namespace Pyramid_Plunder.Classes
 
                     //Finally, update the drawing position of the objects in the room.
                     currentRoom.UpdateCoordinates(player.Position, player.Coordinates);
+                    player.updateControlFlags(); //new
                 }
             }
             else

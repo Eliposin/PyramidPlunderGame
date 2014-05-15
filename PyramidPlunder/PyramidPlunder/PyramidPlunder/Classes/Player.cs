@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace Pyramid_Plunder.Classes
 {
@@ -14,6 +15,63 @@ namespace Pyramid_Plunder.Classes
         private int DEFAULT_SCREEN_POSITIONY = 420;
         //private bool isSpawned;
 
+        private KeyboardState keyState;
+                                        
+        const short MAX_JUMP_HEIGHT = -250;
+        float JUMP_V;
+        float WALL_JUMP_V_X;
+        float WALL_JUMP_V_Y;
+        const float JUMP_DECAY = 4;
+        const float WALL_FRICTION_DEC = -0.6f;
+        const float MAX_WALL_SLIDE_V = 6;
+        const short MAX_FALL_V = 50;
+        const byte MAX_MIDAIR_JUMPS = 1;
+        
+        const short MAX_DASH_LENGTH = 300;
+        const float DASH_V = MAX_RUN_V * 3;
+        const short MAX_DASH_TIME = (short)(MAX_DASH_LENGTH / DASH_V);
+        const sbyte MAX_MIDAIR_DASHES = 1;
+
+        const sbyte DASH_NOT_ALLOWED = -1;
+        const sbyte DASH_ALLOWED = 0;
+        const sbyte DASH_HELD = 1;
+        const sbyte INFINITE_DASHES = -1;
+
+        const short MAX_RUN_V = 8;
+        const float RUN_ACC = .75f;
+        const float TOO_FAST_DEC = 0.3f;
+        const float STOP_DEC = 0.6f;
+        const float BRAKE_DEC = 1.2f;
+
+        public enum XDirection
+        {
+            None = 0,
+            Right = 1,
+            Left = 2
+        };
+
+        private enum JumpState
+        {
+            NotAllowed = 0,
+            Allowed = 1,
+            Holding = 2
+        };
+
+        private XDirection LatestXArrow = XDirection.None;
+        private XDirection PlayerXFacing = XDirection.Right;
+        private XDirection WallSlideDirection = XDirection.None;
+        private JumpState PlayerJumpState = JumpState.Allowed;
+        private byte midairJumps = MAX_MIDAIR_JUMPS;
+        private sbyte dashes = INFINITE_DASHES;
+        private sbyte dashStatus = DASH_ALLOWED;
+
+        private bool upBtnFlag = false;
+        private bool downBtnFlag = false;
+        private bool leftBtnFlag = false;
+        private bool rightBtnFlag = false;
+        private bool jumpBtnFlag = false;
+        private bool dashBtnFlag = false;
+              
         /// <summary>
         /// 
         /// </summary>
@@ -22,6 +80,13 @@ namespace Pyramid_Plunder.Classes
             : base(objType, content)
         {
             isSpawned = false;
+            isGravityAffected = true;
+            JUMP_V = (float)(-Math.Sqrt(-2 * PhysicsEngine.GRAVITY * MAX_JUMP_HEIGHT));
+            WALL_JUMP_V_X = (float)(JUMP_V * 0.7071);
+            WALL_JUMP_V_Y = (float)(JUMP_V * 0.7071);
+            collisionXs = new short[3] { 11, 26, 41 };
+            collisionYs = new short[3] { 22, 65, 108 };
+ 
         }
 
         /// <summary>
@@ -32,6 +97,317 @@ namespace Pyramid_Plunder.Classes
         {
             base.Spawn(location);
             coordinates = new Vector2(DEFAULT_SCREEN_POSITIONX, DEFAULT_SCREEN_POSITIONY);
+        }
+
+        public new void Update(GameTime time)
+        {
+            if (dashStatus < DASH_HELD)
+            {
+                if (LatestXArrow == XDirection.Left && PlayerXFacing == XDirection.Right)
+                    PlayerXFacing = XDirection.Left;
+                else if (LatestXArrow == XDirection.Right && PlayerXFacing == XDirection.Left)
+                    PlayerXFacing = XDirection.Right;
+            }
+
+            if (isOnGround == false)
+            {
+                if (velocityY >= 0)
+                {
+                    if (wallOnRight && rightBtnFlag)
+                    {
+                        if (WallSlideDirection == XDirection.None)
+                            //soundLand.Play();
+                            WallSlideDirection = XDirection.Right;
+                    }
+                    else if (wallOnLeft && leftBtnFlag == true)
+                    {
+                        if (WallSlideDirection == XDirection.None)
+                            //soundLand.Play();
+                            WallSlideDirection = XDirection.Left;
+                    }
+                    else
+                        WallSlideDirection = XDirection.None;
+                }
+            }
+            else
+                WallSlideDirection = XDirection.None;
+
+            if (WallSlideDirection != XDirection.None)
+                velocityY = MAX_WALL_SLIDE_V;
+
+            if (PlayerJumpState == JumpState.NotAllowed && jumpBtnFlag == false)
+                PlayerJumpState = JumpState.Allowed;
+
+            if (jumpBtnFlag == true //&& (InvincibleTimer < 0 || cInvincibleTimer >= STUN_END_TIME)
+                && PlayerJumpState == JumpState.Allowed && (isOnGround || midairJumps > 0 || WallSlideDirection != XDirection.None))
+            {
+                if (isOnGround == false)
+                {
+                    if (WallSlideDirection != XDirection.None)
+                    {
+                        velocityY = WALL_JUMP_V_Y;
+                        velocityX = WALL_JUMP_V_X;
+                        if (WallSlideDirection == XDirection.Left)
+                        {
+                            velocityX *= -1;
+                            PlayerXFacing = XDirection.Right;
+                        }
+                        else
+                        {
+                            PlayerXFacing = XDirection.Left;
+                        }
+                        WallSlideDirection = XDirection.None;
+                        //soundWallJump.Play();
+                    }
+                    else
+                    {
+                        midairJumps = (byte)Math.Max(0, midairJumps - 1);
+                        velocityY = JUMP_V;
+                        //soundJump.Play();
+                    }
+                }
+                else
+                {
+                    BecomeAirborne();
+                    velocityY = JUMP_V;
+                    //soundJump.Play();
+                }
+                if (dashStatus >= DASH_HELD)
+                {
+                    dashStatus = DASH_NOT_ALLOWED;
+                    isGravityAffected = true;
+                }
+                PlayerJumpState = JumpState.Holding;
+            }
+
+            if (PlayerJumpState == JumpState.Holding)
+            {
+                if (jumpBtnFlag == false)
+                    PlayerJumpState = JumpState.Allowed;
+            }
+            else if (velocityY < 0)
+                velocityY = Math.Min(velocityY + JUMP_DECAY, 0);
+
+            if (dashStatus < DASH_HELD)
+            {
+                displacementY = velocityY;
+                if (WallSlideDirection != XDirection.None)
+                    displacementY = Math.Min(velocityY + (WALL_FRICTION_DEC / 2), MAX_WALL_SLIDE_V);
+            }
+                        
+            if (dashStatus == DASH_ALLOWED && dashBtnFlag == true &&
+                (dashes != 0 || WallSlideDirection != XDirection.None))
+            {
+                dashStatus = DASH_HELD;
+                if (WallSlideDirection == XDirection.Right)
+                {
+                    velocityX = -DASH_V;
+                    PlayerXFacing = XDirection.Left;
+                }
+                else if (WallSlideDirection == XDirection.Left)
+                {
+                    velocityX = DASH_V;
+                    PlayerXFacing = XDirection.Right;
+                }
+                else
+                {
+                    if (dashes > 0)
+                        dashes--;
+                    if (PlayerXFacing == XDirection.Right)
+                        velocityX = DASH_V;
+                    else
+                        velocityX = -DASH_V;
+                }
+                if (!isOnGround)
+                {
+                    isGravityAffected = false;
+                    velocityY = 0;
+                }
+                //soundDash.Play();
+            }
+            else if (dashStatus <= DASH_NOT_ALLOWED && dashBtnFlag == false)
+                dashStatus = DASH_ALLOWED;
+
+            if (dashStatus >= DASH_HELD)
+            {
+                dashStatus++;
+                displacementX = velocityX;
+                if (dashStatus > MAX_DASH_TIME || dashBtnFlag == false)
+                {
+                    velocityX = 0;
+                    isGravityAffected = true;
+                    dashStatus = DASH_NOT_ALLOWED;
+                }
+            }
+            else
+            {
+                if (LatestXArrow == XDirection.Right)
+                {
+                    if (velocityX < 0)
+                    {
+                        displacementX = Math.Min(0, velocityX + (BRAKE_DEC / 2));
+                        velocityX = Math.Min(0, velocityX + BRAKE_DEC);
+                    }
+                    else if (velocityX <= MAX_RUN_V)
+                    {
+                        displacementX = Math.Min(velocityX + (RUN_ACC / 2), MAX_RUN_V);
+                        velocityX = Math.Min(velocityX + RUN_ACC, MAX_RUN_V);
+                    }
+                    else
+                    {
+                        displacementX = Math.Max(velocityX - (TOO_FAST_DEC / 2), MAX_RUN_V);
+                        velocityX = Math.Max(velocityX - TOO_FAST_DEC, MAX_RUN_V);
+                    }
+                }
+                else if (LatestXArrow == XDirection.Left)
+                {
+                    if (velocityX > 0)
+                    {
+                        displacementX = Math.Max(0, velocityX - (BRAKE_DEC / 2));
+                        velocityX = Math.Max(0, velocityX - BRAKE_DEC);
+                    }
+                    else if (velocityX >= -MAX_RUN_V)
+                    {
+                        displacementX = Math.Max(velocityX - (RUN_ACC / 2), -MAX_RUN_V);
+                        velocityX = Math.Max(velocityX - RUN_ACC, -MAX_RUN_V);
+                    }
+                    else
+                    {
+                        displacementX = Math.Min(velocityX + (TOO_FAST_DEC / 2), MAX_RUN_V);
+                        velocityX = Math.Min(velocityX + TOO_FAST_DEC, MAX_RUN_V);
+                    }
+                }
+                else if (velocityX != 0)
+                {
+                    if (velocityX > 0)
+                    {
+                        displacementX = Math.Max(0, velocityX - (STOP_DEC / 2));
+                        velocityX = Math.Max(0, velocityX - STOP_DEC);
+                    }
+                    else if (velocityX < 0)
+                    {
+                        displacementX = Math.Min(0, velocityX + (STOP_DEC / 2));
+                        velocityX = Math.Min(0, velocityX + STOP_DEC);
+                    }
+                }
+            }
+
+        }
+
+        public override void Land()
+        {
+            //soundLand.Play();
+            if (jumpBtnFlag == false)
+                PlayerJumpState = JumpState.Allowed;
+            else
+                PlayerJumpState = JumpState.NotAllowed;
+
+            if (dashStatus >= DASH_HELD)
+            {
+                dashStatus = DASH_NOT_ALLOWED;
+                isGravityAffected = true;
+            }
+
+            if (dashBtnFlag == false)
+                dashStatus = DASH_ALLOWED;
+            else
+                dashStatus = DASH_NOT_ALLOWED;
+
+            midairJumps = MAX_MIDAIR_JUMPS;
+            dashes = INFINITE_DASHES;
+            base.Land();
+        }
+
+        public override void HitWall()
+        {
+            if (dashStatus > DASH_ALLOWED)
+            {
+                dashStatus = DASH_NOT_ALLOWED;
+                isGravityAffected = true;
+                velocityY = 0;
+            }
+            base.HitWall();
+        }
+
+        public override void HitCeiling()
+        {
+            if (jumpBtnFlag == false)
+                PlayerJumpState = JumpState.Allowed;
+            else
+                PlayerJumpState = JumpState.NotAllowed;
+            base.HitCeiling();
+        }
+
+        public override void BecomeAirborne()
+        {
+            dashes = MAX_MIDAIR_DASHES;
+            if (dashStatus >= DASH_HELD)
+            {
+                dashStatus = DASH_NOT_ALLOWED;
+                isGravityAffected = true;
+            }
+            base.BecomeAirborne();
+        }
+
+        public void updateControlFlags()
+        {
+            KeyboardState newState = Keyboard.GetState();
+            if (keyState.IsKeyUp(Keys.Right) && newState.IsKeyDown(Keys.Right))
+            {
+                rightBtnFlag = true;
+                LatestXArrow = XDirection.Right;
+            }
+            else if (keyState.IsKeyUp(Keys.Left) && newState.IsKeyDown(Keys.Left))
+            {
+                leftBtnFlag = true;
+                LatestXArrow = XDirection.Left;
+            }
+
+            if (keyState.IsKeyUp(Keys.Up) && newState.IsKeyDown(Keys.Up))
+                upBtnFlag = true;
+
+            if (keyState.IsKeyUp(Keys.X) && newState.IsKeyDown(Keys.X))
+                jumpBtnFlag = true;
+
+            if (keyState.IsKeyUp(Keys.Z) && newState.IsKeyDown(Keys.Z))
+                dashBtnFlag = true;
+
+            if (keyState.IsKeyDown(Keys.Left) && newState.IsKeyUp(Keys.Left))
+            {
+                leftBtnFlag = false;
+                if (LatestXArrow == XDirection.Left)
+                {
+                    if (rightBtnFlag == true)
+                        LatestXArrow = XDirection.Right;
+                    else
+                        LatestXArrow = XDirection.None;
+                }
+            }
+            if (keyState.IsKeyDown(Keys.Right) && newState.IsKeyUp(Keys.Right))
+            {
+                rightBtnFlag = false;
+                if (LatestXArrow == XDirection.Right)
+                {
+                    if (leftBtnFlag == true)
+                        LatestXArrow = XDirection.Left;
+                    else
+                        LatestXArrow = XDirection.None;
+                }
+            }
+
+            if (keyState.IsKeyDown(Keys.Up) && newState.IsKeyUp(Keys.Up))
+            {
+                upBtnFlag = false;
+            }
+
+            if (keyState.IsKeyDown(Keys.X) && newState.IsKeyUp(Keys.X))
+            {
+                jumpBtnFlag = false;
+            }
+
+            if (keyState.IsKeyDown(Keys.Z) && newState.IsKeyUp(Keys.Z))
+                dashBtnFlag = false;
+            keyState = newState;
         }
     }
 }
