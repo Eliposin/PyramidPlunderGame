@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
+using System.IO;
 
 namespace Pyramid_Plunder.Classes
 {
@@ -114,13 +115,37 @@ namespace Pyramid_Plunder.Classes
              * close file
              * load Texture2D for Map
              * close file
-             * load Enemy Sprites
-             * close file
-             * 
-             *
-             * 
              */
 
+            if (filePath != "" && filePath != null)
+            {
+                try
+                {
+                    int numberOfDoors;
+                    int numberOfEnemies;
+                    
+                    StreamReader sr = new StreamReader(filePath);
+                    numberOfDoors = Convert.ToInt16(GameResources.getNextDataLine(sr, "#"));
+                    doorArray = new Door[numberOfDoors];
+                    for (int i = 0; i < numberOfDoors; i++)
+                    {
+                        
+                            doorArray[i].connectedRoom = GameResources.getNextDataLine(sr, "#");
+                            doorArray[i].connectedDoor = Convert.ToInt16(GameResources.getNextDataLine(sr, "#"));
+                           // doorArray[i].isLocked = Convert.ToInt16(GameResources.getNextDataLine(sr, "#"));
+                    }
+
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine("An error occurred: " + e.Message);
+                }
+            }
+
+            
+            {
+            
+            }
             //Notes from Ryan:
             //  The Texture2D makes sense for the collision map, but it makes better sense to use the background as a full GameGraphic
             //  Enemy sprites will be loaded inside the Enemy class; after all, they will inherit from GameGraphic as well

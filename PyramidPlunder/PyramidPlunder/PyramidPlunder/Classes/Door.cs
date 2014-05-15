@@ -35,7 +35,10 @@ namespace Pyramid_Plunder.Classes
         /// that this door connects to.
         /// </summary>
         public int connectedDoor;
+        public byte LockType
+        {
 
+        }
        /// <summary>
        /// an enum representing the lockType the player needs to open the door.
        /// </summary>
