@@ -31,7 +31,7 @@ namespace Pyramid_Plunder.Classes
             background = new GameObject(whichRoom(roomName), Content);
 
             //Added for testing!!!
-            collisionMap = Content.Load<Texture2D>("Images/TestRoomBMP");
+            collisionMap = Content.Load<Texture2D>("Images/TestRoom");
             collisionColors = new Color[collisionMap.Width * collisionMap.Height];
             collisionMap.GetData<Color>(collisionColors);
         }
