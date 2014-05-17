@@ -14,6 +14,7 @@ namespace Pyramid_Plunder
         NullObject,
         Player,
         Mummy,
+
         TestRoom
     }
 

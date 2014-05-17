@@ -50,9 +50,10 @@ namespace Pyramid_Plunder.Classes
         /// Deals with object interactions between each other.
         /// </summary>
         /// <param name="otherObject">The other object to interact with.</param>
-        public void Interact(GameObject otherObject)
+        public virtual void InteractWith(GameObject otherObject)
         {
             // TODO: Add the interaction chart for each possible object interaction.
+            // The owner of this method is considered the "initiator" of the interaction
         }
 
         /// <summary>

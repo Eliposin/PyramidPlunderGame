@@ -64,7 +64,7 @@ namespace Pyramid_Plunder.Classes
         /// Overrides the draw method in order to add the clause that checks to see if the object is spawned yet.
         /// </summary>
         /// <param name="batch">The SpriteBatch to draw to.</param>
-        public new void Draw(SpriteBatch batch, GameTime time)
+        public override void Draw(SpriteBatch batch, GameTime time)
         {
             if (isSpawned)
                 base.Draw(batch, time);

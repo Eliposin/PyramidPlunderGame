@@ -93,13 +93,13 @@ namespace Pyramid_Plunder.Classes
         /// 
         /// </summary>
         /// <param name="location"></param>
-        public new void Spawn(Vector2 location)
+        public override void Spawn(Vector2 location)
         {
             base.Spawn(location);
             coordinates = new Vector2(DEFAULT_SCREEN_POSITIONX, DEFAULT_SCREEN_POSITIONY);
         }
 
-        public new void Update(GameTime time)
+        public override void Update(GameTime time)
         {
             if (dashStatus < DASH_HELD)
             {
@@ -291,7 +291,6 @@ namespace Pyramid_Plunder.Classes
                     }
                 }
             }
-
         }
 
         public override void Land()
