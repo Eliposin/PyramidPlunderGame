@@ -38,7 +38,6 @@ namespace Pyramid_Plunder.Classes
         protected bool isOnGround;
         protected bool wallOnLeft;
         protected bool wallOnRight;
-        protected bool isSpawned;
         protected Alignments alignment;
         protected int maxHealth;
         protected int damage;
@@ -88,16 +87,6 @@ namespace Pyramid_Plunder.Classes
             base.Position = new Vector2(Position.X + displacementX, Position.Y + displacementY);
             displacementX = 0;
             displacementY = 0;
-        }
-
-        /// <summary>
-        /// Causes the object to be "spawned," and therefore drawable and interactable.
-        /// </summary>
-        /// <param name="location"></param>
-        public virtual void Spawn(Vector2 location)
-        {
-            isSpawned = true;
-            Position = location;
         }
 
         /// <summary>

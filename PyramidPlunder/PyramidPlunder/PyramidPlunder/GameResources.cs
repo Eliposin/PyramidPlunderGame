@@ -14,8 +14,16 @@ namespace Pyramid_Plunder
         NullObject,
         Player,
         Mummy,
-
+        Dash, DoubleJump, 
         TestRoom
+    }
+
+    public enum InteractionTypes : byte
+    {
+        None,
+        Collision,
+        Attack,
+        PlayerAction
     }
 
     public enum MenuCallbacks : byte

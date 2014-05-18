@@ -9,10 +9,9 @@ namespace Pyramid_Plunder.Classes
 {
     public class GameObject : GameGraphic
     {
-        private GameObjectList objectType;
-        private Vector2 position;
-
-
+        protected Vector2 position;
+        protected bool isSpawned;
+        protected bool isUpgrade;
 
         /// <summary>
         /// Constructor call
@@ -23,6 +22,7 @@ namespace Pyramid_Plunder.Classes
         {
             objectType = objType;
             position = spawnPosition;
+            Initialize();
         }
 
         /// <summary>
@@ -34,6 +34,7 @@ namespace Pyramid_Plunder.Classes
         {
             objectType = objType;
             position = new Vector2(0, 0);
+            Initialize();
         }
 
         /// <summary>
@@ -47,10 +48,49 @@ namespace Pyramid_Plunder.Classes
         }
 
         /// <summary>
+        /// Sets up the object based on its objectType
+        /// </summary>
+        protected virtual void Initialize()
+        {
+            switch (objectType)
+            {
+                case GameObjectList.Dash:
+                    isUpgrade = true;
+                    break;
+                case GameObjectList.DoubleJump:
+                    isUpgrade = true;
+                    break;
+                default:
+                    isUpgrade = false;
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Causes the object to be "spawned," and therefore drawable and interactable.
+        /// </summary>
+        /// <param name="location">The location to spawn the object.</param>
+        public virtual void Spawn(Vector2 location)
+        {
+            isSpawned = true;
+            Position = location;
+        }
+
+        /// <summary>
+        /// Despawns the object and then removes it from memory by calling the Dispose method.
+        /// </summary>
+        public virtual void Despawn()
+        {
+            isSpawned = false;
+            Dispose();
+        }
+
+
+        /// <summary>
         /// Deals with object interactions between each other.
         /// </summary>
         /// <param name="otherObject">The other object to interact with.</param>
-        public virtual void InteractWith(GameObject otherObject)
+        public virtual void InteractWith(GameObject otherObject, InteractionTypes interactionType)
         {
             // TODO: Add the interaction chart for each possible object interaction.
             // The owner of this method is considered the "initiator" of the interaction
@@ -63,6 +103,14 @@ namespace Pyramid_Plunder.Classes
         {
             get { return position; }
             set { position = value; }
+        }
+
+        /// <summary>
+        /// Whether the object is an upgrade
+        /// </summary>
+        public bool IsUpgrade
+        {
+            get { return isUpgrade; }
         }
     }
 }

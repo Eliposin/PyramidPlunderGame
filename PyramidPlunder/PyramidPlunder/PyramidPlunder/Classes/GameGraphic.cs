@@ -187,6 +187,14 @@ namespace Pyramid_Plunder.Classes
         }
 
         /// <summary>
+        /// Removes the object from memory
+        /// </summary>
+        protected virtual void Dispose()
+        {
+
+        }
+
+        /// <summary>
         /// Accessor for the object's Coordinates (position on the screen)
         /// </summary>
         public Vector2 Coordinates
@@ -195,6 +203,9 @@ namespace Pyramid_Plunder.Classes
         }
 
 
+        /// <summary>
+        /// The type of object represented in the GameObjectList
+        /// </summary>
         public GameObjectList ObjectType
         {
             get { return objectType; }

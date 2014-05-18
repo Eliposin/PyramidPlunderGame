@@ -71,6 +71,9 @@ namespace Pyramid_Plunder.Classes
         private bool rightBtnFlag = false;
         private bool jumpBtnFlag = false;
         private bool dashBtnFlag = false;
+
+        private bool hasDash = false;
+        private bool hasDoubleJump = false;
               
         /// <summary>
         /// 
@@ -289,6 +292,35 @@ namespace Pyramid_Plunder.Classes
                         displacementX = Math.Min(0, velocityX + (STOP_DEC / 2));
                         velocityX = Math.Min(0, velocityX + STOP_DEC);
                     }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Allows game objects to interact with each other.  When an interaction is determined to take place,
+        /// the "initiater" of the interaction should call its own version of this method, passing in the object
+        /// that is being interacted with and the type of interaction.
+        /// </summary>
+        /// <param name="otherObject">The other object that is being interacted with.</param>
+        /// <param name="interactionType">The type of interaction that is taking place.</param>
+        public override void InteractWith(GameObject otherObject, InteractionTypes interactionType)
+        {
+            if (otherObject.IsUpgrade && interactionType == InteractionTypes.Collision)
+            {
+                switch (otherObject.ObjectType)
+                {
+                    case GameObjectList.Dash:
+                        if (!hasDash)
+                            hasDash = true;
+                        otherObject.Despawn();
+                        break;
+                    case GameObjectList.DoubleJump:
+                        if (!hasDoubleJump)
+                            hasDoubleJump = true;
+                        otherObject.Despawn();
+                        break;
+                    default:
+                        break;
                 }
             }
         }
