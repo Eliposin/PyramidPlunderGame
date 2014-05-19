@@ -21,6 +21,7 @@ namespace Pyramid_Plunder.Classes
         private int SpawnX;
         private int SpawnY;
         private ContentManager Content;
+        
         public Color[] collisionColors;
 
         /// <summary>
@@ -125,17 +126,35 @@ namespace Pyramid_Plunder.Classes
                             doorArray[i].connectedDoor = Convert.ToInt16(GameResources.getNextDataLine(sr, "#"));
                             doorArray[i].isLocked = true;
                     }
-                    numberOfEnemies = Convert.ToInt16(GameResources.getNextDataLine(sr, "#"));
+                    numberOfEnemies = Int16.Parse(GameResources.getNextDataLine(sr, "#"));
                     for (int i = 0; i < numberOfEnemies; i++)
                     {
-                        //TODO: GameObjectList What is it and why does enemy need it?  And where do I create it.
-                        //enemyArray[i] = new Enemy(GameResources.getNextDataLine(sr, "#"), , Content);
+                        String enemyType = GameResources.getNextDataLine(sr, "#");
+
+
+                        switch (enemyType)
+                        {
+                            case "Mummy":
+                                enemyArray[i] = new Enemy(GameResources.getNextDataLine(sr, "#"), GameObjectList.Mummy, Content);
+                                break;
+                            //TODO: Add Skeleton and Scarab to the GameObjectList enum.
+                            /* case "Skeleton":
+                                enemyArray[i] = new Enemy(GameResources.getNextDataLine(sr, "#"), GameObjectList.Skeleton, Content);
+                                break;
+                            case "Scarab":
+                                enemyArray[i] = new Enemy(GameResources.getNextDataLine(sr, "#"), GameObjectList.Scarab, Content);
+                                break;*/
+                        }
+
+                        enemyArray[i].Spawn(new Vector2(Int16.Parse(GameResources.getNextDataLine(sr, "#")),
+                            Int16.Parse(GameResources.getNextDataLine(sr, "#"))));
+
+                            
                     }
 
                     collisionMap = Content.Load<Texture2D>("Images/" + roomName);
                     collisionColors = new Color[collisionMap.Width * collisionMap.Height];
                     collisionMap.GetData<Color>(collisionColors);
-
                     background = new GameObject(whichRoom(roomName), Content);
 
                 }
