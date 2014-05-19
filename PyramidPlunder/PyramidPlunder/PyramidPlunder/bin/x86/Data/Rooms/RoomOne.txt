@@ -5,6 +5,10 @@
 # Room ONE				#
 # 					#
 #########################################
+#Spawn Location X
+1100
+#Spawn Location Y
+900
 #Doors
 #Linked Room (String)
 #Location In Linked Room (int)

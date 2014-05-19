@@ -8,23 +8,6 @@ namespace Pyramid_Plunder.Classes
 {
     public class Door : GameObject
     {
-        public Door(GameObjectList objType, ContentManager content)
-            : base(objType, content)
-        {
-            locked = true;
-            isActivated = false;
-
-
-        }
-
-
-        private bool locked;
-        public bool isLocked
-        {
-            get { return locked; }
-            set { locked = value; }
-        }
-
         /// <summary>
         /// the String that represents the name of the connected Room.
         /// </summary>
@@ -35,22 +18,55 @@ namespace Pyramid_Plunder.Classes
         /// that this door connects to.
         /// </summary>
         public int connectedDoor;
-        //public byte LockType
-        //{
-
-        //}
-       /// <summary>
-       /// an enum representing the lockType the player needs to open the door.
-       /// </summary>
-        private enum lockType : byte
+        public bool isActivated;
+        private ContentManager content;
+        private bool locked;
+        public Door(GameObjectList objType, ContentManager content)
+            : base(objType, content)
         {
+            locked = true;
+            isActivated = false;
+
 
         }
 
-        public bool isActivated;
+
+        
+        public bool isLocked
+        {
+            get { return locked; }
+            set { locked = value; }
+        }
+
+        
+
+       
+       /// <summary>
+       /// an enum representing the lockType the player needs to open the door.
+       /// I am still unsure of how to impliment this.  Need to ask Ryan what his
+       /// thoughts are on Monday.
+       /// </summary>
+        private enum lockType : byte
+        {
+            //Not sure what other types of lock we might have.
+            DoubleJump, Dash, WallHang, BossKill
+
+
+        }
+
+        
 
         Boolean Open(Player player)
         {
+            Room nextRoom = new Room(connectedRoom, content);
+            try
+            {
+                nextRoom.Load(connectedDoor);
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine("An error occurred: " + e.Message);
+            }
             return true;
         }
     }

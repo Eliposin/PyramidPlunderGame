@@ -16,8 +16,10 @@ namespace Pyramid_Plunder.Classes
         private bool hasMoreObjects;
         private int totalObjects;
         private GameObject background;     //Encapsulate the drawing requirements into the class already designed to do that
-                                           //Needs to be a GameObject because it needs to move around with the player
-
+                                          //Needs to be a GameObject because it needs to move around with the player
+        private string roomName;          
+        private int SpawnX;
+        private int SpawnY;
         private ContentManager Content;
         public Color[] collisionColors;
 
@@ -27,7 +29,9 @@ namespace Pyramid_Plunder.Classes
         /// <param name="path">the path to the file to load from.</param>
         public Room(String roomName, ContentManager content)
         {
+            this.roomName = roomName;
             Content = content;
+           // Load();
             this.filePath = "Data/RoomsAndDoors/" + roomName + ".room"; //Lets add a .room extension, shall we?  It can still be a plain text file.
             background = new GameObject(whichRoom(roomName), Content);
 
@@ -99,23 +103,7 @@ namespace Pyramid_Plunder.Classes
         public void Load(int doorIndex)
         {
            
-            /*
-             *PsudoCode For What Should Happen:
-             *
-             * if(next StringFromFile == Doors){
-             * while(next line != EndDoors)
-             * load info into Door Array
-             * }else if(next StringFromFile == Enemies){
-             * while(nextLine != EndEnemies){
-             * load enemy info into Enemy Array
-             * }
-             * close room file.
-             * 
-             * load Texture2D for Collision Map
-             * close file
-             * load Texture2D for Map
-             * close file
-             */
+            
 
             if (filePath != "" && filePath != null)
             {
@@ -125,6 +113,8 @@ namespace Pyramid_Plunder.Classes
                     int numberOfEnemies;
                     
                     StreamReader sr = new StreamReader(filePath);
+                    SpawnX = Convert.ToInt16(GameResources.getNextDataLine(sr, "#"));
+                    SpawnY = Convert.ToInt16(GameResources.getNextDataLine(sr, "#"));
                     numberOfDoors = Convert.ToInt16(GameResources.getNextDataLine(sr, "#"));
                     doorArray = new Door[numberOfDoors];
                     for (int i = 0; i < numberOfDoors; i++)
@@ -132,8 +122,20 @@ namespace Pyramid_Plunder.Classes
                         
                             doorArray[i].connectedRoom = GameResources.getNextDataLine(sr, "#");
                             doorArray[i].connectedDoor = Convert.ToInt16(GameResources.getNextDataLine(sr, "#"));
-                           // doorArray[i].isLocked = Convert.ToInt16(GameResources.getNextDataLine(sr, "#"));
+                            doorArray[i].isLocked = true;
                     }
+                    numberOfEnemies = Convert.ToInt16(GameResources.getNextDataLine(sr, "#"));
+                    for (int i = 0; i < numberOfEnemies; i++)
+                    {
+                        //TODO: GameObjectList What is it and why does enemy need it?  And where do I create it.
+                        //enemyArray[i] = new Enemy(GameResources.getNextDataLine(sr, "#"), , Content);
+                    }
+
+                    collisionMap = Content.Load<Texture2D>("Images/TestRoom");
+                    collisionColors = new Color[collisionMap.Width * collisionMap.Height];
+                    collisionMap.GetData<Color>(collisionColors);
+
+                    background = new GameObject(whichRoom(roomName), Content);
 
                 }
                 catch (Exception e)
