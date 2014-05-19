@@ -38,6 +38,12 @@ namespace Pyramid_Plunder.Classes
             set { locked = value; }
         }
 
+        private void unlock(lockType thisLock)
+        {
+            //Something to check if the player has met the
+            //correct circumstances to unlock this door.
+            
+        }
         
 
        
@@ -49,7 +55,7 @@ namespace Pyramid_Plunder.Classes
         private enum lockType : byte
         {
             //Not sure what other types of lock we might have.
-            DoubleJump, Dash, WallHang, BossKill
+            DoubleJump, Dash, WallHang, BossKill, RoomClear
 
 
         }

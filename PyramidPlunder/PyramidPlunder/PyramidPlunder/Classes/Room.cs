@@ -115,6 +115,7 @@ namespace Pyramid_Plunder.Classes
                     StreamReader sr = new StreamReader(filePath);
                     SpawnX = Convert.ToInt16(GameResources.getNextDataLine(sr, "#"));
                     SpawnY = Convert.ToInt16(GameResources.getNextDataLine(sr, "#"));
+                    spawnLocation = new Vector2(SpawnX, SpawnY);
                     numberOfDoors = Convert.ToInt16(GameResources.getNextDataLine(sr, "#"));
                     doorArray = new Door[numberOfDoors];
                     for (int i = 0; i < numberOfDoors; i++)
@@ -131,7 +132,7 @@ namespace Pyramid_Plunder.Classes
                         //enemyArray[i] = new Enemy(GameResources.getNextDataLine(sr, "#"), , Content);
                     }
 
-                    collisionMap = Content.Load<Texture2D>("Images/TestRoom");
+                    collisionMap = Content.Load<Texture2D>("Images/" + roomName);
                     collisionColors = new Color[collisionMap.Width * collisionMap.Height];
                     collisionMap.GetData<Color>(collisionColors);
 
