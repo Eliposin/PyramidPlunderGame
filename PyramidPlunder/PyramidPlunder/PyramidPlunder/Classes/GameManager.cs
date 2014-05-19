@@ -75,14 +75,14 @@ namespace Pyramid_Plunder.Classes
                 else
                 {
                     player.Update(gameTime); //Determines what the Player is trying to do (this is where the gameTime is taken into account)
-                    PhysicsEngine.Update(player, currentRoom); //Checks for collisions and modifies Velocity
+                    PhysicsEngine.Update(player, currentRoom, gameTime); //Checks for collisions and modifies Velocity
                     player.Move(); //Actually sets the new position of the object
 
                     //Do the same thing for each physics object in the current room.
                     while (currentRoom.HasMoreObjects)
                     {
                         PhysicsObject tempObject = currentRoom.GetNextObject();
-                        PhysicsEngine.Update(tempObject, currentRoom);
+                        PhysicsEngine.Update(tempObject, currentRoom, gameTime);
                         tempObject.Move();
                     }
                     currentRoom.ResetObjectList();
@@ -164,7 +164,7 @@ namespace Pyramid_Plunder.Classes
             gameMenu = null;
 
             currentRoom = new Room("TestRoom", roomContent);
-            player = new Player(GameObjectList.Player, gameContent);
+            player = new Player(gameContent);
             player.Spawn(currentRoom.SpawnLocation);
             
             isPaused = false;

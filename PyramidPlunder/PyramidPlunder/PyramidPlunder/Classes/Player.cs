@@ -16,32 +16,32 @@ namespace Pyramid_Plunder.Classes
         //private bool isSpawned;
 
         private KeyboardState keyState;
-                                        
+        
         const short MAX_JUMP_HEIGHT = -250;
         float JUMP_V;
         float WALL_JUMP_V_X;
         float WALL_JUMP_V_Y;
-        const float JUMP_DECAY = 4;
-        const float WALL_FRICTION_DEC = -0.6f;
-        const float MAX_WALL_SLIDE_V = 6;
-        const short MAX_FALL_V = 50;
+        const float JUMP_DECAY = 14400;
+        const float WALL_FRICTION_DEC = -2160f;
+        const float MAX_WALL_SLIDE_V = 360;
+        const short MAX_FALL_V = 3000;
         const byte MAX_MIDAIR_JUMPS = 1;
-        
+
         const short MAX_DASH_LENGTH = 300;
         const float DASH_V = MAX_RUN_V * 3;
-        const short MAX_DASH_TIME = (short)(MAX_DASH_LENGTH / DASH_V);
+        const float MAX_DASH_TIME = (MAX_DASH_LENGTH / DASH_V);
         const sbyte MAX_MIDAIR_DASHES = 1;
 
         const sbyte DASH_NOT_ALLOWED = -1;
         const sbyte DASH_ALLOWED = 0;
-        const sbyte DASH_HELD = 1;
+        const float DASH_HELD = .001f;
         const sbyte INFINITE_DASHES = -1;
 
-        const short MAX_RUN_V = 8;
-        const float RUN_ACC = .75f;
-        const float TOO_FAST_DEC = 0.3f;
-        const float STOP_DEC = 0.6f;
-        const float BRAKE_DEC = 1.2f;
+        const short MAX_RUN_V = 480;
+        const float RUN_ACC = 2700f;
+        const float TOO_FAST_DEC = -2700f;
+        const float STOP_DEC = -2160f;
+        const float BRAKE_DEC = 4320f;
 
         public enum XDirection
         {
@@ -63,7 +63,7 @@ namespace Pyramid_Plunder.Classes
         private JumpState PlayerJumpState = JumpState.Allowed;
         private byte midairJumps = MAX_MIDAIR_JUMPS;
         private sbyte dashes = INFINITE_DASHES;
-        private sbyte dashStatus = DASH_ALLOWED;
+        private float dashStatus = DASH_ALLOWED;
 
         private bool upBtnFlag = false;
         private bool downBtnFlag = false;
@@ -71,26 +71,22 @@ namespace Pyramid_Plunder.Classes
         private bool rightBtnFlag = false;
         private bool jumpBtnFlag = false;
         private bool dashBtnFlag = false;
-
-        private bool hasDash = false;
-        private bool hasDoubleJump = false;
               
         /// <summary>
-        /// 
+        /// Creates a new Player object
         /// </summary>
-        /// <param name="objType"></param>
-        public Player(GameObjectList objType, ContentManager content)
-            : base(objType, content)
+        public Player(ContentManager content)
+            : base(GameObjectList.Player, content)
         {
             isSpawned = false;
-            isGravityAffected = true;
             JUMP_V = (float)(-Math.Sqrt(-2 * PhysicsEngine.GRAVITY * MAX_JUMP_HEIGHT));
             WALL_JUMP_V_X = (float)(JUMP_V * 0.7071);
             WALL_JUMP_V_Y = (float)(JUMP_V * 0.7071);
-            collisionXs = new short[3] { 11, 26, 41 };
-            collisionYs = new short[3] { 22, 65, 108 };
- 
-        }
+            //isGravityAffected = true;
+            //collisionXs = new short[3] { 11, 26, 41 };
+            //collisionYs = new short[3] { 22, 65, 108 };
+
+    }
 
         /// <summary>
         /// 
@@ -104,6 +100,8 @@ namespace Pyramid_Plunder.Classes
 
         public override void Update(GameTime time)
         {
+            float totalTime = (float)(time.ElapsedGameTime.TotalSeconds);
+            
             if (dashStatus < DASH_HELD)
             {
                 if (LatestXArrow == XDirection.Left && PlayerXFacing == XDirection.Right)
@@ -120,13 +118,13 @@ namespace Pyramid_Plunder.Classes
                     {
                         if (WallSlideDirection == XDirection.None)
                             //soundLand.Play();
-                            WallSlideDirection = XDirection.Right;
+                        WallSlideDirection = XDirection.Right;
                     }
                     else if (wallOnLeft && leftBtnFlag == true)
                     {
                         if (WallSlideDirection == XDirection.None)
                             //soundLand.Play();
-                            WallSlideDirection = XDirection.Left;
+                        WallSlideDirection = XDirection.Left;
                     }
                     else
                         WallSlideDirection = XDirection.None;
@@ -134,9 +132,6 @@ namespace Pyramid_Plunder.Classes
             }
             else
                 WallSlideDirection = XDirection.None;
-
-            if (WallSlideDirection != XDirection.None)
-                velocityY = MAX_WALL_SLIDE_V;
 
             if (PlayerJumpState == JumpState.NotAllowed && jumpBtnFlag == false)
                 PlayerJumpState = JumpState.Allowed;
@@ -189,19 +184,26 @@ namespace Pyramid_Plunder.Classes
                     PlayerJumpState = JumpState.Allowed;
             }
             else if (velocityY < 0)
-                velocityY = Math.Min(velocityY + JUMP_DECAY, 0);
+                velocityY = Math.Min(velocityY + JUMP_DECAY * totalTime, 0);
 
             if (dashStatus < DASH_HELD)
             {
-                displacementY = velocityY;
                 if (WallSlideDirection != XDirection.None)
-                    displacementY = Math.Min(velocityY + (WALL_FRICTION_DEC / 2), MAX_WALL_SLIDE_V);
+                {
+                    accelerationY = WALL_FRICTION_DEC;
+                    velocityLimitY = MAX_WALL_SLIDE_V;
+                }
+                else
+                {
+                    accelerationY = 0;
+                }
             }
                         
             if (dashStatus == DASH_ALLOWED && dashBtnFlag == true &&
                 (dashes != 0 || WallSlideDirection != XDirection.None))
             {
                 dashStatus = DASH_HELD;
+                accelerationX = 0;
                 if (WallSlideDirection == XDirection.Right)
                 {
                     velocityX = -DASH_V;
@@ -217,14 +219,21 @@ namespace Pyramid_Plunder.Classes
                     if (dashes > 0)
                         dashes--;
                     if (PlayerXFacing == XDirection.Right)
+                    {
                         velocityX = DASH_V;
+                        velocityLimitX = DASH_V;
+                    }
                     else
+                    {
                         velocityX = -DASH_V;
+                        velocityLimitX = -DASH_V;
+                    }
                 }
                 if (!isOnGround)
                 {
                     isGravityAffected = false;
                     velocityY = 0;
+                    accelerationY = 0;
                 }
                 //soundDash.Play();
             }
@@ -233,8 +242,7 @@ namespace Pyramid_Plunder.Classes
 
             if (dashStatus >= DASH_HELD)
             {
-                dashStatus++;
-                displacementX = velocityX;
+                dashStatus += totalTime;
                 if (dashStatus > MAX_DASH_TIME || dashBtnFlag == false)
                 {
                     velocityX = 0;
@@ -248,81 +256,63 @@ namespace Pyramid_Plunder.Classes
                 {
                     if (velocityX < 0)
                     {
-                        displacementX = Math.Min(0, velocityX + (BRAKE_DEC / 2));
-                        velocityX = Math.Min(0, velocityX + BRAKE_DEC);
+                        accelerationX = BRAKE_DEC;
+                        velocityLimitX = 0;
                     }
                     else if (velocityX <= MAX_RUN_V)
                     {
-                        displacementX = Math.Min(velocityX + (RUN_ACC / 2), MAX_RUN_V);
-                        velocityX = Math.Min(velocityX + RUN_ACC, MAX_RUN_V);
+                        accelerationX = RUN_ACC;
+                        velocityLimitX = MAX_RUN_V;
                     }
                     else
                     {
-                        displacementX = Math.Max(velocityX - (TOO_FAST_DEC / 2), MAX_RUN_V);
-                        velocityX = Math.Max(velocityX - TOO_FAST_DEC, MAX_RUN_V);
+                        accelerationX = TOO_FAST_DEC;
+                        velocityLimitX = MAX_RUN_V;
                     }
                 }
                 else if (LatestXArrow == XDirection.Left)
                 {
                     if (velocityX > 0)
                     {
-                        displacementX = Math.Max(0, velocityX - (BRAKE_DEC / 2));
-                        velocityX = Math.Max(0, velocityX - BRAKE_DEC);
+                        accelerationX = -BRAKE_DEC;
+                        velocityLimitX = 0;
                     }
                     else if (velocityX >= -MAX_RUN_V)
                     {
-                        displacementX = Math.Max(velocityX - (RUN_ACC / 2), -MAX_RUN_V);
-                        velocityX = Math.Max(velocityX - RUN_ACC, -MAX_RUN_V);
+                        accelerationX = -RUN_ACC;
+                        velocityLimitX = -MAX_RUN_V;
                     }
                     else
                     {
-                        displacementX = Math.Min(velocityX + (TOO_FAST_DEC / 2), MAX_RUN_V);
-                        velocityX = Math.Min(velocityX + TOO_FAST_DEC, MAX_RUN_V);
+                        accelerationX = -TOO_FAST_DEC;
+                        velocityLimitX = -MAX_RUN_V;
                     }
                 }
                 else if (velocityX != 0)
                 {
-                    if (velocityX > 0)
+                    if (velocityX > MAX_RUN_V)
                     {
-                        displacementX = Math.Max(0, velocityX - (STOP_DEC / 2));
-                        velocityX = Math.Max(0, velocityX - STOP_DEC);
+                        accelerationX = TOO_FAST_DEC;
+                        velocityLimitX = MAX_RUN_V;
+                    }
+                    else if (velocityX > 0)
+                    {
+                        accelerationX = STOP_DEC;
+                        velocityLimitX = 0;
+                    }
+                    else if (velocityX < -MAX_RUN_V)
+                    {
+                        accelerationX = -TOO_FAST_DEC;
+                        velocityLimitX = -MAX_RUN_V;
                     }
                     else if (velocityX < 0)
                     {
-                        displacementX = Math.Min(0, velocityX + (STOP_DEC / 2));
-                        velocityX = Math.Min(0, velocityX + STOP_DEC);
+                        accelerationX = -STOP_DEC;
+                        velocityLimitX = 0;
                     }
                 }
             }
-        }
-
-        /// <summary>
-        /// Allows game objects to interact with each other.  When an interaction is determined to take place,
-        /// the "initiater" of the interaction should call its own version of this method, passing in the object
-        /// that is being interacted with and the type of interaction.
-        /// </summary>
-        /// <param name="otherObject">The other object that is being interacted with.</param>
-        /// <param name="interactionType">The type of interaction that is taking place.</param>
-        public override void InteractWith(GameObject otherObject, InteractionTypes interactionType)
-        {
-            if (otherObject.IsUpgrade && interactionType == InteractionTypes.Collision)
-            {
-                switch (otherObject.ObjectType)
-                {
-                    case GameObjectList.Dash:
-                        if (!hasDash)
-                            hasDash = true;
-                        otherObject.Despawn();
-                        break;
-                    case GameObjectList.DoubleJump:
-                        if (!hasDoubleJump)
-                            hasDoubleJump = true;
-                        otherObject.Despawn();
-                        break;
-                    default:
-                        break;
-                }
-            }
+            base.Update(time);
         }
 
         public override void Land()
@@ -349,15 +339,19 @@ namespace Pyramid_Plunder.Classes
             base.Land();
         }
 
-        public override void HitWall()
+        public override void CollideX()
         {
-            if (dashStatus > DASH_ALLOWED)
+            if (dashStatus >= DASH_HELD)
             {
                 dashStatus = DASH_NOT_ALLOWED;
                 isGravityAffected = true;
                 velocityY = 0;
+                if (jumpBtnFlag == true)
+                    PlayerJumpState = JumpState.NotAllowed;
+                else
+                    PlayerJumpState = JumpState.Allowed;
             }
-            base.HitWall();
+            base.CollideX();
         }
 
         public override void HitCeiling()

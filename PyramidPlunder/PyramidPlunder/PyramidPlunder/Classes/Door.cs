@@ -19,7 +19,7 @@ namespace Pyramid_Plunder.Classes
         /// </summary>
         public int connectedDoor;
         public bool isActivated;
-        private ContentManager content;
+        //private ContentManager Content;
         private bool locked;
         public Door(GameObjectList objType, ContentManager content)
             : base(objType, content)
@@ -27,7 +27,7 @@ namespace Pyramid_Plunder.Classes
             locked = true;
             isActivated = false;
 
-
+            Content = content;
         }
 
 
@@ -64,7 +64,7 @@ namespace Pyramid_Plunder.Classes
 
         Boolean Open(Player player)
         {
-            Room nextRoom = new Room(connectedRoom, content);
+            Room nextRoom = new Room(connectedRoom, Content);
             try
             {
                 nextRoom.Load(connectedDoor);
