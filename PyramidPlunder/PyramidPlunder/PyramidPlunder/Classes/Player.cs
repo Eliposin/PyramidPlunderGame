@@ -377,27 +377,34 @@ namespace Pyramid_Plunder.Classes
         public void updateControlFlags()
         {
             KeyboardState newState = Keyboard.GetState();
-            if (keyState.IsKeyUp(Keys.Right) && newState.IsKeyDown(Keys.Right))
+
+            if ((keyState.IsKeyUp(Keys.Right) && newState.IsKeyDown(Keys.Right)) ||
+                (keyState.IsKeyUp(Keys.D) && newState.IsKeyDown(Keys.D)))
             {
                 rightBtnFlag = true;
                 LatestXArrow = XDirection.Right;
             }
-            else if (keyState.IsKeyUp(Keys.Left) && newState.IsKeyDown(Keys.Left))
+            else if ((keyState.IsKeyUp(Keys.Left) && newState.IsKeyDown(Keys.Left)) ||
+                (keyState.IsKeyUp(Keys.A) && newState.IsKeyDown(Keys.A)))
             {
                 leftBtnFlag = true;
                 LatestXArrow = XDirection.Left;
             }
 
-            if (keyState.IsKeyUp(Keys.Up) && newState.IsKeyDown(Keys.Up))
+            if ((keyState.IsKeyUp(Keys.Up) && newState.IsKeyDown(Keys.Up)) ||
+                (keyState.IsKeyUp(Keys.W) && newState.IsKeyDown(Keys.W)))
                 upBtnFlag = true;
 
-            if (keyState.IsKeyUp(Keys.X) && newState.IsKeyDown(Keys.X))
+            if ((keyState.IsKeyUp(Keys.Space) && newState.IsKeyDown(Keys.Space)) ||
+                (keyState.IsKeyUp(Keys.X) && newState.IsKeyDown(Keys.X)))
                 jumpBtnFlag = true;
 
-            if (keyState.IsKeyUp(Keys.Z) && newState.IsKeyDown(Keys.Z))
+            if ((keyState.IsKeyUp(Keys.Z) && newState.IsKeyDown(Keys.Z)) ||
+                (keyState.IsKeyUp(Keys.Q) && newState.IsKeyDown(Keys.Q)))
                 dashBtnFlag = true;
 
-            if (keyState.IsKeyDown(Keys.Left) && newState.IsKeyUp(Keys.Left))
+            if ((keyState.IsKeyDown(Keys.Left) && newState.IsKeyUp(Keys.Left)) ||
+                (keyState.IsKeyDown(Keys.A) && newState.IsKeyUp(Keys.A)))
             {
                 leftBtnFlag = false;
                 if (LatestXArrow == XDirection.Left)
@@ -408,7 +415,8 @@ namespace Pyramid_Plunder.Classes
                         LatestXArrow = XDirection.None;
                 }
             }
-            if (keyState.IsKeyDown(Keys.Right) && newState.IsKeyUp(Keys.Right))
+            if ((keyState.IsKeyDown(Keys.Right) && newState.IsKeyUp(Keys.Right)) ||
+                (keyState.IsKeyDown(Keys.D) && newState.IsKeyUp(Keys.D)))
             {
                 rightBtnFlag = false;
                 if (LatestXArrow == XDirection.Right)
@@ -420,17 +428,20 @@ namespace Pyramid_Plunder.Classes
                 }
             }
 
-            if (keyState.IsKeyDown(Keys.Up) && newState.IsKeyUp(Keys.Up))
+            if ((keyState.IsKeyDown(Keys.Up) && newState.IsKeyUp(Keys.Up)) ||
+                (keyState.IsKeyDown(Keys.W) && newState.IsKeyUp(Keys.W)))
             {
                 upBtnFlag = false;
             }
 
-            if (keyState.IsKeyDown(Keys.X) && newState.IsKeyUp(Keys.X))
+            if ((keyState.IsKeyDown(Keys.Space) && newState.IsKeyUp(Keys.Space)) ||
+                (keyState.IsKeyDown(Keys.X) && newState.IsKeyUp(Keys.X)))
             {
                 jumpBtnFlag = false;
             }
 
-            if (keyState.IsKeyDown(Keys.Z) && newState.IsKeyUp(Keys.Z))
+            if ((keyState.IsKeyDown(Keys.Z) && newState.IsKeyUp(Keys.Z)) ||
+                (keyState.IsKeyDown(Keys.Q) && newState.IsKeyUp(Keys.Q)))
                 dashBtnFlag = false;
             keyState = newState;
         }

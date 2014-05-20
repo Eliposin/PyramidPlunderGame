@@ -126,18 +126,15 @@ namespace Pyramid_Plunder.Classes
                     doorArray = new Door[numberOfDoors];
                     for (int i = 0; i < numberOfDoors; i++)
                     {
-                        doorArray[i] = new Door(GameObjectList.Door, Content);
-                        doorArray[i].Orientation = (Door.DoorOrientations)byte.Parse(GameResources.getNextDataLine(sr, "#"));
+                        Door.DoorOrientations orientation = (Door.DoorOrientations)byte.Parse(GameResources.getNextDataLine(sr, "#"));
+                        string roomName = GameResources.getNextDataLine(sr, "#");
+                        int connectedDoorIndex = Convert.ToInt16(GameResources.getNextDataLine(sr, "#"));
+                        Door.LockTypes lockType = (Door.LockTypes)byte.Parse(GameResources.getNextDataLine(sr, "#"));
+
+                        doorArray[i] = new Door(Content, orientation, roomName, connectedDoorIndex, lockType);
+
                         doorArray[i].Spawn(new Vector2(float.Parse(GameResources.getNextDataLine(sr, "#")),
                                                        float.Parse(GameResources.getNextDataLine(sr, "#"))));
-                        doorArray[i].connectedRoom = GameResources.getNextDataLine(sr, "#");
-                        doorArray[i].connectedDoor = Convert.ToInt16(GameResources.getNextDataLine(sr, "#"));
-                        doorArray[i].LockType = (Door.LockTypes)byte.Parse(GameResources.getNextDataLine(sr, "#"));
-                        if (doorArray[i].LockType != Door.LockTypes.Unlocked)
-                            doorArray[i].isLocked = true;
-                        else
-                            doorArray[i].isLocked = false;
-                        
                     }
 
                     numberOfEnemies = Int16.Parse(GameResources.getNextDataLine(sr, "#"));

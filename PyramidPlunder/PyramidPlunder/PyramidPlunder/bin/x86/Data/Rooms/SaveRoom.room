@@ -6,40 +6,41 @@
 0
 #
 #Doors
+#Orientation (0 = facing right, 1 = facing left)
 #Linked Room (String)
-#Position (in the room)
-#Location In Linked Room (int)
+#Index of linked door in linked room (int)
 #Lock Type (byte?)
 #Lock Type 0 is an Unlocked Door.
-#Orientation (0 = facing right, 1 = facing left)
+#Position (in the room)
+#
 #Number of Doors
 2
 #####First Door (index 0):#####
 # Orientation
 0
-# PositionX
-0
-# PositionY
-176
 # Linked Room
 SaveRoom
 # Linked Door (index)
 1
 # Lock Type
 0
+# PositionX
+0
+# PositionY
+176
 #####Second Door (index 1):#####
 # Orientation
 0
-# PositionX
-1103
-# PositionY
-176
 # Linked Room
 SaveRoom
 # Linked Door (index)
 0
 # Lock Type
 0
+# PositionX
+1103
+# PositionY
+176
 #####Enemies#####
 #Number of of Enemies
 0

@@ -14,7 +14,7 @@ namespace Pyramid_Plunder.Classes
         /// <summary>
         /// the String that represents the name of the connected Room.
         /// </summary>
-        public String connectedRoom;
+        public string connectedRoom;
 
         /// <summary>
         /// the int that represents the position in the connected room's door[]
@@ -25,22 +25,29 @@ namespace Pyramid_Plunder.Classes
         //private ContentManager Content;
         private bool locked;
 
-        public Door(GameObjectList objType, ContentManager content)
-            : base(objType, content)
+        public Door(ContentManager content, DoorOrientations orient, string roomName, int connectedDoorIndex, LockTypes lockT)
+            : base(GameObjectList.Door, content)
         {
-            locked = true;
-            isActivated = false;
             Content = content;
-            orientation = DoorOrientations.FacingRight;
-            lockType = 0;
+            orientation = orient;
+            connectedRoom = roomName;
+            connectedDoor = connectedDoorIndex;
+            lockType = lockT;
+
+            if (lockType != Door.LockTypes.Unlocked)
+                locked = true;
+            else
+                locked = false;
+
+            isActivated = false;
         }
 
 
         
-        public bool isLocked
+        public bool IsLocked
         {
             get { return locked; }
-            set { locked = value; }
+            //set { locked = value; }
         }
 
         private void unlock(LockTypes thisLock)
@@ -90,9 +97,17 @@ namespace Pyramid_Plunder.Classes
 
         Boolean Open(Player player)
         {
-            Room nextRoom = new Room(connectedRoom, Content);
-
-            return true;
+            // TODO: Check to see if player has authorization
+            try
+            {
+                Room nextRoom = new Room(connectedRoom, Content);
+                return true;
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine("An error occured opening the door or loading the room: " + e.Message);
+                return false;
+            }
         }
     }
 }
