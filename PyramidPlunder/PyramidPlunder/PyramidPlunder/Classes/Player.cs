@@ -17,7 +17,7 @@ namespace Pyramid_Plunder.Classes
 
         private KeyboardState keyState;
 
-        private SoundJump soundJump;
+        private AudioEngine soundEngine;
         
         const short MAX_JUMP_HEIGHT = -250;
         float JUMP_V;
@@ -88,7 +88,8 @@ namespace Pyramid_Plunder.Classes
             //collisionXs = new short[3] { 11, 26, 41 };
             //collisionYs = new short[3] { 22, 65, 108 };
 
-            soundJump = new SoundJump(content, GameObjectList.Player);
+            soundEngine = new AudioEngine(content, GameObjectList.Player);
+            
         }
 
         /// <summary>
@@ -165,7 +166,7 @@ namespace Pyramid_Plunder.Classes
                     {
                         midairJumps = (byte)Math.Max(0, midairJumps - 1);
                         velocityY = JUMP_V;
-                        soundJump.Play();
+                        soundEngine.Play(AudioEngine.SoundEffects.Jump);
                         
                     }
                 }
@@ -173,7 +174,7 @@ namespace Pyramid_Plunder.Classes
                 {
                     BecomeAirborne();
                     velocityY = JUMP_V;
-                    soundJump.Play();
+                    soundEngine.Play(AudioEngine.SoundEffects.Jump);
                 }
                 if (dashStatus >= DASH_HELD)
                 {

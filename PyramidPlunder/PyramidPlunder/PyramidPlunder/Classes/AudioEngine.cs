@@ -9,23 +9,29 @@ using Microsoft.Xna.Framework.Audio;
 namespace Pyramid_Plunder.Classes
 {
 
-    class SoundJump
+    class AudioEngine
     {
+        public enum SoundEffects : byte
+        {
+            Jump = 0
+        }
+
+
         private SoundEffect jump1;
         private SoundEffect jump2;
         private SoundEffect jump3;
 
-        private string objType;
+        private GameObjectList objType;
 
         private Random rnd = new Random();
 
-        public SoundJump(ContentManager content, Pyramid_Plunder.GameObjectList tempObjType)
+        public AudioEngine(ContentManager content, GameObjectList tempObjType)
         {
-            objType = tempObjType.ToString();
+            objType = tempObjType;
 
             switch (objType)
             {
-                case "Player":
+                case GameObjectList.Player:
                     jump1 = content.Load<SoundEffect>("Sounds/hup1");
                     jump2 = content.Load<SoundEffect>("Sounds/hup2");
                     jump3 = content.Load<SoundEffect>("Sounds/hup3");
@@ -37,26 +43,29 @@ namespace Pyramid_Plunder.Classes
 
         }
 
-        public void Play()
+        public void Play(SoundEffects effect)
         {
-            int i = rnd.Next(0, 3);
-            switch (i)
+            switch (effect)
             {
-                case 0:
-                    jump1.Play();
-                    break;
-                case 1:
-                    jump2.Play();
-                    break;
-                case 2:
-                    jump3.Play();
-                    break;
-                default:
-                    break;
+                case SoundEffects.Jump:
+                int i = rnd.Next(0, 3);
+                switch (i)
+                {
+                    case 0:
+                        jump1.Play();
+                        break;
+                    case 1:
+                        jump2.Play();
+                        break;
+                    case 2:
+                        jump3.Play();
+                        break;
+                    default:
+                        break;
+                }
+                break;
             }
+            
         }
     }
-
-
-    
 }
