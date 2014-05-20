@@ -11,35 +11,34 @@ namespace Pyramid_Plunder.Classes
         private Enemy[] enemyArray;
         private Door[] doorArray;
         private Vector2 spawnLocation;
-        private String filePath;
         private Texture2D collisionMap;
         private bool hasMoreObjects;
         private int totalObjects;
         private GameObject background;     //Encapsulate the drawing requirements into the class already designed to do that
                                           //Needs to be a GameObject because it needs to move around with the player
-        private string roomName;          
-        private int SpawnX;
-        private int SpawnY;
+        private string roomName;
         private ContentManager Content;
         
         public Color[] collisionColors;
 
         /// <summary>
-        /// Constructor to build a room from a file.
+        /// Creates a new Room object.
         /// </summary>
-        /// <param name="path">the path to the file to load from.</param>
-        public Room(String roomName, ContentManager content)
+        /// <param name="roomName">The name of the room that is to be created.</param>
+        /// <param name="content">The content manager to use for assets.</param>
+        /// <param name="doorIndex">The index of the door to enter from.  If no index is specified, or the index is -1,
+        /// the room's default spawn location will be used.</param>
+        public Room(String roomName, ContentManager content, int doorIndex = -1)
         {
             this.roomName = roomName;
             Content = content;
-           // Load();
-            this.filePath = "Data/RoomsAndDoors/" + roomName + ".room"; //Lets add a .room extension, shall we?  It can still be a plain text file.
-            background = new GameObject(whichRoom(roomName), Content);
-
-            //Added for testing!!!
-            collisionMap = Content.Load<Texture2D>("Images/TestRoom");
+            Load("../Data/Rooms/" + roomName + ".room", doorIndex);
+            
+            collisionMap = Content.Load<Texture2D>("Images/" + roomName + "Collisions");
             collisionColors = new Color[collisionMap.Width * collisionMap.Height];
             collisionMap.GetData<Color>(collisionColors);
+            background = new GameObject(whichRoom(roomName), Content);
+            background.Spawn(new Vector2(0, 0));
         }
 
         /// <summary>
@@ -52,10 +51,12 @@ namespace Pyramid_Plunder.Classes
             switch (roomName)
             {
                 case "TestRoom":
-                    spawnLocation = new Vector2(1100, 900); //Eventually should be read from file!
-                    totalObjects = 0;
-                    hasMoreObjects = false;
+                    //spawnLocation = new Vector2(1100, 900); //Eventually should be read from file!
+                    //totalObjects = 0;
+                    //hasMoreObjects = false;
                     return GameObjectList.TestRoom;
+                case "SaveRoom":
+                    return GameObjectList.SaveRoom;
                 default:
                     return GameObjectList.NullObject;
             }
@@ -100,12 +101,10 @@ namespace Pyramid_Plunder.Classes
         ///  Loads the room into memory. 
         ///  If IsPersistant is set to true, loads up the previously saved State file
         /// </summary>
-        /// <param name="doorIndex">  represents which door the player is entering from </param>
-        public void Load(int doorIndex)
+        /// <param name="doorIndex">Represents which door the player is entering from.
+        /// If set to -1, player will enter at the default spawning location.</param>
+        public void Load(string filePath, int doorIndex)
         {
-           
-            
-
             if (filePath != "" && filePath != null)
             {
                 try
@@ -114,59 +113,60 @@ namespace Pyramid_Plunder.Classes
                     int numberOfEnemies;
                     
                     StreamReader sr = new StreamReader(filePath);
-                    SpawnX = Convert.ToInt16(GameResources.getNextDataLine(sr, "#"));
-                    SpawnY = Convert.ToInt16(GameResources.getNextDataLine(sr, "#"));
-                    spawnLocation = new Vector2(SpawnX, SpawnY);
+                    spawnLocation = new Vector2(Convert.ToInt16(GameResources.getNextDataLine(sr, "#")), 
+                                                Convert.ToInt16(GameResources.getNextDataLine(sr, "#")));
+                    totalObjects = Convert.ToInt16(GameResources.getNextDataLine(sr, "#"));
+
+                    if (totalObjects > 0)
+                        hasMoreObjects = true;
+                    else
+                        hasMoreObjects = false;
+
                     numberOfDoors = Convert.ToInt16(GameResources.getNextDataLine(sr, "#"));
                     doorArray = new Door[numberOfDoors];
                     for (int i = 0; i < numberOfDoors; i++)
                     {
-                        
-                            doorArray[i].connectedRoom = GameResources.getNextDataLine(sr, "#");
-                            doorArray[i].connectedDoor = Convert.ToInt16(GameResources.getNextDataLine(sr, "#"));
+                        doorArray[i] = new Door(GameObjectList.Door, Content);
+                        doorArray[i].Orientation = (Door.DoorOrientations)byte.Parse(GameResources.getNextDataLine(sr, "#"));
+                        doorArray[i].Spawn(new Vector2(float.Parse(GameResources.getNextDataLine(sr, "#")),
+                                                       float.Parse(GameResources.getNextDataLine(sr, "#"))));
+                        doorArray[i].connectedRoom = GameResources.getNextDataLine(sr, "#");
+                        doorArray[i].connectedDoor = Convert.ToInt16(GameResources.getNextDataLine(sr, "#"));
+                        doorArray[i].LockType = (Door.LockTypes)byte.Parse(GameResources.getNextDataLine(sr, "#"));
+                        if (doorArray[i].LockType != Door.LockTypes.Unlocked)
                             doorArray[i].isLocked = true;
+                        else
+                            doorArray[i].isLocked = false;
+                        
                     }
+
                     numberOfEnemies = Int16.Parse(GameResources.getNextDataLine(sr, "#"));
                     for (int i = 0; i < numberOfEnemies; i++)
                     {
                         String enemyType = GameResources.getNextDataLine(sr, "#");
 
-
                         switch (enemyType)
                         {
                             case "Mummy":
-                                enemyArray[i] = new Enemy(GameResources.getNextDataLine(sr, "#"), GameObjectList.Mummy, Content);
+                                enemyArray[i] = new Enemy(GameObjectList.Mummy, Content);
                                 break;
-                            //TODO: Add Skeleton and Scarab to the GameObjectList enum.
-                            /* case "Skeleton":
-                                enemyArray[i] = new Enemy(GameResources.getNextDataLine(sr, "#"), GameObjectList.Skeleton, Content);
+                            case "Skeleton":
+                                enemyArray[i] = new Enemy(GameObjectList.Skeleton, Content);
                                 break;
                             case "Scarab":
-                                enemyArray[i] = new Enemy(GameResources.getNextDataLine(sr, "#"), GameObjectList.Scarab, Content);
-                                break;*/
+                                enemyArray[i] = new Enemy(GameObjectList.Scarab, Content);
+                                break;
                         }
 
                         enemyArray[i].Spawn(new Vector2(Int16.Parse(GameResources.getNextDataLine(sr, "#")),
                             Int16.Parse(GameResources.getNextDataLine(sr, "#"))));
 
-                            
                     }
-
-                    collisionMap = Content.Load<Texture2D>("Images/" + roomName);
-                    collisionColors = new Color[collisionMap.Width * collisionMap.Height];
-                    collisionMap.GetData<Color>(collisionColors);
-                    background = new GameObject(whichRoom(roomName), Content);
-
                 }
                 catch (Exception e)
                 {
                     System.Diagnostics.Debug.WriteLine("An error occurred: " + e.Message);
                 }
-            }
-
-            
-            {
-            
             }
             //Notes from Ryan:
             //  The Texture2D makes sense for the collision map, but it makes better sense to use the background as a full GameGraphic

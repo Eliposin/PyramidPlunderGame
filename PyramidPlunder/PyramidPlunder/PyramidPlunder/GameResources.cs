@@ -13,9 +13,10 @@ namespace Pyramid_Plunder
     {
         NullObject,
         Player,
-        Mummy,
-        Dash, DoubleJump, 
-        TestRoom
+        Mummy, Skeleton, Scarab,
+        Dash, DoubleJump,
+        TestRoom, SaveRoom,
+        Door
     }
 
     public enum InteractionTypes : byte

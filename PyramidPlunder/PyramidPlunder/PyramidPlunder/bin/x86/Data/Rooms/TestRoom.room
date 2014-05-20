@@ -1,0 +1,16 @@
+#Spawn Location X
+1100
+#Spawn Location Y
+900
+#Total Objects
+0
+#
+#Doors
+#Linked Room (String)
+#Position (in the room)
+#Location In Linked Room (int)
+#Lock Type (byte?)
+#Lock Type 0 is an Unlocked Door.
+#Orientation (0 = facing right, 1 = facing left)
+#Number of Doors
+0

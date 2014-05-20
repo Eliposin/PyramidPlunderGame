@@ -8,6 +8,9 @@ namespace Pyramid_Plunder.Classes
 {
     public class Door : GameObject
     {
+        private DoorOrientations orientation;
+        private LockTypes lockType;
+
         /// <summary>
         /// the String that represents the name of the connected Room.
         /// </summary>
@@ -21,13 +24,15 @@ namespace Pyramid_Plunder.Classes
         public bool isActivated;
         //private ContentManager Content;
         private bool locked;
+
         public Door(GameObjectList objType, ContentManager content)
             : base(objType, content)
         {
             locked = true;
             isActivated = false;
-
             Content = content;
+            orientation = DoorOrientations.FacingRight;
+            lockType = 0;
         }
 
 
@@ -38,7 +43,7 @@ namespace Pyramid_Plunder.Classes
             set { locked = value; }
         }
 
-        private void unlock(lockType thisLock)
+        private void unlock(LockTypes thisLock)
         {
             //Something to check if the player has met the
             //correct circumstances to unlock this door.
@@ -52,27 +57,41 @@ namespace Pyramid_Plunder.Classes
        /// I am still unsure of how to impliment this.  Need to ask Ryan what his
        /// thoughts are on Monday.
        /// </summary>
-        private enum lockType : byte
+        public enum LockTypes : byte
         {
             //Not sure what other types of lock we might have.
+            Unlocked = 0, RedKey, BlueKey,
             DoubleJump, Dash, WallHang, BossKill, RoomClear
-
-
         }
 
-        
+        public enum DoorOrientations : byte
+        {
+            FacingRight = 0,
+            FacingLeft = 1
+        }
+
+        /// <summary>
+        /// Lock Type property
+        /// </summary>
+        public LockTypes LockType
+        {
+            get { return lockType; }
+            set { lockType = value; }
+        }
+
+        /// <summary>
+        /// A representation of which direction the door is facing
+        /// </summary>
+        public DoorOrientations Orientation
+        {
+            get { return orientation; }
+            set { orientation = value; }
+        }
 
         Boolean Open(Player player)
         {
             Room nextRoom = new Room(connectedRoom, Content);
-            try
-            {
-                nextRoom.Load(connectedDoor);
-            }
-            catch (Exception e)
-            {
-                System.Diagnostics.Debug.WriteLine("An error occurred: " + e.Message);
-            }
+
             return true;
         }
     }

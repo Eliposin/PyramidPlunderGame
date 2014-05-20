@@ -79,6 +79,9 @@ namespace Pyramid_Plunder.Classes
                 case GameObjectList.TestRoom:
                     filepath = "../Data/GraphicsData/TestRoom.gdf";
                     break;
+                case GameObjectList.SaveRoom:
+                    filepath = "../Data/GraphicsData/SaveRoom.gdf";
+                    break;
                 case GameObjectList.Player:
                     filepath = "../Data/GraphicsData/Player.gdf";
                     break;
