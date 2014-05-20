@@ -7,7 +7,7 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PyramidPlunder</RootNamespace>
+    <RootNamespace>Pyramid_Plunder</RootNamespace>
     <AssemblyName>PyramidPlunder</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
@@ -72,6 +72,7 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\AudioEngine.cs" />
     <Compile Include="Classes\Door.cs" />
     <Compile Include="Classes\Enemy.cs" />
     <Compile Include="Classes\GameGraphic.cs" />
