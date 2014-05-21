@@ -241,7 +241,7 @@ namespace Pyramid_Plunder.Classes
                     velocityY = 0;
                     accelerationY = 0;
                 }
-                //soundDash.Play();
+                soundEngine.Play(AudioEngine.SoundEffects.Dash);
             }
             else if (dashStatus <= DASH_NOT_ALLOWED && dashBtnFlag == false)
                 dashStatus = DASH_ALLOWED;
