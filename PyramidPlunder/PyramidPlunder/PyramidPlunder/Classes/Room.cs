@@ -165,10 +165,6 @@ namespace Pyramid_Plunder.Classes
                     System.Diagnostics.Debug.WriteLine("An error occurred: " + e.Message);
                 }
             }
-            //Notes from Ryan:
-            //  The Texture2D makes sense for the collision map, but it makes better sense to use the background as a full GameGraphic
-            //  Enemy sprites will be loaded inside the Enemy class; after all, they will inherit from GameGraphic as well
-
         }
 
         /// <summary>
@@ -179,6 +175,8 @@ namespace Pyramid_Plunder.Classes
         public void UpdateCoordinates(Vector2 playerPosition, Vector2 playerCoordinates)
         {
             background.UpdateCoordinates(playerPosition, playerCoordinates);
+            for (int i = 0; i < doorArray.Length; i++)
+                doorArray[i].UpdateCoordinates(playerPosition, playerCoordinates);
             // TODO: Iterate through and update ALL objects
         }
 
@@ -189,6 +187,9 @@ namespace Pyramid_Plunder.Classes
         public void Draw(SpriteBatch batch, GameTime time)
         {
             background.Draw(batch, time);
+            for (int i = 0; i < doorArray.Length; i++)
+                doorArray[i].Draw(batch, time);
+
             // TODO: Iterate through and update ALL objects
         }
 

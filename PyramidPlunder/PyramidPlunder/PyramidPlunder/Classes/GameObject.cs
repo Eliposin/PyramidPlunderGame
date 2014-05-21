@@ -43,8 +43,8 @@ namespace Pyramid_Plunder.Classes
         /// <param name="player">The player to reference</param>
         public void UpdateCoordinates(Vector2 playerPosition, Vector2 playerCoordinates)
         {
-            coordinates.X = playerCoordinates.X - playerPosition.X;
-            coordinates.Y = playerCoordinates.Y - playerPosition.Y;
+            coordinates.X = playerCoordinates.X - playerPosition.X + position.X;
+            coordinates.Y = playerCoordinates.Y - playerPosition.Y + position.Y;
         }
 
         /// <summary>
