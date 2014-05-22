@@ -88,6 +88,9 @@ namespace Pyramid_Plunder.Classes
                     currentRoom.ResetObjectList();
 
                     //Finally, update the drawing position of the objects in the room.
+                    if (CheckRoomBounds(player.Position, currentRoom.CollisionMap.Bounds))
+                        player.UpdateCoordinates();
+
                     currentRoom.UpdateCoordinates(player.Position, player.Coordinates);
                     player.updateControlFlags(); //new
                 }
@@ -119,6 +122,21 @@ namespace Pyramid_Plunder.Classes
                 player.Draw(spriteBatch, time);
                 //System.Diagnostics.Debug.WriteLine(player.Coordinates);
             }
+        }
+
+        /// <summary>
+        /// Checks to see if the player is near the edge of the room
+        /// </summary>
+        /// <param name="playerPosition">The current position of the player</param>
+        /// <param name="roomBounds">A rectangle representing the bounds of the room</param>
+        /// <returns></returns>
+        private bool CheckRoomBounds(Vector2 playerPosition, Rectangle roomBounds)
+        {
+            // TODO: Check to see if the player is near the edge of the room in any direction
+            if (playerPosition.X < 610 /*|| playerPosition.X > (roomBounds.Width - 500)*/)
+                return true;
+
+            return false;
         }
 
         private void CheckPaused()
@@ -156,7 +174,6 @@ namespace Pyramid_Plunder.Classes
                     break;
             }
         }
-
 
         private void StartNewGame()
         {

@@ -11,8 +11,8 @@ namespace Pyramid_Plunder.Classes
 {
     public class Player : PhysicsObject
     {
-        private int DEFAULT_SCREEN_POSITIONX = 610;
-        private int DEFAULT_SCREEN_POSITIONY = 420;
+        private int DEFAULT_SCREEN_POSITIONX = 610; //610
+        private int DEFAULT_SCREEN_POSITIONY = 420; //420
         //private bool isSpawned;
 
         private KeyboardState keyState;
@@ -319,6 +319,12 @@ namespace Pyramid_Plunder.Classes
                 }
             }
             base.Update(time);
+        }
+
+        public void UpdateCoordinates()
+        {
+            //This only works properly if the edge is on the left side
+            coordinates.X = position.X;
         }
 
         public override void Land()
