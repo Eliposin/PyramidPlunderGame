@@ -11,8 +11,8 @@ namespace Pyramid_Plunder.Classes
 {
     public class Player : PhysicsObject
     {
-        private int DEFAULT_SCREEN_POSITIONX = 610; //610
-        private int DEFAULT_SCREEN_POSITIONY = 420; //420
+        public const int DEFAULT_SCREEN_POSITIONX = 610; //610
+        public const int DEFAULT_SCREEN_POSITIONY = 420; //420
         //private bool isSpawned;
 
         private KeyboardState keyState;
@@ -457,5 +457,42 @@ namespace Pyramid_Plunder.Classes
                 dashBtnFlag = false;
             keyState = newState;
         }
+
+        public void UpdateCoordinates(Rectangle roomDimensions)
+        {
+            int xLine = Player.DEFAULT_SCREEN_POSITIONX;
+            int yLine = Player.DEFAULT_SCREEN_POSITIONY;
+            int viewWidth = Main.DEFAULT_RESOLUTION_X;
+            int viewHeight = Main.DEFAULT_RESOLUTION_Y;
+            int bgWidth = roomDimensions.Width;
+            int bgHeight = roomDimensions.Height;
+
+            //x
+            if (bgWidth <= viewWidth)
+                coordinates.X = position.X + (viewWidth - bgWidth) / 2;
+            else
+            {
+                if (position.X >= bgWidth - viewWidth + xLine)
+                    coordinates.X = position.X - bgWidth + viewWidth;
+                else if (position.X <= xLine)
+                    coordinates.X = position.X;
+                else
+                    coordinates.X = xLine;
+            }
+
+            //y
+            if (bgHeight <= viewHeight)
+                coordinates.Y = position.Y + (viewHeight - bgHeight) / 2;
+            else
+            {
+                if (position.Y >= bgHeight - viewHeight + yLine)
+                    coordinates.Y = position.Y - bgHeight + viewHeight;
+                else if (position.Y <= yLine)
+                    coordinates.Y = position.Y;
+                else
+                    coordinates.Y = yLine;
+            }
+        }
+
     }
 }

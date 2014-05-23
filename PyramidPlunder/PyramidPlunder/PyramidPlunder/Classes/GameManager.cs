@@ -88,10 +88,10 @@ namespace Pyramid_Plunder.Classes
                     currentRoom.ResetObjectList();
 
                     //Finally, update the drawing position of the objects in the room.
-                    if (CheckRoomBounds(player.Position, currentRoom.CollisionMap.Bounds))
-                        player.UpdateCoordinates();
+                    //if (CheckRoomBounds(player.Position, currentRoom.CollisionMap.Bounds))
+                    player.UpdateCoordinates(currentRoom.CollisionMap.Bounds);
 
-                    currentRoom.UpdateCoordinates(player.Position, player.Coordinates);
+                    currentRoom.UpdateCoordinates(player.Position, player.Coordinates, currentRoom.CollisionMap.Bounds);
                     player.updateControlFlags(); //new
                 }
             }

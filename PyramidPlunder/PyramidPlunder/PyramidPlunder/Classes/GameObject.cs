@@ -41,10 +41,42 @@ namespace Pyramid_Plunder.Classes
         /// Updates the GameObject's coordinates based on its position and the location of the player in the room
         /// </summary>
         /// <param name="player">The player to reference</param>
-        public void UpdateCoordinates(Vector2 playerPosition, Vector2 playerCoordinates)
+        public void UpdateCoordinates(Vector2 playerPosition, Vector2 playerCoordinates, Rectangle roomDimensions)
         {
-            coordinates.X = playerCoordinates.X - playerPosition.X + position.X;
-            coordinates.Y = playerCoordinates.Y - playerPosition.Y + position.Y;
+            //coordinates.X = playerCoordinates.X - playerPosition.X + position.X;
+            //coordinates.Y = playerCoordinates.Y - playerPosition.Y + position.Y;
+            int xLine = Player.DEFAULT_SCREEN_POSITIONX;
+            int yLine = Player.DEFAULT_SCREEN_POSITIONY;
+            int viewWidth = Main.DEFAULT_RESOLUTION_X;
+            int viewHeight = Main.DEFAULT_RESOLUTION_Y;
+            int bgWidth = roomDimensions.Width;
+            int bgHeight = roomDimensions.Height;
+
+            //x
+            if (bgWidth <= viewWidth)
+                coordinates.X = position.X + (viewWidth - bgWidth) / 2;
+            else
+            {
+                if (playerPosition.X >= bgWidth - viewWidth + xLine)
+                    coordinates.X = position.X - bgWidth + viewWidth;
+                else if (playerPosition.X <= xLine)
+                    coordinates.X = position.X;
+                else
+                    coordinates.X = position.X - playerPosition.X + playerCoordinates.X;
+            }
+
+            //y
+            if (bgHeight <= viewHeight)
+                coordinates.Y = position.Y + (viewHeight - bgHeight) / 2;
+            else
+            {
+                if (playerPosition.Y >= bgHeight - viewHeight + yLine)
+                    coordinates.Y = position.Y - bgHeight + viewHeight;
+                else if (playerPosition.Y <= yLine)
+                    coordinates.Y = position.Y;
+                else
+                    coordinates.Y = position.Y - playerPosition.Y + playerCoordinates.Y;
+            }
         }
 
         /// <summary>

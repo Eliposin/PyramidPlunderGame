@@ -172,11 +172,11 @@ namespace Pyramid_Plunder.Classes
         /// </summary>
         /// <param name="playerPosition">The player's position.</param>
         /// <param name="playerCoordinates">The player's coordinates.</param>
-        public void UpdateCoordinates(Vector2 playerPosition, Vector2 playerCoordinates)
+        public void UpdateCoordinates(Vector2 playerPosition, Vector2 playerCoordinates, Rectangle roomDimensions)
         {
-            background.UpdateCoordinates(playerPosition, playerCoordinates);
+            background.UpdateCoordinates(playerPosition, playerCoordinates, roomDimensions);
             for (int i = 0; i < doorArray.Length; i++)
-                doorArray[i].UpdateCoordinates(playerPosition, playerCoordinates);
+                doorArray[i].UpdateCoordinates(playerPosition, playerCoordinates, roomDimensions);
             // TODO: Iterate through and update ALL objects
         }
 

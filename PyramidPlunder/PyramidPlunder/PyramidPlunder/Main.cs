@@ -16,8 +16,8 @@ namespace Pyramid_Plunder
     /// </summary>
     public class Main : Microsoft.Xna.Framework.Game
     {
-        private int DEFAULT_RESOLUTION_X = 1280;
-        private int DEFAULT_RESOLUTION_Y = 720;
+        public const int DEFAULT_RESOLUTION_X = 1280;
+        public const int DEFAULT_RESOLUTION_Y = 720;
 
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
