@@ -258,7 +258,7 @@ namespace Pyramid_Plunder.Classes
         /// </summary>
         /// <param name="location">The location to check from.</param>
         /// <returns>The nearest object</returns>
-        public GameObject GetNearestObject(Vector2 location)
+        public GameObject GetNearestObject(Vector2 location, int maxDistance)
         {
             if ((doorArray.Length == 0) && (enemyArray.Length == 0) && (environmentArray.Length == 0))
                 return null;
@@ -317,7 +317,10 @@ namespace Pyramid_Plunder.Classes
 
                 }
 
-                return nearestObject;
+                if (closestDistance <= maxDistance)
+                    return nearestObject;
+                else
+                    return null;
             }
         }
 

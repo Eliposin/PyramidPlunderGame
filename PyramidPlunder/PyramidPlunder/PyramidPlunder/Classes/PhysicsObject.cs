@@ -828,6 +828,12 @@ namespace Pyramid_Plunder.Classes
             displacementY = 0;
         }
 
-        
+        /// <summary>
+        /// The maximum distance at which the object can interact with other objects.
+        /// </summary>
+        public int InteractionDistance
+        {
+            get { return interactionDistance; }
+        }
     }
 }

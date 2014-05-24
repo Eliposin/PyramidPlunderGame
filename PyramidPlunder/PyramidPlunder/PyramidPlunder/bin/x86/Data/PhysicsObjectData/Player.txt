@@ -14,7 +14,7 @@
 #(IF AN OBJECT ONLY EVER MOVES AT ONE HORIZONTAL SPEED, HERE'S WHERE TO SPECIFY IT)
 480
 #INTERACTION DISTANCE (in pixels)
-200
+150
 #
 #X- & Y- COORDINATES ON COLLISION GRID
 #A collision point will be created from each possible pair of one x-coordinate

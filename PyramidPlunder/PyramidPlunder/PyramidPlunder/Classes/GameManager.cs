@@ -139,7 +139,7 @@ namespace Pyramid_Plunder.Classes
         /// <returns>The nearest object</returns>
         private GameObject FindInteractionObject(GameObject initiator)
         {
-            GameObject nearestObject = currentRoom.GetNearestObject(initiator.Position);
+            GameObject nearestObject = currentRoom.GetNearestObject(initiator.Position, player.InteractionDistance);
             return nearestObject;
         }
 
