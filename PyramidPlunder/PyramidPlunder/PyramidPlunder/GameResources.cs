@@ -40,6 +40,13 @@ namespace Pyramid_Plunder
         Options
     }
 
+    public enum Locks
+    {
+        Unlocked = 0,
+        Blue = 1,
+        Yellow = 2
+    }
+
     public delegate void DelVoid();
     public delegate void DelMenu(MenuCallbacks menuCallback);
 
@@ -47,6 +54,8 @@ namespace Pyramid_Plunder
 
     public static class GameResources
     {
+        public const int NUM_KEYS = 3;
+
         /// <summary>
         /// Returns the next line in the given stream that does not start with the designated delimiter.
         /// </summary>

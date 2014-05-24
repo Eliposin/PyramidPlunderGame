@@ -93,6 +93,13 @@ namespace Pyramid_Plunder.Classes
 
                     currentRoom.UpdateCoordinates(player.Position, player.Coordinates, currentRoom.CollisionMap.Bounds);
                     player.updateControlFlags(); //new
+
+                    if (player.InteractionFlag)
+                    {
+                        GameObject tempObject = FindInteractionObject(player);
+                        if (tempObject != null)
+                            player.InteractWith(tempObject, InteractionTypes.PlayerAction);
+                    }
                 }
             }
             else
@@ -126,20 +133,19 @@ namespace Pyramid_Plunder.Classes
         }
 
         /// <summary>
-        /// Checks to see if the player is near the edge of the room
+        /// Searches the current room for the nearest valid interactable object and returns it if
+        /// one is in range
         /// </summary>
-        /// <param name="playerPosition">The current position of the player</param>
-        /// <param name="roomBounds">A rectangle representing the bounds of the room</param>
-        /// <returns></returns>
-        private bool CheckRoomBounds(Vector2 playerPosition, Rectangle roomBounds)
+        /// <returns>The nearest object</returns>
+        private GameObject FindInteractionObject(GameObject initiator)
         {
-            // TODO: Check to see if the player is near the edge of the room in any direction
-            if (playerPosition.X < 610 /*|| playerPosition.X > (roomBounds.Width - 500)*/)
-                return true;
-
-            return false;
+            GameObject nearestObject = currentRoom.GetNearestObject(initiator.Position);
+            return nearestObject;
         }
 
+        /// <summary>
+        /// Checks to see if the game is paused.
+        /// </summary>
         private void CheckPaused()
         {
             KeyboardState tempKeyState = Keyboard.GetState();
@@ -152,9 +158,12 @@ namespace Pyramid_Plunder.Classes
             }
         }
 
+        /// <summary>
+        /// Loads the game settings from a file
+        /// </summary>
         private void LoadGameSettings()
         {
-
+            // TODO: Actually load the game settings
         }
 
         /// <summary>

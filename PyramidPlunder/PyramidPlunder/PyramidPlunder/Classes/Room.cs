@@ -10,6 +10,7 @@ namespace Pyramid_Plunder.Classes
     {
         private Enemy[] enemyArray;
         private Door[] doorArray;
+        private GameObject[] environmentArray;
         private Vector2 spawnLocation;
         private Texture2D collisionMap;
         private bool hasMoreObjects;
@@ -78,6 +79,14 @@ namespace Pyramid_Plunder.Classes
         }
 
         /// <summary>
+        /// Accessor for the EnvironmentArray
+        /// </summary>
+        public GameObject[] EnvironmentArray
+        {
+            get { return environmentArray; }
+        }
+
+        /// <summary>
         /// Whether or not the room is reset when the player leaves.
         /// </summary>
         public bool IsPersistant
@@ -110,6 +119,7 @@ namespace Pyramid_Plunder.Classes
                 {
                     int numberOfDoors;
                     int numberOfEnemies;
+                    int numberOfEnvironmentObjects;
                     
                     StreamReader sr = new StreamReader(filePath);
                     spawnLocation = new Vector2(Convert.ToInt16(GameResources.getNextDataLine(sr, "#")), 
@@ -128,7 +138,7 @@ namespace Pyramid_Plunder.Classes
                         Door.DoorOrientations orientation = (Door.DoorOrientations)byte.Parse(GameResources.getNextDataLine(sr, "#"));
                         string roomName = GameResources.getNextDataLine(sr, "#");
                         int connectedDoorIndex = Convert.ToInt16(GameResources.getNextDataLine(sr, "#"));
-                        Door.LockTypes lockType = (Door.LockTypes)byte.Parse(GameResources.getNextDataLine(sr, "#"));
+                        Locks lockType = (Locks)byte.Parse(GameResources.getNextDataLine(sr, "#"));
 
                         doorArray[i] = new Door(Content, orientation, roomName, connectedDoorIndex, lockType);
 
@@ -137,6 +147,8 @@ namespace Pyramid_Plunder.Classes
                     }
 
                     numberOfEnemies = Int16.Parse(GameResources.getNextDataLine(sr, "#"));
+                    enemyArray = new Enemy[numberOfEnemies];
+
                     for (int i = 0; i < numberOfEnemies; i++)
                     {
                         String enemyType = GameResources.getNextDataLine(sr, "#");
@@ -156,8 +168,17 @@ namespace Pyramid_Plunder.Classes
 
                         enemyArray[i].Spawn(new Vector2(Int16.Parse(GameResources.getNextDataLine(sr, "#")),
                             Int16.Parse(GameResources.getNextDataLine(sr, "#"))));
-
                     }
+
+                    numberOfEnvironmentObjects = Int16.Parse(GameResources.getNextDataLine(sr, "#"));
+                    environmentArray = new GameObject[numberOfEnvironmentObjects];
+
+                    for (int i = 0; i < numberOfEnvironmentObjects; i++)
+                    {
+                        // TODO: Read in environment data
+                    }
+
+
                 }
                 catch (Exception e)
                 {
@@ -230,6 +251,74 @@ namespace Pyramid_Plunder.Classes
         private void saveToFile()
         {
            
+        }
+
+        /// <summary>
+        /// Finds the nearest GameObject to the given location
+        /// </summary>
+        /// <param name="location">The location to check from.</param>
+        /// <returns>The nearest object</returns>
+        public GameObject GetNearestObject(Vector2 location)
+        {
+            if ((doorArray.Length == 0) && (enemyArray.Length == 0) && (environmentArray.Length == 0))
+                return null;
+            else
+            {
+                GameObject nearestObject = null;
+                float closestDistance = 0;
+                float tempDistance = 0;
+                for (int i = 0; i < doorArray.Length; i++)
+                {
+                    if (nearestObject == null)
+                    {
+                        nearestObject = doorArray[i];
+                        closestDistance = Vector2.Distance(location, doorArray[i].Position);
+                    }
+                    
+                    
+                    tempDistance = Vector2.Distance(location, doorArray[i].Position);
+                    if (tempDistance < closestDistance)
+                    {
+                        nearestObject = doorArray[i];
+                        closestDistance = tempDistance;
+                    }
+                    
+                }
+                for (int i = 0; i < enemyArray.Length; i++)
+                {
+                    if (nearestObject == null)
+                    {
+                        nearestObject = enemyArray[i];
+                        closestDistance = Vector2.Distance(location, enemyArray[i].Position);
+                    }
+
+                    tempDistance = Vector2.Distance(location, enemyArray[i].Position);
+                    if (tempDistance < closestDistance)
+                    {
+                        nearestObject = enemyArray[i];
+                        closestDistance = tempDistance;
+                    }
+
+                }
+                for (int i = 0; i < environmentArray.Length; i++)
+                {
+                    if (nearestObject == null)
+                    {
+                        nearestObject = environmentArray[i];
+                        closestDistance = Vector2.Distance(location, environmentArray[i].Position);
+                    }
+
+                    tempDistance = Vector2.Distance(location, environmentArray[i].Position);
+                    if (tempDistance < closestDistance)
+                    {
+                        nearestObject = environmentArray[i];
+                        closestDistance = tempDistance;
+                    }
+
+                }
+
+                return nearestObject;
+            }
         }
 
         /// <summary>

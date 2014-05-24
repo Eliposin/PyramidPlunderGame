@@ -20,6 +20,7 @@ namespace Pyramid_Plunder.Classes
         
         protected int currentAnimation;
         protected int animationOffset;
+        protected bool looping = true;
         protected float[] animationSpeed;
         protected float[] defaultAnimationSpeed;
 
@@ -60,8 +61,6 @@ namespace Pyramid_Plunder.Classes
             if (isLoaded)
             {
                 DetermineAnimationFrame(time);
-                if (objectType == GameObjectList.Door)
-                    ;
 
                 Vector2 drawVector = new Vector2(coordinates.X, coordinates.Y);
 
@@ -192,7 +191,14 @@ namespace Pyramid_Plunder.Classes
                         if (currentFrame < numberOfFrames[currentAnimation] - 1)
                             currentFrame++;
                         else
-                            currentFrame = 0;
+                        {
+                            if (looping)
+                                currentFrame = 0;
+                            else
+                            {
+                                animationSpeed[currentAnimation] = 0;
+                            }
+                        }
 
                         elapsedMilliseconds = 0;
                     }

@@ -53,6 +53,7 @@ namespace Pyramid_Plunder.Classes
         protected float armor;              //The amount or percentage by which to reduce damage from attacks.
         protected int movementSpeed;        //If an object only ever moves at one horizontal speed,
                                             //here's where to store it.
+        protected int interactionDistance;
    
         //These next two arrays of shorts contain all the x- and y-coordinates of the object's
         //collision points. See the notes below that describe their implementation.
@@ -275,6 +276,9 @@ namespace Pyramid_Plunder.Classes
                     
                     line = GameResources.getNextDataLine(sr, "#");
                     movementSpeed = int.Parse(line);
+
+                    line = GameResources.getNextDataLine(sr, "#");
+                    interactionDistance = int.Parse(line);
                     
                     line = GameResources.getNextDataLine(sr, "#");
                     string[] numbers = line.Split(' ');
@@ -299,6 +303,7 @@ namespace Pyramid_Plunder.Classes
                     maxHealth = 0;
                     armor = 0;
                     movementSpeed = 0;
+                    interactionDistance = 0;
                     collisionXs = new short[1] { 0 };
                     collisionYs = new short[1] { 0 };
                 }

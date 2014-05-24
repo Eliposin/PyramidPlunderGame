@@ -45,6 +45,8 @@ namespace Pyramid_Plunder.Classes
         const float STOP_DEC = -2160f;
         const float BRAKE_DEC = 4320f;
 
+        
+
         public enum XDirection
         {
             None = 0,
@@ -58,6 +60,8 @@ namespace Pyramid_Plunder.Classes
             Allowed = 1,
             Holding = 2
         };
+
+        
 
         private XDirection LatestXArrow = XDirection.None;
         private XDirection PlayerXFacing = XDirection.Right;
@@ -73,6 +77,9 @@ namespace Pyramid_Plunder.Classes
         private bool rightBtnFlag = false;
         private bool jumpBtnFlag = false;
         private bool dashBtnFlag = false;
+        private bool interactBtnFlag = false;
+
+        private bool[] keyArray;
               
         /// <summary>
         /// Creates a new Player object
@@ -84,9 +91,11 @@ namespace Pyramid_Plunder.Classes
             JUMP_V = (float)(-Math.Sqrt(-2 * PhysicsEngine.GRAVITY * MAX_JUMP_HEIGHT));
             WALL_JUMP_V_X = (float)(JUMP_V * 0.7071);
             WALL_JUMP_V_Y = (float)(JUMP_V * 0.7071);
-            //isGravityAffected = true;
-            //collisionXs = new short[3] { 11, 26, 41 };
-            //collisionYs = new short[3] { 22, 65, 108 };
+
+            keyArray = new bool[GameResources.NUM_KEYS];
+            for (int i = 0; i < keyArray.Length; i++)
+                keyArray[i] = false;
+            keyArray[0] = true;
 
             soundEngine = new AudioEngine(content, GameObjectList.Player);
             
@@ -327,6 +336,21 @@ namespace Pyramid_Plunder.Classes
             coordinates.X = position.X;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="otherObject"></param>
+        /// <param name="interactionType"></param>
+        public override void InteractWith(GameObject otherObject, InteractionTypes interactionType)
+        {
+            if (otherObject.ObjectType == GameObjectList.Door && interactionType == InteractionTypes.PlayerAction)
+            {
+                Door door = (Door)otherObject;
+                if (keyArray[(byte)door.LockType] == true)
+                    door.Open();
+            }
+        }
+
         public override void Land()
         {
             //soundLand.Play();
@@ -415,6 +439,13 @@ namespace Pyramid_Plunder.Classes
                 (keyState.IsKeyUp(Keys.Q) && newState.IsKeyDown(Keys.Q)))
                 dashBtnFlag = true;
 
+            if (keyState.IsKeyUp(Keys.E) && newState.IsKeyDown(Keys.E))
+                interactBtnFlag = true;
+
+            //
+            //-----------------------------------------------------------------------------
+            //
+
             if ((keyState.IsKeyDown(Keys.Left) && newState.IsKeyUp(Keys.Left)) ||
                 (keyState.IsKeyDown(Keys.A) && newState.IsKeyUp(Keys.A)))
             {
@@ -455,6 +486,10 @@ namespace Pyramid_Plunder.Classes
             if ((keyState.IsKeyDown(Keys.Z) && newState.IsKeyUp(Keys.Z)) ||
                 (keyState.IsKeyDown(Keys.Q) && newState.IsKeyUp(Keys.Q)))
                 dashBtnFlag = false;
+
+            if (keyState.IsKeyDown(Keys.E) && newState.IsKeyUp(Keys.E))
+                interactBtnFlag = false;
+
             keyState = newState;
         }
 
@@ -492,6 +527,14 @@ namespace Pyramid_Plunder.Classes
                 else
                     coordinates.Y = yLine;
             }
+        }
+
+        /// <summary>
+        /// Whether or not the player is attempting an interaction
+        /// </summary>
+        public bool InteractionFlag
+        {
+            get { return interactBtnFlag; }
         }
 
     }

@@ -8,8 +8,12 @@ namespace Pyramid_Plunder.Classes
 {
     public class Door : GameObject
     {
+        private const float DOOR_ANIMATION_SPEED = 0.2f;
+
         private DoorOrientations orientation;
-        private LockTypes lockType;
+        private Locks lockType;
+
+        private bool opening = false;
 
         /// <summary>
         /// the String that represents the name of the connected Room.
@@ -25,7 +29,7 @@ namespace Pyramid_Plunder.Classes
         //private ContentManager Content;
         private bool locked;
 
-        public Door(ContentManager content, DoorOrientations orient, string roomName, int connectedDoorIndex, LockTypes lockT)
+        public Door(ContentManager content, DoorOrientations orient, string roomName, int connectedDoorIndex, Locks lockT)
             : base(GameObjectList.Door, content)
         {
             Content = content;
@@ -39,7 +43,7 @@ namespace Pyramid_Plunder.Classes
             else
                 animationOffset = 0;
 
-            if (lockType != Door.LockTypes.Unlocked)
+            if (lockType != Locks.Unlocked)
                 locked = true;
             else
                 locked = false;
@@ -85,7 +89,7 @@ namespace Pyramid_Plunder.Classes
         /// <summary>
         /// Lock Type property
         /// </summary>
-        public LockTypes LockType
+        public Locks LockType
         {
             get { return lockType; }
             set { lockType = value; }
@@ -100,20 +104,26 @@ namespace Pyramid_Plunder.Classes
             set { orientation = value; }
         }
 
-        Boolean Open(Player player)
+        public void Open()
         {
-            // TODO: Check to see if player has authorization
-            try
-            {
-                Room nextRoom = new Room(connectedRoom, Content);
-                return true;
-            }
-            catch (Exception e)
-            {
-                System.Diagnostics.Debug.WriteLine("An error occured opening the door or loading the room: " + e.Message);
-                return false;
-            }
+            opening = true;
+            animationSpeed[currentAnimation] = DOOR_ANIMATION_SPEED;
+            looping = false;
+
+            // I'm hijacking this method
+            //try
+            //{
+            //    Room nextRoom = new Room(connectedRoom, Content);
+            //    return true;
+            //}
+            //catch (Exception e)
+            //{
+            //    System.Diagnostics.Debug.WriteLine("An error occured opening the door or loading the room: " + e.Message);
+            //    return false;
+            //}
         }
+
+        
     }
 }
     
