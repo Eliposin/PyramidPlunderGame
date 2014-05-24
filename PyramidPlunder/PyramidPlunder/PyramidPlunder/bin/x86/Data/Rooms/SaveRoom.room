@@ -1,7 +1,7 @@
 #Spawn Location X (was 1185)
-616
+612
 #Spawn Location Y (was 572)
-635
+430
 #Total Objects
 0
 #
@@ -25,9 +25,9 @@ SaveRoom
 # Lock Type
 0
 # PositionX
-67
+0
 # PositionY
-575
+434
 #####Second Door (index 1):#####
 # Orientation
 0
@@ -38,8 +38,8 @@ SaveRoom
 # Lock Type
 0
 # PositionX
-1681
-575
+1154
+434
 #####Enemies#####
 #Number of of Enemies
 0

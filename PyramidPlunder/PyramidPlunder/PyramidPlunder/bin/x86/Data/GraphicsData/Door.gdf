@@ -1,14 +1,25 @@
 #Number of animations
-1
+2
 #Name of spritesheet
-Door
+DoorSpritesheet
+#
 #First Animation Stats
 #Location on the spritesheet (y value)
 0
 #Dimensions of the animation (width and height)
-650
+126
 160
 #Animation speed
 0
 #Number of Frames
-1
+4
+#First Animation Stats
+#Location on the spritesheet (y value)
+160
+#Dimensions of the animation (width and height)
+126
+160
+#Animation speed
+0
+#Number of Frames
+4
