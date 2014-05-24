@@ -17,19 +17,22 @@ namespace Pyramid_Plunder.Classes
         protected Vector2 coordinates;
         protected Rectangle hitBox;
         protected GameObjectList objectType;
+        
+        protected int currentAnimation;
+        protected int animationOffset;
+        protected float[] animationSpeed;
+        protected float[] defaultAnimationSpeed;
 
         private String filepath;
         private String spriteName;
         private int numAnimations;
-        protected int currentAnimation;
         private int previousAnimation;
         private int currentFrame;
         private double elapsedMilliseconds;
         private int[] animationLocation;
         private Vector2[] animationDimensions;
-        private float[] animationSpeed;
+        
         private int[] numberOfFrames;
-
         private bool isLoaded;
 
         /// <summary>
@@ -42,26 +45,29 @@ namespace Pyramid_Plunder.Classes
             Content = content;
 
             currentAnimation = 0;
+            animationOffset = 0;
             objectType = objType;
             LoadGraphicsData();
         }
 
         /// <summary>
-        /// 
+        /// Draws the graphic to the spritebatch based on the properties about the spritesheet and current animation.
         /// </summary>
-        /// <param name="spriteBatch"></param>
+        /// <param name="spriteBatch">The SpriteBatch to draw to.</param>
         public virtual void Draw(SpriteBatch spriteBatch, GameTime time)
         {
             // TODO: Drawing code
             if (isLoaded)
             {
                 DetermineAnimationFrame(time);
+                if (objectType == GameObjectList.Door)
+                    ;
 
                 Vector2 drawVector = new Vector2(coordinates.X, coordinates.Y);
 
-                Rectangle sourceRectangle = new Rectangle(currentFrame * (int)animationDimensions[currentAnimation].X, 
-                    animationLocation[currentAnimation], (int)animationDimensions[currentAnimation].X, 
-                    (int)animationDimensions[currentAnimation].Y);
+                Rectangle sourceRectangle = new Rectangle(currentFrame * (int)animationDimensions[currentAnimation].X,
+                    animationLocation[currentAnimation + animationOffset], (int)animationDimensions[currentAnimation].X,
+                    (int)animationDimensions[currentAnimation + animationOffset].Y);
 
                 spriteBatch.Draw(sprite, drawVector, sourceRectangle, Color.White);
             }
@@ -107,6 +113,7 @@ namespace Pyramid_Plunder.Classes
 
                     animationLocation = new int[numAnimations];
                     animationDimensions = new Vector2[numAnimations];
+                    defaultAnimationSpeed = new float[numAnimations];
                     animationSpeed = new float[numAnimations];
                     numberOfFrames = new int[numAnimations];
 
@@ -117,7 +124,8 @@ namespace Pyramid_Plunder.Classes
                         animationDimensions[i] = new Vector2(int.Parse(GameResources.getNextDataLine(sr, "#")),
                             int.Parse(GameResources.getNextDataLine(sr, "#")));
 
-                        animationSpeed[i] = float.Parse(GameResources.getNextDataLine(sr, "#"));
+                        defaultAnimationSpeed[i] = float.Parse(GameResources.getNextDataLine(sr, "#"));
+                        animationSpeed[i] = defaultAnimationSpeed[i];
 
                         numberOfFrames[i] = int.Parse(GameResources.getNextDataLine(sr, "#"));
                     }
@@ -140,6 +148,7 @@ namespace Pyramid_Plunder.Classes
                     spriteName = "";
                     animationLocation = new int[0];
                     animationDimensions = new Vector2[0];
+                    defaultAnimationSpeed = new float[0];
                     animationSpeed = new float[0];
                     numberOfFrames = new int[0];
                 }
@@ -207,7 +216,6 @@ namespace Pyramid_Plunder.Classes
         {
             get { return coordinates; }
         }
-
 
         /// <summary>
         /// The type of object represented in the GameObjectList

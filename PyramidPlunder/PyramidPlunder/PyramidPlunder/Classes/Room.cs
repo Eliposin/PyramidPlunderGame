@@ -51,9 +51,6 @@ namespace Pyramid_Plunder.Classes
             switch (roomName)
             {
                 case "TestRoom":
-                    //spawnLocation = new Vector2(1100, 900); //Eventually should be read from file!
-                    //totalObjects = 0;
-                    //hasMoreObjects = false;
                     return GameObjectList.TestRoom;
                 case "SaveRoom":
                     return GameObjectList.SaveRoom;
@@ -80,7 +77,9 @@ namespace Pyramid_Plunder.Classes
             get { return enemyArray; }
         }
 
-
+        /// <summary>
+        /// Whether or not the room is reset when the player leaves.
+        /// </summary>
         public bool IsPersistant
         {
             get { return IsPersistant; }
@@ -181,14 +180,24 @@ namespace Pyramid_Plunder.Classes
         }
 
         /// <summary>
-        /// Draws the contents of the room to the designated SpriteBatch
+        /// Draws the parts of the room that should appear in front of the player to the spritebatch.
         /// </summary>
         /// <param name="batch">The SpriteBatch to draw to.</param>
-        public void Draw(SpriteBatch batch, GameTime time)
+        public void DrawForeground(SpriteBatch batch, GameTime time)
         {
-            background.Draw(batch, time);
             for (int i = 0; i < doorArray.Length; i++)
                 doorArray[i].Draw(batch, time);
+
+            // TODO: Iterate through and update ALL objects
+        }
+
+        /// <summary>
+        /// Draws the parts of the room that should appear behind the player to the spritebatch.
+        /// </summary>
+        /// <param name="batch">The SpriteBatch to draw to.</param>
+        public void DrawBackground(SpriteBatch batch, GameTime time)
+        {
+            background.Draw(batch, time);
 
             // TODO: Iterate through and update ALL objects
         }
@@ -214,7 +223,6 @@ namespace Pyramid_Plunder.Classes
             //throw new NotImplementedException("Not implemented.");
             //For this one, it's sufficient for the dispose to simply do nothing. - Ryan
         }
-
 
         /// <summary>
         /// Saves room state to file when room IsPersistant.

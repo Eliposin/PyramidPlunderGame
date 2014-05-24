@@ -30,7 +30,7 @@ SaveRoom
 434
 #####Second Door (index 1):#####
 # Orientation
-0
+1
 # Linked Room
 SaveRoom
 # Linked Door (index)

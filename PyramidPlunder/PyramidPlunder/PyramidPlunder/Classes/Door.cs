@@ -34,6 +34,11 @@ namespace Pyramid_Plunder.Classes
             connectedDoor = connectedDoorIndex;
             lockType = lockT;
 
+            if (orientation == DoorOrientations.FacingLeft)
+                animationOffset = 1;
+            else
+                animationOffset = 0;
+
             if (lockType != Door.LockTypes.Unlocked)
                 locked = true;
             else

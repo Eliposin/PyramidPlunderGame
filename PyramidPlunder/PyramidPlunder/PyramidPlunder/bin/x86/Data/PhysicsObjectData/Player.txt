@@ -32,5 +32,5 @@
 #Y-COORDINATES ON SPRITE WHICH HAVE COLLISION POINTS
 #When these values are arranged in increasing order, the greatest difference between
 #two consecutive values will be no more than *33*.
-22 65 108
+22 65 112
 #
