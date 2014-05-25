@@ -296,7 +296,18 @@ namespace Pyramid_Plunder.Classes
         /// </summary>
         private void saveToFile()
         {
-           
+            //Should I open a new file here or what?  I'm not exactly sure, and if I do
+            //where would it go.  Maybe a temp file.
+            for(int i = 0; i < doorArray.Length; i++)
+            {
+                doorArray[i].
+
+            }
+
+            for (int i = 0; i < enemyArray.Length; i++ )
+            {
+                enemyArray[i]
+            }  
         }
 
         /// <summary>

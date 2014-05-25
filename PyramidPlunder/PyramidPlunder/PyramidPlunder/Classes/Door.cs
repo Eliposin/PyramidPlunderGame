@@ -128,6 +128,24 @@ namespace Pyramid_Plunder.Classes
         {
             get { return isRoomLoaded; }
         }
+
+        /// <summary>
+        /// Overriding Public To String that returns the door object in the form necessary to read it in from a file.
+        /// </summary>
+        /// <returns></returns>
+        public string toString()
+        {
+            //Not sure if I have these in the right order but this is how I think it should go.
+            String outputString = "";
+            outputString = this.linkedRoomName;
+            outputString += "\n" + this.lockType;
+            outputString += "\n" + this.linkedDoorIndex;
+            outputString += "\n" + this.coordinates.X;
+            outputString += "\n" + this.coordinates.Y;
+
+            return outputString;
+
+        }
     }
 }
     
