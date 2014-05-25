@@ -22,7 +22,7 @@ namespace Pyramid_Plunder
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
         private Classes.GameManager manager;
-        private ContentManager roomContent;
+        //private ContentManager roomContent;
 
         public Main()
         {
@@ -34,7 +34,7 @@ namespace Pyramid_Plunder
             
 
             Content.RootDirectory = "Content";
-            roomContent = new ContentManager(this.Services, "Content");
+            //roomContent = new ContentManager(this.Services, "Content");
             //IsFixedTimeStep = false;
             manager = new Classes.GameManager(ExitGame);
             
@@ -49,7 +49,7 @@ namespace Pyramid_Plunder
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            manager.Initialize(Content, roomContent);
+            manager.Initialize(Content, this.Services);
             base.Initialize();
         }
 

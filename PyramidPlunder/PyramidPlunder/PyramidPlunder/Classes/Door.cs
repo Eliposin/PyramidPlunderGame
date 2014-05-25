@@ -77,7 +77,7 @@ namespace Pyramid_Plunder.Classes
         {
             try
             {
-                linkedRoom = new Room(linkedRoomName, Content, linkedDoorIndex);
+                linkedRoom = new Room(linkedRoomName, linkedDoorIndex);
                 isRoomLoaded = true;
             }
             catch (Exception e)
@@ -119,6 +119,14 @@ namespace Pyramid_Plunder.Classes
         public bool IsOpen
         {
             get { return isOpen; }
+        }
+
+        /// <summary>
+        /// Whether or not the linked room is loaded in memory.
+        /// </summary>
+        public bool IsRoomLoaded
+        {
+            get { return isRoomLoaded; }
         }
     }
 }

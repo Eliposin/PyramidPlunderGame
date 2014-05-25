@@ -3,6 +3,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework;
 
 namespace Pyramid_Plunder
 {
@@ -15,7 +16,7 @@ namespace Pyramid_Plunder
         Player,
         Mummy, Skeleton, Scarab,
         Dash, DoubleJump,
-        StartRoom, SaveRoom,
+        StartRoom, SaveRoom, Lobby, Vault,
         Door, SavePoint
     }
 
@@ -57,6 +58,8 @@ namespace Pyramid_Plunder
     {
         public const int NUM_KEYS = 3;
 
+        private static GameServiceContainer gameServices;
+
         /// <summary>
         /// Returns the next line in the given stream that does not start with the designated delimiter.
         /// </summary>
@@ -70,6 +73,16 @@ namespace Pyramid_Plunder
                 line = sr.ReadLine();
             while (line.Substring(0).StartsWith(delimiter));
             return line;
+        }
+
+        public static void SetServices(GameServiceContainer services)
+        {
+            gameServices = services;
+        }
+
+        public static GameServiceContainer GetServices()
+        {
+            return gameServices;
         }
     }
 }

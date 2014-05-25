@@ -1,0 +1,35 @@
+#Spawn Location X (was 1185)
+1082
+#Spawn Location Y (was 572)
+460
+#IsPersistant (0 = false, 1 = true)
+false
+#
+#Doors
+#Orientation (0 = facing right, 1 = facing left)
+#Linked Room (String)
+#Index of linked door in linked room (int)
+#Lock Type (byte?)
+#Lock Type 0 is an Unlocked Door.
+#Position (in the room)
+#
+#Number of Doors
+1
+#####First Door (index 0):#####
+# Orientation
+1
+# Linked Room
+Lobby
+# Linked Door (index)
+1
+# Lock Type
+1
+# PositionX
+1155
+# PositionY
+425
+#####Enemies#####
+#Number of Enemies
+0
+#Number of Environment Objects
+0

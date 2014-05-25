@@ -28,7 +28,8 @@ namespace Pyramid_Plunder.Classes
         private Player player;
 
         private ContentManager gameContent;
-        private ContentManager roomContent;
+        
+        private GameServiceContainer gameServices;
 
         
 
@@ -50,10 +51,10 @@ namespace Pyramid_Plunder.Classes
         /// <summary>
         /// Loads the default settings for the game from the settings file
         /// </summary>
-        public void Initialize(ContentManager gContent, ContentManager rContent)
+        public void Initialize(ContentManager gContent, GameServiceContainer services)
         {
             gameContent = gContent;
-            roomContent = rContent;
+            GameResources.SetServices(services);
 
             keyState = Keyboard.GetState();
             gamePadState = GamePad.GetState(PlayerIndex.One);
@@ -193,7 +194,7 @@ namespace Pyramid_Plunder.Classes
             gameMenu.Dispose();
             gameMenu = null;
 
-            currentRoom = new Room("StartRoom", roomContent);
+            currentRoom = new Room("StartRoom");
             player = new Player(gameContent, SaveGame, SwitchRooms);
             player.Spawn(currentRoom.SpawnLocation);
             
@@ -225,8 +226,7 @@ namespace Pyramid_Plunder.Classes
             {
                 oldRoom.Dispose();
                 oldRoom = null;
-            }
-            
+            }   
         }
     }
 }

@@ -30,10 +30,10 @@ namespace Pyramid_Plunder.Classes
         /// <param name="content">The content manager to use for assets.</param>
         /// <param name="doorIndex">The index of the door to enter from.  If no index is specified, or the index is -1,
         /// the room's default spawn location will be used.</param>
-        public Room(String roomName, ContentManager content, int doorIndex = -1)
+        public Room(String roomName, int doorIndex = -1)
         {
             this.roomName = roomName;
-            Content = content;
+            Content = new ContentManager(GameResources.GetServices(), "Content");
             Load("../Data/Rooms/" + roomName + ".room", doorIndex);
             
             collisionMap = Content.Load<Texture2D>("Images/" + roomName + "Collisions");
@@ -56,6 +56,10 @@ namespace Pyramid_Plunder.Classes
                     return GameObjectList.StartRoom;
                 case "SaveRoom":
                     return GameObjectList.SaveRoom;
+                case "Vault":
+                    return GameObjectList.Vault;
+                case "Lobby":
+                    return GameObjectList.Lobby;
                 default:
                     return GameObjectList.NullObject;
             }
@@ -279,10 +283,12 @@ namespace Pyramid_Plunder.Classes
                 saveToFile();
             }
 
-            for (int i = 0; i < objectArray.Length; i++)
-                objectArray[i].Dispose();
-            background.Dispose();
-            collisionMap.Dispose();
+            Content.Unload();
+
+            //for (int i = 0; i < objectArray.Length; i++)
+            //    objectArray[i].Dispose();
+            //background.Dispose();
+            //collisionMap.Dispose();
         }
 
         /// <summary>

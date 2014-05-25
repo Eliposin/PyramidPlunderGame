@@ -364,7 +364,10 @@ namespace Pyramid_Plunder.Classes
                                 door.Open();
                         }
                         else
-                            roomCallback(door.LinkedRoom);
+                        {
+                            if (door.IsRoomLoaded)
+                                roomCallback(door.LinkedRoom);
+                        }
                     }
                     break;
 

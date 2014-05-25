@@ -91,6 +91,12 @@ namespace Pyramid_Plunder.Classes
                 case GameObjectList.StartRoom:
                     filepath = "../Data/GraphicsData/StartRoom.gdf";
                     break;
+                case GameObjectList.Lobby:
+                    filepath = "../Data/GraphicsData/Lobby.gdf";
+                    break;
+                case GameObjectList.Vault:
+                    filepath = "../Data/GraphicsData/Vault.gdf";
+                    break;
                 case GameObjectList.Player:
                     filepath = "../Data/GraphicsData/Player.gdf";
                     break;
