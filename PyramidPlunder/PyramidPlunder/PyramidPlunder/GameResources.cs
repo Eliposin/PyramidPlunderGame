@@ -15,7 +15,7 @@ namespace Pyramid_Plunder
         Player,
         Mummy, Skeleton, Scarab,
         Dash, DoubleJump,
-        TestRoom, SaveRoom,
+        StartRoom, SaveRoom,
         Door, SavePoint
     }
 
@@ -49,6 +49,7 @@ namespace Pyramid_Plunder
 
     public delegate void DelVoid();
     public delegate void DelMenu(MenuCallbacks menuCallback);
+    public delegate void DelRoom(Classes.Room whichRoom);
 
     
 

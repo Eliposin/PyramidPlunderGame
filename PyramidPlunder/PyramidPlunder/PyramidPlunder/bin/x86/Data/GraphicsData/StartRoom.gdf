@@ -1,15 +1,15 @@
 #Number of animations
 1
 #Name of spritesheet
-TestRoom
+StartRoom
 #stuff
 #otherstuff
 #First Animation Stats
 #Location on the spritesheet (y value)
 0
 #Dimensions of the animation (width and height)
-2560
-1480
+1280
+850
 #Animation speed
 0
 #Number of Frames

@@ -120,7 +120,6 @@ namespace Pyramid_Plunder.Classes
             Dispose();
         }
 
-
         /// <summary>
         /// Deals with object interactions between each other.
         /// </summary>

@@ -15,7 +15,6 @@ namespace Pyramid_Plunder.Classes
 
         protected Texture2D sprite;
         protected Vector2 coordinates;
-        protected Rectangle hitBox;
         protected GameObjectList objectType;
         
         protected int currentAnimation;
@@ -83,11 +82,14 @@ namespace Pyramid_Plunder.Classes
             switch (objectType)
             {
                 // TODO: Specifiy the filepath for each objType
-                case GameObjectList.TestRoom:
-                    filepath = "../Data/GraphicsData/TestRoom.gdf";
-                    break;
+                //case GameObjectList.TestRoom:
+                    //filepath = "../Data/GraphicsData/TestRoom.gdf";
+                    //break;
                 case GameObjectList.SaveRoom:
                     filepath = "../Data/GraphicsData/SaveRoom.gdf";
+                    break;
+                case GameObjectList.StartRoom:
+                    filepath = "../Data/GraphicsData/StartRoom.gdf";
                     break;
                 case GameObjectList.Player:
                     filepath = "../Data/GraphicsData/Player.gdf";
@@ -212,9 +214,9 @@ namespace Pyramid_Plunder.Classes
         /// <summary>
         /// Removes the object from memory
         /// </summary>
-        protected virtual void Dispose()
+        public virtual void Dispose()
         {
-
+            sprite.Dispose();
         }
 
         /// <summary>
@@ -231,6 +233,16 @@ namespace Pyramid_Plunder.Classes
         public GameObjectList ObjectType
         {
             get { return objectType; }
+        }
+
+        /// <summary>
+        /// The area considered a positive match for collision detection.
+        /// </summary>
+        public Rectangle HitBox
+        {
+            get { return new Rectangle((int)coordinates.X, (int)coordinates.Y, 
+                (int)animationDimensions[currentAnimation].X, 
+                (int)animationDimensions[currentAnimation].Y); }
         }
     }
 }

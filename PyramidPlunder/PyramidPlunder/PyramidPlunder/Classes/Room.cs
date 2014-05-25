@@ -52,8 +52,8 @@ namespace Pyramid_Plunder.Classes
         {
             switch (roomName)
             {
-                case "TestRoom":
-                    return GameObjectList.TestRoom;
+                case "StartRoom":
+                    return GameObjectList.StartRoom;
                 case "SaveRoom":
                     return GameObjectList.SaveRoom;
                 default:
@@ -207,6 +207,14 @@ namespace Pyramid_Plunder.Classes
                         objectArray[i + arrayIndex] = environmentArray[i];
                     }
 
+                    if (doorIndex != -1)
+                    {
+                        spawnLocation = doorArray[doorIndex].Position;
+                        if (doorArray[doorIndex].Orientation == Door.DoorOrientations.FacingLeft)
+                            spawnLocation.X -= Player.PLAYER_WIDTH;
+                        else
+                            spawnLocation.X += doorArray[doorIndex].HitBox.Width;
+                    }
 
                 }
                 catch (Exception e)
@@ -270,8 +278,11 @@ namespace Pyramid_Plunder.Classes
             {
                 saveToFile();
             }
-            //throw new NotImplementedException("Not implemented.");
-            //For this one, it's sufficient for the dispose to simply do nothing. - Ryan
+
+            for (int i = 0; i < objectArray.Length; i++)
+                objectArray[i].Dispose();
+            background.Dispose();
+            collisionMap.Dispose();
         }
 
         /// <summary>
@@ -353,9 +364,20 @@ namespace Pyramid_Plunder.Classes
             }
         }
 
+        /// <summary>
+        /// A list of ALL the objects in the current room.
+        /// </summary>
         public GameObject[] ObjectArray
         {
             get { return objectArray; }
+        }
+
+        /// <summary>
+        /// The name of the room.
+        /// </summary>
+        public string RoomName
+        {
+            get { return roomName; }
         }
     }
 }

@@ -12,60 +12,79 @@ namespace Pyramid_Plunder.Classes
     {
         private const float DOOR_ANIMATION_SPEED = 0.2f;
 
+        public enum DoorOrientations : byte
+        {
+            FacingRight = 0,
+            FacingLeft = 1
+        }
+
         private DoorOrientations orientation;
         private Locks lockType;
 
-        private bool opening = false;
+        private bool isOpen;
+        private bool isRoomLoaded;
+        private string linkedRoomName;
+        private int linkedDoorIndex;
+
+        private Room linkedRoom;
+        private System.Threading.Thread roomThread;
 
         /// <summary>
-        /// the String that represents the name of the connected Room.
+        /// Constructor call.  Creates a new Door object.
         /// </summary>
-        public string connectedRoom;
-
-        /// <summary>
-        /// the int that represents the position in the connected room's door[]
-        /// that this door connects to.
-        /// </summary>
-        public int connectedDoor;
-        public bool isActivated;
-        //private ContentManager Content;
-        private bool locked;
-
+        /// <param name="content">The content manager to use when loading assets.</param>
+        /// <param name="orient">The orientation of the room (either facing left or facing right).</param>
+        /// <param name="roomName">The name of the room that the door leads to.</param>
+        /// <param name="connectedDoorIndex">The index of the door that is linked to this one.</param>
+        /// <param name="lockT">The type of lock that is on this door.</param>
         public Door(ContentManager content, DoorOrientations orient, string roomName, int connectedDoorIndex, Locks lockT)
             : base(GameObjectList.Door, content)
         {
             Content = content;
             orientation = orient;
-            connectedRoom = roomName;
-            connectedDoor = connectedDoorIndex;
+            linkedRoom = null;
+            linkedRoomName = roomName;
+            linkedDoorIndex = connectedDoorIndex;
             lockType = lockT;
+            
+            isOpen = false;
 
             if (orientation == DoorOrientations.FacingLeft)
                 animationOffset = 1;
             else
                 animationOffset = 0;
 
-            if (lockType != Locks.Unlocked)
-                locked = true;
-            else
-                locked = false;
-
-            isActivated = false;
         }
 
-
-        
-        public bool IsLocked
+        /// <summary>
+        /// Opens the door, playing the opening animation and causing the door to be enterable.
+        /// </summary>
+        public void Open()
         {
-            get { return locked; }
-            //set { locked = value; }
+            isOpen = true;
+            animationSpeed[currentAnimation] = DOOR_ANIMATION_SPEED;
+            looping = false;
+            isSolid = false;
+
+            roomThread = new System.Threading.Thread(LoadRoom);
+            roomThread.Start();
         }
-        
 
-        public enum DoorOrientations : byte
+        /// <summary>
+        /// Loads the linked room in a seperate thread
+        /// </summary>
+        private void LoadRoom()
         {
-            FacingRight = 0,
-            FacingLeft = 1
+            try
+            {
+                linkedRoom = new Room(linkedRoomName, Content, linkedDoorIndex);
+                isRoomLoaded = true;
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine("There was an error loading the room: " + e.Message);
+            }
+
         }
 
         /// <summary>
@@ -86,33 +105,21 @@ namespace Pyramid_Plunder.Classes
             set { orientation = value; }
         }
 
-        public override void Draw(SpriteBatch spriteBatch, GameTime time)
+        /// <summary>
+        /// The room linked with this door.  Returns null if the room is not loaded.
+        /// </summary>
+        public Room LinkedRoom
         {
-            base.Draw(spriteBatch, time);
-            if ((currentFrame == numberOfFrames[currentAnimation] - 1) && opening)
-                opening = false;
+            get { return linkedRoom; }
         }
 
-        public void Open()
+        /// <summary>
+        /// Whether or not the door is currently open.
+        /// </summary>
+        public bool IsOpen
         {
-            opening = true;
-            animationSpeed[currentAnimation] = DOOR_ANIMATION_SPEED;
-            looping = false;
-
-            // I'm hijacking this method
-            //try
-            //{
-            //    Room nextRoom = new Room(connectedRoom, Content);
-            //    return true;
-            //}
-            //catch (Exception e)
-            //{
-            //    System.Diagnostics.Debug.WriteLine("An error occured opening the door or loading the room: " + e.Message);
-            //    return false;
-            //}
+            get { return isOpen; }
         }
-
-        
     }
 }
     

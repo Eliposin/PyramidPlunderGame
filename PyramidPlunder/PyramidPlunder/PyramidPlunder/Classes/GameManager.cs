@@ -24,10 +24,12 @@ namespace Pyramid_Plunder.Classes
 
         private Menu gameMenu;
         private Room currentRoom;
+        private Room oldRoom;
         private Player player;
 
         private ContentManager gameContent;
         private ContentManager roomContent;
+
         
 
         private struct GameSettings
@@ -89,12 +91,12 @@ namespace Pyramid_Plunder.Classes
                     }
 
                     //Finally, update the drawing position of the objects in the room.
-                    //if (CheckRoomBounds(player.Position, currentRoom.CollisionMap.Bounds))
                     player.UpdateCoordinates(currentRoom.CollisionMap.Bounds);
 
                     currentRoom.UpdateCoordinates(player.Position, player.Coordinates, currentRoom.CollisionMap.Bounds);
                     player.updateControlFlags(); //new
 
+                    //Check to see if the player is trying to do something
                     if (player.InteractionFlag)
                     {
                         GameObject tempObject = FindInteractionObject(player);
@@ -191,8 +193,8 @@ namespace Pyramid_Plunder.Classes
             gameMenu.Dispose();
             gameMenu = null;
 
-            currentRoom = new Room("SaveRoom", roomContent);
-            player = new Player(gameContent, SaveGame);
+            currentRoom = new Room("StartRoom", roomContent);
+            player = new Player(gameContent, SaveGame, SwitchRooms);
             player.Spawn(currentRoom.SpawnLocation);
             
             isPaused = false;
@@ -205,6 +207,26 @@ namespace Pyramid_Plunder.Classes
         private void SaveGame()
         {
             System.Diagnostics.Debug.WriteLine("The game was saved!\n(Not really but you made it to the save function so you're on the right track.)");
+        }
+
+        private void SwitchRooms(Room whichRoom)
+        {
+            oldRoom = currentRoom;
+            currentRoom = whichRoom;
+            player.Spawn(currentRoom.SpawnLocation);
+
+            System.Threading.Thread roomDisposeThread = new System.Threading.Thread(DisposeRoom);
+            roomDisposeThread.Start();
+        }
+
+        private void DisposeRoom()
+        {
+            if (oldRoom != null)
+            {
+                oldRoom.Dispose();
+                oldRoom = null;
+            }
+            
         }
     }
 }

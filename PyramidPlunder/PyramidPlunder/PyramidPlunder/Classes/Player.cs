@@ -13,6 +13,9 @@ namespace Pyramid_Plunder.Classes
     {
         public const int DEFAULT_SCREEN_POSITIONX = 610; //610
         public const int DEFAULT_SCREEN_POSITIONY = 420; //420
+
+        public const int PLAYER_WIDTH = 60;
+        public const int PLAYER_HEIGHT = 120;
         //private bool isSpawned;
 
         private KeyboardState keyState;
@@ -82,11 +85,12 @@ namespace Pyramid_Plunder.Classes
         private bool[] keyArray;
 
         private DelVoid saveCallback;
+        private DelRoom roomCallback;
               
         /// <summary>
         /// Creates a new Player object
         /// </summary>
-        public Player(ContentManager content, DelVoid saveMethod)
+        public Player(ContentManager content, DelVoid saveMethod, DelRoom roomMethod)
             : base(GameObjectList.Player, content)
         {
             isSpawned = false;
@@ -102,6 +106,7 @@ namespace Pyramid_Plunder.Classes
             soundEngine = new AudioEngine(content, GameObjectList.Player);
 
             saveCallback = saveMethod;
+            roomCallback = roomMethod;
             
         }
 
@@ -353,8 +358,13 @@ namespace Pyramid_Plunder.Classes
                     if (interactionType == InteractionTypes.PlayerAction)
                     {
                         Door door = (Door)otherObject;
-                        if (keyArray[(byte)door.LockType] == true)
-                            door.Open();
+                        if (!door.IsOpen)
+                        {
+                            if (keyArray[(byte)door.LockType] == true)
+                                door.Open();
+                        }
+                        else
+                            roomCallback(door.LinkedRoom);
                     }
                     break;
 
@@ -456,6 +466,8 @@ namespace Pyramid_Plunder.Classes
 
             if (keyState.IsKeyUp(Keys.E) && newState.IsKeyDown(Keys.E))
                 interactBtnFlag = true;
+            else
+                interactBtnFlag = false;
 
             //
             //-----------------------------------------------------------------------------
@@ -502,8 +514,8 @@ namespace Pyramid_Plunder.Classes
                 (keyState.IsKeyDown(Keys.Q) && newState.IsKeyUp(Keys.Q)))
                 dashBtnFlag = false;
 
-            if (keyState.IsKeyDown(Keys.E) && newState.IsKeyUp(Keys.E))
-                interactBtnFlag = false;
+            //if (keyState.IsKeyDown(Keys.E) && newState.IsKeyUp(Keys.E))
+            //    interactBtnFlag = false;
 
             keyState = newState;
         }
