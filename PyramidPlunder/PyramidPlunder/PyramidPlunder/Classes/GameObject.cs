@@ -12,6 +12,8 @@ namespace Pyramid_Plunder.Classes
         protected Vector2 position;
         protected bool isSpawned;
         protected bool isUpgrade;
+        protected bool isPhysicsObject;
+        protected bool isSolid;
 
         /// <summary>
         /// Constructor call
@@ -22,6 +24,7 @@ namespace Pyramid_Plunder.Classes
         {
             objectType = objType;
             position = spawnPosition;
+            isPhysicsObject = false;
             Initialize();
         }
 
@@ -143,6 +146,23 @@ namespace Pyramid_Plunder.Classes
         public bool IsUpgrade
         {
             get { return isUpgrade; }
+        }
+
+        /// <summary>
+        /// Whether or not the object is a PhysicsObject
+        /// </summary>
+        public bool IsPhysicsObject
+        {
+            get { return isPhysicsObject; }
+        }
+
+        /// <summary>
+        /// Whether or not the object is solid
+        /// </summary>
+        public bool IsSolid
+        {
+            get { return isSolid; }
+            set { isSolid = value; }
         }
     }
 }

@@ -79,13 +79,14 @@ namespace Pyramid_Plunder.Classes
                     player.Move(); //Actually sets the new position of the object
 
                     //Do the same thing for each physics object in the current room.
-                    while (currentRoom.HasMoreObjects)
+                    for (int i = 0; i < currentRoom.ObjectArray.Length; i++)
                     {
-                        PhysicsObject tempObject = currentRoom.GetNextObject();
-                        PhysicsEngine.Update(tempObject, currentRoom, gameTime);
-                        tempObject.Move();
+                        if (currentRoom.ObjectArray[i].IsPhysicsObject)
+                        {
+                            PhysicsEngine.Update((PhysicsObject)currentRoom.ObjectArray[i], currentRoom, gameTime);
+                            ((PhysicsObject)currentRoom.ObjectArray[i]).Move();
+                        }
                     }
-                    currentRoom.ResetObjectList();
 
                     //Finally, update the drawing position of the objects in the room.
                     //if (CheckRoomBounds(player.Position, currentRoom.CollisionMap.Bounds))
@@ -191,11 +192,19 @@ namespace Pyramid_Plunder.Classes
             gameMenu = null;
 
             currentRoom = new Room("SaveRoom", roomContent);
-            player = new Player(gameContent);
+            player = new Player(gameContent, SaveGame);
             player.Spawn(currentRoom.SpawnLocation);
             
             isPaused = false;
             inGame = true;
+        }
+
+        /// <summary>
+        /// Saves the game to a file
+        /// </summary>
+        private void SaveGame()
+        {
+            System.Diagnostics.Debug.WriteLine("The game was saved!\n(Not really but you made it to the save function so you're on the right track.)");
         }
     }
 }

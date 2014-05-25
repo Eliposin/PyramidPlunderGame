@@ -19,21 +19,23 @@ namespace Pyramid_Plunder.Classes
         protected GameObjectList objectType;
         
         protected int currentAnimation;
+        protected int currentFrame;
         protected int animationOffset;
         protected bool looping = true;
         protected float[] animationSpeed;
         protected float[] defaultAnimationSpeed;
+        protected int[] numberOfFrames;
 
         private String filepath;
         private String spriteName;
         private int numAnimations;
         private int previousAnimation;
-        private int currentFrame;
+        
         private double elapsedMilliseconds;
         private int[] animationLocation;
         private Vector2[] animationDimensions;
         
-        private int[] numberOfFrames;
+        
         private bool isLoaded;
 
         /// <summary>

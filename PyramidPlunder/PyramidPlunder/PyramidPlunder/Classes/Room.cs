@@ -11,16 +11,17 @@ namespace Pyramid_Plunder.Classes
         private Enemy[] enemyArray;
         private Door[] doorArray;
         private GameObject[] environmentArray;
+        private GameObject[] objectArray;
         private Vector2 spawnLocation;
         private Texture2D collisionMap;
-        private bool hasMoreObjects;
-        private int totalObjects;
         private GameObject background;     //Encapsulate the drawing requirements into the class already designed to do that
                                           //Needs to be a GameObject because it needs to move around with the player
         private string roomName;
         private ContentManager Content;
         
         public Color[] collisionColors;
+
+        private bool isPersistant;
 
         /// <summary>
         /// Creates a new Room object.
@@ -91,9 +92,9 @@ namespace Pyramid_Plunder.Classes
         /// </summary>
         public bool IsPersistant
         {
-            get { return IsPersistant; }
+            get { return isPersistant; }
             
-            set { IsPersistant = value; }
+            set { isPersistant = value; }
 
         }
 
@@ -124,12 +125,8 @@ namespace Pyramid_Plunder.Classes
                     StreamReader sr = new StreamReader(filePath);
                     spawnLocation = new Vector2(Convert.ToInt16(GameResources.getNextDataLine(sr, "#")), 
                                                 Convert.ToInt16(GameResources.getNextDataLine(sr, "#")));
-                    totalObjects = Convert.ToInt16(GameResources.getNextDataLine(sr, "#"));
 
-                    if (totalObjects > 0)
-                        hasMoreObjects = true;
-                    else
-                        hasMoreObjects = false;
+                    isPersistant = bool.Parse(GameResources.getNextDataLine(sr, "#"));
 
                     numberOfDoors = Convert.ToInt16(GameResources.getNextDataLine(sr, "#"));
                     doorArray = new Door[numberOfDoors];
@@ -175,7 +172,39 @@ namespace Pyramid_Plunder.Classes
 
                     for (int i = 0; i < numberOfEnvironmentObjects; i++)
                     {
-                        // TODO: Read in environment data
+                        String objectType = GameResources.getNextDataLine(sr, "#");
+                        switch (objectType)
+                        {
+                            case "SavePoint":
+                                environmentArray[i] = new GameObject(GameObjectList.SavePoint, Content);
+                                break;
+                            default:
+                                break;
+                        }
+                        environmentArray[i].IsSolid = bool.Parse(GameResources.getNextDataLine(sr, "#"));
+
+                        environmentArray[i].Spawn(new Vector2(Int16.Parse(GameResources.getNextDataLine(sr, "#")),
+                            Int16.Parse(GameResources.getNextDataLine(sr, "#"))));
+                    }
+
+                    objectArray = new GameObject[numberOfDoors + numberOfEnemies + numberOfEnvironmentObjects];
+                    int arrayIndex = 0;
+
+                    for (int i = 0; i < numberOfDoors; i++)
+                    {
+                        objectArray[i + arrayIndex] = doorArray[i + arrayIndex];
+                    }
+                    arrayIndex += numberOfDoors;
+
+                    for (int i = 0; i < numberOfEnemies; i++)
+                    {
+                        objectArray[i + arrayIndex] = enemyArray[i];
+                    }
+                    arrayIndex += numberOfEnemies;
+
+                    for (int i = 0; i < numberOfEnvironmentObjects; i++)
+                    {
+                        objectArray[i + arrayIndex] = environmentArray[i];
                     }
 
 
@@ -324,44 +353,9 @@ namespace Pyramid_Plunder.Classes
             }
         }
 
-        /// <summary>
-        /// Iterates through all the PhysicsObjects that the room is responsible,
-        /// returning the next one each time the method is called as long as HasMoreObjects
-        /// is true.
-        /// </summary>
-        /// <returns>The next PhysicsObject in the list.</returns>
-        public PhysicsObject GetNextObject()
+        public GameObject[] ObjectArray
         {
-            if (!hasMoreObjects)
-                return null;
-            else
-            {
-                return null; //This is the way we make it compile.
-                // TODO: Define a way to iterate through the list of PhysicsObjects that this room is responsible for.
-                // Each time this method is called, it should return the NEXT object down the list.
-                // ... now that I think about it, you can probably use this structure in your destructor as well when
-                // you need to Dispose.
-            }
-        }
-
-        /// <summary>
-        /// Whether there are more objects in the list of PhysicsObjects that need to be iterated through.
-        /// </summary>
-        public bool HasMoreObjects
-        {
-            get { return hasMoreObjects; }
-        }
-
-        /// <summary>
-        /// Resets the iterator for the PhysicsObject list
-        /// </summary>
-        public void ResetObjectList()
-        {
-            if (totalObjects > 0)
-                hasMoreObjects = true;
-            else
-                hasMoreObjects = false;
-            // TODO: Whatever iterator you have set up, reset it to the first object here.
+            get { return objectArray; }
         }
     }
 }

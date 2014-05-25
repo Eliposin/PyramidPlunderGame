@@ -16,7 +16,7 @@ namespace Pyramid_Plunder
         Mummy, Skeleton, Scarab,
         Dash, DoubleJump,
         TestRoom, SaveRoom,
-        Door
+        Door, SavePoint
     }
 
     public enum InteractionTypes : byte

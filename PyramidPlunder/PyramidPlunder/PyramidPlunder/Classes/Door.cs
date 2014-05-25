@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 
 namespace Pyramid_Plunder.Classes
@@ -58,27 +60,7 @@ namespace Pyramid_Plunder.Classes
             get { return locked; }
             //set { locked = value; }
         }
-
-        private void unlock(LockTypes thisLock)
-        {
-            //Something to check if the player has met the
-            //correct circumstances to unlock this door.
-            
-        }
         
-
-       
-       /// <summary>
-       /// an enum representing the lockType the player needs to open the door.
-       /// I am still unsure of how to impliment this.  Need to ask Ryan what his
-       /// thoughts are on Monday.
-       /// </summary>
-        public enum LockTypes : byte
-        {
-            //Not sure what other types of lock we might have.
-            Unlocked = 0, RedKey, BlueKey,
-            DoubleJump, Dash, WallHang, BossKill, RoomClear
-        }
 
         public enum DoorOrientations : byte
         {
@@ -102,6 +84,13 @@ namespace Pyramid_Plunder.Classes
         {
             get { return orientation; }
             set { orientation = value; }
+        }
+
+        public override void Draw(SpriteBatch spriteBatch, GameTime time)
+        {
+            base.Draw(spriteBatch, time);
+            if ((currentFrame == numberOfFrames[currentAnimation] - 1) && opening)
+                opening = false;
         }
 
         public void Open()

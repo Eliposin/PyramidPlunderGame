@@ -80,11 +80,13 @@ namespace Pyramid_Plunder.Classes
         private bool interactBtnFlag = false;
 
         private bool[] keyArray;
+
+        private DelVoid saveCallback;
               
         /// <summary>
         /// Creates a new Player object
         /// </summary>
-        public Player(ContentManager content)
+        public Player(ContentManager content, DelVoid saveMethod)
             : base(GameObjectList.Player, content)
         {
             isSpawned = false;
@@ -98,6 +100,8 @@ namespace Pyramid_Plunder.Classes
             keyArray[0] = true;
 
             soundEngine = new AudioEngine(content, GameObjectList.Player);
+
+            saveCallback = saveMethod;
             
         }
 
@@ -343,11 +347,22 @@ namespace Pyramid_Plunder.Classes
         /// <param name="interactionType"></param>
         public override void InteractWith(GameObject otherObject, InteractionTypes interactionType)
         {
-            if (otherObject.ObjectType == GameObjectList.Door && interactionType == InteractionTypes.PlayerAction)
+            switch (otherObject.ObjectType)
             {
-                Door door = (Door)otherObject;
-                if (keyArray[(byte)door.LockType] == true)
-                    door.Open();
+                case GameObjectList.Door:
+                    if (interactionType == InteractionTypes.PlayerAction)
+                    {
+                        Door door = (Door)otherObject;
+                        if (keyArray[(byte)door.LockType] == true)
+                            door.Open();
+                    }
+                    break;
+
+                case GameObjectList.SavePoint:
+                    saveCallback();
+                    break;
+                default:
+                    break;
             }
         }
 

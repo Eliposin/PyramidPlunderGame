@@ -2,8 +2,8 @@
 612
 #Spawn Location Y (was 572)
 430
-#Total Objects
-0
+#IsPersistant (0 = false, 1 = true)
+false
 #
 #Doors
 #Orientation (0 = facing right, 1 = facing left)
@@ -44,4 +44,12 @@ SaveRoom
 #Number of Enemies
 0
 #Number of Environment Objects
-0
+1
+#Type of Object
+SavePoint
+#IsSolid
+false
+#X Location
+500
+#Y Location
+415

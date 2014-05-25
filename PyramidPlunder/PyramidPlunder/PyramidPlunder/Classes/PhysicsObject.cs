@@ -224,7 +224,7 @@ namespace Pyramid_Plunder.Classes
         /// Constructor call
         /// </summary>
         /// <param name="objType">The type of object that is represented.</param>
-        /// <param name="spawnPosition">The default starting position.</param>
+        /// <param name="content">The content manager to load assets to.</param>
         public PhysicsObject(GameObjectList objType, ContentManager content)
             : base(objType, content)
         {
@@ -236,6 +236,7 @@ namespace Pyramid_Plunder.Classes
             velocityLimitY = 0;
             displacementX = 0;
             displacementY = 0;
+            isPhysicsObject = true;
             LoadObjectData(objType);
         }
                 
