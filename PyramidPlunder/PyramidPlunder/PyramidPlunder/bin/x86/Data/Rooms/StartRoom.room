@@ -15,6 +15,9 @@ false
 #
 #Number of Doors
 1
+#
+#
+#
 #####First Door (index 0):#####
 # Orientation
 1
@@ -25,9 +28,12 @@ Lobby
 # Lock Type
 0
 # PositionX
-1154
+1123
 # PositionY
-527
+535
+#
+#
+#
 #####Enemies#####
 #Number of Enemies
 0

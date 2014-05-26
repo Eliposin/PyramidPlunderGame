@@ -25,9 +25,9 @@ StartRoom
 # Lock Type
 0
 # PositionX
-0
+-3
 # PositionY
-2131
+2139
 #####Second Door (index 0):#####
 # Orientation
 0
@@ -38,9 +38,9 @@ Vault
 # Lock Type
 0
 # PositionX
-0
+-3
 # PositionY
-397
+405
 #####Third Door (index 0):#####
 # Orientation
 1
@@ -51,9 +51,9 @@ SaveRoom
 # Lock Type
 1
 # PositionX
-2110
+2076
 # PositionY
-462
+470
 #####Enemies#####
 #Number of Enemies
 0

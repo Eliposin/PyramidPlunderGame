@@ -284,11 +284,6 @@ namespace Pyramid_Plunder.Classes
             }
 
             Content.Unload();
-
-            //for (int i = 0; i < objectArray.Length; i++)
-            //    objectArray[i].Dispose();
-            //background.Dispose();
-            //collisionMap.Dispose();
         }
 
         /// <summary>
@@ -300,13 +295,13 @@ namespace Pyramid_Plunder.Classes
             //where would it go.  Maybe a temp file.
             for(int i = 0; i < doorArray.Length; i++)
             {
-                doorArray[i].
+                //doorArray[i].
 
             }
 
             for (int i = 0; i < enemyArray.Length; i++ )
             {
-                enemyArray[i]
+                //enemyArray[i]
             }  
         }
 

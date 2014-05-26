@@ -25,9 +25,9 @@ SaveRoom
 # Lock Type
 0
 # PositionX
-0
+-3
 # PositionY
-434
+433
 #####Second Door (index 1):#####
 # Orientation
 1
@@ -38,8 +38,8 @@ SaveRoom
 # Lock Type
 0
 # PositionX
-1154
-434
+1123
+433
 #####Enemies#####
 #Number of Enemies
 0
