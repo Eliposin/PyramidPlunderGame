@@ -14,8 +14,9 @@ namespace Pyramid_Plunder.Classes
         private GameObject[] objectArray;
         private Vector2 spawnLocation;
         private Texture2D collisionMap;
-        private GameObject background;     //Encapsulate the drawing requirements into the class already designed to do that
-                                          //Needs to be a GameObject because it needs to move around with the player
+        private GameObject background;
+        private string musicName;
+
         private string roomName;
         private ContentManager Content;
         
@@ -131,6 +132,8 @@ namespace Pyramid_Plunder.Classes
                                                 Convert.ToInt16(GameResources.getNextDataLine(sr, "#")));
 
                     isPersistant = bool.Parse(GameResources.getNextDataLine(sr, "#"));
+
+                    musicName = GameResources.getNextDataLine(sr, "#");
 
                     numberOfDoors = Convert.ToInt16(GameResources.getNextDataLine(sr, "#"));
                     doorArray = new Door[numberOfDoors];
@@ -378,6 +381,14 @@ namespace Pyramid_Plunder.Classes
         public string RoomName
         {
             get { return roomName; }
+        }
+
+        /// <summary>
+        /// Get the name of the music to played in this room.
+        /// </summary>
+        public string MusicName
+        {
+            get { return musicName; }
         }
     }
 }

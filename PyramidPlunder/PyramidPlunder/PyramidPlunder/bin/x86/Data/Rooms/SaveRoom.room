@@ -5,6 +5,8 @@
 #IsPersistant (0 = false, 1 = true)
 false
 #
+#Music
+Menu
 #Doors
 #Orientation (0 = facing right, 1 = facing left)
 #Linked Room (String)

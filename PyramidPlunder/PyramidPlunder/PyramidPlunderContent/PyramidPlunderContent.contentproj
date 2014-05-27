@@ -126,22 +126,22 @@
     <Compile Include="Sounds\MainTitle.wav">
       <Name>MainTitle</Name>
       <Importer>WavImporter</Importer>
-      <Processor>SoundEffectProcessor</Processor>
+      <Processor>SongProcessor</Processor>
     </Compile>
     <Compile Include="Sounds\MenuScreen.wav">
       <Name>MenuScreen</Name>
       <Importer>WavImporter</Importer>
-      <Processor>SoundEffectProcessor</Processor>
+      <Processor>SongProcessor</Processor>
     </Compile>
     <Compile Include="Sounds\PP - Menu Screen_01.wav">
       <Name>PP - Menu Screen_01</Name>
       <Importer>WavImporter</Importer>
-      <Processor>SoundEffectProcessor</Processor>
+      <Processor>SongProcessor</Processor>
     </Compile>
     <Compile Include="Sounds\PPMainTitle_01.wav">
       <Name>PPMainTitle_01</Name>
       <Importer>WavImporter</Importer>
-      <Processor>SoundEffectProcessor</Processor>
+      <Processor>SongProcessor</Processor>
     </Compile>
     <Compile Include="Sounds\wallland.wav">
       <Name>wallland</Name>

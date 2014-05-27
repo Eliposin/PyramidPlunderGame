@@ -1,15 +1,17 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 
 namespace Pyramid_Plunder.Classes
 {
 
-    class AudioEngine
+    public class AudioEngine
     {
         public enum SoundEffects : byte
         {
@@ -128,23 +130,48 @@ namespace Pyramid_Plunder.Classes
  
     ///Initiates background music and way of testing
     ///  to see if a change of music is needed.
-    class BGM
+    public class BGM
     {
-        private SoundEffect menuSong;
-        private SoundEffect mainTheme;
+        private Song menu;
+        private Song main;
 
         private float volume = 1f;
         private float zero = 0f;
 
+        private string currentMusicName;
+
         public BGM(ContentManager content)
         {
-            menuSong = content.Load<SoundEffect>("Sounds/MenuScreen");
-            mainTheme = content.Load<SoundEffect>("Sounds/MainTitle");
+            menu = content.Load<Song>("Sounds/MenuScreen");
+            main = content.Load<Song>("Sounds/MainTitle");
             play();
         }
         public void play()
         {
-            mainTheme.Play(volume, zero, zero);
+            MediaPlayer.Play(main);
+            MediaPlayer.IsRepeating = true;
+            currentMusicName = "Main";
+        }
+
+        public void SwitchMusic(string musicName)
+        {
+            if (currentMusicName != musicName)
+            {
+                switch (musicName)
+                {
+                    case "Main":
+                        MediaPlayer.Stop();
+                        MediaPlayer.Play(main);
+                        currentMusicName = "Main";
+                        break;
+                    case "Menu":
+                        MediaPlayer.Stop();
+                        MediaPlayer.Play(menu);
+                        currentMusicName = "Menu";
+                        break;
+                    default: break;
+                }
+            }
         }
     }
 }
