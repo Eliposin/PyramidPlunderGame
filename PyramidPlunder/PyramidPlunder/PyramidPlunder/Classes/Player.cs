@@ -39,6 +39,7 @@ namespace Pyramid_Plunder.Classes
         const sbyte MAX_MIDAIR_DASHES = 1;
 
         const sbyte DASH_NOT_ALLOWED = -1;
+        const float DASH_LAG_START = DASH_NOT_ALLOWED - 0.1f;
         const sbyte DASH_ALLOWED = 0;
         const float DASH_HELD = .001f;
         const sbyte INFINITE_DASHES = -1;
@@ -198,7 +199,7 @@ namespace Pyramid_Plunder.Classes
                 }
                 if (dashStatus >= DASH_HELD)
                 {
-                    dashStatus = DASH_NOT_ALLOWED;
+                    dashStatus = DASH_LAG_START;
                     isGravityAffected = true;
                 }
                 PlayerJumpState = JumpState.Holding;
@@ -224,7 +225,7 @@ namespace Pyramid_Plunder.Classes
                     accelerationY = 0;
                 }
             }
-                        
+
             if (dashStatus == DASH_ALLOWED && dashBtnFlag == true &&
                 (dashes != 0 || WallSlideDirection != XDirection.None))
             {
@@ -263,7 +264,9 @@ namespace Pyramid_Plunder.Classes
                 }
                 soundEngine.Play(AudioEngine.SoundEffects.Dash);
             }
-            else if (dashStatus <= DASH_NOT_ALLOWED && dashBtnFlag == false)
+            else if (dashStatus < DASH_NOT_ALLOWED)
+                dashStatus = Math.Min(dashStatus + totalTime, DASH_NOT_ALLOWED);
+            else if (dashStatus == DASH_NOT_ALLOWED && dashBtnFlag == false)
                 dashStatus = DASH_ALLOWED;
 
             if (dashStatus >= DASH_HELD)
@@ -273,7 +276,7 @@ namespace Pyramid_Plunder.Classes
                 {
                     velocityX = 0;
                     isGravityAffected = true;
-                    dashStatus = DASH_NOT_ALLOWED;
+                    dashStatus = DASH_LAG_START;
                 }
             }
             else
@@ -426,7 +429,7 @@ namespace Pyramid_Plunder.Classes
         {
             if (dashStatus >= DASH_HELD)
             {
-                dashStatus = DASH_NOT_ALLOWED;
+                dashStatus = DASH_LAG_START;
                 isGravityAffected = true;
                 velocityY = 0;
                 if (jumpBtnFlag == true)
@@ -451,7 +454,7 @@ namespace Pyramid_Plunder.Classes
             dashes = MAX_MIDAIR_DASHES;
             if (dashStatus >= DASH_HELD)
             {
-                dashStatus = DASH_NOT_ALLOWED;
+                dashStatus = DASH_LAG_START;
                 isGravityAffected = true;
             }
             base.BecomeAirborne();
