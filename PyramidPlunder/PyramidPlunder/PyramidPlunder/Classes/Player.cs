@@ -139,13 +139,13 @@ namespace Pyramid_Plunder.Classes
                     if (wallOnRight && rightBtnFlag)
                     {
                         if (WallSlideDirection == XDirection.None)
-                            //soundLand.Play();
+                            soundEngine.Play(AudioEngine.SoundEffects.WallLand);
                         WallSlideDirection = XDirection.Right;
                     }
                     else if (wallOnLeft && leftBtnFlag == true)
                     {
                         if (WallSlideDirection == XDirection.None)
-                            //soundLand.Play();
+                            soundEngine.Play(AudioEngine.SoundEffects.WallLand);
                         WallSlideDirection = XDirection.Left;
                     }
                     else
@@ -177,14 +177,14 @@ namespace Pyramid_Plunder.Classes
                             PlayerXFacing = XDirection.Left;
                         }
                         WallSlideDirection = XDirection.None;
-                        //soundWallJump.Play();
+                        soundEngine.Play(AudioEngine.SoundEffects.WallJump);
                         
                     }
                     else
                     {
                         midairJumps = (byte)Math.Max(0, midairJumps - 1);
                         velocityY = JUMP_V;
-                        soundEngine.Play(AudioEngine.SoundEffects.Jump);
+                        soundEngine.Play(AudioEngine.SoundEffects.WallJump);
                         
                     }
                 }
@@ -398,7 +398,7 @@ namespace Pyramid_Plunder.Classes
 
         public override void Land()
         {
-            //soundLand.Play();
+            soundEngine.Play(AudioEngine.SoundEffects.Land);
             if (jumpBtnFlag == false)
                 PlayerJumpState = JumpState.Allowed;
             else
