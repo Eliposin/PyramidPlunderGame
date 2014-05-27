@@ -19,6 +19,7 @@ namespace Pyramid_Plunder.Classes
         //private bool isSpawned;
 
         private KeyboardState keyState;
+        private GamePadState gpState;
 
         private AudioEngine soundEngine;
         
@@ -457,34 +458,50 @@ namespace Pyramid_Plunder.Classes
 
         public void updateControlFlags()
         {
-            KeyboardState newState = Keyboard.GetState();
+            KeyboardState newKeyState = Keyboard.GetState();
+            GamePadState newGPState = GamePad.GetState(PlayerIndex.One);
 
-            if ((keyState.IsKeyUp(Keys.Right) && newState.IsKeyDown(Keys.Right)) ||
-                (keyState.IsKeyUp(Keys.D) && newState.IsKeyDown(Keys.D)))
+            if ((keyState.IsKeyUp(Keys.Right) && newKeyState.IsKeyDown(Keys.Right)) ||
+                (keyState.IsKeyUp(Keys.D) && newKeyState.IsKeyDown(Keys.D)) || 
+                (gpState.DPad.Right == ButtonState.Released && newGPState.DPad.Right == ButtonState.Pressed))
             {
                 rightBtnFlag = true;
                 LatestXArrow = XDirection.Right;
             }
-            else if ((keyState.IsKeyUp(Keys.Left) && newState.IsKeyDown(Keys.Left)) ||
-                (keyState.IsKeyUp(Keys.A) && newState.IsKeyDown(Keys.A)))
+            else if ((keyState.IsKeyUp(Keys.Left) && newKeyState.IsKeyDown(Keys.Left)) ||
+                (keyState.IsKeyUp(Keys.A) && newKeyState.IsKeyDown(Keys.A)) ||
+                (gpState.DPad.Left == ButtonState.Released && newGPState.DPad.Left == ButtonState.Pressed))
             {
                 leftBtnFlag = true;
                 LatestXArrow = XDirection.Left;
             }
 
-            if ((keyState.IsKeyUp(Keys.Up) && newState.IsKeyDown(Keys.Up)) ||
-                (keyState.IsKeyUp(Keys.W) && newState.IsKeyDown(Keys.W)))
+            if ((keyState.IsKeyUp(Keys.Up) && newKeyState.IsKeyDown(Keys.Up)) ||
+                (keyState.IsKeyUp(Keys.W) && newKeyState.IsKeyDown(Keys.W)) ||
+                (gpState.DPad.Up == ButtonState.Released && newGPState.DPad.Up == ButtonState.Pressed))
                 upBtnFlag = true;
 
-            if ((keyState.IsKeyUp(Keys.Space) && newState.IsKeyDown(Keys.Space)) ||
-                (keyState.IsKeyUp(Keys.X) && newState.IsKeyDown(Keys.X)))
+            if ((keyState.IsKeyUp(Keys.Space) && newKeyState.IsKeyDown(Keys.Space)) ||
+                (keyState.IsKeyUp(Keys.X) && newKeyState.IsKeyDown(Keys.X)) ||
+                (gpState.Buttons.A == ButtonState.Released && newGPState.Buttons.A == ButtonState.Pressed))
                 jumpBtnFlag = true;
 
-            if ((keyState.IsKeyUp(Keys.Z) && newState.IsKeyDown(Keys.Z)) ||
-                (keyState.IsKeyUp(Keys.Q) && newState.IsKeyDown(Keys.Q)))
+            if ((keyState.IsKeyUp(Keys.Z) && newKeyState.IsKeyDown(Keys.Z)) ||
+                (keyState.IsKeyUp(Keys.Q) && newKeyState.IsKeyDown(Keys.Q)))
                 dashBtnFlag = true;
+            else if (gpState.Triggers.Right == 0 && newGPState.Triggers.Right > 0)
+            {
+                PlayerXFacing = XDirection.Right;
+                dashBtnFlag = true;
+            }
+            else if (gpState.Triggers.Left == 0 && newGPState.Triggers.Left > 0)
+            {
+                PlayerXFacing = XDirection.Left;
+                dashBtnFlag = true;
+            }
 
-            if (keyState.IsKeyUp(Keys.E) && newState.IsKeyDown(Keys.E))
+            if (keyState.IsKeyUp(Keys.E) && newKeyState.IsKeyDown(Keys.E) ||
+                (gpState.Buttons.X == ButtonState.Released && newGPState.Buttons.X == ButtonState.Pressed))
                 interactBtnFlag = true;
             else
                 interactBtnFlag = false;
@@ -493,8 +510,9 @@ namespace Pyramid_Plunder.Classes
             //-----------------------------------------------------------------------------
             //
 
-            if ((keyState.IsKeyDown(Keys.Left) && newState.IsKeyUp(Keys.Left)) ||
-                (keyState.IsKeyDown(Keys.A) && newState.IsKeyUp(Keys.A)))
+            if ((keyState.IsKeyDown(Keys.Left) && newKeyState.IsKeyUp(Keys.Left)) ||
+                (keyState.IsKeyDown(Keys.A) && newKeyState.IsKeyUp(Keys.A)) ||
+                (gpState.DPad.Left == ButtonState.Pressed && newGPState.DPad.Left == ButtonState.Released))
             {
                 leftBtnFlag = false;
                 if (LatestXArrow == XDirection.Left)
@@ -505,8 +523,9 @@ namespace Pyramid_Plunder.Classes
                         LatestXArrow = XDirection.None;
                 }
             }
-            if ((keyState.IsKeyDown(Keys.Right) && newState.IsKeyUp(Keys.Right)) ||
-                (keyState.IsKeyDown(Keys.D) && newState.IsKeyUp(Keys.D)))
+            if ((keyState.IsKeyDown(Keys.Right) && newKeyState.IsKeyUp(Keys.Right)) ||
+                (keyState.IsKeyDown(Keys.D) && newKeyState.IsKeyUp(Keys.D)) ||
+                (gpState.DPad.Right == ButtonState.Pressed && newGPState.DPad.Right == ButtonState.Released))
             {
                 rightBtnFlag = false;
                 if (LatestXArrow == XDirection.Right)
@@ -518,26 +537,32 @@ namespace Pyramid_Plunder.Classes
                 }
             }
 
-            if ((keyState.IsKeyDown(Keys.Up) && newState.IsKeyUp(Keys.Up)) ||
-                (keyState.IsKeyDown(Keys.W) && newState.IsKeyUp(Keys.W)))
+            if ((keyState.IsKeyDown(Keys.Up) && newKeyState.IsKeyUp(Keys.Up)) ||
+                (keyState.IsKeyDown(Keys.W) && newKeyState.IsKeyUp(Keys.W)) ||
+                (gpState.DPad.Up == ButtonState.Pressed && newGPState.DPad.Up == ButtonState.Released))
             {
                 upBtnFlag = false;
             }
 
-            if ((keyState.IsKeyDown(Keys.Space) && newState.IsKeyUp(Keys.Space)) ||
-                (keyState.IsKeyDown(Keys.X) && newState.IsKeyUp(Keys.X)))
+            if ((keyState.IsKeyDown(Keys.Space) && newKeyState.IsKeyUp(Keys.Space)) ||
+                (keyState.IsKeyDown(Keys.X) && newKeyState.IsKeyUp(Keys.X)) ||
+                (gpState.Buttons.A == ButtonState.Pressed && newGPState.Buttons.A == ButtonState.Released))
             {
                 jumpBtnFlag = false;
             }
 
-            if ((keyState.IsKeyDown(Keys.Z) && newState.IsKeyUp(Keys.Z)) ||
-                (keyState.IsKeyDown(Keys.Q) && newState.IsKeyUp(Keys.Q)))
+            if ((keyState.IsKeyDown(Keys.Z) && newKeyState.IsKeyUp(Keys.Z)) ||
+                (keyState.IsKeyDown(Keys.Q) && newKeyState.IsKeyUp(Keys.Q)) ||
+                (gpState.Triggers.Right > 0 && newGPState.Triggers.Right == 0) ||
+                (gpState.Triggers.Left > 0 && newGPState.Triggers.Left == 0))
                 dashBtnFlag = false;
 
-            //if (keyState.IsKeyDown(Keys.E) && newState.IsKeyUp(Keys.E))
+            //if (keyState.IsKeyDown(Keys.E) && newState.IsKeyUp(Keys.E) ||
+            //(gpState.Buttons.X == ButtonState.Pressed && newGPState.Buttons.X == ButtonState.Released))
             //    interactBtnFlag = false;
 
-            keyState = newState;
+            keyState = newKeyState;
+            gpState = newGPState;
         }
 
         public void UpdateCoordinates(Rectangle roomDimensions)
