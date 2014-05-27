@@ -17,7 +17,8 @@ namespace Pyramid_Plunder
         Mummy, Skeleton, Scarab,
         Dash, DoubleJump,
         StartRoom, SaveRoom, Lobby, Vault,
-        Door, SavePoint
+        Door, SavePoint,
+        RedKey
     }
 
     public enum InteractionTypes : byte
@@ -44,8 +45,14 @@ namespace Pyramid_Plunder
     public enum Locks
     {
         Unlocked = 0,
-        Blue = 1,
-        Yellow = 2
+        Red = 1
+    }
+
+    public enum ItemList : byte
+    {
+        NullItem = 0,
+        RedKey = 1,
+        DoubleJump, Dash
     }
 
     public delegate void DelVoid();
@@ -56,7 +63,7 @@ namespace Pyramid_Plunder
 
     public static class GameResources
     {
-        public const int NUM_KEYS = 3;
+        public const int NUM_ITEMS = 2;
 
         private static GameServiceContainer gameServices;
 

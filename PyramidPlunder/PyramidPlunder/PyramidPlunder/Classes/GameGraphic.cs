@@ -15,7 +15,7 @@ namespace Pyramid_Plunder.Classes
 
         protected Texture2D sprite;
         protected Vector2 coordinates;
-        protected GameObjectList objectType;
+        protected string objectName;
         
         protected int currentAnimation;
         protected int currentFrame;
@@ -41,14 +41,14 @@ namespace Pyramid_Plunder.Classes
         /// Constructor call
         /// </summary>
         /// <param name="objType">The type of object that is represented</param>
-        public GameGraphic(GameObjectList objType, ContentManager content)
+        public GameGraphic(string objName, ContentManager content)
         {
             isLoaded = false;
             Content = content;
 
             currentAnimation = 0;
             animationOffset = 0;
-            objectType = objType;
+            objectName = objName;
             LoadGraphicsData();
         }
 
@@ -79,100 +79,69 @@ namespace Pyramid_Plunder.Classes
         /// <param name="objType">The type of object that is represented.</param>
         private void LoadGraphicsData()
         {
-            switch (objectType)
+            filepath = "../Data/GraphicsData/" + objectName + ".gdf";
+
+            try
             {
-                // TODO: Specifiy the filepath for each objType
-                //case GameObjectList.TestRoom:
-                    //filepath = "../Data/GraphicsData/TestRoom.gdf";
-                    //break;
-                case GameObjectList.SaveRoom:
-                    filepath = "../Data/GraphicsData/SaveRoom.gdf";
-                    break;
-                case GameObjectList.StartRoom:
-                    filepath = "../Data/GraphicsData/StartRoom.gdf";
-                    break;
-                case GameObjectList.Lobby:
-                    filepath = "../Data/GraphicsData/Lobby.gdf";
-                    break;
-                case GameObjectList.Vault:
-                    filepath = "../Data/GraphicsData/Vault.gdf";
-                    break;
-                case GameObjectList.Player:
-                    filepath = "../Data/GraphicsData/Player.gdf";
-                    break;
-                case GameObjectList.Door:
-                    filepath = "../Data/GraphicsData/Door.gdf";
-                    break;
-                default:
-                    filepath = "";
-                    break;
-            }
+                StreamReader sr = new StreamReader(filepath);
 
-            if (filepath != "" && filepath != null)
-            {
-                try
+                String line = GameResources.getNextDataLine(sr, "#");
+
+                numAnimations = int.Parse(line);
+
+                spriteName = "Images/" + GameResources.getNextDataLine(sr, "#");
+
+                animationLocation = new int[numAnimations];
+                animationDimensions = new Vector2[numAnimations];
+                defaultAnimationSpeed = new float[numAnimations];
+                animationSpeed = new float[numAnimations];
+                numberOfFrames = new int[numAnimations];
+
+                for (byte i = 0; i < numAnimations; i++)
                 {
-                    StreamReader sr = new StreamReader(filepath);
+                    animationLocation[i] = int.Parse(GameResources.getNextDataLine(sr, "#"));
 
-                    String line = GameResources.getNextDataLine(sr, "#");
+                    animationDimensions[i] = new Vector2(int.Parse(GameResources.getNextDataLine(sr, "#")),
+                        int.Parse(GameResources.getNextDataLine(sr, "#")));
 
-                    numAnimations = int.Parse(line);
+                    defaultAnimationSpeed[i] = float.Parse(GameResources.getNextDataLine(sr, "#"));
+                    animationSpeed[i] = defaultAnimationSpeed[i];
 
-                    spriteName = "Images/" + GameResources.getNextDataLine(sr, "#");
-
-                    animationLocation = new int[numAnimations];
-                    animationDimensions = new Vector2[numAnimations];
-                    defaultAnimationSpeed = new float[numAnimations];
-                    animationSpeed = new float[numAnimations];
-                    numberOfFrames = new int[numAnimations];
-
-                    for (byte i = 0; i < numAnimations; i++)
-                    {
-                        animationLocation[i] = int.Parse(GameResources.getNextDataLine(sr, "#"));
-
-                        animationDimensions[i] = new Vector2(int.Parse(GameResources.getNextDataLine(sr, "#")),
-                            int.Parse(GameResources.getNextDataLine(sr, "#")));
-
-                        defaultAnimationSpeed[i] = float.Parse(GameResources.getNextDataLine(sr, "#"));
-                        animationSpeed[i] = defaultAnimationSpeed[i];
-
-                        numberOfFrames[i] = int.Parse(GameResources.getNextDataLine(sr, "#"));
-                    }
-
-                    sr.Close();
-                    
-                    sprite = Content.Load<Texture2D>(spriteName);
-
-                    currentAnimation = 0;
-                    previousAnimation = 0;
-                    currentFrame = 0;
-                    elapsedMilliseconds = 0;
-
-                    isLoaded = true;
-                }
-                catch (Exception e)
-                {
-                    System.Diagnostics.Debug.WriteLine("An error occurred: " + e.Message);
-                    numAnimations = 0;
-                    spriteName = "";
-                    animationLocation = new int[0];
-                    animationDimensions = new Vector2[0];
-                    defaultAnimationSpeed = new float[0];
-                    animationSpeed = new float[0];
-                    numberOfFrames = new int[0];
+                    numberOfFrames[i] = int.Parse(GameResources.getNextDataLine(sr, "#"));
                 }
 
-                
+                sr.Close();
 
-                //System.Diagnostics.Debug.WriteLine("Number of animations for " + objType + ": " + numAnimations);
-                //System.Diagnostics.Debug.WriteLine("Animation Location for " + objType + ": " + animationLocation[0]);
-                //System.Diagnostics.Debug.WriteLine("Animation Dimensions for " + objType + ": " + animationDimensions[0]);
-                //System.Diagnostics.Debug.WriteLine("Animation Speed for " + objType + ": " + animationSpeed[0]);
-                //System.Diagnostics.Debug.WriteLine("Number of Frames for " + objType + ": " + numberOfFrames[0]);
+                sprite = Content.Load<Texture2D>(spriteName);
+
+                currentAnimation = 0;
+                previousAnimation = 0;
+                currentFrame = 0;
+                elapsedMilliseconds = 0;
+
+                isLoaded = true;
             }
-            else
+            catch (FileNotFoundException e)
             {
-                
+                System.Diagnostics.Debug.WriteLine("The file was not found: " + filepath + "\n" + e.Message);
+                numAnimations = 0;
+                spriteName = "";
+                animationLocation = new int[0];
+                animationDimensions = new Vector2[0];
+                defaultAnimationSpeed = new float[0];
+                animationSpeed = new float[0];
+                numberOfFrames = new int[0];
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine("An error occurred: " + e.Message);
+                numAnimations = 0;
+                spriteName = "";
+                animationLocation = new int[0];
+                animationDimensions = new Vector2[0];
+                defaultAnimationSpeed = new float[0];
+                animationSpeed = new float[0];
+                numberOfFrames = new int[0];
             }
         }
 
@@ -236,9 +205,9 @@ namespace Pyramid_Plunder.Classes
         /// <summary>
         /// The type of object represented in the GameObjectList
         /// </summary>
-        public GameObjectList ObjectType
+        public string ObjectName
         {
-            get { return objectType; }
+            get { return objectName; }
         }
 
         /// <summary>
@@ -246,9 +215,15 @@ namespace Pyramid_Plunder.Classes
         /// </summary>
         public Rectangle HitBox
         {
-            get { return new Rectangle((int)coordinates.X, (int)coordinates.Y, 
-                (int)animationDimensions[currentAnimation].X, 
-                (int)animationDimensions[currentAnimation].Y); }
+            get 
+            {
+                if (sprite != null)
+                    return new Rectangle((int)coordinates.X, (int)coordinates.Y,
+                        (int)animationDimensions[currentAnimation].X,
+                        (int)animationDimensions[currentAnimation].Y);
+                else
+                    return new Rectangle(0, 0, 0, 0);
+            }
         }
     }
 }

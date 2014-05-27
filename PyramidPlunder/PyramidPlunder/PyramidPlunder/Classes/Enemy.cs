@@ -14,8 +14,8 @@ namespace Pyramid_Plunder.Classes
         /// </summary>
         /// <param name="filepath"></param>
         /// <param name="objType"></param>
-        public Enemy(GameObjectList objType, ContentManager content)
-            : base(objType, content)
+        public Enemy(string objName, ContentManager content)
+            : base(objName, content)
         {
             
         }

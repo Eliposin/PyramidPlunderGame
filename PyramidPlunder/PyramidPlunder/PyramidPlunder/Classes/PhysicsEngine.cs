@@ -94,6 +94,20 @@ namespace Pyramid_Plunder.Classes
                     obj.BecomeAirborne();
             }
         }
-    
+
+        /// <summary>
+        /// Checks two GameObject's to see if they collide.
+        /// </summary>
+        /// <param name="obj1">The first object.</param>
+        /// <param name="obj2">The second object.</param>
+        /// <returns>True if there is a collision.  False otherwise.</returns>
+        public static bool CheckBoundingBoxCollision(GameObject obj1, GameObject obj2)
+        {
+            if (((obj1.HitBox.X + obj1.HitBox.Width >= obj2.HitBox.X) && (obj1.HitBox.X <= obj2.HitBox.X + obj2.HitBox.Width)) &&
+                ((obj1.HitBox.Y + obj1.HitBox.Height >= obj2.HitBox.Y) && (obj1.HitBox.Y <= obj2.HitBox.Y + obj2.HitBox.Height)))
+                return true;
+
+            return false;
+        }
     }
 }

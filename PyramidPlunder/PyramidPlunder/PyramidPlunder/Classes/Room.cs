@@ -39,7 +39,7 @@ namespace Pyramid_Plunder.Classes
             collisionMap = Content.Load<Texture2D>("Images/" + roomName + "Collisions");
             collisionColors = new Color[collisionMap.Width * collisionMap.Height];
             collisionMap.GetData<Color>(collisionColors);
-            background = new GameObject(whichRoom(roomName), Content);
+            background = new GameObject(roomName, Content);
             background.Spawn(new Vector2(0, 0));
         }
 
@@ -48,22 +48,22 @@ namespace Pyramid_Plunder.Classes
         /// </summary>
         /// <param name="roomName">The name of the room as a String</param>
         /// <returns>Which room in the GameObjectList</returns>
-        private GameObjectList whichRoom(String roomName)
-        {
-            switch (roomName)
-            {
-                case "StartRoom":
-                    return GameObjectList.StartRoom;
-                case "SaveRoom":
-                    return GameObjectList.SaveRoom;
-                case "Vault":
-                    return GameObjectList.Vault;
-                case "Lobby":
-                    return GameObjectList.Lobby;
-                default:
-                    return GameObjectList.NullObject;
-            }
-        }
+        //private GameObjectList whichRoom(String roomName)
+        //{
+        //    switch (roomName)
+        //    {
+        //        case "StartRoom":
+        //            return GameObjectList.StartRoom;
+        //        case "SaveRoom":
+        //            return GameObjectList.SaveRoom;
+        //        case "Vault":
+        //            return GameObjectList.Vault;
+        //        case "Lobby":
+        //            return GameObjectList.Lobby;
+        //        default:
+        //            return GameObjectList.NullObject;
+        //    }
+        //}
 
         /// <summary>
         /// An Array of Door Objects representing all possible entrances
@@ -152,20 +152,9 @@ namespace Pyramid_Plunder.Classes
 
                     for (int i = 0; i < numberOfEnemies; i++)
                     {
-                        String enemyType = GameResources.getNextDataLine(sr, "#");
+                        String enemyName = GameResources.getNextDataLine(sr, "#");
 
-                        switch (enemyType)
-                        {
-                            case "Mummy":
-                                enemyArray[i] = new Enemy(GameObjectList.Mummy, Content);
-                                break;
-                            case "Skeleton":
-                                enemyArray[i] = new Enemy(GameObjectList.Skeleton, Content);
-                                break;
-                            case "Scarab":
-                                enemyArray[i] = new Enemy(GameObjectList.Scarab, Content);
-                                break;
-                        }
+                        enemyArray[i] = new Enemy(enemyName, Content);
 
                         enemyArray[i].Spawn(new Vector2(Int16.Parse(GameResources.getNextDataLine(sr, "#")),
                             Int16.Parse(GameResources.getNextDataLine(sr, "#"))));
@@ -176,15 +165,10 @@ namespace Pyramid_Plunder.Classes
 
                     for (int i = 0; i < numberOfEnvironmentObjects; i++)
                     {
-                        String objectType = GameResources.getNextDataLine(sr, "#");
-                        switch (objectType)
-                        {
-                            case "SavePoint":
-                                environmentArray[i] = new GameObject(GameObjectList.SavePoint, Content);
-                                break;
-                            default:
-                                break;
-                        }
+                        String objectName = GameResources.getNextDataLine(sr, "#");
+
+                        environmentArray[i] = new GameObject(objectName, Content);
+
                         environmentArray[i].IsSolid = bool.Parse(GameResources.getNextDataLine(sr, "#"));
 
                         environmentArray[i].Spawn(new Vector2(Int16.Parse(GameResources.getNextDataLine(sr, "#")),
@@ -236,8 +220,8 @@ namespace Pyramid_Plunder.Classes
         public void UpdateCoordinates(Vector2 playerPosition, Vector2 playerCoordinates, Rectangle roomDimensions)
         {
             background.UpdateCoordinates(playerPosition, playerCoordinates, roomDimensions);
-            for (int i = 0; i < doorArray.Length; i++)
-                doorArray[i].UpdateCoordinates(playerPosition, playerCoordinates, roomDimensions);
+            for (int i = 0; i < objectArray.Length; i++)
+                objectArray[i].UpdateCoordinates(playerPosition, playerCoordinates, roomDimensions);
             // TODO: Iterate through and update ALL objects
         }
 
@@ -250,6 +234,8 @@ namespace Pyramid_Plunder.Classes
             for (int i = 0; i < doorArray.Length; i++)
                 doorArray[i].Draw(batch, time);
 
+            
+
             // TODO: Iterate through and update ALL objects
         }
 
@@ -261,6 +247,8 @@ namespace Pyramid_Plunder.Classes
         {
             background.Draw(batch, time);
 
+            for (int i = 0; i < environmentArray.Length; i++)
+                environmentArray[i].Draw(batch, time);
             // TODO: Iterate through and update ALL objects
         }
 

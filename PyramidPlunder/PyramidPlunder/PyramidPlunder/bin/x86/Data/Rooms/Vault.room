@@ -32,4 +32,12 @@ Lobby
 #Number of Enemies
 0
 #Number of Environment Objects
-0
+1
+#Type of Object
+RedKey
+#IsSolid
+false
+# PositionX
+746
+# PositionY
+436

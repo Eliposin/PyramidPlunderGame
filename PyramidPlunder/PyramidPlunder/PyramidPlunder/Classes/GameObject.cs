@@ -10,19 +10,19 @@ namespace Pyramid_Plunder.Classes
     public class GameObject : GameGraphic
     {
         protected Vector2 position;
+        protected ItemList itemType;
         protected bool isSpawned;
-        protected bool isUpgrade;
         protected bool isPhysicsObject;
         protected bool isSolid;
+        protected bool isItem;
 
         /// <summary>
         /// Constructor call
         /// </summary>
         /// <param name="objType">The type of object that is represented.</param>
         /// <param name="spawnPosition">The default spawning position.</param>
-        public GameObject(GameObjectList objType, ContentManager content, Vector2 spawnPosition) : base(objType, content)
+        public GameObject(string objName, ContentManager content, Vector2 spawnPosition) : base(objName, content)
         {
-            objectType = objType;
             position = spawnPosition;
             isPhysicsObject = false;
             Initialize();
@@ -32,12 +32,17 @@ namespace Pyramid_Plunder.Classes
         /// Constructor call
         /// </summary>
         /// <param name="objType">The type of object that is represented.</param>
-        public GameObject(GameObjectList objType, ContentManager content)
-            : base(objType, content)
+        public GameObject(string objName, ContentManager content)
+            : this(objName, content, new Vector2(0, 0)) { }
+
+        /// <summary>
+        /// Overrides the draw method in order to add the clause that checks to see if the object is spawned yet.
+        /// </summary>
+        /// <param name="batch">The SpriteBatch to draw to.</param>
+        public override void Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch batch, GameTime time)
         {
-            objectType = objType;
-            position = new Vector2(0, 0);
-            Initialize();
+            if (isSpawned)
+                base.Draw(batch, time);
         }
 
         /// <summary>
@@ -87,17 +92,15 @@ namespace Pyramid_Plunder.Classes
         /// </summary>
         protected virtual void Initialize()
         {
-            switch (objectType)
+            if (objectName == "RedKey")
             {
-                case GameObjectList.Dash:
-                    isUpgrade = true;
-                    break;
-                case GameObjectList.DoubleJump:
-                    isUpgrade = true;
-                    break;
-                default:
-                    isUpgrade = false;
-                    break;
+                isItem = true;
+                itemType = ItemList.RedKey;
+            }
+            else
+            {
+                isItem = false;
+                itemType = ItemList.NullItem;
             }
         }
 
@@ -117,7 +120,6 @@ namespace Pyramid_Plunder.Classes
         public virtual void Despawn()
         {
             isSpawned = false;
-            Dispose();
         }
 
         /// <summary>
@@ -140,14 +142,6 @@ namespace Pyramid_Plunder.Classes
         }
 
         /// <summary>
-        /// Whether the object is an upgrade
-        /// </summary>
-        public bool IsUpgrade
-        {
-            get { return isUpgrade; }
-        }
-
-        /// <summary>
         /// Whether or not the object is a PhysicsObject
         /// </summary>
         public bool IsPhysicsObject
@@ -162,6 +156,22 @@ namespace Pyramid_Plunder.Classes
         {
             get { return isSolid; }
             set { isSolid = value; }
+        }
+
+        /// <summary>
+        /// What type of item is represented by this object.
+        /// </summary>
+        public ItemList ItemType
+        {
+            get { return itemType; }
+        }
+
+        /// <summary>
+        /// Whether or not the object is currently spawned.
+        /// </summary>
+        public bool IsSpawned
+        {
+            get { return isSpawned; }
         }
     }
 }

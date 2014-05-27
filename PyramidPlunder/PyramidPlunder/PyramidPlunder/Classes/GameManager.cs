@@ -104,6 +104,15 @@ namespace Pyramid_Plunder.Classes
                         if (tempObject != null)
                             player.InteractWith(tempObject, InteractionTypes.PlayerAction);
                     }
+
+                    for (int i = 0; i < currentRoom.ObjectArray.Length; i++)
+                    {
+                        if (currentRoom.ObjectArray[i].IsSpawned)
+                        {
+                            if (PhysicsEngine.CheckBoundingBoxCollision(player, currentRoom.ObjectArray[i]))
+                                player.InteractWith(currentRoom.ObjectArray[i], InteractionTypes.Collision);
+                        }
+                    }
                 }
             }
             else

@@ -82,7 +82,7 @@ namespace Pyramid_Plunder.Classes
         private bool dashBtnFlag = false;
         private bool interactBtnFlag = false;
 
-        private bool[] keyArray;
+        private bool[] itemArray;
 
         private DelVoid saveCallback;
         private DelRoom roomCallback;
@@ -91,17 +91,17 @@ namespace Pyramid_Plunder.Classes
         /// Creates a new Player object
         /// </summary>
         public Player(ContentManager content, DelVoid saveMethod, DelRoom roomMethod)
-            : base(GameObjectList.Player, content)
+            : base("Player", content)
         {
             isSpawned = false;
             JUMP_V = (float)(-Math.Sqrt(-2 * PhysicsEngine.GRAVITY * MAX_JUMP_HEIGHT));
             WALL_JUMP_V_X = (float)(JUMP_V * 0.7071);
             WALL_JUMP_V_Y = (float)(JUMP_V * 0.7071);
 
-            keyArray = new bool[GameResources.NUM_KEYS];
-            for (int i = 0; i < keyArray.Length; i++)
-                keyArray[i] = false;
-            keyArray[0] = true;
+            itemArray = new bool[GameResources.NUM_ITEMS];
+            for (int i = 0; i < itemArray.Length; i++)
+                itemArray[i] = false;
+            itemArray[0] = true;
 
             soundEngine = new AudioEngine(content, GameObjectList.Player);
 
@@ -352,31 +352,48 @@ namespace Pyramid_Plunder.Classes
         /// <param name="interactionType"></param>
         public override void InteractWith(GameObject otherObject, InteractionTypes interactionType)
         {
-            switch (otherObject.ObjectType)
+            if (otherObject.ItemType != ItemList.NullItem)
             {
-                case GameObjectList.Door:
-                    if (interactionType == InteractionTypes.PlayerAction)
-                    {
-                        Door door = (Door)otherObject;
-                        if (!door.IsOpen)
-                        {
-                            if (keyArray[(byte)door.LockType] == true)
-                                door.Open();
-                        }
-                        else
-                        {
-                            if (door.IsRoomLoaded)
-                                roomCallback(door.LinkedRoom);
-                        }
-                    }
-                    break;
-
-                case GameObjectList.SavePoint:
-                    saveCallback();
-                    break;
-                default:
-                    break;
+                PickUpItem(otherObject);
             }
+            else
+            {
+                switch (otherObject.ObjectName)
+                {
+                    case "Door":
+                        if (interactionType == InteractionTypes.PlayerAction)
+                        {
+                            Door door = (Door)otherObject;
+                            if (!door.IsOpen)
+                            {
+                                if (itemArray[(byte)door.LockType] == true)
+                                    door.Open();
+                            }
+                            else
+                            {
+                                if (door.IsRoomLoaded)
+                                    roomCallback(door.LinkedRoom);
+                            }
+                        }
+                        break;
+
+                    case "SavePoint":
+                        saveCallback();
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        private void PickUpItem(GameObject item)
+        {
+            itemArray[(byte)item.ItemType] = true;
+            item.Despawn();
         }
 
         public override void Land()

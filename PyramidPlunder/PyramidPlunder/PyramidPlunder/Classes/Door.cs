@@ -18,8 +18,15 @@ namespace Pyramid_Plunder.Classes
             FacingLeft = 1
         }
 
+        private enum Animations : byte
+        {
+            Unlocked = 0,
+            RedLock = 2
+        }
+
         private DoorOrientations orientation;
         private Locks lockType;
+        private Animations animation;
 
         private bool isOpen;
         private bool isRoomLoaded;
@@ -38,7 +45,7 @@ namespace Pyramid_Plunder.Classes
         /// <param name="connectedDoorIndex">The index of the door that is linked to this one.</param>
         /// <param name="lockT">The type of lock that is on this door.</param>
         public Door(ContentManager content, DoorOrientations orient, string roomName, int connectedDoorIndex, Locks lockT)
-            : base(GameObjectList.Door, content)
+            : base("Door", content)
         {
             Content = content;
             orientation = orient;
@@ -49,10 +56,20 @@ namespace Pyramid_Plunder.Classes
             
             isOpen = false;
 
-            if (orientation == DoorOrientations.FacingLeft)
-                animationOffset = 1;
-            else
-                animationOffset = 0;
+            switch (lockType)
+            {
+                case Locks.Unlocked:
+                    animation = Animations.Unlocked;
+                    break;
+                case Locks.Red:
+                    animation = Animations.RedLock;
+                    break;
+                default:
+                    animation = Animations.Unlocked;
+                    break;
+            }
+
+            currentAnimation = (int)animation + (int)orientation;
 
         }
 

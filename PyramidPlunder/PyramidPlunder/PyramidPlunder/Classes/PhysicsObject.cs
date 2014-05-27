@@ -225,8 +225,8 @@ namespace Pyramid_Plunder.Classes
         /// </summary>
         /// <param name="objType">The type of object that is represented.</param>
         /// <param name="content">The content manager to load assets to.</param>
-        public PhysicsObject(GameObjectList objType, ContentManager content)
-            : base(objType, content)
+        public PhysicsObject(string objName, ContentManager content)
+            : base(objName, content)
         {
             velocityX = 0;
             velocityY = 0;
@@ -237,92 +237,72 @@ namespace Pyramid_Plunder.Classes
             displacementX = 0;
             displacementY = 0;
             isPhysicsObject = true;
-            LoadObjectData(objType);
+            LoadObjectData();
         }
                 
         /// <summary>
         /// Loads in the object's data from the data file associated with that object
         /// </summary>
         /// <param name="objType">The type of object that is represented.</param>
-        private void LoadObjectData(GameObjectList objType)
+        private void LoadObjectData()
         {
             // TODO: Determine which file to open and load in the object data
-            string filepath;
-            switch (objectType)
+            string filepath = "../Data/PhysicsObjectData/" + objectName + ".pod";
+
+
+            try
             {
-                case GameObjectList.Player:
-                    filepath = "../Data/PhysicsObjectData/Player.txt";
-                    break;
-                default:
-                    filepath = "";
-                    break;
+                StreamReader sr = new StreamReader(filepath);
+
+                String line = GameResources.getNextDataLine(sr, "#");
+                isGravityAffected = Convert.ToBoolean(int.Parse(line));
+
+                line = GameResources.getNextDataLine(sr, "#");
+                alignment = (Alignments)int.Parse(line);
+
+                line = GameResources.getNextDataLine(sr, "#");
+                maxHealth = int.Parse(line);
+
+                line = GameResources.getNextDataLine(sr, "#");
+                armor = float.Parse(line);
+
+                line = GameResources.getNextDataLine(sr, "#");
+                movementSpeed = int.Parse(line);
+
+                line = GameResources.getNextDataLine(sr, "#");
+                interactionDistance = int.Parse(line);
+
+                line = GameResources.getNextDataLine(sr, "#");
+                string[] numbers = line.Split(' ');
+                collisionXs = new short[numbers.Count()];
+                for (int i = 0; i < numbers.Count(); i++)
+                    collisionXs[i] = short.Parse(numbers[i]);
+
+                line = GameResources.getNextDataLine(sr, "#");
+                numbers = line.Split(' ');
+                collisionYs = new short[numbers.Count()];
+                for (int i = 0; i < numbers.Count(); i++)
+                    collisionYs[i] = short.Parse(numbers[i]);
+
+                sr.Close();
+
             }
-            if (filepath != "" && filepath != null)
+            catch (FileNotFoundException e)
             {
-                try
-                {
-                    StreamReader sr = new StreamReader(filepath);
-                    
-                    String line = GameResources.getNextDataLine(sr, "#");
-                    isGravityAffected = Convert.ToBoolean(int.Parse(line));
-                    
-                    line = GameResources.getNextDataLine(sr, "#");
-                    alignment = (Alignments)int.Parse(line);
-                    
-                    line = GameResources.getNextDataLine(sr, "#");
-                    maxHealth = int.Parse(line);
-                    
-                    line = GameResources.getNextDataLine(sr, "#");
-                    armor = float.Parse(line);
-                    
-                    line = GameResources.getNextDataLine(sr, "#");
-                    movementSpeed = int.Parse(line);
-
-                    line = GameResources.getNextDataLine(sr, "#");
-                    interactionDistance = int.Parse(line);
-                    
-                    line = GameResources.getNextDataLine(sr, "#");
-                    string[] numbers = line.Split(' ');
-                    collisionXs = new short[numbers.Count()];
-                    for (int i = 0; i < numbers.Count(); i++)
-                        collisionXs[i] = short.Parse(numbers[i]);
-
-                    line = GameResources.getNextDataLine(sr, "#");
-                    numbers = line.Split(' ');
-                    collisionYs = new short[numbers.Count()];
-                    for (int i = 0; i < numbers.Count(); i++)
-                        collisionYs[i] = short.Parse(numbers[i]);
-
-                    sr.Close();
-                    
-                }
-                catch (Exception e)
-                {
-                    System.Diagnostics.Debug.WriteLine("An error occurred: " + e.Message);
-                    isGravityAffected = false;
-                    alignment = 0;
-                    maxHealth = 0;
-                    armor = 0;
-                    movementSpeed = 0;
-                    interactionDistance = 0;
-                    collisionXs = new short[1] { 0 };
-                    collisionYs = new short[1] { 0 };
-                }
+                System.Diagnostics.Debug.WriteLine("The file could not be found: " + filepath + "\n" + e.Message);
             }
-            else
+            catch (Exception e)
             {
-                System.Diagnostics.Debug.WriteLine("File not found for object: " + objectType);
+                System.Diagnostics.Debug.WriteLine("An error occurred: " + e.Message);
+                isGravityAffected = false;
+                alignment = 0;
+                maxHealth = 0;
+                armor = 0;
+                movementSpeed = 0;
+                interactionDistance = 0;
+                collisionXs = new short[1] { 0 };
+                collisionYs = new short[1] { 0 };
             }
-        }
-
-        /// <summary>
-        /// Overrides the draw method in order to add the clause that checks to see if the object is spawned yet.
-        /// </summary>
-        /// <param name="batch">The SpriteBatch to draw to.</param>
-        public new void Draw(SpriteBatch batch, GameTime time)
-        {
-            if (isSpawned)
-                base.Draw(batch, time);
         }
 
         /// <summary>
