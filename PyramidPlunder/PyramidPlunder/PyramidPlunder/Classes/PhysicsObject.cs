@@ -49,7 +49,8 @@ namespace Pyramid_Plunder.Classes
         
         protected Alignments alignment;     //Is this a friend, enemy or neutral party to the player?
         protected int maxHealth;            //The most health points the object can hold at one time.
-                                            //0 if the object is inanimate or invulnerable.
+        protected int currentHealth;        //-1 if the object is inanimate or invulnerable.
+        
         protected float armor;              //The amount or percentage by which to reduce damage from attacks.
         protected int movementSpeed;        //If an object only ever moves at one horizontal speed,
                                             //here's where to store it.
@@ -262,6 +263,8 @@ namespace Pyramid_Plunder.Classes
 
                 line = GameResources.getNextDataLine(sr, "#");
                 maxHealth = int.Parse(line);
+
+                currentHealth = maxHealth;
 
                 line = GameResources.getNextDataLine(sr, "#");
                 armor = float.Parse(line);
@@ -815,6 +818,23 @@ namespace Pyramid_Plunder.Classes
         public int InteractionDistance
         {
             get { return interactionDistance; }
+        }
+
+        /// <summary>
+        /// This object's maximum health.
+        /// </summary>
+        public int MaximumHealth
+        {
+            get { return maxHealth; }
+        }
+
+        /// <summary>
+        /// This object's current health.
+        /// </summary>
+        public int CurrentHealth
+        {
+            get { return currentHealth; }
+            set { currentHealth = value; }
         }
     }
 }

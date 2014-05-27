@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Pyramid_Plunder
 {
@@ -63,9 +64,10 @@ namespace Pyramid_Plunder
 
     public static class GameResources
     {
-        public const int NUM_ITEMS = 2;
+        public const int NUM_ITEMS = 4;
 
         private static GameServiceContainer gameServices;
+        private static GraphicsDevice graphicsDevice;
 
         /// <summary>
         /// Returns the next line in the given stream that does not start with the designated delimiter.
@@ -82,14 +84,16 @@ namespace Pyramid_Plunder
             return line;
         }
 
-        public static void SetServices(GameServiceContainer services)
+        public static GameServiceContainer GameServices
         {
-            gameServices = services;
+            get { return gameServices; }
+            set { gameServices = value; }
         }
 
-        public static GameServiceContainer GetServices()
+        public static GraphicsDevice Device
         {
-            return gameServices;
+            get { return graphicsDevice; }
+            set { graphicsDevice = value; }
         }
     }
 }

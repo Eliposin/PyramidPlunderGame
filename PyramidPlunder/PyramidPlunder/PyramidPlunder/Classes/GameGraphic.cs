@@ -200,6 +200,7 @@ namespace Pyramid_Plunder.Classes
         public Vector2 Coordinates
         {
             get { return coordinates; }
+            set { coordinates = value; }
         }
 
         /// <summary>

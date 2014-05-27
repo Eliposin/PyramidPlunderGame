@@ -30,7 +30,7 @@ namespace Pyramid_Plunder
             graphics.IsFullScreen = false;
             graphics.PreferredBackBufferWidth = DEFAULT_RESOLUTION_X;
             graphics.PreferredBackBufferHeight = DEFAULT_RESOLUTION_Y;
-            
+
             
 
             Content.RootDirectory = "Content";
@@ -59,6 +59,7 @@ namespace Pyramid_Plunder
         /// </summary>
         protected override void LoadContent()
         {
+            GameResources.Device = GraphicsDevice;
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             // TODO: use this.Content to load your game content here

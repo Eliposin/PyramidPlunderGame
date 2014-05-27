@@ -33,7 +33,7 @@ namespace Pyramid_Plunder.Classes
         public Room(String roomName, int doorIndex = -1)
         {
             this.roomName = roomName;
-            Content = new ContentManager(GameResources.GetServices(), "Content");
+            Content = new ContentManager(GameResources.GameServices, "Content");
             Load("../Data/Rooms/" + roomName + ".room", doorIndex);
             
             collisionMap = Content.Load<Texture2D>("Images/" + roomName + "Collisions");

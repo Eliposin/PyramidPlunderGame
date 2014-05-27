@@ -10,7 +10,7 @@ namespace Pyramid_Plunder.Classes
 {
     public class Door : GameObject
     {
-        private const float DOOR_ANIMATION_SPEED = 0.2f;
+        private const float DOOR_ANIMATION_SPEED = 0.3f;
 
         public enum DoorOrientations : byte
         {

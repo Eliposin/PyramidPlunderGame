@@ -87,7 +87,8 @@ namespace Pyramid_Plunder.Classes
 
         private DelVoid saveCallback;
         private DelRoom roomCallback;
-              
+
+
         /// <summary>
         /// Creates a new Player object
         /// </summary>
@@ -347,10 +348,10 @@ namespace Pyramid_Plunder.Classes
         }
 
         /// <summary>
-        /// 
+        /// Interacts with the given object and interaction type.
         /// </summary>
-        /// <param name="otherObject"></param>
-        /// <param name="interactionType"></param>
+        /// <param name="otherObject">The object to interaction type.</param>
+        /// <param name="interactionType">The type of interaction to take place.</param>
         public override void InteractWith(GameObject otherObject, InteractionTypes interactionType)
         {
             if (otherObject.ItemType != ItemList.NullItem)
@@ -388,7 +389,7 @@ namespace Pyramid_Plunder.Classes
         }
 
         /// <summary>
-        /// 
+        /// Picks up the designated item, despawning it and adding it to the player's inventory.
         /// </summary>
         /// <param name="key"></param>
         private void PickUpItem(GameObject item)
@@ -461,33 +462,34 @@ namespace Pyramid_Plunder.Classes
             KeyboardState newKeyState = Keyboard.GetState();
             GamePadState newGPState = GamePad.GetState(PlayerIndex.One);
 
+
             if ((keyState.IsKeyUp(Keys.Right) && newKeyState.IsKeyDown(Keys.Right)) ||
-                (keyState.IsKeyUp(Keys.D) && newKeyState.IsKeyDown(Keys.D)) || 
-                (gpState.DPad.Right == ButtonState.Released && newGPState.DPad.Right == ButtonState.Pressed))
+                    (keyState.IsKeyUp(Keys.D) && newKeyState.IsKeyDown(Keys.D)) ||
+                    (gpState.DPad.Right == ButtonState.Released && newGPState.DPad.Right == ButtonState.Pressed))
             {
                 rightBtnFlag = true;
                 LatestXArrow = XDirection.Right;
             }
             else if ((keyState.IsKeyUp(Keys.Left) && newKeyState.IsKeyDown(Keys.Left)) ||
-                (keyState.IsKeyUp(Keys.A) && newKeyState.IsKeyDown(Keys.A)) ||
-                (gpState.DPad.Left == ButtonState.Released && newGPState.DPad.Left == ButtonState.Pressed))
+                    (keyState.IsKeyUp(Keys.A) && newKeyState.IsKeyDown(Keys.A)) ||
+                    (gpState.DPad.Left == ButtonState.Released && newGPState.DPad.Left == ButtonState.Pressed))
             {
                 leftBtnFlag = true;
                 LatestXArrow = XDirection.Left;
             }
 
             if ((keyState.IsKeyUp(Keys.Up) && newKeyState.IsKeyDown(Keys.Up)) ||
-                (keyState.IsKeyUp(Keys.W) && newKeyState.IsKeyDown(Keys.W)) ||
-                (gpState.DPad.Up == ButtonState.Released && newGPState.DPad.Up == ButtonState.Pressed))
+                    (keyState.IsKeyUp(Keys.W) && newKeyState.IsKeyDown(Keys.W)) ||
+                    (gpState.DPad.Up == ButtonState.Released && newGPState.DPad.Up == ButtonState.Pressed))
                 upBtnFlag = true;
 
             if ((keyState.IsKeyUp(Keys.Space) && newKeyState.IsKeyDown(Keys.Space)) ||
-                (keyState.IsKeyUp(Keys.X) && newKeyState.IsKeyDown(Keys.X)) ||
-                (gpState.Buttons.A == ButtonState.Released && newGPState.Buttons.A == ButtonState.Pressed))
+                    (keyState.IsKeyUp(Keys.X) && newKeyState.IsKeyDown(Keys.X)) ||
+                    (gpState.Buttons.A == ButtonState.Released && newGPState.Buttons.A == ButtonState.Pressed))
                 jumpBtnFlag = true;
 
             if ((keyState.IsKeyUp(Keys.Z) && newKeyState.IsKeyDown(Keys.Z)) ||
-                (keyState.IsKeyUp(Keys.Q) && newKeyState.IsKeyDown(Keys.Q)))
+                    (keyState.IsKeyUp(Keys.Q) && newKeyState.IsKeyDown(Keys.Q)))
                 dashBtnFlag = true;
             else if (gpState.Triggers.Right == 0 && newGPState.Triggers.Right > 0)
             {
@@ -499,6 +501,7 @@ namespace Pyramid_Plunder.Classes
                 PlayerXFacing = XDirection.Left;
                 dashBtnFlag = true;
             }
+
 
             if (keyState.IsKeyUp(Keys.E) && newKeyState.IsKeyDown(Keys.E) ||
                 (gpState.Buttons.X == ButtonState.Released && newGPState.Buttons.X == ButtonState.Pressed))
@@ -555,14 +558,15 @@ namespace Pyramid_Plunder.Classes
                 (keyState.IsKeyDown(Keys.Q) && newKeyState.IsKeyUp(Keys.Q)) ||
                 (gpState.Triggers.Right > 0 && newGPState.Triggers.Right == 0) ||
                 (gpState.Triggers.Left > 0 && newGPState.Triggers.Left == 0))
+
                 dashBtnFlag = false;
 
-            //if (keyState.IsKeyDown(Keys.E) && newState.IsKeyUp(Keys.E) ||
-            //(gpState.Buttons.X == ButtonState.Pressed && newGPState.Buttons.X == ButtonState.Released))
+            //if (keyState.IsKeyDown(Keys.E) && newState.IsKeyUp(Keys.E))
             //    interactBtnFlag = false;
 
             keyState = newKeyState;
             gpState = newGPState;
+
         }
 
         public void UpdateCoordinates(Rectangle roomDimensions)
@@ -609,5 +613,9 @@ namespace Pyramid_Plunder.Classes
             get { return interactBtnFlag; }
         }
 
+        public bool[] CurrentItems
+        {
+            get { return itemArray; }
+        }
     }
 }

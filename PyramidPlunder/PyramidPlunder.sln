@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PyramidPlunder", "PyramidPlunder\PyramidPlunder\PyramidPlunder.csproj", "{6957B8C3-299A-4AE2-AA7A-4B2CD0D06BD8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PyramidPlunder", "PyramidPlunder\PyramidPlunder\PyramidPlunder.csproj", "{9CF15BC0-C5AA-44C4-8B1E-B28CC68AF5EB}"
 EndProject
-Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "PyramidPlunderContent", "PyramidPlunder\PyramidPlunderContent\PyramidPlunderContent.contentproj", "{6D64989C-3580-4832-8012-D3FCB3BAADD2}"
+Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "PyramidPlunderContent", "PyramidPlunder\PyramidPlunderContent\PyramidPlunderContent.contentproj", "{8EBF900E-255E-44EB-B4E1-F1A0480678D3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,12 +11,12 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6957B8C3-299A-4AE2-AA7A-4B2CD0D06BD8}.Debug|x86.ActiveCfg = Debug|x86
-		{6957B8C3-299A-4AE2-AA7A-4B2CD0D06BD8}.Debug|x86.Build.0 = Debug|x86
-		{6957B8C3-299A-4AE2-AA7A-4B2CD0D06BD8}.Release|x86.ActiveCfg = Release|x86
-		{6957B8C3-299A-4AE2-AA7A-4B2CD0D06BD8}.Release|x86.Build.0 = Release|x86
-		{6D64989C-3580-4832-8012-D3FCB3BAADD2}.Debug|x86.ActiveCfg = Debug|x86
-		{6D64989C-3580-4832-8012-D3FCB3BAADD2}.Release|x86.ActiveCfg = Release|x86
+		{9CF15BC0-C5AA-44C4-8B1E-B28CC68AF5EB}.Debug|x86.ActiveCfg = Debug|x86
+		{9CF15BC0-C5AA-44C4-8B1E-B28CC68AF5EB}.Debug|x86.Build.0 = Debug|x86
+		{9CF15BC0-C5AA-44C4-8B1E-B28CC68AF5EB}.Release|x86.ActiveCfg = Release|x86
+		{9CF15BC0-C5AA-44C4-8B1E-B28CC68AF5EB}.Release|x86.Build.0 = Release|x86
+		{8EBF900E-255E-44EB-B4E1-F1A0480678D3}.Debug|x86.ActiveCfg = Debug|x86
+		{8EBF900E-255E-44EB-B4E1-F1A0480678D3}.Release|x86.ActiveCfg = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

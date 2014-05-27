@@ -26,10 +26,9 @@ namespace Pyramid_Plunder.Classes
         private Room currentRoom;
         private Room oldRoom;
         private Player player;
+        private HUD gameHUD;
 
         private ContentManager gameContent;
-        
-        private GameServiceContainer gameServices;
 
         
 
@@ -54,7 +53,7 @@ namespace Pyramid_Plunder.Classes
         public void Initialize(ContentManager gContent, GameServiceContainer services)
         {
             gameContent = gContent;
-            GameResources.SetServices(services);
+            GameResources.GameServices = services;
 
             keyState = Keyboard.GetState();
             gamePadState = GamePad.GetState(PlayerIndex.One);
@@ -113,6 +112,8 @@ namespace Pyramid_Plunder.Classes
                                 player.InteractWith(currentRoom.ObjectArray[i], InteractionTypes.Collision);
                         }
                     }
+
+                    gameHUD.Update(gameTime, player);
                 }
             }
             else
@@ -141,7 +142,8 @@ namespace Pyramid_Plunder.Classes
                 currentRoom.DrawBackground(spriteBatch, time);
                 player.Draw(spriteBatch, time);
                 currentRoom.DrawForeground(spriteBatch, time);
-                //System.Diagnostics.Debug.WriteLine(player.Coordinates);
+
+                gameHUD.Draw(spriteBatch, time);
             }
         }
 
@@ -206,6 +208,7 @@ namespace Pyramid_Plunder.Classes
             currentRoom = new Room("StartRoom");
             player = new Player(gameContent, SaveGame, SwitchRooms);
             player.Spawn(currentRoom.SpawnLocation);
+            gameHUD = new HUD(gameContent, player);
             
             isPaused = false;
             inGame = true;
