@@ -222,16 +222,18 @@ namespace Pyramid_Plunder.Classes
         {
            
             if ((keys.IsKeyDown(Keys.Down) && oldKeys.IsKeyUp(Keys.Down)) ||
-                (gp.IsButtonDown(Buttons.DPadDown) && oldGp.IsButtonDown(Buttons.DPadDown)) ||
-                (gp.ThumbSticks.Left.Y >= THUMBSTICK_THRESHOLD && oldGp.ThumbSticks.Left.Y < THUMBSTICK_THRESHOLD))
+                (gp.IsButtonDown(Buttons.DPadDown) && oldGp.IsButtonUp(Buttons.DPadDown)) ||
+
+                (gp.ThumbSticks.Left.Y <= -THUMBSTICK_THRESHOLD && oldGp.ThumbSticks.Left.Y > -THUMBSTICK_THRESHOLD))
+
             {
                 menuTemp++;
                 if (menuTemp >= vecMenuOpts.Length) menuTemp = 0;
             }
 
             else if ((keys.IsKeyDown(Keys.Up) && oldKeys.IsKeyUp(Keys.Up)) ||
-                (gp.IsButtonDown(Buttons.DPadUp) && oldGp.IsButtonDown(Buttons.DPadUp)) ||
-                (gp.ThumbSticks.Left.Y <= -THUMBSTICK_THRESHOLD && oldGp.ThumbSticks.Left.Y > -THUMBSTICK_THRESHOLD))
+                (gp.IsButtonDown(Buttons.DPadUp) && oldGp.IsButtonUp(Buttons.DPadUp)) ||
+                (gp.ThumbSticks.Left.Y >= THUMBSTICK_THRESHOLD && oldGp.ThumbSticks.Left.Y < THUMBSTICK_THRESHOLD))
             {
                 menuTemp--;
                 if (menuTemp < 0) menuTemp = vecMenuOpts.Length - 1;

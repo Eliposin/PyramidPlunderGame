@@ -36,6 +36,8 @@ namespace Pyramid_Plunder.Classes
         private Room linkedRoom;
         private System.Threading.Thread roomThread;
 
+        private AudioEngine soundEngine;
+
         /// <summary>
         /// Constructor call.  Creates a new Door object.
         /// </summary>
@@ -44,10 +46,11 @@ namespace Pyramid_Plunder.Classes
         /// <param name="roomName">The name of the room that the door leads to.</param>
         /// <param name="connectedDoorIndex">The index of the door that is linked to this one.</param>
         /// <param name="lockT">The type of lock that is on this door.</param>
-        public Door(ContentManager content, DoorOrientations orient, string roomName, int connectedDoorIndex, Locks lockT)
+        public Door(ContentManager content, AudioEngine audioEngine, DoorOrientations orient, string roomName, int connectedDoorIndex, Locks lockT)
             : base("Door", content)
         {
             Content = content;
+            soundEngine = audioEngine;
             orientation = orient;
             linkedRoom = null;
             linkedRoomName = roomName;
@@ -81,7 +84,7 @@ namespace Pyramid_Plunder.Classes
             isOpen = true;
             animationSpeed[currentAnimation] = DOOR_ANIMATION_SPEED;
 
-            //TODO: Make the damned sound effect go!
+            soundEngine.Play(AudioEngine.SoundEffects.DoorOpen);
 
             looping = false;
             isSolid = false;

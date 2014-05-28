@@ -410,6 +410,7 @@ namespace Pyramid_Plunder.Classes
         {
             itemArray[(byte)item.ItemType] = true;
             item.Despawn();
+            soundEngine.Play(AudioEngine.SoundEffects.KeyGet);
         }
 
         public override void Land()
@@ -479,16 +480,16 @@ namespace Pyramid_Plunder.Classes
 
             if ((keyState.IsKeyUp(Keys.Right) && newKeyState.IsKeyDown(Keys.Right)) ||
                     (keyState.IsKeyUp(Keys.D) && newKeyState.IsKeyDown(Keys.D)) ||
-                    (gpState.DPad.Right == ButtonState.Released && newGPState.DPad.Right == ButtonState.Pressed) ||
-                    (gpState.ThumbSticks.Left.X < 0 && newGPState.ThumbSticks.Left.X > 0))
+                    ((newGPState.DPad.Right == ButtonState.Pressed) && (gpState.DPad.Right == ButtonState.Released)) ||
+                    ((newGPState.ThumbSticks.Left.X > 0) && (gpState.ThumbSticks.Left.X <= 0)))
             {
                 rightBtnFlag = true;
                 LatestXArrow = XDirection.Right;
             }
             else if ((keyState.IsKeyUp(Keys.Left) && newKeyState.IsKeyDown(Keys.Left)) ||
                     (keyState.IsKeyUp(Keys.A) && newKeyState.IsKeyDown(Keys.A)) ||
-                    (gpState.DPad.Left == ButtonState.Released && newGPState.DPad.Left == ButtonState.Pressed) ||
-                    (gpState.ThumbSticks.Left.X > 0 && newGPState.ThumbSticks.Left.X < 0))
+                    ((gpState.DPad.Left == ButtonState.Released) && (newGPState.DPad.Left == ButtonState.Pressed)) ||
+                    ((gpState.ThumbSticks.Left.X >= 0) && (newGPState.ThumbSticks.Left.X < 0)))
             {
                 leftBtnFlag = true;
                 LatestXArrow = XDirection.Left;

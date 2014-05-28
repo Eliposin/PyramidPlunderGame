@@ -37,6 +37,8 @@ namespace Pyramid_Plunder.Classes
         {
             this.roomName = roomName;
             Content = new ContentManager(GameResources.GameServices, "Content");
+            soundEngine = new AudioEngine(Content, whichRoom(roomName));
+            
             Load("../Data/Rooms/" + roomName + ".room", doorIndex);
             if (isPersistant)
                 LoadRoomSave();
@@ -47,7 +49,7 @@ namespace Pyramid_Plunder.Classes
             background = new GameObject(roomName, Content);
             background.Spawn(new Vector2(0, 0));
 
-            soundEngine = new AudioEngine(Content, whichRoom(roomName));
+            
         }
 
         ///<summary>
@@ -150,7 +152,7 @@ namespace Pyramid_Plunder.Classes
                         int connectedDoorIndex = Convert.ToInt16(GameResources.getNextDataLine(sr, "#"));
                         Locks lockType = (Locks)byte.Parse(GameResources.getNextDataLine(sr, "#"));
 
-                        doorArray[i] = new Door(Content, orientation, roomName, connectedDoorIndex, lockType);
+                        doorArray[i] = new Door(Content, soundEngine, orientation, roomName, connectedDoorIndex, lockType);
 
                         doorArray[i].Spawn(new Vector2(float.Parse(GameResources.getNextDataLine(sr, "#")),
                                                        float.Parse(GameResources.getNextDataLine(sr, "#"))));
@@ -418,11 +420,6 @@ namespace Pyramid_Plunder.Classes
         public string MusicName
         {
             get { return musicName; }
-        }
-        
-        public void PlayDoorSound()
-        {
-            soundEngine.Play(AudioEngine.SoundEffects.DoorOpen);
         }
     }
 }

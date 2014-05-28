@@ -252,6 +252,8 @@ namespace Pyramid_Plunder.Classes
 
                 sr.Close();
 
+                musicManager.SwitchMusic("Menu");
+
             }
             catch (FileNotFoundException e)
             {

@@ -62,14 +62,11 @@ namespace Pyramid_Plunder.Classes
                     dash = content.Load<SoundEffect>("Sounds/Wooshal2");
                     land = content.Load<SoundEffect>("Sounds/land");
                     wallLand = content.Load<SoundEffect>("Sounds/wallland");
-
+                    keyGet = content.Load<SoundEffect>("Sounds/Key");
                     break;
 
 
                 case GameObjectList.Vault:
-                    keyGet = content.Load<SoundEffect>("Sounds/Key");
-                    doorOpen = content.Load<SoundEffect>("Sounds/DoorGrind");
-                    break;
                 case GameObjectList.StartRoom:
                 case GameObjectList.Lobby:
                 case GameObjectList.SaveRoom:
