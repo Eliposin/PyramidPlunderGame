@@ -24,6 +24,8 @@ namespace Pyramid_Plunder.Classes
 
         private bool isPersistant;
 
+        public AudioEngine soundEngine;
+
         /// <summary>
         /// Creates a new Room object.
         /// </summary>
@@ -44,6 +46,30 @@ namespace Pyramid_Plunder.Classes
             collisionMap.GetData<Color>(collisionColors);
             background = new GameObject(roomName, Content);
             background.Spawn(new Vector2(0, 0));
+
+            soundEngine = new AudioEngine(Content, whichRoom(roomName));
+        }
+
+        ///<summary>
+        ///Determines which room should be passed into the background constructor based on the room's name
+        ///</summary>
+        ///<param name="roomName">The name of the room as a String</param>
+        ///<returns>Which room in the GameObjectList</returns>
+        private GameObjectList whichRoom(String roomName)
+        {
+            switch (roomName)
+            {
+                case "StartRoom":
+                    return GameObjectList.StartRoom;
+                case "SaveRoom":
+                    return GameObjectList.SaveRoom;
+                case "Vault":
+                    return GameObjectList.Vault;
+                case "Lobby":
+                    return GameObjectList.Lobby;
+                default:
+                    return GameObjectList.NullObject;
+            }
         }
 
         /// <summary>
@@ -387,6 +413,11 @@ namespace Pyramid_Plunder.Classes
         public string MusicName
         {
             get { return musicName; }
+        }
+        
+        public void PlayDoorSound()
+        {
+            soundEngine.Play(AudioEngine.SoundEffects.DoorOpen);
         }
     }
 }

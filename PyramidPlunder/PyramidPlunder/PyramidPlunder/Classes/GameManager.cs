@@ -131,6 +131,7 @@ namespace Pyramid_Plunder.Classes
                 //        StartNewGame();
                 //}
 
+
                 if (gameMenu != null)
                     gameMenu.Update(gameTime);
             }
@@ -199,6 +200,7 @@ namespace Pyramid_Plunder.Classes
             switch (action)
             {
                 case MenuCallbacks.NewGame:
+                    musicManager.SwitchMusic("Menu");
                     StartNewGame();
                     break;
                 case MenuCallbacks.LoadGame:

@@ -10,7 +10,7 @@ namespace Pyramid_Plunder.Classes
 {
     public class Door : GameObject
     {
-        private const float DOOR_ANIMATION_SPEED = 0.3f;
+        private const float DOOR_ANIMATION_SPEED = 0.5f;
 
         public enum DoorOrientations : byte
         {
@@ -80,6 +80,9 @@ namespace Pyramid_Plunder.Classes
         {
             isOpen = true;
             animationSpeed[currentAnimation] = DOOR_ANIMATION_SPEED;
+
+            //TODO: Make the damned sound effect go!
+
             looping = false;
             isSolid = false;
 

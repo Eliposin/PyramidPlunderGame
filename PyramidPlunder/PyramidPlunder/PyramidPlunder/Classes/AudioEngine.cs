@@ -20,7 +20,9 @@ namespace Pyramid_Plunder.Classes
             Dash = 2,
             WallLand = 3,
             Attack = 4,
-            Land = 5
+            Land = 5,
+            DoorOpen = 6,
+            KeyGet = 7
         }
 
         private SoundEffect jump1;
@@ -30,6 +32,8 @@ namespace Pyramid_Plunder.Classes
         private SoundEffect land;
         private SoundEffect wallLand;
         private SoundEffect wallJump;
+        private SoundEffect doorOpen;
+        private SoundEffect keyGet;
 
         private float volume = 1f; //TODO: Call menu's volume parameter to get the user defined varaible.
         private const float zero = 0f;
@@ -55,14 +59,24 @@ namespace Pyramid_Plunder.Classes
                     jump1 = content.Load<SoundEffect>("Sounds/hup1");
                     jump2 = content.Load<SoundEffect>("Sounds/hup2");
                     jump3 = content.Load<SoundEffect>("Sounds/hup3");
-                    dash = content.Load<SoundEffect>("Sounds/wooshal2");
+                    dash = content.Load<SoundEffect>("Sounds/Wooshal2");
                     land = content.Load<SoundEffect>("Sounds/land");
                     wallLand = content.Load<SoundEffect>("Sounds/wallland");
 
                     break;
-                default:
 
+
+                case GameObjectList.Vault:
+                    keyGet = content.Load<SoundEffect>("Sounds/Key");
+                    doorOpen = content.Load<SoundEffect>("Sounds/DoorGrind");
                     break;
+                case GameObjectList.StartRoom:
+                case GameObjectList.Lobby:
+                case GameObjectList.SaveRoom:
+                    doorOpen = content.Load<SoundEffect>("Sounds/DoorGrind");
+                    break;
+
+                default: break;
             }
 
         }
@@ -123,6 +137,14 @@ namespace Pyramid_Plunder.Classes
                     wallLand.Play(volume, zero, zero);
                     break;
 
+                case SoundEffects.DoorOpen:
+                    doorOpen.Play(volume, zero, zero);
+                    break;
+
+                case SoundEffects.KeyGet:
+                    keyGet.Play(volume, zero, zero);
+                    break;
+
                 default: break;
             }
         }
@@ -134,9 +156,6 @@ namespace Pyramid_Plunder.Classes
     {
         private Song menu;
         private Song main;
-
-        private float volume = 1f;
-        private float zero = 0f;
 
         private string currentMusicName;
 
