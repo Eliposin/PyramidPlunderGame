@@ -35,8 +35,6 @@
       <Importer>FontDescriptionImporter</Importer>
       <Processor>FontDescriptionProcessor</Processor>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Images\DoorSpritesheet.png">
       <Name>DoorSpritesheet</Name>
       <Importer>TextureImporter</Importer>
