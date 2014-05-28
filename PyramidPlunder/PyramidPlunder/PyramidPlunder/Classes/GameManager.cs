@@ -27,6 +27,7 @@ namespace Pyramid_Plunder.Classes
         private Room oldRoom;
         private Player player;
         private HUD gameHUD;
+        private BGM musicManager;
 
         private ContentManager gameContent;
 
@@ -58,7 +59,12 @@ namespace Pyramid_Plunder.Classes
             keyState = Keyboard.GetState();
             gamePadState = GamePad.GetState(PlayerIndex.One);
             LoadGameSettings();
+
             gameMenu = new Menu("MenuFont", MenuCallback);
+
+
+            musicManager = new BGM(gContent);
+
         }
 
         /// <summary>
@@ -229,6 +235,9 @@ namespace Pyramid_Plunder.Classes
         {
             oldRoom = currentRoom;
             currentRoom = whichRoom;
+
+            musicManager.SwitchMusic(currentRoom.MusicName);
+            
             player.Spawn(currentRoom.SpawnLocation);
 
             System.Threading.Thread roomDisposeThread = new System.Threading.Thread(DisposeRoom);
