@@ -74,6 +74,7 @@ namespace Pyramid_Plunder
     public static class GameResources
     {
         public const int NUM_ITEMS = 4;
+        
 
         private static GameServiceContainer gameServices;
         private static GraphicsDevice graphicsDevice;

@@ -16,6 +16,8 @@ namespace Pyramid_Plunder.Classes
 {
     public class Menu
     {
+        public const float THUMBSTICK_THRESHOLD = 0.3f;
+
         #region
         //private DelMenu menuCallback;
         //private ContentManager Content;
@@ -155,25 +157,30 @@ namespace Pyramid_Plunder.Classes
             if (isRunning)
             {
                 keys = Keyboard.GetState();
+                gp = GamePad.GetState(PlayerIndex.One);
                 
                 #region//Menu
                 if (gameStates == GameStates.Menu)
                 {
-                    menuSelect = MenuOptionsSelect(keys, oldKeys);
-                    if (menuSelect == 0 && (keys.IsKeyDown(Keys.Enter) && oldKeys.IsKeyUp(Keys.Enter)))
+                    menuSelect = MenuOptionsSelect();
+                    if (menuSelect == 0 && ((keys.IsKeyDown(Keys.Enter) && oldKeys.IsKeyUp(Keys.Enter)) ||
+                        (gp.IsButtonDown(Buttons.A) && oldGp.IsButtonDown(Buttons.A))))
                     {
                         isRunning = false;
                         menuCallback(MenuCallbacks.NewGame);
                     }
-                    else if (menuSelect == 1 && (keys.IsKeyDown(Keys.Enter) && oldKeys.IsKeyUp(Keys.Enter)))
+                    else if (menuSelect == 1 && ((keys.IsKeyDown(Keys.Enter) && oldKeys.IsKeyUp(Keys.Enter)) ||
+                        (gp.IsButtonDown(Buttons.A) && oldGp.IsButtonDown(Buttons.A))))
                     {
                         //gameStates = GameStates.LoadGame;
                     }
-                    else if (menuSelect == 2 && (keys.IsKeyDown(Keys.Enter) && oldKeys.IsKeyUp(Keys.Enter)))
+                    else if (menuSelect == 2 && ((keys.IsKeyDown(Keys.Enter) && oldKeys.IsKeyUp(Keys.Enter)) ||
+                        (gp.IsButtonDown(Buttons.A) && oldGp.IsButtonDown(Buttons.A))))
                     {
                         //gameStates = GameStates.Options;
                     }
-                    else if (menuSelect == 3 && (keys.IsKeyDown(Keys.Enter) && oldKeys.IsKeyUp(Keys.Enter)))
+                    else if (menuSelect == 3 && ((keys.IsKeyDown(Keys.Enter) && oldKeys.IsKeyUp(Keys.Enter)) ||
+                        (gp.IsButtonDown(Buttons.A) && oldGp.IsButtonDown(Buttons.A))))
                     {
                         menuCallback(MenuCallbacks.Quit);
                     }
@@ -183,6 +190,7 @@ namespace Pyramid_Plunder.Classes
 
                 //set the oldKeys equal to keys, this makes it so the key presses only register once per use
                 oldKeys = keys;
+                oldGp = gp;
             }
         }
         public void Draw(SpriteBatch spritebatch)
@@ -207,16 +215,20 @@ namespace Pyramid_Plunder.Classes
         }
         //this Function allows the user to select menu Options using keyboard keys
         //TODO: add in functionality to use gamepad DPad
-        private int MenuOptionsSelect(KeyboardState keys, KeyboardState oldKeys)
+        private int MenuOptionsSelect()
         {
            
-            if (keys.IsKeyDown(Keys.Down) && oldKeys.IsKeyUp(Keys.Down))
+            if ((keys.IsKeyDown(Keys.Down) && oldKeys.IsKeyUp(Keys.Down)) ||
+                (gp.IsButtonDown(Buttons.DPadDown) && oldGp.IsButtonDown(Buttons.DPadDown)) ||
+                (gp.ThumbSticks.Left.Y >= THUMBSTICK_THRESHOLD && oldGp.ThumbSticks.Left.Y < THUMBSTICK_THRESHOLD))
             {
                 menuTemp++;
                 if (menuTemp >= vecMenuOpts.Length) menuTemp = 0;
             }
 
-            else if (keys.IsKeyDown(Keys.Up) && oldKeys.IsKeyUp(Keys.Up))
+            else if ((keys.IsKeyDown(Keys.Up) && oldKeys.IsKeyUp(Keys.Up)) ||
+                (gp.IsButtonDown(Buttons.DPadUp) && oldGp.IsButtonDown(Buttons.DPadUp)) ||
+                (gp.ThumbSticks.Left.Y <= -THUMBSTICK_THRESHOLD && oldGp.ThumbSticks.Left.Y > -THUMBSTICK_THRESHOLD))
             {
                 menuTemp--;
                 if (menuTemp < 0) menuTemp = vecMenuOpts.Length - 1;

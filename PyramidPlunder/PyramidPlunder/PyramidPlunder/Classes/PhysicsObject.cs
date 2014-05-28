@@ -668,7 +668,7 @@ namespace Pyramid_Plunder.Classes
         // This method is only called by PhysicsEngine.Update(). If you need to see if this
         // object is on the ground, use the IsOnGround property or even the isOnGround member
         // bool for methods inside this class.
-        public bool checkGround(Room room, int dX = 0, int dY = 0)
+        public bool checkGround(Room room, int dX, int dY)
         {
             //row is the y-coordinate just beneath the object's hitbox at its
             //(adjusted) coordinates.
@@ -700,7 +700,7 @@ namespace Pyramid_Plunder.Classes
         /// <param name="dX">The value by which to adjust the x-coordinate in the test</param>
         /// <param name="dY">The value by which to adjust the y-coordinate in the test</param>
         /// <returns></returns>
-        public bool checkWallRight(Room room, int dX = 0, int dY = 0)
+        public bool checkWallRight(Room room, int dX, int dY)
         {
             //column is the x-coordinate just right of the object's hitbox
             //at its (adjusted) coordinates.
@@ -735,7 +735,7 @@ namespace Pyramid_Plunder.Classes
         /// <param name="dX">The value by which to adjust the x-coordinate in the test</param>
         /// <param name="dY">The value by which to adjust the y-coordinate in the test</param>
         /// <returns></returns>
-        public bool checkWallLeft(Room room, int dX = 0, int dY = 0)
+        public bool checkWallLeft(Room room, int dX, int dY)
         {
             //column is the x-coordinate just left of the object's hitbox
             //at its (adjusted) coordinates.
@@ -770,7 +770,7 @@ namespace Pyramid_Plunder.Classes
         /// <param name="dX">The value by which to adjust the x-coordinate in the test</param>
         /// <param name="dY">The value by which to adjust the y-coordinate in the test</param>
         /// <returns></returns>
-        public bool isStuckAt(Room room, int dX = 0, int dY = 0)
+        public bool isStuckAt(Room room, int dX, int dY)
         {
             //If dX != 0, it's added to the test x-coordinate
             int CoordinateX = (int)Position.X + dX;

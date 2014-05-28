@@ -468,14 +468,16 @@ namespace Pyramid_Plunder.Classes
 
             if ((keyState.IsKeyUp(Keys.Right) && newKeyState.IsKeyDown(Keys.Right)) ||
                     (keyState.IsKeyUp(Keys.D) && newKeyState.IsKeyDown(Keys.D)) ||
-                    (gpState.DPad.Right == ButtonState.Released && newGPState.DPad.Right == ButtonState.Pressed))
+                    (gpState.DPad.Right == ButtonState.Released && newGPState.DPad.Right == ButtonState.Pressed) ||
+                    (gpState.ThumbSticks.Left.X < 0 && newGPState.ThumbSticks.Left.X > 0))
             {
                 rightBtnFlag = true;
                 LatestXArrow = XDirection.Right;
             }
             else if ((keyState.IsKeyUp(Keys.Left) && newKeyState.IsKeyDown(Keys.Left)) ||
                     (keyState.IsKeyUp(Keys.A) && newKeyState.IsKeyDown(Keys.A)) ||
-                    (gpState.DPad.Left == ButtonState.Released && newGPState.DPad.Left == ButtonState.Pressed))
+                    (gpState.DPad.Left == ButtonState.Released && newGPState.DPad.Left == ButtonState.Pressed) ||
+                    (gpState.ThumbSticks.Left.X > 0 && newGPState.ThumbSticks.Left.X < 0))
             {
                 leftBtnFlag = true;
                 LatestXArrow = XDirection.Left;
@@ -518,7 +520,8 @@ namespace Pyramid_Plunder.Classes
 
             if ((keyState.IsKeyDown(Keys.Left) && newKeyState.IsKeyUp(Keys.Left)) ||
                 (keyState.IsKeyDown(Keys.A) && newKeyState.IsKeyUp(Keys.A)) ||
-                (gpState.DPad.Left == ButtonState.Pressed && newGPState.DPad.Left == ButtonState.Released))
+                (gpState.DPad.Left == ButtonState.Pressed && newGPState.DPad.Left == ButtonState.Released) ||
+                (gpState.ThumbSticks.Left.X != 0 && newGPState.ThumbSticks.Left.X == 0))
             {
                 leftBtnFlag = false;
                 if (LatestXArrow == XDirection.Left)
@@ -531,7 +534,8 @@ namespace Pyramid_Plunder.Classes
             }
             if ((keyState.IsKeyDown(Keys.Right) && newKeyState.IsKeyUp(Keys.Right)) ||
                 (keyState.IsKeyDown(Keys.D) && newKeyState.IsKeyUp(Keys.D)) ||
-                (gpState.DPad.Right == ButtonState.Pressed && newGPState.DPad.Right == ButtonState.Released))
+                (gpState.DPad.Right == ButtonState.Pressed && newGPState.DPad.Right == ButtonState.Released) ||
+                (gpState.ThumbSticks.Left.X != 0 && newGPState.ThumbSticks.Left.X == 0))
             {
                 rightBtnFlag = false;
                 if (LatestXArrow == XDirection.Right)

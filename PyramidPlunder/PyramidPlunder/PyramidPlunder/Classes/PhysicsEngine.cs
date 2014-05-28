@@ -29,8 +29,8 @@ namespace Pyramid_Plunder.Classes
             if (obj.IsGravityAffected && !obj.IsOnGround)
                 obj.DisplacementY = Math.Min(obj.DisplacementY + (GRAVITY / 2) * (totalTime * totalTime), MAX_FALLING_SPEED * totalTime);
             
-            obj.DisplacementX = (float)Math.Truncate(obj.DisplacementX);
-            obj.DisplacementY = (float)Math.Truncate(obj.DisplacementY);
+            obj.DisplacementX = (float)((int)(obj.DisplacementX));
+            obj.DisplacementY = (float)((int)(obj.DisplacementY));
 
             //If the object will get stuck trying to move the originally intended amount, a collision
             //has occurred. The appropriate velocity & acceleration variables as well as boolean flags

@@ -31,11 +31,13 @@ namespace Pyramid_Plunder.Classes
         /// <param name="content">The content manager to use for assets.</param>
         /// <param name="doorIndex">The index of the door to enter from.  If no index is specified, or the index is -1,
         /// the room's default spawn location will be used.</param>
-        public Room(String roomName, int doorIndex = -1)
+        public Room(String roomName, int doorIndex)
         {
             this.roomName = roomName;
             Content = new ContentManager(GameResources.GameServices, "Content");
             Load("../Data/Rooms/" + roomName + ".room", doorIndex);
+            if (isPersistant)
+                LoadRoomSave();
             
             collisionMap = Content.Load<Texture2D>("Images/" + roomName + "Collisions");
             collisionColors = new Color[collisionMap.Width * collisionMap.Height];
@@ -43,28 +45,6 @@ namespace Pyramid_Plunder.Classes
             background = new GameObject(roomName, Content);
             background.Spawn(new Vector2(0, 0));
         }
-
-        /// <summary>
-        /// Determines which room should be passed into the background constructor based on the room's name
-        /// </summary>
-        /// <param name="roomName">The name of the room as a String</param>
-        /// <returns>Which room in the GameObjectList</returns>
-        //private GameObjectList whichRoom(String roomName)
-        //{
-        //    switch (roomName)
-        //    {
-        //        case "StartRoom":
-        //            return GameObjectList.StartRoom;
-        //        case "SaveRoom":
-        //            return GameObjectList.SaveRoom;
-        //        case "Vault":
-        //            return GameObjectList.Vault;
-        //        case "Lobby":
-        //            return GameObjectList.Lobby;
-        //        default:
-        //            return GameObjectList.NullObject;
-        //    }
-        //}
 
         /// <summary>
         /// An Array of Door Objects representing all possible entrances
@@ -282,18 +262,36 @@ namespace Pyramid_Plunder.Classes
         /// </summary>
         private void saveToFile()
         {
-            //Should I open a new file here or what?  I'm not exactly sure, and if I do
-            //where would it go.  Maybe a temp file.
-            for(int i = 0; i < doorArray.Length; i++)
-            {
-                //doorArray[i].
+            string[] saveData = new string[objectArray.Length + 1];
 
+            saveData[0] = objectArray.Length.ToString();
+
+            for (int i = 0; i < objectArray.Length; i++)
+            {
+                saveData[i + 1] = objectArray[i].IsSpawned.ToString();
             }
 
-            for (int i = 0; i < enemyArray.Length; i++ )
+            System.IO.File.WriteAllLines("../Data/SaveData/" + roomName + ".txt", saveData);
+        }
+
+        private void LoadRoomSave()
+        {
+            try
             {
-                //enemyArray[i]
-            }  
+                StreamReader sr = new StreamReader("../Data/SaveData/" + roomName + ".txt");
+
+                string line = GameResources.getNextDataLine(sr, "#");
+
+                for (int i = 0; i < objectArray.Length; i++)
+                {
+                    if (bool.Parse(GameResources.getNextDataLine(sr, "#")) == false)
+                        objectArray[i].Despawn();
+                }
+            }
+            catch (FileNotFoundException e)
+            {
+                System.Diagnostics.Debug.WriteLine("The room's save file does not exist: " + roomName);
+            }
         }
 
         /// <summary>

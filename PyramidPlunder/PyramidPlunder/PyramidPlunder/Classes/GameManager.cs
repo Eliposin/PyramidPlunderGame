@@ -214,7 +214,7 @@ namespace Pyramid_Plunder.Classes
             gameMenu.Dispose();
             gameMenu = null;
 
-            currentRoom = new Room("StartRoom");
+            currentRoom = new Room("StartRoom", -1);
             player = new Player(gameContent, SaveGame, SwitchRooms);
             player.Spawn(currentRoom.SpawnLocation);
             gameHUD = new HUD(gameContent, player);

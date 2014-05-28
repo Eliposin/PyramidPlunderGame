@@ -3,7 +3,7 @@
 #Spawn Location Y (was 572)
 460
 #IsPersistant (0 = false, 1 = true)
-false
+true
 #
 #Music
 Menu
