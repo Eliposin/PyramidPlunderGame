@@ -297,11 +297,17 @@ namespace Pyramid_Plunder.Classes
             saveData[0] = objectArray.Length.ToString();
 
             for (int i = 0; i < objectArray.Length; i++)
-            {
                 saveData[i + 1] = objectArray[i].IsSpawned.ToString();
-            }
 
-            System.IO.File.WriteAllLines("../Data/SaveData/" + roomName + ".txt", saveData);
+            //System.IO.File.WriteAllLines("../Data/SaveData/" + roomName + ".txt", saveData);
+
+            System.IO.File.Delete("../Data/SaveData/" + roomName + ".txt");
+
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter("../Data/SaveData/" + roomName + ".txt", true))
+            {
+                foreach (string line in saveData)
+                    file.WriteLine(line);
+            }
         }
 
         private void LoadRoomSave()

@@ -1,0 +1,36 @@
+#IS AFFECTED BY GRAVITY (0 == FALSE, 1 == TRUE)
+
+#
+#ALIGNMENT (0 == FRIENDLY, 1 == ENEMY, 2 == NEUTRAL)
+
+#
+#MAX HEALTH
+
+#
+#ARMOR
+
+#
+#MOVEMENT SPEED
+#(IF AN OBJECT ONLY EVER MOVES AT ONE HORIZONTAL SPEED, HERE'S WHERE TO SPECIFY IT)
+
+#
+#X- & Y- COORDINATES ON COLLISION GRID
+#A collision point will be created from each possible pair of one x-coordinate
+#listed below and one y-coordinate listed below. Thus if there are X x-coordinates
+#listed and Y y-coordinates listed below, there will be X * Y collision points
+#created for this object.
+#Values will be separated only by a single space, so no commas, semicolons, etc.
+#The values will preferably be arranged in increasing order, but at the very
+#least they will be arranged such that the smallest value is first and the
+#largest value is last.
+#
+#X-COORDINATES ON SPRITE WHICH HAVE COLLISION POINTS
+#When these values are arranged in increasing order, the greatest difference between
+#two consecutive values will be no more than *15*.
+
+#
+#Y-COORDINATES ON SPRITE WHICH HAVE COLLISION POINTS
+#When these values are arranged in increasing order, the greatest difference between
+#two consecutive values will be no more than *33*.
+
+#

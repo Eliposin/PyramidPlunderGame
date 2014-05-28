@@ -29,10 +29,12 @@ namespace Pyramid_Plunder.Classes
         private Player player;
         private HUD gameHUD;
         private BGM musicManager;
-
         private ContentManager gameContent;
 
-        
+        private SpriteFont fpsFont;
+        private int fpsCount;
+        private float oldCount;
+        private int drawCalls;
 
         private struct GameSettings
         {
@@ -65,6 +67,11 @@ namespace Pyramid_Plunder.Classes
 
 
             musicManager = new BGM(gContent);
+
+            fpsFont = gameContent.Load<SpriteFont>("Fonts/FPSFont");
+            fpsCount = 0;
+            oldCount = 0;
+            drawCalls = 0;
 
         }
 
@@ -125,17 +132,12 @@ namespace Pyramid_Plunder.Classes
             }
             else
             {
-                //KeyboardState tempKeyState = Keyboard.GetState();
-                //if (tempKeyState.IsKeyDown(Keys.Enter) && keyState.IsKeyUp(Keys.Enter))
-                //{
-                //    if (!inGame)
-                //        StartNewGame();
-                //}
-
-
                 if (gameMenu != null)
                     gameMenu.Update(gameTime);
             }
+
+            
+
         }
 
         /// <summary>
@@ -156,6 +158,18 @@ namespace Pyramid_Plunder.Classes
 
                 gameHUD.Draw(spriteBatch, time);
             }
+
+            oldCount += (float)time.ElapsedGameTime.TotalSeconds;
+            drawCalls++;
+            if (oldCount >= 1)
+            {
+                fpsCount = drawCalls;
+                oldCount -= 1;
+                drawCalls = 0;
+            }
+
+            spriteBatch.DrawString(fpsFont, "FPS: " + fpsCount, new Vector2(10, 10), new Color(0,255,0));
+
         }
 
         /// <summary>
@@ -212,6 +226,9 @@ namespace Pyramid_Plunder.Classes
             }
         }
 
+        /// <summary>
+        /// Starts a new game, getting rid of the menu, deleting old saves, and opening up the starting room.
+        /// </summary>
         private void StartNewGame()
         {
             gameMenu.Dispose();
@@ -230,6 +247,9 @@ namespace Pyramid_Plunder.Classes
             inGame = true;
         }
 
+        /// <summary>
+        /// Loads the previously saved game
+        /// </summary>
         private void LoadGame()
         {
             try
@@ -262,7 +282,6 @@ namespace Pyramid_Plunder.Classes
             }
         }
 
-
         /// <summary>
         /// Saves the game to a file
         /// </summary>
@@ -277,7 +296,14 @@ namespace Pyramid_Plunder.Classes
             for (int i = 0; i < player.CurrentItems.Length; i++)
                 saveData[i + 3] = player.CurrentItems[i].ToString();
 
-            System.IO.File.WriteAllLines("../Data/SaveData/GameSave.txt", saveData);
+            System.IO.File.Delete("../Data/SaveData/GameSave.txt");
+
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter("../Data/SaveData/GameSave.txt", true))
+            {
+                foreach (string line in saveData)
+                    file.WriteLine(line);
+            }
+
         }
 
         /// <summary>
@@ -291,6 +317,10 @@ namespace Pyramid_Plunder.Classes
                 System.IO.File.Delete(file);
         }
 
+        /// <summary>
+        /// Switches the current room to the designated room, unloading the old room.
+        /// </summary>
+        /// <param name="whichRoom">The room to switch to.</param>
         private void SwitchRooms(Room whichRoom)
         {
             oldRoom = currentRoom;
@@ -304,6 +334,9 @@ namespace Pyramid_Plunder.Classes
             roomDisposeThread.Start();
         }
 
+        /// <summary>
+        /// Removes the previously loaded room from memory.
+        /// </summary>
         private void DisposeRoom()
         {
             if (oldRoom != null)

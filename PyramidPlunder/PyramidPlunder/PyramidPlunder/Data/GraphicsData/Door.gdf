@@ -1,0 +1,57 @@
+#Number of animations
+4
+#Name of spritesheet
+DoorSpritesheet
+#
+#
+#
+#
+#######First Animation Stats
+#Location on the spritesheet (y value)
+0
+#Dimensions of the animation (width and height)
+160
+160
+#Animation speed
+0
+#Number of Frames
+8
+#
+#
+#
+#######Second Animation Stats
+#Location on the spritesheet (y value)
+160
+#Dimensions of the animation (width and height)
+160
+160
+#Animation speed
+0
+#Number of Frames
+8
+#
+#
+#
+#######Third Animation Stats
+#Location on the spritesheet (y value)
+320
+#Dimensions of the animation (width and height)
+160
+160
+#Animation speed
+0
+#Number of Frames
+8
+#
+#
+#
+#######Fourth Animation Stats
+#Location on the spritesheet (y value)
+480
+#Dimensions of the animation (width and height)
+160
+160
+#Animation speed
+0
+#Number of Frames
+8
