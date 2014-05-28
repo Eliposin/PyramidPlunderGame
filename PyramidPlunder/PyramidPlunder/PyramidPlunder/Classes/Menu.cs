@@ -129,6 +129,8 @@ namespace Pyramid_Plunder.Classes
                     vecMenuOpts[i] = new Vector2(int.Parse(GameResources.getNextDataLine(sr, "#")),
                         int.Parse(GameResources.getNextDataLine(sr, "#")));
                 }
+
+                sr.Close();
             }
             catch (FileNotFoundException e)
             {
@@ -172,7 +174,8 @@ namespace Pyramid_Plunder.Classes
                     else if (menuSelect == 1 && ((keys.IsKeyDown(Keys.Enter) && oldKeys.IsKeyUp(Keys.Enter)) ||
                         (gp.IsButtonDown(Buttons.A) && oldGp.IsButtonDown(Buttons.A))))
                     {
-                        //gameStates = GameStates.LoadGame;
+                        isRunning = false;
+                        menuCallback(MenuCallbacks.LoadGame);
                     }
                     else if (menuSelect == 2 && ((keys.IsKeyDown(Keys.Enter) && oldKeys.IsKeyUp(Keys.Enter)) ||
                         (gp.IsButtonDown(Buttons.A) && oldGp.IsButtonDown(Buttons.A))))

@@ -21,9 +21,9 @@ Menu
 # Orientation
 0
 # Linked Room
-SaveRoom
+Lobby
 # Linked Door (index)
-1
+2
 # Lock Type
 0
 # PositionX

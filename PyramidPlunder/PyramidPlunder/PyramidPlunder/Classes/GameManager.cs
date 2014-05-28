@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -200,10 +201,10 @@ namespace Pyramid_Plunder.Classes
             switch (action)
             {
                 case MenuCallbacks.NewGame:
-                    musicManager.SwitchMusic("Menu");
                     StartNewGame();
                     break;
                 case MenuCallbacks.LoadGame:
+                    LoadGame();
                     break;
                 case MenuCallbacks.Quit:
                     exitCallback();
@@ -216,6 +217,10 @@ namespace Pyramid_Plunder.Classes
             gameMenu.Dispose();
             gameMenu = null;
 
+            DeleteSave();
+
+            musicManager.SwitchMusic("Menu");
+
             currentRoom = new Room("StartRoom", -1);
             player = new Player(gameContent, SaveGame, SwitchRooms);
             player.Spawn(currentRoom.SpawnLocation);
@@ -225,12 +230,63 @@ namespace Pyramid_Plunder.Classes
             inGame = true;
         }
 
+        private void LoadGame()
+        {
+            try
+            {
+                StreamReader sr = new StreamReader("../Data/SaveData/GameSave.txt");
+                string line = GameResources.getNextDataLine(sr, "#");
+                currentRoom = new Room(line, -1);
+                int playerHealth = int.Parse(GameResources.getNextDataLine(sr, "#"));
+                bool[] playerItems = new bool[int.Parse(GameResources.getNextDataLine(sr, "#"))];
+                for (int i = 0; i < playerItems.Length; i++)
+                    playerItems[i] = bool.Parse(GameResources.getNextDataLine(sr, "#"));
+
+                player = new Player(gameContent, SaveGame, SwitchRooms);
+                player.Spawn(currentRoom.SpawnLocation);
+                player.LoadSave(playerHealth, playerItems);
+                gameHUD = new HUD(gameContent, player);
+
+                isPaused = false;
+                inGame = true;
+
+                sr.Close();
+
+            }
+            catch (FileNotFoundException e)
+            {
+                System.Diagnostics.Debug.WriteLine("The save file could not be found: " + e.Message);
+                StartNewGame();
+            }
+        }
+
+
         /// <summary>
         /// Saves the game to a file
         /// </summary>
         private void SaveGame()
         {
-            System.Diagnostics.Debug.WriteLine("The game was saved!\n(Not really but you made it to the save function so you're on the right track.)");
+            string[] saveData = new string[player.CurrentItems.Length + 3];
+
+            saveData[0] = currentRoom.RoomName;
+            saveData[1] = player.CurrentHealth.ToString();
+            saveData[2] = player.CurrentItems.Length.ToString();
+
+            for (int i = 0; i < player.CurrentItems.Length; i++)
+                saveData[i + 3] = player.CurrentItems[i].ToString();
+
+            System.IO.File.WriteAllLines("../Data/SaveData/GameSave.txt", saveData);
+        }
+
+        /// <summary>
+        /// Deletes any saved data files
+        /// </summary>
+        private void DeleteSave()
+        {
+            string[] fileNames = System.IO.Directory.GetFiles("../Data/SaveData/");
+
+            foreach (string file in fileNames)
+                System.IO.File.Delete(file);
         }
 
         private void SwitchRooms(Room whichRoom)

@@ -114,9 +114,9 @@ namespace Pyramid_Plunder.Classes
         }
 
         /// <summary>
-        /// 
+        /// Causes the object to become "spawned," and therefore drawable and interactable.
         /// </summary>
-        /// <param name="location"></param>
+        /// <param name="location">The position to spawn the object at.</param>
         public override void Spawn(Vector2 location)
         {
             base.Spawn(location);
@@ -389,6 +389,17 @@ namespace Pyramid_Plunder.Classes
                         break;
                 }
             }
+        }
+
+        /// <summary>
+        /// Loads in a saved player state
+        /// </summary>
+        /// <param name="health">The health to set for the player.</param>
+        /// <param name="items">The items the player should have.</param>
+        public void LoadSave(int health, bool[] items)
+        {
+            currentHealth = health;
+            itemArray = items;
         }
 
         /// <summary>

@@ -167,6 +167,7 @@ namespace Pyramid_Plunder.Classes
         }
         public void play()
         {
+            MediaPlayer.Volume = 0.5f;
             MediaPlayer.Play(main);
             MediaPlayer.IsRepeating = true;
             currentMusicName = "Main";

@@ -213,6 +213,8 @@ namespace Pyramid_Plunder.Classes
                             spawnLocation.X += doorArray[doorIndex].HitBox.Width;
                     }
 
+                    sr.Close();
+
                 }
                 catch (Exception e)
                 {
@@ -313,10 +315,13 @@ namespace Pyramid_Plunder.Classes
                     if (bool.Parse(GameResources.getNextDataLine(sr, "#")) == false)
                         objectArray[i].Despawn();
                 }
+
+                sr.Close();
             }
             catch (FileNotFoundException e)
             {
                 System.Diagnostics.Debug.WriteLine("The room's save file does not exist: " + roomName);
+                System.Diagnostics.Debug.WriteLine("\n" + e.Message);
             }
         }
 
