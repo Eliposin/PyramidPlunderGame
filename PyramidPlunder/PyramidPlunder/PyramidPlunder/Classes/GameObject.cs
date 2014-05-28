@@ -96,6 +96,7 @@ namespace Pyramid_Plunder.Classes
             {
                 isItem = true;
                 itemType = ItemList.RedKey;
+
             }
             else
             {
