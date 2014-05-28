@@ -22,6 +22,15 @@ namespace Pyramid_Plunder
         RedKey
     }
 
+    public enum GameStates
+    {
+        Menu,
+        NewGame,
+        LoadGame,
+        Options,
+        Exit
+    }
+
     public enum InteractionTypes : byte
     {
         None,
@@ -32,7 +41,7 @@ namespace Pyramid_Plunder
 
     public enum MenuCallbacks : byte
     {
-        PlayGame = 0,
+        NewGame = 0,
         LoadGame = 1,
         Quit = 2
     }

@@ -58,7 +58,7 @@ namespace Pyramid_Plunder.Classes
             keyState = Keyboard.GetState();
             gamePadState = GamePad.GetState(PlayerIndex.One);
             LoadGameSettings();
-            gameMenu = new Menu(MenuTypes.Main, MenuCallback, gContent);
+            gameMenu = new Menu("MenuFont", MenuCallback);
         }
 
         /// <summary>
@@ -118,12 +118,15 @@ namespace Pyramid_Plunder.Classes
             }
             else
             {
-                KeyboardState tempKeyState = Keyboard.GetState();
-                if (tempKeyState.IsKeyDown(Keys.Enter) && keyState.IsKeyUp(Keys.Enter))
-                {
-                    if (!inGame)
-                        StartNewGame();
-                }
+                //KeyboardState tempKeyState = Keyboard.GetState();
+                //if (tempKeyState.IsKeyDown(Keys.Enter) && keyState.IsKeyUp(Keys.Enter))
+                //{
+                //    if (!inGame)
+                //        StartNewGame();
+                //}
+
+                if (gameMenu != null)
+                    gameMenu.Update(gameTime);
             }
         }
 
@@ -166,7 +169,7 @@ namespace Pyramid_Plunder.Classes
             KeyboardState tempKeyState = Keyboard.GetState();
             if (tempKeyState.IsKeyDown(Keys.Escape) && keyState.IsKeyUp(Keys.Escape))
             {
-                if (isPaused)
+                if (isPaused == true)
                     isPaused = false;
                 else
                     isPaused = true;
@@ -189,7 +192,7 @@ namespace Pyramid_Plunder.Classes
         {
             switch (action)
             {
-                case MenuCallbacks.PlayGame:
+                case MenuCallbacks.NewGame:
                     StartNewGame();
                     break;
                 case MenuCallbacks.LoadGame:
