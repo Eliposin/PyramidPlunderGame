@@ -1,7 +1,0 @@
-SaveRoom
-10
-4
-True
-True
-False
-False

@@ -247,52 +247,53 @@ namespace Pyramid_Plunder.Classes
         /// <param name="objType">The type of object that is represented.</param>
         private void LoadObjectData()
         {
-            // TODO: Determine which file to open and load in the object data
-            string filepath = "../Data/PhysicsObjectData/" + objectName + ".pod";
-
-
             try
             {
-                StreamReader sr = new StreamReader(filepath);
+                using (Stream stream = TitleContainer.OpenStream("Data/PhysicsObjectData/" + objectName + ".txt"))
+                {
+                    using (StreamReader sr = new StreamReader(stream))
+                    {
 
-                String line = GameResources.getNextDataLine(sr, "#");
-                isGravityAffected = Convert.ToBoolean(int.Parse(line));
+                        String line = GameResources.getNextDataLine(sr, "#");
+                        isGravityAffected = Convert.ToBoolean(int.Parse(line));
 
-                line = GameResources.getNextDataLine(sr, "#");
-                alignment = (Alignments)int.Parse(line);
+                        line = GameResources.getNextDataLine(sr, "#");
+                        alignment = (Alignments)int.Parse(line);
 
-                line = GameResources.getNextDataLine(sr, "#");
-                maxHealth = int.Parse(line);
+                        line = GameResources.getNextDataLine(sr, "#");
+                        maxHealth = int.Parse(line);
 
-                currentHealth = maxHealth;
+                        currentHealth = maxHealth;
 
-                line = GameResources.getNextDataLine(sr, "#");
-                armor = float.Parse(line);
+                        line = GameResources.getNextDataLine(sr, "#");
+                        armor = float.Parse(line);
 
-                line = GameResources.getNextDataLine(sr, "#");
-                movementSpeed = int.Parse(line);
+                        line = GameResources.getNextDataLine(sr, "#");
+                        movementSpeed = int.Parse(line);
 
-                line = GameResources.getNextDataLine(sr, "#");
-                interactionDistance = int.Parse(line);
+                        line = GameResources.getNextDataLine(sr, "#");
+                        interactionDistance = int.Parse(line);
 
-                line = GameResources.getNextDataLine(sr, "#");
-                string[] numbers = line.Split(' ');
-                collisionXs = new short[numbers.Count()];
-                for (int i = 0; i < numbers.Count(); i++)
-                    collisionXs[i] = short.Parse(numbers[i]);
+                        line = GameResources.getNextDataLine(sr, "#");
+                        string[] numbers = line.Split(' ');
+                        collisionXs = new short[numbers.Count()];
+                        for (int i = 0; i < numbers.Count(); i++)
+                            collisionXs[i] = short.Parse(numbers[i]);
 
-                line = GameResources.getNextDataLine(sr, "#");
-                numbers = line.Split(' ');
-                collisionYs = new short[numbers.Count()];
-                for (int i = 0; i < numbers.Count(); i++)
-                    collisionYs[i] = short.Parse(numbers[i]);
+                        line = GameResources.getNextDataLine(sr, "#");
+                        numbers = line.Split(' ');
+                        collisionYs = new short[numbers.Count()];
+                        for (int i = 0; i < numbers.Count(); i++)
+                            collisionYs[i] = short.Parse(numbers[i]);
 
-                sr.Close();
+                        sr.Close();
+                    }
+                }
 
             }
             catch (FileNotFoundException e)
             {
-                System.Diagnostics.Debug.WriteLine("The file could not be found: " + filepath + "\n" + e.Message);
+                System.Diagnostics.Debug.WriteLine("The file could not be found: " + e.Message);
             }
             catch (Exception e)
             {

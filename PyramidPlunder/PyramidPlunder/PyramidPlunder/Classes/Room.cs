@@ -39,7 +39,7 @@ namespace Pyramid_Plunder.Classes
             Content = new ContentManager(GameResources.GameServices, "Content");
             soundEngine = new AudioEngine(Content, whichRoom(roomName));
             
-            Load("../Data/Rooms/" + roomName + ".room", doorIndex);
+            Load("Data/Rooms/" + roomName + ".txt", doorIndex);
             if (isPersistant)
                 LoadRoomSave();
             
@@ -134,88 +134,93 @@ namespace Pyramid_Plunder.Classes
                     int numberOfDoors;
                     int numberOfEnemies;
                     int numberOfEnvironmentObjects;
-                    
-                    StreamReader sr = new StreamReader(filePath);
-                    spawnLocation = new Vector2(Convert.ToInt16(GameResources.getNextDataLine(sr, "#")), 
-                                                Convert.ToInt16(GameResources.getNextDataLine(sr, "#")));
 
-                    isPersistant = bool.Parse(GameResources.getNextDataLine(sr, "#"));
-
-                    musicName = GameResources.getNextDataLine(sr, "#");
-
-                    numberOfDoors = Convert.ToInt16(GameResources.getNextDataLine(sr, "#"));
-                    doorArray = new Door[numberOfDoors];
-                    for (int i = 0; i < numberOfDoors; i++)
+                    using (Stream stream = TitleContainer.OpenStream(filePath))
                     {
-                        Door.DoorOrientations orientation = (Door.DoorOrientations)byte.Parse(GameResources.getNextDataLine(sr, "#"));
-                        string roomName = GameResources.getNextDataLine(sr, "#");
-                        int connectedDoorIndex = Convert.ToInt16(GameResources.getNextDataLine(sr, "#"));
-                        Locks lockType = (Locks)byte.Parse(GameResources.getNextDataLine(sr, "#"));
+                        using (StreamReader sr = new StreamReader(stream))
+                        {
+                            spawnLocation = new Vector2(Convert.ToInt16(GameResources.getNextDataLine(sr, "#")),
+                                                        Convert.ToInt16(GameResources.getNextDataLine(sr, "#")));
 
-                        doorArray[i] = new Door(Content, soundEngine, orientation, roomName, connectedDoorIndex, lockType);
+                            isPersistant = bool.Parse(GameResources.getNextDataLine(sr, "#"));
 
-                        doorArray[i].Spawn(new Vector2(float.Parse(GameResources.getNextDataLine(sr, "#")),
-                                                       float.Parse(GameResources.getNextDataLine(sr, "#"))));
+                            musicName = GameResources.getNextDataLine(sr, "#");
+
+                            numberOfDoors = Convert.ToInt16(GameResources.getNextDataLine(sr, "#"));
+                            doorArray = new Door[numberOfDoors];
+                            for (int i = 0; i < numberOfDoors; i++)
+                            {
+                                Door.DoorOrientations orientation = (Door.DoorOrientations)byte.Parse(GameResources.getNextDataLine(sr, "#"));
+                                string roomName = GameResources.getNextDataLine(sr, "#");
+                                int connectedDoorIndex = Convert.ToInt16(GameResources.getNextDataLine(sr, "#"));
+                                Locks lockType = (Locks)byte.Parse(GameResources.getNextDataLine(sr, "#"));
+
+                                doorArray[i] = new Door(Content, soundEngine, orientation, roomName, connectedDoorIndex, lockType);
+
+                                doorArray[i].Spawn(new Vector2(float.Parse(GameResources.getNextDataLine(sr, "#")),
+                                                               float.Parse(GameResources.getNextDataLine(sr, "#"))));
+                            }
+
+                            numberOfEnemies = Int16.Parse(GameResources.getNextDataLine(sr, "#"));
+                            enemyArray = new Enemy[numberOfEnemies];
+
+                            for (int i = 0; i < numberOfEnemies; i++)
+                            {
+                                String enemyName = GameResources.getNextDataLine(sr, "#");
+
+                                enemyArray[i] = new Enemy(enemyName, Content);
+
+                                enemyArray[i].Spawn(new Vector2(Int16.Parse(GameResources.getNextDataLine(sr, "#")),
+                                    Int16.Parse(GameResources.getNextDataLine(sr, "#"))));
+                            }
+
+                            numberOfEnvironmentObjects = Int16.Parse(GameResources.getNextDataLine(sr, "#"));
+                            environmentArray = new GameObject[numberOfEnvironmentObjects];
+
+                            for (int i = 0; i < numberOfEnvironmentObjects; i++)
+                            {
+                                String objectName = GameResources.getNextDataLine(sr, "#");
+
+                                environmentArray[i] = new GameObject(objectName, Content);
+
+                                environmentArray[i].IsSolid = bool.Parse(GameResources.getNextDataLine(sr, "#"));
+
+                                environmentArray[i].Spawn(new Vector2(Int16.Parse(GameResources.getNextDataLine(sr, "#")),
+                                    Int16.Parse(GameResources.getNextDataLine(sr, "#"))));
+                            }
+
+                            objectArray = new GameObject[numberOfDoors + numberOfEnemies + numberOfEnvironmentObjects];
+                            int arrayIndex = 0;
+
+                            for (int i = 0; i < numberOfDoors; i++)
+                            {
+                                objectArray[i + arrayIndex] = doorArray[i + arrayIndex];
+                            }
+                            arrayIndex += numberOfDoors;
+
+                            for (int i = 0; i < numberOfEnemies; i++)
+                            {
+                                objectArray[i + arrayIndex] = enemyArray[i];
+                            }
+                            arrayIndex += numberOfEnemies;
+
+                            for (int i = 0; i < numberOfEnvironmentObjects; i++)
+                            {
+                                objectArray[i + arrayIndex] = environmentArray[i];
+                            }
+
+                            if (doorIndex != -1)
+                            {
+                                spawnLocation = doorArray[doorIndex].Position;
+                                if (doorArray[doorIndex].Orientation == Door.DoorOrientations.FacingLeft)
+                                    spawnLocation.X -= Player.PLAYER_WIDTH;
+                                else
+                                    spawnLocation.X += doorArray[doorIndex].HitBox.Width;
+                            }
+
+                            sr.Close();
+                        }
                     }
-
-                    numberOfEnemies = Int16.Parse(GameResources.getNextDataLine(sr, "#"));
-                    enemyArray = new Enemy[numberOfEnemies];
-
-                    for (int i = 0; i < numberOfEnemies; i++)
-                    {
-                        String enemyName = GameResources.getNextDataLine(sr, "#");
-
-                        enemyArray[i] = new Enemy(enemyName, Content);
-
-                        enemyArray[i].Spawn(new Vector2(Int16.Parse(GameResources.getNextDataLine(sr, "#")),
-                            Int16.Parse(GameResources.getNextDataLine(sr, "#"))));
-                    }
-
-                    numberOfEnvironmentObjects = Int16.Parse(GameResources.getNextDataLine(sr, "#"));
-                    environmentArray = new GameObject[numberOfEnvironmentObjects];
-
-                    for (int i = 0; i < numberOfEnvironmentObjects; i++)
-                    {
-                        String objectName = GameResources.getNextDataLine(sr, "#");
-
-                        environmentArray[i] = new GameObject(objectName, Content);
-
-                        environmentArray[i].IsSolid = bool.Parse(GameResources.getNextDataLine(sr, "#"));
-
-                        environmentArray[i].Spawn(new Vector2(Int16.Parse(GameResources.getNextDataLine(sr, "#")),
-                            Int16.Parse(GameResources.getNextDataLine(sr, "#"))));
-                    }
-
-                    objectArray = new GameObject[numberOfDoors + numberOfEnemies + numberOfEnvironmentObjects];
-                    int arrayIndex = 0;
-
-                    for (int i = 0; i < numberOfDoors; i++)
-                    {
-                        objectArray[i + arrayIndex] = doorArray[i + arrayIndex];
-                    }
-                    arrayIndex += numberOfDoors;
-
-                    for (int i = 0; i < numberOfEnemies; i++)
-                    {
-                        objectArray[i + arrayIndex] = enemyArray[i];
-                    }
-                    arrayIndex += numberOfEnemies;
-
-                    for (int i = 0; i < numberOfEnvironmentObjects; i++)
-                    {
-                        objectArray[i + arrayIndex] = environmentArray[i];
-                    }
-
-                    if (doorIndex != -1)
-                    {
-                        spawnLocation = doorArray[doorIndex].Position;
-                        if (doorArray[doorIndex].Orientation == Door.DoorOrientations.FacingLeft)
-                            spawnLocation.X -= Player.PLAYER_WIDTH;
-                        else
-                            spawnLocation.X += doorArray[doorIndex].HitBox.Width;
-                    }
-
-                    sr.Close();
 
                 }
                 catch (Exception e)
@@ -314,17 +319,22 @@ namespace Pyramid_Plunder.Classes
         {
             try
             {
-                StreamReader sr = new StreamReader("../Data/SaveData/" + roomName + ".txt");
-
-                string line = GameResources.getNextDataLine(sr, "#");
-
-                for (int i = 0; i < objectArray.Length; i++)
+                using (Stream stream = TitleContainer.OpenStream("Data/SaveData/" + roomName + ".txt"))
                 {
-                    if (bool.Parse(GameResources.getNextDataLine(sr, "#")) == false)
-                        objectArray[i].Despawn();
-                }
+                    using (StreamReader sr = new StreamReader(stream))
+                    {
 
-                sr.Close();
+                        string line = GameResources.getNextDataLine(sr, "#");
+
+                        for (int i = 0; i < objectArray.Length; i++)
+                        {
+                            if (bool.Parse(GameResources.getNextDataLine(sr, "#")) == false)
+                                objectArray[i].Despawn();
+                        }
+
+                        sr.Close();
+                    }
+                }
             }
             catch (FileNotFoundException e)
             {

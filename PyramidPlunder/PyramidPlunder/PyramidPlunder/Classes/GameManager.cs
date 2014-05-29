@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Storage;
 
 namespace Pyramid_Plunder.Classes
 {
@@ -18,6 +19,7 @@ namespace Pyramid_Plunder.Classes
     {
         private bool isPaused;
         private bool inGame;
+        private bool isSaving;
         private KeyboardState keyState;
         private GamePadState gamePadState;
         private GameSettings gameSettings;
@@ -254,23 +256,30 @@ namespace Pyramid_Plunder.Classes
         {
             try
             {
-                StreamReader sr = new StreamReader("../Data/SaveData/GameSave.txt");
-                string line = GameResources.getNextDataLine(sr, "#");
-                currentRoom = new Room(line, -1);
-                int playerHealth = int.Parse(GameResources.getNextDataLine(sr, "#"));
-                bool[] playerItems = new bool[int.Parse(GameResources.getNextDataLine(sr, "#"))];
-                for (int i = 0; i < playerItems.Length; i++)
-                    playerItems[i] = bool.Parse(GameResources.getNextDataLine(sr, "#"));
+                StorageContainer container = GetContainer();
 
-                player = new Player(gameContent, SaveGame, SwitchRooms);
-                player.Spawn(currentRoom.SpawnLocation);
-                player.LoadSave(playerHealth, playerItems);
-                gameHUD = new HUD(gameContent, player);
+                using (Stream stream = container.OpenFile("SaveGame.txt", FileMode.Open))
+                {
+                    using (StreamReader sr = new StreamReader(stream))
+                    {
+                        string line = GameResources.getNextDataLine(sr, "#");
+                        currentRoom = new Room(line, -1);
+                        int playerHealth = int.Parse(GameResources.getNextDataLine(sr, "#"));
+                        bool[] playerItems = new bool[int.Parse(GameResources.getNextDataLine(sr, "#"))];
+                        for (int i = 0; i < playerItems.Length; i++)
+                            playerItems[i] = bool.Parse(GameResources.getNextDataLine(sr, "#"));
 
-                isPaused = false;
-                inGame = true;
+                        player = new Player(gameContent, SaveGame, SwitchRooms);
+                        player.Spawn(currentRoom.SpawnLocation);
+                        player.LoadSave(playerHealth, playerItems);
+                        gameHUD = new HUD(gameContent, player);
 
-                sr.Close();
+                        isPaused = false;
+                        inGame = true;
+
+                        sr.Close();
+                    }
+                }
 
                 musicManager.SwitchMusic("Menu");
 
@@ -287,6 +296,8 @@ namespace Pyramid_Plunder.Classes
         /// </summary>
         private void SaveGame()
         {
+            isSaving = true;
+
             string[] saveData = new string[player.CurrentItems.Length + 3];
 
             saveData[0] = currentRoom.RoomName;
@@ -296,14 +307,48 @@ namespace Pyramid_Plunder.Classes
             for (int i = 0; i < player.CurrentItems.Length; i++)
                 saveData[i + 3] = player.CurrentItems[i].ToString();
 
-            System.IO.File.Delete("Content/SaveData/GameSave.txt");
+            StorageContainer container = GetContainer();
 
-            using (System.IO.StreamWriter file = new System.IO.StreamWriter("Content/SaveData/GameSave.txt", true))
+            using (StreamWriter file = new StreamWriter(container.CreateFile("SaveGame.txt")))
             {
                 foreach (string line in saveData)
                     file.WriteLine(line);
             }
 
+            isSaving = false;
+        }
+
+        private StorageContainer GetContainer()
+        {
+            try
+            {
+                IAsyncResult result;
+
+                result = StorageDevice.BeginShowSelector(PlayerIndex.One, null, null);
+
+                while (!result.IsCompleted)
+                    result.AsyncWaitHandle.WaitOne();
+
+                StorageDevice device = StorageDevice.EndShowSelector(result);
+
+                //result.AsyncWaitHandle.Close();
+
+                result = device.BeginOpenContainer("PyramidPlunder", null, null);
+
+                while (!result.IsCompleted)
+                    result.AsyncWaitHandle.WaitOne();
+
+                StorageContainer container = device.EndOpenContainer(result);
+
+                result.AsyncWaitHandle.Close();
+
+                return container;
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.Message);
+                return null;
+            }
         }
 
         /// <summary>
@@ -311,10 +356,12 @@ namespace Pyramid_Plunder.Classes
         /// </summary>
         private void DeleteSave()
         {
-            string[] fileNames = System.IO.Directory.GetFiles("../Data/SaveData/");
+            StorageContainer container = GetContainer();
+
+            string[] fileNames = container.GetFileNames();
 
             foreach (string file in fileNames)
-                System.IO.File.Delete(file);
+                container.DeleteFile(file);
         }
 
         /// <summary>

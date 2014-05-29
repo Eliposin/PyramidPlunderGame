@@ -1,8 +1,8 @@
 #Spawn Location X (was 1185)
-141
+1082
 #Spawn Location Y (was 572)
-2166
-#IsPersistant (0 = false, 1 = true)
+460
+#IsPersistant
 false
 #
 #Music
@@ -16,48 +16,30 @@ Menu
 #Position (in the room)
 #
 #Number of Doors
-3
+1
 #####First Door (index 0):#####
 # Orientation
-0
-# Linked Room
-StartRoom
-# Linked Door (index)
-0
-# Lock Type
-0
-# PositionX
--3
-# PositionY
-2139
-#####Second Door (index 0):#####
-# Orientation
-0
-# Linked Room
-Vault
-# Linked Door (index)
-0
-# Lock Type
-0
-# PositionX
--3
-# PositionY
-405
-#####Third Door (index 0):#####
-# Orientation
 1
 # Linked Room
-SaveRoom
+Lobby
 # Linked Door (index)
-0
+1
 # Lock Type
 1
 # PositionX
-2076
+1120
 # PositionY
-470
+432
 #####Enemies#####
 #Number of Enemies
 0
 #Number of Environment Objects
-0
+1
+#Type of Object
+RedKey
+#IsSolid
+false
+# PositionX
+746
+# PositionY
+436

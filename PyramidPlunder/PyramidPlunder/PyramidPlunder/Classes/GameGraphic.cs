@@ -79,38 +79,41 @@ namespace Pyramid_Plunder.Classes
         /// <param name="objType">The type of object that is represented.</param>
         private void LoadGraphicsData()
         {
-            filepath = "../Data/GraphicsData/" + objectName + ".gdf";
-
             try
             {
-                StreamReader sr = new StreamReader(filepath);
-
-                String line = GameResources.getNextDataLine(sr, "#");
-
-                numAnimations = int.Parse(line);
-
-                spriteName = "Images/" + GameResources.getNextDataLine(sr, "#");
-
-                animationLocation = new int[numAnimations];
-                animationDimensions = new Vector2[numAnimations];
-                defaultAnimationSpeed = new float[numAnimations];
-                animationSpeed = new float[numAnimations];
-                numberOfFrames = new int[numAnimations];
-
-                for (byte i = 0; i < numAnimations; i++)
+                using (Stream stream = TitleContainer.OpenStream("Data/GraphicsData/" + objectName + ".txt"))
                 {
-                    animationLocation[i] = int.Parse(GameResources.getNextDataLine(sr, "#"));
+                    using (StreamReader sr = new StreamReader(stream))
+                    {
 
-                    animationDimensions[i] = new Vector2(int.Parse(GameResources.getNextDataLine(sr, "#")),
-                        int.Parse(GameResources.getNextDataLine(sr, "#")));
+                        String line = GameResources.getNextDataLine(sr, "#");
 
-                    defaultAnimationSpeed[i] = float.Parse(GameResources.getNextDataLine(sr, "#"));
-                    animationSpeed[i] = defaultAnimationSpeed[i];
+                        numAnimations = int.Parse(line);
 
-                    numberOfFrames[i] = int.Parse(GameResources.getNextDataLine(sr, "#"));
+                        spriteName = "Images/" + GameResources.getNextDataLine(sr, "#");
+
+                        animationLocation = new int[numAnimations];
+                        animationDimensions = new Vector2[numAnimations];
+                        defaultAnimationSpeed = new float[numAnimations];
+                        animationSpeed = new float[numAnimations];
+                        numberOfFrames = new int[numAnimations];
+
+                        for (byte i = 0; i < numAnimations; i++)
+                        {
+                            animationLocation[i] = int.Parse(GameResources.getNextDataLine(sr, "#"));
+
+                            animationDimensions[i] = new Vector2(int.Parse(GameResources.getNextDataLine(sr, "#")),
+                                int.Parse(GameResources.getNextDataLine(sr, "#")));
+
+                            defaultAnimationSpeed[i] = float.Parse(GameResources.getNextDataLine(sr, "#"));
+                            animationSpeed[i] = defaultAnimationSpeed[i];
+
+                            numberOfFrames[i] = int.Parse(GameResources.getNextDataLine(sr, "#"));
+                        }
+
+                        sr.Close();
+                    }
                 }
-
-                sr.Close();
 
                 sprite = Content.Load<Texture2D>(spriteName);
 

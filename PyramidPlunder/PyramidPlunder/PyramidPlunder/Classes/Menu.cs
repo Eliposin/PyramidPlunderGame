@@ -116,21 +116,26 @@ namespace Pyramid_Plunder.Classes
         {
             try
             {
-                StreamReader sr = new StreamReader("../Data/MainMenu.menu");
-
-                String line = GameResources.getNextDataLine(sr, "#");
-
-                int numberOfButtons = Convert.ToInt16(line);
-
-                vecMenuOpts = new Vector2[numberOfButtons];
-
-                for (int i = 0; i < numberOfButtons; i++)
+                using (Stream stream = TitleContainer.OpenStream("Data/MainMenu.txt"))
                 {
-                    vecMenuOpts[i] = new Vector2(int.Parse(GameResources.getNextDataLine(sr, "#")),
-                        int.Parse(GameResources.getNextDataLine(sr, "#")));
-                }
+                    using (StreamReader sr = new StreamReader(stream))
+                    {
 
-                sr.Close();
+                    String line = GameResources.getNextDataLine(sr, "#");
+
+                    int numberOfButtons = Convert.ToInt16(line);
+
+                    vecMenuOpts = new Vector2[numberOfButtons];
+
+                    for (int i = 0; i < numberOfButtons; i++)
+                    {
+                        vecMenuOpts[i] = new Vector2(int.Parse(GameResources.getNextDataLine(sr, "#")),
+                            int.Parse(GameResources.getNextDataLine(sr, "#")));
+                    }
+
+                    sr.Close();
+                    }
+                }
             }
             catch (FileNotFoundException e)
             {
