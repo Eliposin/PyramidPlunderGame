@@ -296,9 +296,9 @@ namespace Pyramid_Plunder.Classes
             for (int i = 0; i < player.CurrentItems.Length; i++)
                 saveData[i + 3] = player.CurrentItems[i].ToString();
 
-            System.IO.File.Delete("../Data/SaveData/GameSave.txt");
+            System.IO.File.Delete("Content/SaveData/GameSave.txt");
 
-            using (System.IO.StreamWriter file = new System.IO.StreamWriter("../Data/SaveData/GameSave.txt", true))
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter("Content/SaveData/GameSave.txt", true))
             {
                 foreach (string line in saveData)
                     file.WriteLine(line);
