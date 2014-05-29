@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
@@ -44,7 +45,7 @@ namespace Pyramid_Plunder.Classes
             Load("Data/Rooms/" + roomName + ".txt", doorIndex);
 
             if (isPersistant)
-                LoadRoomSave();
+                LoadRoomState();
             
             collisionMap = Content.Load<Texture2D>("Images/" + graphicsName + "Collisions");
             collisionColors = new Color[collisionMap.Width * collisionMap.Height];
@@ -60,22 +61,22 @@ namespace Pyramid_Plunder.Classes
         ///</summary>
         ///<param name="roomName">The name of the room as a String</param>
         ///<returns>Which room in the GameObjectList</returns>
-        private GameObjectList whichRoom(String roomName)
-        {
-            switch (roomName)
-            {
-                case "StartRoom":
-                    return GameObjectList.StartRoom;
-                case "SaveRoom":
-                    return GameObjectList.SaveRoom;
-                case "Vault":
-                    return GameObjectList.Vault;
-                case "Lobby":
-                    return GameObjectList.Lobby;
-                default:
-                    return GameObjectList.NullObject;
-            }
-        }
+        //private GameObjectList whichRoom(String roomName)
+        //{
+        //    switch (roomName)
+        //    {
+        //        case "StartRoom":
+        //            return GameObjectList.StartRoom;
+        //        case "SaveRoom":
+        //            return GameObjectList.SaveRoom;
+        //        case "Vault":
+        //            return GameObjectList.Vault;
+        //        case "Lobby":
+        //            return GameObjectList.Lobby;
+        //        default:
+        //            return GameObjectList.NullObject;
+        //    }
+        //}
 
         /// <summary>
         /// An Array of Door Objects representing all possible entrances
@@ -297,60 +298,53 @@ namespace Pyramid_Plunder.Classes
         {
             if (IsPersistant)
             {
-                saveToFile();
+                saveRoomState();
             }
 
             Content.Unload();
         }
 
         /// <summary>
-        /// Saves room state to file when room IsPersistant.
+        /// Saves room state to the SaveRooms list in GameResources
         /// </summary>
-        private void saveToFile()
+        private void saveRoomState()
         {
-            string[] saveData = new string[objectArray.Length + 1];
+            bool[] objects = new bool[objectArray.Length];
+            
 
-            saveData[0] = objectArray.Length.ToString();
-
+            RoomSaveData data;
             for (int i = 0; i < objectArray.Length; i++)
-                saveData[i + 1] = objectArray[i].IsSpawned.ToString();
+                    objects[i] = objectArray[i].IsSpawned;
+            data.objectsAreSpawned = objects;
+            data.roomName = roomName;
 
-            //System.IO.File.WriteAllLines("../Data/SaveData/" + roomName + ".txt", saveData);
-
-            System.IO.File.Delete("../Data/SaveData/" + roomName + ".txt");
-
-            using (System.IO.StreamWriter file = new System.IO.StreamWriter("../Data/SaveData/" + roomName + ".txt", true))
+            for (int i = 0; i < GameResources.RoomSaves.Count; i++)
             {
-                foreach (string line in saveData)
-                    file.WriteLine(line);
-            }
-        }
-
-        private void LoadRoomSave()
-        {
-            try
-            {
-                using (Stream stream = TitleContainer.OpenStream("Data/SaveData/" + roomName + ".txt"))
+                if (GameResources.RoomSaves[i].roomName == roomName)
                 {
-                    using (StreamReader sr = new StreamReader(stream))
-                    {
-
-                        string line = GameResources.getNextDataLine(sr, "#");
-
-                        for (int i = 0; i < objectArray.Length; i++)
-                        {
-                            if (bool.Parse(GameResources.getNextDataLine(sr, "#")) == false)
-                                objectArray[i].Despawn();
-                        }
-
-                        sr.Close();
-                    }
+                    GameResources.RoomSaves.Remove(GameResources.RoomSaves[i]);
+                    break;
                 }
             }
-            catch (FileNotFoundException e)
+
+            GameResources.RoomSaves.Add(data);
+        }
+
+        /// <summary>
+        /// Loads room state from the SaveRooms list in GameResources
+        /// </summary>
+        private void LoadRoomState()
+        {
+            for (int i = 0; i < GameResources.RoomSaves.Count; i++)
             {
-                System.Diagnostics.Debug.WriteLine("The room's save file does not exist: " + roomName);
-                System.Diagnostics.Debug.WriteLine("\n" + e.Message);
+                if (GameResources.RoomSaves[i].roomName == roomName)
+                {
+                    for (int j = 0; j < objectArray.Length; j++)
+                    {
+                        if (!GameResources.RoomSaves[i].objectsAreSpawned[j])
+                            objectArray[j].Despawn();
+                    }
+                }
             }
         }
 

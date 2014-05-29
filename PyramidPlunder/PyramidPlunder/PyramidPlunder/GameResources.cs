@@ -65,6 +65,12 @@ namespace Pyramid_Plunder
         DoubleJump, Dash
     }
 
+    public struct RoomSaveData
+    {
+        public string roomName;
+        public bool[] objectsAreSpawned;
+    }
+
     public delegate void DelVoid();
     public delegate void DelMenu(MenuCallbacks menuCallback);
     public delegate void DelRoom(Classes.Room whichRoom);
@@ -78,6 +84,8 @@ namespace Pyramid_Plunder
 
         private static GameServiceContainer gameServices;
         private static GraphicsDevice graphicsDevice;
+
+        private static List<RoomSaveData> roomSaves = new List<RoomSaveData>();
 
         /// <summary>
         /// Returns the next line in the given stream that does not start with the designated delimiter.
@@ -98,6 +106,13 @@ namespace Pyramid_Plunder
         {
             get { return gameServices; }
             set { gameServices = value; }
+        }
+
+
+        public static List<RoomSaveData> RoomSaves
+        {
+            get { return roomSaves; }
+            set { roomSaves = value; }
         }
 
         public static GraphicsDevice Device

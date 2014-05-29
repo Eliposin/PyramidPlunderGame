@@ -7,7 +7,7 @@ Vault
 #Spawn Location Y (was 572)
 460
 #IsPersistant
-false
+true
 #
 #Music
 Menu
