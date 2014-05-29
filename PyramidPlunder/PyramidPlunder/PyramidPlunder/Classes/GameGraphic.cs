@@ -21,6 +21,7 @@ namespace Pyramid_Plunder.Classes
         protected int currentFrame;
         protected int animationOffset;
         protected bool looping = true;
+        protected bool hasGraphics;
         protected float[] animationSpeed;
         protected float[] defaultAnimationSpeed;
         protected int[] numberOfFrames;
@@ -41,7 +42,7 @@ namespace Pyramid_Plunder.Classes
         /// Constructor call
         /// </summary>
         /// <param name="objType">The type of object that is represented</param>
-        public GameGraphic(string objName, ContentManager content)
+        public GameGraphic(string objName, ContentManager content, bool graphics)
         {
             isLoaded = false;
             Content = content;
@@ -49,8 +50,13 @@ namespace Pyramid_Plunder.Classes
             currentAnimation = 0;
             animationOffset = 0;
             objectName = objName;
-            LoadGraphicsData();
+            hasGraphics = graphics;
+            if (hasGraphics)
+                LoadGraphicsData();
         }
+
+
+        public GameGraphic(string objName, ContentManager content) : this(objName, content, true) { }
 
         /// <summary>
         /// Draws the graphic to the spritebatch based on the properties about the spritesheet and current animation.
@@ -59,7 +65,7 @@ namespace Pyramid_Plunder.Classes
         public virtual void Draw(SpriteBatch spriteBatch, GameTime time)
         {
             // TODO: Drawing code
-            if (isLoaded)
+            if (isLoaded && hasGraphics)
             {
                 DetermineAnimationFrame(time);
 
@@ -126,7 +132,7 @@ namespace Pyramid_Plunder.Classes
             }
             catch (FileNotFoundException e)
             {
-                System.Diagnostics.Debug.WriteLine("The file was not found: " + filepath + "\n" + e.Message);
+                System.Diagnostics.Debug.WriteLine("The file was not found for object: \n" + objectName + filepath + "\n" + e.Message);
                 numAnimations = 0;
                 spriteName = "";
                 animationLocation = new int[0];
@@ -137,7 +143,7 @@ namespace Pyramid_Plunder.Classes
             }
             catch (Exception e)
             {
-                System.Diagnostics.Debug.WriteLine("An error occurred: " + e.Message);
+                System.Diagnostics.Debug.WriteLine("An error occurred in object: " + objectName + e.Message);
                 numAnimations = 0;
                 spriteName = "";
                 animationLocation = new int[0];

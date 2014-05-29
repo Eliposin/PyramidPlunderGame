@@ -244,6 +244,7 @@ namespace Pyramid_Plunder.Classes
             player = new Player(gameContent, SaveGame, SwitchRooms);
             player.Spawn(currentRoom.SpawnLocation);
             gameHUD = new HUD(gameContent, player);
+            gameHUD.DisplayRoomName(currentRoom.LongName);
             
             isPaused = false;
             inGame = true;
@@ -376,6 +377,7 @@ namespace Pyramid_Plunder.Classes
             musicManager.SwitchMusic(currentRoom.MusicName);
             
             player.Spawn(currentRoom.SpawnLocation);
+            gameHUD.DisplayRoomName(currentRoom.LongName);
 
             System.Threading.Thread roomDisposeThread = new System.Threading.Thread(DisposeRoom);
             roomDisposeThread.Start();

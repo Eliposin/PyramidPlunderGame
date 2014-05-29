@@ -1,3 +1,7 @@
+#LongName
+The Vault
+#GraphicsName
+Vault
 #Spawn Location X (was 1185)
 1082
 #Spawn Location Y (was 572)
@@ -37,6 +41,8 @@ Lobby
 1
 #Type of Object
 RedKey
+#HasGraphic
+true
 #IsSolid
 false
 # PositionX

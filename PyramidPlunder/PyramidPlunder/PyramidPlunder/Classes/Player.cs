@@ -106,7 +106,7 @@ namespace Pyramid_Plunder.Classes
                 itemArray[i] = false;
             itemArray[0] = true;
 
-            soundEngine = new AudioEngine(content, GameObjectList.Player);
+            soundEngine = new AudioEngine(content, "Player");
 
             saveCallback = saveMethod;
             roomCallback = roomMethod;

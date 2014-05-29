@@ -39,7 +39,7 @@ namespace Pyramid_Plunder.Classes
         private const float zero = 0f;
 
         // Stores the called object type for reference.
-        private GameObjectList objType;
+        private string objectName;
 
         // Used to select a random soundeffect from a list.
         private Random rnd = new Random();
@@ -49,13 +49,13 @@ namespace Pyramid_Plunder.Classes
         /// </summary>
         /// <param name="content">Pass the content manager.</param>
         /// <param name="tempObjType">Pass the desired object type.</param>
-        public AudioEngine(ContentManager content, GameObjectList tempObjType)
+        public AudioEngine(ContentManager content, string name)
         {
-            objType = tempObjType;
+            objectName = name;
 
-            switch (objType)
+            switch (objectName)
             {
-                case GameObjectList.Player:
+                case "Player":
                     jump1 = content.Load<SoundEffect>("Sounds/hup1");
                     jump2 = content.Load<SoundEffect>("Sounds/hup2");
                     jump3 = content.Load<SoundEffect>("Sounds/hup3");
@@ -66,10 +66,10 @@ namespace Pyramid_Plunder.Classes
                     break;
 
 
-                case GameObjectList.Vault:
-                case GameObjectList.StartRoom:
-                case GameObjectList.Lobby:
-                case GameObjectList.SaveRoom:
+                case "Vault":
+                case "StartRoom":
+                case "Lobby":
+                case "SaveRoomA":
                     doorOpen = content.Load<SoundEffect>("Sounds/DoorGrind");
                     break;
 

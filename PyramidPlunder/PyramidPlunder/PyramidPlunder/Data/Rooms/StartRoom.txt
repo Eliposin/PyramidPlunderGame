@@ -1,3 +1,7 @@
+#LongName
+Antechamber
+#GraphicsName
+StartRoom
 #Spawn Location X (was 1185)
 183
 #Spawn Location Y (was 572)

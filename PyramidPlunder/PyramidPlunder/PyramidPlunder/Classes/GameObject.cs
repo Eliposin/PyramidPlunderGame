@@ -20,8 +20,9 @@ namespace Pyramid_Plunder.Classes
         /// Constructor call
         /// </summary>
         /// <param name="objType">The type of object that is represented.</param>
+        /// <param name="content">The content manager to use.</param>
         /// <param name="spawnPosition">The default spawning position.</param>
-        public GameObject(string objName, ContentManager content, Vector2 spawnPosition) : base(objName, content)
+        public GameObject(string objName, ContentManager content, Vector2 spawnPosition, bool graphics) : base(objName, content, graphics)
         {
             position = spawnPosition;
             isPhysicsObject = false;
@@ -32,8 +33,18 @@ namespace Pyramid_Plunder.Classes
         /// Constructor call
         /// </summary>
         /// <param name="objType">The type of object that is represented.</param>
+        /// <param name="content">The content manager to use.</param>
         public GameObject(string objName, ContentManager content)
-            : this(objName, content, new Vector2(0, 0)) { }
+            : this(objName, content, new Vector2(0, 0), true) { }
+
+        /// <summary>
+        /// Constructor call
+        /// </summary>
+        /// <param name="objType">The type of object that is represented.</param>
+        /// <param name="content">The content manager to use.</param>
+        /// <param name="graphics">Whether or not the object has a graphic.</param>
+        public GameObject(string objName, ContentManager content, bool graphics)
+            : this(objName, content, new Vector2(0, 0), graphics) { }
 
         /// <summary>
         /// Overrides the draw method in order to add the clause that checks to see if the object is spawned yet.

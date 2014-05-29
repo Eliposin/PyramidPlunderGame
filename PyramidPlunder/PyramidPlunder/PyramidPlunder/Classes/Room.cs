@@ -15,10 +15,12 @@ namespace Pyramid_Plunder.Classes
         private Vector2 spawnLocation;
         private Texture2D collisionMap;
         private GameObject background;
-        private string musicName;
-
-        private string roomName;
         private ContentManager Content;
+        
+        private string musicName;
+        private string roomName;
+        private string longName;
+        private string graphicsName;
         
         public Color[] collisionColors;
 
@@ -33,20 +35,21 @@ namespace Pyramid_Plunder.Classes
         /// <param name="content">The content manager to use for assets.</param>
         /// <param name="doorIndex">The index of the door to enter from.  If no index is specified, or the index is -1,
         /// the room's default spawn location will be used.</param>
-        public Room(String roomName, int doorIndex)
+        public Room(String name, int doorIndex)
         {
-            this.roomName = roomName;
+            roomName = name;
             Content = new ContentManager(GameResources.GameServices, "Content");
-            soundEngine = new AudioEngine(Content, whichRoom(roomName));
+            soundEngine = new AudioEngine(Content, roomName);
             
             Load("Data/Rooms/" + roomName + ".txt", doorIndex);
+
             if (isPersistant)
                 LoadRoomSave();
             
-            collisionMap = Content.Load<Texture2D>("Images/" + roomName + "Collisions");
+            collisionMap = Content.Load<Texture2D>("Images/" + graphicsName + "Collisions");
             collisionColors = new Color[collisionMap.Width * collisionMap.Height];
             collisionMap.GetData<Color>(collisionColors);
-            background = new GameObject(roomName, Content);
+            background = new GameObject(graphicsName, Content);
             background.Spawn(new Vector2(0, 0));
 
             
@@ -139,6 +142,9 @@ namespace Pyramid_Plunder.Classes
                     {
                         using (StreamReader sr = new StreamReader(stream))
                         {
+                            longName = GameResources.getNextDataLine(sr, "#");
+                            graphicsName = GameResources.getNextDataLine(sr, "#");
+
                             spawnLocation = new Vector2(Convert.ToInt16(GameResources.getNextDataLine(sr, "#")),
                                                         Convert.ToInt16(GameResources.getNextDataLine(sr, "#")));
 
@@ -181,7 +187,12 @@ namespace Pyramid_Plunder.Classes
                             {
                                 String objectName = GameResources.getNextDataLine(sr, "#");
 
-                                environmentArray[i] = new GameObject(objectName, Content);
+                                if (bool.Parse(GameResources.getNextDataLine(sr, "#")))
+                                    environmentArray[i] = new GameObject(objectName, Content);
+                                else
+                                    environmentArray[i] = new GameObject(objectName, Content, false);
+
+                                
 
                                 environmentArray[i].IsSolid = bool.Parse(GameResources.getNextDataLine(sr, "#"));
 
@@ -423,7 +434,7 @@ namespace Pyramid_Plunder.Classes
         }
 
         /// <summary>
-        /// The name of the room.
+        /// The uniquely-identified name of the room.
         /// </summary>
         public string RoomName
         {
@@ -436,6 +447,14 @@ namespace Pyramid_Plunder.Classes
         public string MusicName
         {
             get { return musicName; }
+        }
+
+        /// <summary>
+        /// Get the display name for this room.
+        /// </summary>
+        public string LongName
+        {
+            get { return longName; }
         }
     }
 }

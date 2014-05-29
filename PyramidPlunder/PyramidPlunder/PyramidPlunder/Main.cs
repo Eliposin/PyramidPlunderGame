@@ -31,7 +31,9 @@ namespace Pyramid_Plunder
             graphics.PreferredBackBufferWidth = DEFAULT_RESOLUTION_X;
             graphics.PreferredBackBufferHeight = DEFAULT_RESOLUTION_Y;
 
+            #if XBOX
             this.Components.Add(new GamerServicesComponent(this));
+            #endif
 
             Content.RootDirectory = "Content";
             //roomContent = new ContentManager(this.Services, "Content");

@@ -14,12 +14,18 @@ namespace Pyramid_Plunder.Classes
         private const int HP_BAR_Y = 50;
         private const int KEYCHAIN_X = 590;
         private const int KEYCHAIN_Y = 100;
+        private const float ROOM_DISPLAY_TIME = 3; //In Seconds
 
         private ContentManager Content;
         private GameGraphic healthBar;
         private GameGraphic keyChain;
         private Texture2D grayTexture;
         private Texture2D redTexture;
+        private SpriteFont roomFont;
+
+        private string roomDisplay;
+        private bool displayingRoom;
+        private double roomDisplayTime;
 
         private float currentHP;
         private bool isVisible;
@@ -46,6 +52,8 @@ namespace Pyramid_Plunder.Classes
             healthBar.Coordinates = new Vector2(HP_BAR_X, HP_BAR_Y);
             keyChain.Coordinates = new Vector2(KEYCHAIN_X, KEYCHAIN_Y);
 
+            roomFont = Content.Load<SpriteFont>("Fonts/RoomDisplayFont");
+
             keyArray = new bool[1];
             for (int i = 0; i < keyArray.Length; i++)
                 keyArray[i] = false;
@@ -61,6 +69,14 @@ namespace Pyramid_Plunder.Classes
         {
             DrawHealthBar(batch, time);
             DrawKeys(batch, time);
+            
+            if (displayingRoom)
+            {
+                roomDisplayTime += time.ElapsedGameTime.TotalSeconds;
+                batch.DrawString(roomFont, roomDisplay, new Vector2(50, 600), Color.Blue);
+                if (roomDisplayTime >= ROOM_DISPLAY_TIME)
+                    displayingRoom = false;
+            }
         }
 
         /// <summary>
@@ -105,12 +121,6 @@ namespace Pyramid_Plunder.Classes
                         case 0:
                             color = redTexture;
                             break;
-                        //case 1:
-                        //    color = blueTexture;
-                        //case 2:
-                        //    color = yellowTexture;
-                        //case 3:
-                        //    color = orangeTexture;
                     }
                     if (color != null)
                         batch.Draw(color, new Rectangle((int)keyChain.Coordinates.X + 5 + (i * 19),
@@ -121,6 +131,12 @@ namespace Pyramid_Plunder.Classes
             keyChain.Draw(batch, time);
         }
 
+        public void DisplayRoomName(string longName)
+        {
+            roomDisplay = longName;
+            roomDisplayTime = 0;
+            displayingRoom = true;
+        }
 
 
         /// <summary>
