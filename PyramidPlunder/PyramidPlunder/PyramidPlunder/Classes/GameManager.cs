@@ -331,7 +331,7 @@ namespace Pyramid_Plunder.Classes
 
                 StorageDevice device = StorageDevice.EndShowSelector(result);
 
-                //result.AsyncWaitHandle.Close();
+                result.AsyncWaitHandle.Close();
 
                 result = device.BeginOpenContainer("PyramidPlunder", null, null);
 
