@@ -5,9 +5,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PyramidPlunder", "PyramidPl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PyramidPlunderContent", "PyramidPlunder\PyramidPlunderContent\PyramidPlunderContent.contentproj", "{8EBF900E-255E-44EB-B4E1-F1A0480678D3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xbox 360 Copy of PyramidPlunder", "PyramidPlunder\PyramidPlunder\Xbox 360 Copy of PyramidPlunder.csproj", "{56140756-E1AC-411C-BC49-763FC5EC3D86}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1DEF7317-4F35-454D-8E65-CD01A89267CB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xbox 360 Copy of PyramidPlunder", "PyramidPlunder\PyramidPlunder\Xbox 360 Copy of PyramidPlunder.csproj", "{41DE0F52-3775-4E40-8A92-94584CFA9025}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,22 +41,22 @@ Global
 		{8EBF900E-255E-44EB-B4E1-F1A0480678D3}.Release|Mixed Platforms.ActiveCfg = Release|x86
 		{8EBF900E-255E-44EB-B4E1-F1A0480678D3}.Release|x86.ActiveCfg = Release|x86
 		{8EBF900E-255E-44EB-B4E1-F1A0480678D3}.Release|Xbox 360.ActiveCfg = Release|x86
-		{56140756-E1AC-411C-BC49-763FC5EC3D86}.Debug|Any CPU.ActiveCfg = Debug|Xbox 360
-		{56140756-E1AC-411C-BC49-763FC5EC3D86}.Debug|Mixed Platforms.ActiveCfg = Debug|Xbox 360
-		{56140756-E1AC-411C-BC49-763FC5EC3D86}.Debug|Mixed Platforms.Build.0 = Debug|Xbox 360
-		{56140756-E1AC-411C-BC49-763FC5EC3D86}.Debug|Mixed Platforms.Deploy.0 = Debug|Xbox 360
-		{56140756-E1AC-411C-BC49-763FC5EC3D86}.Debug|x86.ActiveCfg = Debug|Xbox 360
-		{56140756-E1AC-411C-BC49-763FC5EC3D86}.Debug|Xbox 360.ActiveCfg = Debug|Xbox 360
-		{56140756-E1AC-411C-BC49-763FC5EC3D86}.Debug|Xbox 360.Build.0 = Debug|Xbox 360
-		{56140756-E1AC-411C-BC49-763FC5EC3D86}.Debug|Xbox 360.Deploy.0 = Debug|Xbox 360
-		{56140756-E1AC-411C-BC49-763FC5EC3D86}.Release|Any CPU.ActiveCfg = Release|Xbox 360
-		{56140756-E1AC-411C-BC49-763FC5EC3D86}.Release|Mixed Platforms.ActiveCfg = Release|Xbox 360
-		{56140756-E1AC-411C-BC49-763FC5EC3D86}.Release|Mixed Platforms.Build.0 = Release|Xbox 360
-		{56140756-E1AC-411C-BC49-763FC5EC3D86}.Release|Mixed Platforms.Deploy.0 = Release|Xbox 360
-		{56140756-E1AC-411C-BC49-763FC5EC3D86}.Release|x86.ActiveCfg = Release|Xbox 360
-		{56140756-E1AC-411C-BC49-763FC5EC3D86}.Release|Xbox 360.ActiveCfg = Release|Xbox 360
-		{56140756-E1AC-411C-BC49-763FC5EC3D86}.Release|Xbox 360.Build.0 = Release|Xbox 360
-		{56140756-E1AC-411C-BC49-763FC5EC3D86}.Release|Xbox 360.Deploy.0 = Release|Xbox 360
+		{41DE0F52-3775-4E40-8A92-94584CFA9025}.Debug|Any CPU.ActiveCfg = Debug|Xbox 360
+		{41DE0F52-3775-4E40-8A92-94584CFA9025}.Debug|Mixed Platforms.ActiveCfg = Debug|Xbox 360
+		{41DE0F52-3775-4E40-8A92-94584CFA9025}.Debug|Mixed Platforms.Build.0 = Debug|Xbox 360
+		{41DE0F52-3775-4E40-8A92-94584CFA9025}.Debug|Mixed Platforms.Deploy.0 = Debug|Xbox 360
+		{41DE0F52-3775-4E40-8A92-94584CFA9025}.Debug|x86.ActiveCfg = Debug|Xbox 360
+		{41DE0F52-3775-4E40-8A92-94584CFA9025}.Debug|Xbox 360.ActiveCfg = Debug|Xbox 360
+		{41DE0F52-3775-4E40-8A92-94584CFA9025}.Debug|Xbox 360.Build.0 = Debug|Xbox 360
+		{41DE0F52-3775-4E40-8A92-94584CFA9025}.Debug|Xbox 360.Deploy.0 = Debug|Xbox 360
+		{41DE0F52-3775-4E40-8A92-94584CFA9025}.Release|Any CPU.ActiveCfg = Release|Xbox 360
+		{41DE0F52-3775-4E40-8A92-94584CFA9025}.Release|Mixed Platforms.ActiveCfg = Release|Xbox 360
+		{41DE0F52-3775-4E40-8A92-94584CFA9025}.Release|Mixed Platforms.Build.0 = Release|Xbox 360
+		{41DE0F52-3775-4E40-8A92-94584CFA9025}.Release|Mixed Platforms.Deploy.0 = Release|Xbox 360
+		{41DE0F52-3775-4E40-8A92-94584CFA9025}.Release|x86.ActiveCfg = Release|Xbox 360
+		{41DE0F52-3775-4E40-8A92-94584CFA9025}.Release|Xbox 360.ActiveCfg = Release|Xbox 360
+		{41DE0F52-3775-4E40-8A92-94584CFA9025}.Release|Xbox 360.Build.0 = Release|Xbox 360
+		{41DE0F52-3775-4E40-8A92-94584CFA9025}.Release|Xbox 360.Deploy.0 = Release|Xbox 360
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

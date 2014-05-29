@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Storage;
+using Microsoft.Xna.Framework.GamerServices;
 
 namespace Pyramid_Plunder.Classes
 {
@@ -32,6 +33,7 @@ namespace Pyramid_Plunder.Classes
         private HUD gameHUD;
         private BGM musicManager;
         private ContentManager gameContent;
+        private StorageDevice currentStorageDevice;
 
         private SpriteFont fpsFont;
         private int fpsCount;
@@ -257,33 +259,35 @@ namespace Pyramid_Plunder.Classes
         {
             try
             {
-                StorageContainer container = GetContainer();
-
-                using (Stream stream = container.OpenFile("SaveGame.txt", FileMode.Open))
+                currentStorageDevice = GetStorageDevice();
+                using (StorageContainer container = GetStorageContainer(currentStorageDevice))
                 {
-                    using (StreamReader sr = new StreamReader(stream))
+                    using (Stream stream = container.OpenFile("SaveGame.txt", FileMode.Open))
                     {
-                        string line = GameResources.getNextDataLine(sr, "#");
-                        currentRoom = new Room(line, -1);
-                        int playerHealth = int.Parse(GameResources.getNextDataLine(sr, "#"));
-                        bool[] playerItems = new bool[int.Parse(GameResources.getNextDataLine(sr, "#"))];
-                        for (int i = 0; i < playerItems.Length; i++)
-                            playerItems[i] = bool.Parse(GameResources.getNextDataLine(sr, "#"));
+                        using (StreamReader sr = new StreamReader(stream))
+                        {
+                            string line = GameResources.getNextDataLine(sr, "#");
+                            currentRoom = new Room(line, -1);
+                            int playerHealth = int.Parse(GameResources.getNextDataLine(sr, "#"));
+                            bool[] playerItems = new bool[int.Parse(GameResources.getNextDataLine(sr, "#"))];
+                            for (int i = 0; i < playerItems.Length; i++)
+                                playerItems[i] = bool.Parse(GameResources.getNextDataLine(sr, "#"));
 
-                        player = new Player(gameContent, SaveGame, SwitchRooms);
-                        player.Spawn(currentRoom.SpawnLocation);
-                        player.LoadSave(playerHealth, playerItems);
-                        gameHUD = new HUD(gameContent, player);
+                            player = new Player(gameContent, SaveGame, SwitchRooms);
+                            player.Spawn(currentRoom.SpawnLocation);
+                            player.LoadSave(playerHealth, playerItems);
+                            gameHUD = new HUD(gameContent, player);
 
-                        isPaused = false;
-                        inGame = true;
+                            isPaused = false;
+                            inGame = true;
 
-                        sr.Close();
+                            sr.Close();
+                        }
                     }
+
+                    musicManager.SwitchMusic("Menu");
+
                 }
-
-                musicManager.SwitchMusic("Menu");
-
             }
             catch (FileNotFoundException e)
             {
@@ -308,7 +312,10 @@ namespace Pyramid_Plunder.Classes
             for (int i = 0; i < player.CurrentItems.Length; i++)
                 saveData[i + 3] = player.CurrentItems[i].ToString();
 
-            StorageContainer container = GetContainer();
+            if (currentStorageDevice == null)
+                currentStorageDevice = GetStorageDevice();
+
+            StorageContainer container = GetStorageContainer(currentStorageDevice);
 
             using (StreamWriter file = new StreamWriter(container.CreateFile("SaveGame.txt")))
             {
@@ -319,8 +326,36 @@ namespace Pyramid_Plunder.Classes
             isSaving = false;
         }
 
-        private StorageContainer GetContainer()
+        /// <summary>
+        /// Retrieves the desired storage container for saving or loading data
+        /// </summary>
+        /// <param name="device">The storage device to search in</param>
+        /// <returns>The container to use for saving and loading</returns>
+        private StorageContainer GetStorageContainer(StorageDevice device)
         {
+                IAsyncResult result = device.BeginOpenContainer("PyramidPlunder", null, null);
+
+                while (!result.IsCompleted)
+                    result.AsyncWaitHandle.WaitOne();
+
+                StorageContainer container = device.EndOpenContainer(result);
+
+                result.AsyncWaitHandle.Close();
+
+                return container;
+        }
+
+        /// <summary>
+        /// Retrieves the desired storage device to open a storage container from
+        /// </summary>
+        /// <returns></returns>
+        private StorageDevice GetStorageDevice()
+        {
+            #if XBOX 
+            if (Guide.IsVisible)
+                return null;
+            #endif
+
             try
             {
                 IAsyncResult result;
@@ -334,22 +369,14 @@ namespace Pyramid_Plunder.Classes
 
                 result.AsyncWaitHandle.Close();
 
-                result = device.BeginOpenContainer("PyramidPlunder", null, null);
-
-                while (!result.IsCompleted)
-                    result.AsyncWaitHandle.WaitOne();
-
-                StorageContainer container = device.EndOpenContainer(result);
-
-                result.AsyncWaitHandle.Close();
-
-                return container;
+                return device;
             }
             catch (Exception e)
             {
                 System.Diagnostics.Debug.WriteLine(e.Message);
                 return null;
             }
+            
         }
 
         /// <summary>
@@ -357,7 +384,8 @@ namespace Pyramid_Plunder.Classes
         /// </summary>
         private void DeleteSave()
         {
-            StorageContainer container = GetContainer();
+            currentStorageDevice = GetStorageDevice();
+            StorageContainer container = GetStorageContainer(currentStorageDevice);
 
             string[] fileNames = container.GetFileNames();
 
