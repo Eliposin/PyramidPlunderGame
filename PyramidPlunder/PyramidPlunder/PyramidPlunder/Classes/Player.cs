@@ -357,7 +357,7 @@ namespace Pyramid_Plunder.Classes
         /// <param name="interactionType">The type of interaction to take place.</param>
         public override void InteractWith(GameObject otherObject, InteractionTypes interactionType)
         {
-            if (otherObject.ItemType != ItemList.NullItem)
+            if (otherObject.ItemType != ItemList.NullItem && interactionType == InteractionTypes.Collision)
             {
                 PickUpItem(otherObject);
             }

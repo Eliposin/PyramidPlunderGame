@@ -33,7 +33,7 @@ Lobby
 # PositionX
 -3
 # PositionY
-433
+445
 #####Second Door (index 1):#####
 # Orientation
 1
@@ -45,7 +45,7 @@ SaveRoomA
 0
 # PositionX
 1123
-433
+445
 #####Enemies#####
 #Number of Enemies
 0
