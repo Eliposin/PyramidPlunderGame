@@ -315,12 +315,14 @@ namespace Pyramid_Plunder.Classes
             if (currentStorageDevice == null)
                 currentStorageDevice = GetStorageDevice();
 
-            StorageContainer container = GetStorageContainer(currentStorageDevice);
-
-            using (StreamWriter file = new StreamWriter(container.CreateFile("SaveGame.txt")))
+            using (StorageContainer container = GetStorageContainer(currentStorageDevice))
             {
-                foreach (string line in saveData)
-                    file.WriteLine(line);
+
+                using (StreamWriter file = new StreamWriter(container.CreateFile("SaveGame.txt")))
+                {
+                    foreach (string line in saveData)
+                        file.WriteLine(line);
+                }
             }
 
             isSaving = false;
