@@ -387,12 +387,15 @@ namespace Pyramid_Plunder.Classes
         private void DeleteSave()
         {
             currentStorageDevice = GetStorageDevice();
-            StorageContainer container = GetStorageContainer(currentStorageDevice);
 
-            string[] fileNames = container.GetFileNames();
+            using (StorageContainer container = GetStorageContainer(currentStorageDevice))
+            {
 
-            foreach (string file in fileNames)
-                container.DeleteFile(file);
+                string[] fileNames = container.GetFileNames();
+
+                foreach (string file in fileNames)
+                    container.DeleteFile(file);
+            }
         }
 
         /// <summary>
