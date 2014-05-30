@@ -185,5 +185,21 @@ namespace Pyramid_Plunder.Classes
         {
             get { return isSpawned; }
         }
+
+        /// <summary>
+        /// The area considered a positive match for collision detection.
+        /// </summary>
+        public override Rectangle HitBox
+        {
+            get
+            {
+                if (sprite != null)
+                    return new Rectangle((int)position.X, (int)position.Y,
+                        (int)animationDimensions[currentAnimation].X,
+                        (int)animationDimensions[currentAnimation].Y);
+                else
+                    return new Rectangle(0, 0, 0, 0);
+            }
+        }
     }
 }

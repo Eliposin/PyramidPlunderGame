@@ -31,7 +31,7 @@ namespace Pyramid_Plunder.Classes
         private SoundEffect dash;
         private SoundEffect land;
         private SoundEffect wallLand;
-        private SoundEffect wallJump;
+        //private SoundEffect wallJump;
         private SoundEffect doorOpen;
         private SoundEffect keyGet;
 
@@ -70,6 +70,8 @@ namespace Pyramid_Plunder.Classes
                 case "StartRoom":
                 case "Lobby":
                 case "SaveRoomA":
+                case "LavaPassageA":
+                case "LavaPassageB":
                     doorOpen = content.Load<SoundEffect>("Sounds/DoorGrind");
                     break;
 
@@ -83,66 +85,74 @@ namespace Pyramid_Plunder.Classes
         /// </summary>
         public void Play(SoundEffects effect)
         {
-            int i;
-            switch (effect)
+            try
             {
-                case SoundEffects.Jump:
-                    i = rnd.Next(0, 3);
-                    switch (i)
-                    {
-                        case 0:
-                            jump1.Play();
-                            break;
-                        case 1:
-                            jump2.Play();
-                            break;
-                        case 2:
-                            jump3.Play();
-                            break;
-                        default:
-                            break;
-                    }
-                    break;
+                int i;
+                switch (effect)
+                {
+                    case SoundEffects.Jump:
+                        i = rnd.Next(0, 3);
+                        switch (i)
+                        {
+                            case 0:
+                                jump1.Play();
+                                break;
+                            case 1:
+                                jump2.Play();
+                                break;
+                            case 2:
+                                jump3.Play();
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
 
-                case SoundEffects.WallJump:
-                    i = rnd.Next(0, 3);
-                    switch (i)
-                    {
-                        case 0:
-                            jump1.Play();
-                            break;
-                        case 1:
-                            jump2.Play();
-                            break;
-                        case 2:
-                            jump3.Play();
-                            break;
-                        default:
-                            break;
-                    }
-                    break;
+                    case SoundEffects.WallJump:
+                        i = rnd.Next(0, 3);
+                        switch (i)
+                        {
+                            case 0:
+                                jump1.Play();
+                                break;
+                            case 1:
+                                jump2.Play();
+                                break;
+                            case 2:
+                                jump3.Play();
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
 
-                case SoundEffects.Dash:
-                    dash.Play(volume, zero, zero);
-                    break;
+                    case SoundEffects.Dash:
+                        dash.Play(volume, zero, zero);
+                        break;
 
-                case SoundEffects.Land:
-                    land.Play(volume, zero, zero);
-                    break;
+                    case SoundEffects.Land:
+                        land.Play(volume, zero, zero);
+                        break;
 
-                case SoundEffects.WallLand:
-                    wallLand.Play(volume, zero, zero);
-                    break;
+                    case SoundEffects.WallLand:
+                        wallLand.Play(volume, zero, zero);
+                        break;
 
-                case SoundEffects.DoorOpen:
-                    doorOpen.Play(volume, zero, zero);
-                    break;
+                    case SoundEffects.DoorOpen:
+                        doorOpen.Play(volume, zero, zero);
+                        break;
 
-                case SoundEffects.KeyGet:
-                    keyGet.Play(volume, zero, zero);
-                    break;
+                    case SoundEffects.KeyGet:
+                        keyGet.Play(volume, zero, zero);
+                        break;
 
-                default: break;
+                    default: break;
+                }
+            }
+            catch (NullReferenceException e)
+            {
+                System.Diagnostics.Debug.WriteLine("The audio clip was not loaded for object: " + objectName +
+                    "\n" + e.Message);
             }
         }
     }

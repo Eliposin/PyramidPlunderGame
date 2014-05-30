@@ -58,6 +58,7 @@ namespace Pyramid_Plunder.Classes
             lockType = lockT;
             
             isOpen = false;
+            isSolid = true;
 
             switch (lockType)
             {
@@ -167,7 +168,27 @@ namespace Pyramid_Plunder.Classes
             outputString += "\n" + this.coordinates.Y;
 
             return outputString;
+        }
 
+        public override Rectangle HitBox
+        {
+            get 
+            {
+                if (isSolid)
+                    return base.HitBox;
+                else
+                {
+                    int XLocation;
+                    if (orientation == DoorOrientations.FacingLeft)
+                        XLocation = (int)(position.X + (animationDimensions[currentAnimation].X * 0.3));
+                    else
+                        XLocation = (int)position.X;
+
+                    return new Rectangle(XLocation, (int)position.Y,
+                        (int)(animationDimensions[currentAnimation].X * 0.7),
+                        (int)animationDimensions[currentAnimation].Y);
+                }
+            }
         }
     }
 }

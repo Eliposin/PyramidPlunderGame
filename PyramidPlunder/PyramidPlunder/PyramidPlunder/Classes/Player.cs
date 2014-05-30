@@ -407,6 +407,18 @@ namespace Pyramid_Plunder.Classes
                                 }
                             }
                         }
+                        else if (!otherObject.IsSolid && interactionType == InteractionTypes.Collision)
+                        {
+                            Door door = (Door)otherObject;
+                            if (door.IsRoomLoaded)
+                            {
+                                roomCallback(door.LinkedRoom);
+                                if (door.Orientation == Door.DoorOrientations.FacingLeft)
+                                    ResetActionStates(XDirection.Right);
+                                else
+                                    ResetActionStates(XDirection.Left);
+                            }
+                        }
                         break;
 
                     case "SavePoint":

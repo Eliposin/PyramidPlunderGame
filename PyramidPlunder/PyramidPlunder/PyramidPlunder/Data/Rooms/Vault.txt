@@ -27,7 +27,7 @@ Menu
 # Linked Room
 Lobby
 # Linked Door (index)
-1
+2
 # Lock Type
 1
 # PositionX

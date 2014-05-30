@@ -700,12 +700,15 @@ namespace Pyramid_Plunder.Classes
             }
             //If none of the collision points are in a black region, there is no ground.
 
-            foreach (Door door in room.DoorArray)
+            foreach (GameObject obj in room.ObjectArray)
             {
-                if ((coordinateX + collisionXs.First() <= door.Position.X + door.HitBox.Width) &&
-                    (coordinateX + collisionXs.Last() >= door.Position.X) &&
-                    (row >= door.Position.Y) && (row <= door.Position.Y + door.HitBox.Width))
-                    return true;
+                if (obj.IsSolid)
+                {
+                    if ((coordinateX + collisionXs.First() <= obj.Position.X + obj.HitBox.Width) &&
+                        (coordinateX + collisionXs.Last() >= obj.Position.X) &&
+                        (row >= obj.Position.Y) && (row <= obj.Position.Y + obj.HitBox.Width))
+                        return true;
+                }
             }
             return false;
         }
@@ -742,12 +745,15 @@ namespace Pyramid_Plunder.Classes
                     return true;
             }
 
-            foreach (Door door in room.DoorArray)
+            foreach (GameObject obj in room.ObjectArray)
             {
-                if ((coordinateY + collisionYs.First() <= door.Position.Y + door.HitBox.Width) &&
-                    (coordinateY + collisionYs.Last() >= door.Position.Y) &&
-                    (column >= door.Position.X) && (column <= door.Position.X + door.HitBox.Width))
-                    return true;
+                if (obj.IsSolid)
+                {
+                    if ((coordinateY + collisionYs.First() <= obj.Position.Y + obj.HitBox.Width) &&
+                        (coordinateY + collisionYs.Last() >= obj.Position.Y) &&
+                        (column >= obj.Position.X) && (column <= obj.Position.X + obj.HitBox.Width))
+                        return true;
+                }
             }
             //If none of the collision points are in a black region, there is no wall.
             return false;
@@ -785,12 +791,15 @@ namespace Pyramid_Plunder.Classes
                     return true;
             }
 
-            foreach (Door door in room.DoorArray)
+            foreach (GameObject obj in room.ObjectArray)
             {
-                if ((coordinateY + collisionYs.First() <= door.Position.Y + door.HitBox.Width) &&
-                    (coordinateY + collisionYs.Last() >= door.Position.Y) &&
-                    (column >= door.Position.X) && (column <= door.Position.X + door.HitBox.Width))
-                    return true;
+                if (obj.IsSolid)
+                {
+                    if ((coordinateY + collisionYs.First() <= obj.Position.Y + obj.HitBox.Width) &&
+                        (coordinateY + collisionYs.Last() >= obj.Position.Y) &&
+                        (column >= obj.Position.X) && (column <= obj.Position.X + obj.HitBox.Width))
+                        return true;
+                }
             }
             //If none of the collision points are in a black region, there is no wall.
             return false;
@@ -832,13 +841,16 @@ namespace Pyramid_Plunder.Classes
                     }
                 }
             }
-            foreach (Door door in room.DoorArray)
+            foreach (GameObject obj in room.ObjectArray)
             {
-                if ((CoordinateX + collisionXs.First() <= door.Position.X + door.HitBox.Width) &&
-                    (CoordinateX + collisionXs.Last() >= door.Position.X) &&
-                    (CoordinateY + collisionYs.First() <= door.Position.Y + door.HitBox.Height) &&
-                    (CoordinateY + collisionYs.Last() >= door.Position.Y))
-                    return true;
+                if (obj.IsSolid)
+                {
+                    if ((CoordinateX + collisionXs.First() <= obj.Position.X + obj.HitBox.Width) &&
+                        (CoordinateX + collisionXs.Last() >= obj.Position.X) &&
+                        (CoordinateY + collisionYs.First() <= obj.Position.Y + obj.HitBox.Height) &&
+                        (CoordinateY + collisionYs.Last() >= obj.Position.Y))
+                        return true;
+                }
             }
             return false;
         }

@@ -20,7 +20,6 @@ namespace Pyramid_Plunder.Classes
     {
         private bool isPaused;
         private bool inGame;
-        private bool isSaving;
         private KeyboardState keyState;
         private GamePadState gamePadState;
         private GameSettings gameSettings;
@@ -301,8 +300,6 @@ namespace Pyramid_Plunder.Classes
         /// </summary>
         private void SaveGame()
         {
-            isSaving = true;
-
             string[] saveData = new string[player.CurrentItems.Length + 3];
 
             saveData[0] = currentRoom.RoomName;
@@ -324,8 +321,6 @@ namespace Pyramid_Plunder.Classes
                         file.WriteLine(line);
                 }
             }
-
-            isSaving = false;
         }
 
         /// <summary>

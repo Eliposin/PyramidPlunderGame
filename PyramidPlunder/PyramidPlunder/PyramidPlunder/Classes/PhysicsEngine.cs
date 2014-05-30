@@ -29,8 +29,8 @@ namespace Pyramid_Plunder.Classes
             if (obj.IsGravityAffected && !obj.IsOnGround)
                 obj.DisplacementY = Math.Min(obj.DisplacementY + (GRAVITY / 2) * (totalTime * totalTime), MAX_FALLING_SPEED * totalTime);
             
-            obj.DisplacementX = (float)Math.Truncate(obj.DisplacementX);
-            obj.DisplacementY = (float)Math.Truncate(obj.DisplacementY);
+            obj.DisplacementX = (float)((int)(obj.DisplacementX));
+            obj.DisplacementY = (float)((int)(obj.DisplacementY));
 
             //If the object will get stuck trying to move the originally intended amount, a collision
             //has occurred. The appropriate velocity & acceleration variables as well as boolean flags
@@ -145,8 +145,8 @@ namespace Pyramid_Plunder.Classes
             //if (((obj1.HitBox.X + obj1.HitBox.Width >= obj2.HitBox.X) && (obj1.HitBox.X <= obj2.HitBox.X + obj2.HitBox.Width)) &&
             //    ((obj1.HitBox.Y + obj1.HitBox.Height >= obj2.HitBox.Y) && (obj1.HitBox.Y <= obj2.HitBox.Y + obj2.HitBox.Height)))
             //    return true;
-            if (((obj1.Position.X + obj1.HitBox.Width >= obj2.Position.X) && (obj1.Position.X <= obj2.Position.X + obj2.HitBox.Width)) &&
-                ((obj1.Position.Y + obj1.HitBox.Height >= obj2.Position.Y) && (obj1.Position.Y <= obj2.Position.Y + obj2.HitBox.Height)))
+            if (((obj1.HitBox.X + obj1.HitBox.Width >= obj2.HitBox.X) && (obj1.HitBox.X <= obj2.HitBox.X + obj2.HitBox.Width)) &&
+                ((obj1.HitBox.Y + obj1.HitBox.Height >= obj2.HitBox.Y) && (obj1.HitBox.Y <= obj2.HitBox.Y + obj2.HitBox.Height)))
                 return true;
 
             return false;

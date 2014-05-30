@@ -26,14 +26,13 @@ namespace Pyramid_Plunder.Classes
         protected float[] defaultAnimationSpeed;
         protected int[] numberOfFrames;
 
-        private String filepath;
         private String spriteName;
         private int numAnimations;
         private int previousAnimation;
         
         private double elapsedMilliseconds;
         private int[] animationLocation;
-        private Vector2[] animationDimensions;
+        protected Vector2[] animationDimensions;
         
         
         private bool isLoaded;
@@ -132,7 +131,7 @@ namespace Pyramid_Plunder.Classes
             }
             catch (FileNotFoundException e)
             {
-                System.Diagnostics.Debug.WriteLine("The file was not found for object: \n" + objectName + filepath + "\n" + e.Message);
+                System.Diagnostics.Debug.WriteLine("The file was not found for object: \n" + objectName + "\n" + e.Message);
                 numAnimations = 0;
                 spriteName = "";
                 animationLocation = new int[0];
@@ -223,7 +222,7 @@ namespace Pyramid_Plunder.Classes
         /// <summary>
         /// The area considered a positive match for collision detection.
         /// </summary>
-        public Rectangle HitBox
+        public virtual Rectangle HitBox
         {
             get 
             {
