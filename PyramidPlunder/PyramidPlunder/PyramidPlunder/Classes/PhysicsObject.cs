@@ -702,9 +702,9 @@ namespace Pyramid_Plunder.Classes
 
             foreach (Door door in room.DoorArray)
             {
-                if ((coordinateX + collisionXs.First() <= door.HitBox.X + door.HitBox.Width) &&
-                    (coordinateX + collisionXs.Last() >= door.HitBox.X) &&
-                    (row >= door.HitBox.Y) && (row <= door.HitBox.Y + door.HitBox.Width))
+                if ((coordinateX + collisionXs.First() <= door.Position.X + door.HitBox.Width) &&
+                    (coordinateX + collisionXs.Last() >= door.Position.X) &&
+                    (row >= door.Position.Y) && (row <= door.Position.Y + door.HitBox.Width))
                     return true;
             }
             return false;
@@ -744,9 +744,9 @@ namespace Pyramid_Plunder.Classes
 
             foreach (Door door in room.DoorArray)
             {
-                if ((coordinateY + collisionYs.First() <= door.HitBox.Y + door.HitBox.Width) &&
-                    (coordinateY + collisionYs.Last() >= door.HitBox.Y) &&
-                    (column >= door.HitBox.X) && (column <= door.HitBox.X + door.HitBox.Width))
+                if ((coordinateY + collisionYs.First() <= door.Position.Y + door.HitBox.Width) &&
+                    (coordinateY + collisionYs.Last() >= door.Position.Y) &&
+                    (column >= door.Position.X) && (column <= door.Position.X + door.HitBox.Width))
                     return true;
             }
             //If none of the collision points are in a black region, there is no wall.
@@ -787,9 +787,9 @@ namespace Pyramid_Plunder.Classes
 
             foreach (Door door in room.DoorArray)
             {
-                if ((coordinateY + collisionYs.First() <= door.HitBox.Y + door.HitBox.Width) &&
-                    (coordinateY + collisionYs.Last() >= door.HitBox.Y) &&
-                    (column >= door.HitBox.X) && (column <= door.HitBox.X + door.HitBox.Width))
+                if ((coordinateY + collisionYs.First() <= door.Position.Y + door.HitBox.Width) &&
+                    (coordinateY + collisionYs.Last() >= door.Position.Y) &&
+                    (column >= door.Position.X) && (column <= door.Position.X + door.HitBox.Width))
                     return true;
             }
             //If none of the collision points are in a black region, there is no wall.
@@ -834,10 +834,10 @@ namespace Pyramid_Plunder.Classes
             }
             foreach (Door door in room.DoorArray)
             {
-                if ((CoordinateX + collisionXs.First() <= door.HitBox.X + door.HitBox.Width) &&
-                    (CoordinateX + collisionXs.Last() >= door.HitBox.X) &&
-                    (CoordinateY + collisionYs.First() <= door.HitBox.Y + door.HitBox.Height) &&
-                    (CoordinateY + collisionYs.Last() >= door.HitBox.Y))
+                if ((CoordinateX + collisionXs.First() <= door.Position.X + door.HitBox.Width) &&
+                    (CoordinateX + collisionXs.Last() >= door.Position.X) &&
+                    (CoordinateY + collisionYs.First() <= door.Position.Y + door.HitBox.Height) &&
+                    (CoordinateY + collisionYs.Last() >= door.Position.Y))
                     return true;
             }
             return false;
