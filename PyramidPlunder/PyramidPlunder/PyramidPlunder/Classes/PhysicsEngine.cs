@@ -59,14 +59,25 @@ namespace Pyramid_Plunder.Classes
                 }
             }
 
-            if (obj.DisplacementX != 0)
+            if (obj.DisplacementX > 0)
             {
                 if (obj.isStuckAt(room, (int)obj.DisplacementX, (int)obj.DisplacementY))
                 {
-                    obj.CollideX();
-                    obj.DisplacementX += (obj.DisplacementX > 0) ? -1 : 1;
+                    obj.CollideRight();
+                    obj.DisplacementX -= 1;
                     while (obj.isStuckAt(room, (int)obj.DisplacementX, (int)obj.DisplacementY) && obj.DisplacementX != 0)
-                        obj.DisplacementX += (obj.DisplacementX > 0) ? -1 : 1;
+                        obj.DisplacementX -= 1;
+                }
+            }
+
+            if (obj.DisplacementX < 0)
+            {
+                if (obj.isStuckAt(room, (int)obj.DisplacementX, (int)obj.DisplacementY))
+                {
+                    obj.CollideLeft();
+                    obj.DisplacementX += 1;
+                    while (obj.isStuckAt(room, (int)obj.DisplacementX, (int)obj.DisplacementY) && obj.DisplacementX != 0)
+                        obj.DisplacementX += 1;
                 }
             }
 
@@ -78,9 +89,37 @@ namespace Pyramid_Plunder.Classes
             //If an object was airborne at the beginning of the frame and is still airborne, its y-velocity
             //is increased by the acceleration due to gravity.
             //If it's determined that the object is now in the air, it will become airborne.
-            obj.WallOnLeft = obj.checkWallLeft(room, (int)obj.DisplacementX, (int)obj.DisplacementY);
-            obj.WallOnRight = obj.checkWallRight(room, (int)obj.DisplacementX, (int)obj.DisplacementY);
             
+            if (!obj.WallOnLeft)
+            {
+                if (obj.checkWallLeft(room, (int)obj.DisplacementX, (int)obj.DisplacementY))
+                {
+                    obj.CollideLeft();
+                }
+            }
+            else
+            {
+                if (!obj.checkWallLeft(room, (int)obj.DisplacementX, (int)obj.DisplacementY))
+                {
+                    obj.WallOnLeft = false;
+                }
+            }
+
+            if (!obj.WallOnRight)
+            {
+                if (obj.checkWallRight(room, (int)obj.DisplacementX, (int)obj.DisplacementY))
+                {
+                    obj.CollideRight();
+                }
+            }
+            else
+            {
+                if (!obj.checkWallRight(room, (int)obj.DisplacementX, (int)obj.DisplacementY))
+                {
+                    obj.WallOnRight = false;
+                }
+            }
+
             if (!obj.IsOnGround)
             {
                 if (obj.checkGround(room, (int)obj.DisplacementX, (int)obj.DisplacementY))

@@ -587,6 +587,18 @@ namespace Pyramid_Plunder.Classes
             accelerationX = 0;
         }
 
+        public void CollideLeft()
+        {
+            CollideX();
+            wallOnLeft = true;
+        }
+
+        public void CollideRight()
+        {
+            CollideX();
+            wallOnRight = true;
+        }
+
         /// <summary>
         /// Changes all of the object's relevant properties to reflect that
         /// the top end of its hitbox has collided with a ceiling.
@@ -687,6 +699,14 @@ namespace Pyramid_Plunder.Classes
                     return true;
             }
             //If none of the collision points are in a black region, there is no ground.
+
+            foreach (Door door in room.DoorArray)
+            {
+                if ((coordinateX + collisionXs.First() <= door.HitBox.X + door.HitBox.Width) &&
+                    (coordinateX + collisionXs.Last() >= door.HitBox.X) &&
+                    (row >= door.HitBox.Y) && (row <= door.HitBox.Y + door.HitBox.Width))
+                    return true;
+            }
             return false;
         }
 
@@ -719,6 +739,14 @@ namespace Pyramid_Plunder.Classes
                 //Walls/grounds/ceilings are black on the collision map, i.e. the R value is 0
                 if (coordinateY + intY >= 0 && coordinateY + intY < room.CollisionMap.Height &&
                     room.collisionColors[column + (coordinateY + intY) * room.CollisionMap.Width].R == 0)
+                    return true;
+            }
+
+            foreach (Door door in room.DoorArray)
+            {
+                if ((coordinateY + collisionYs.First() <= door.HitBox.Y + door.HitBox.Width) &&
+                    (coordinateY + collisionYs.Last() >= door.HitBox.Y) &&
+                    (column >= door.HitBox.X) && (column <= door.HitBox.X + door.HitBox.Width))
                     return true;
             }
             //If none of the collision points are in a black region, there is no wall.
@@ -754,6 +782,14 @@ namespace Pyramid_Plunder.Classes
                 //Walls/grounds/ceilings are black on the collision map, i.e. the R value is 0
                 if (coordinateY + intY >= 0 && coordinateY + intY < room.CollisionMap.Height &&
                     room.collisionColors[column + (coordinateY + intY) * room.CollisionMap.Width].R == 0)
+                    return true;
+            }
+
+            foreach (Door door in room.DoorArray)
+            {
+                if ((coordinateY + collisionYs.First() <= door.HitBox.Y + door.HitBox.Width) &&
+                    (coordinateY + collisionYs.Last() >= door.HitBox.Y) &&
+                    (column >= door.HitBox.X) && (column <= door.HitBox.X + door.HitBox.Width))
                     return true;
             }
             //If none of the collision points are in a black region, there is no wall.
@@ -795,6 +831,14 @@ namespace Pyramid_Plunder.Classes
                             return true;
                     }
                 }
+            }
+            foreach (Door door in room.DoorArray)
+            {
+                if ((CoordinateX + collisionXs.First() <= door.HitBox.X + door.HitBox.Width) &&
+                    (CoordinateX + collisionXs.Last() >= door.HitBox.X) &&
+                    (CoordinateY + collisionYs.First() <= door.HitBox.Y + door.HitBox.Height) &&
+                    (CoordinateY + collisionYs.Last() >= door.HitBox.Y))
+                    return true;
             }
             return false;
         }
