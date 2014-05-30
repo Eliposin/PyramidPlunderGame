@@ -142,8 +142,11 @@ namespace Pyramid_Plunder.Classes
         /// <returns>True if there is a collision.  False otherwise.</returns>
         public static bool CheckBoundingBoxCollision(GameObject obj1, GameObject obj2)
         {
-            if (((obj1.HitBox.X + obj1.HitBox.Width >= obj2.HitBox.X) && (obj1.HitBox.X <= obj2.HitBox.X + obj2.HitBox.Width)) &&
-                ((obj1.HitBox.Y + obj1.HitBox.Height >= obj2.HitBox.Y) && (obj1.HitBox.Y <= obj2.HitBox.Y + obj2.HitBox.Height)))
+            //if (((obj1.HitBox.X + obj1.HitBox.Width >= obj2.HitBox.X) && (obj1.HitBox.X <= obj2.HitBox.X + obj2.HitBox.Width)) &&
+            //    ((obj1.HitBox.Y + obj1.HitBox.Height >= obj2.HitBox.Y) && (obj1.HitBox.Y <= obj2.HitBox.Y + obj2.HitBox.Height)))
+            //    return true;
+            if (((obj1.Position.X + obj1.HitBox.Width >= obj2.Position.X) && (obj1.Position.X <= obj2.Position.X + obj2.HitBox.Width)) &&
+                ((obj1.Position.Y + obj1.HitBox.Height >= obj2.Position.Y) && (obj1.Position.Y <= obj2.Position.Y + obj2.HitBox.Height)))
                 return true;
 
             return false;

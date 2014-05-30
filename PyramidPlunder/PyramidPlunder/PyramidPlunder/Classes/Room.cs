@@ -367,11 +367,26 @@ namespace Pyramid_Plunder.Classes
                     if (nearestObject == null)
                     {
                         nearestObject = doorArray[i];
-                        closestDistance = Vector2.Distance(location, doorArray[i].Position);
+                        //closestDistance = Vector2.Distance(location, doorArray[i].Position);
+                        if (doorArray[i].Orientation == Door.DoorOrientations.FacingRight)
+                        {
+                            closestDistance = Vector2.Distance(location,
+                                doorArray[i].Position + new Vector2(doorArray[i].HitBox.Width, 0));
+                        }
+                        else
+                            closestDistance = Vector2.Distance(location, doorArray[i].Position);
                     }
                     
                     
-                    tempDistance = Vector2.Distance(location, doorArray[i].Position);
+                    //tempDistance = Vector2.Distance(location, doorArray[i].Position);
+                    if (doorArray[i].Orientation == Door.DoorOrientations.FacingRight)
+                    {
+                        tempDistance = Vector2.Distance(location,
+                            doorArray[i].Position + new Vector2(doorArray[i].HitBox.Width, 0));
+                    }
+                    else
+                        tempDistance = Vector2.Distance(location, doorArray[i].Position);
+
                     if (tempDistance < closestDistance)
                     {
                         nearestObject = doorArray[i];
