@@ -34,6 +34,7 @@
       <Name>MenuFont</Name>
       <Importer>FontDescriptionImporter</Importer>
       <Processor>FontDescriptionProcessor</Processor>
+      <SubType>Designer</SubType>
     </Compile>
     <Compile Include="Images\DoorSpritesheet.png">
       <Name>DoorSpritesheet</Name>

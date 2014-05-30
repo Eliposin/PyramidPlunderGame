@@ -49,9 +49,7 @@ namespace Pyramid_Plunder.Classes
         const float TOO_FAST_DEC = -2700f;
         const float STOP_DEC = -2160f;
         const float BRAKE_DEC = 4320f;
-
         
-
         public enum XDirection
         {
             None = 0,
@@ -65,8 +63,6 @@ namespace Pyramid_Plunder.Classes
             Allowed = 1,
             Holding = 2
         };
-
-        
 
         private XDirection LatestXArrow = XDirection.None;
         private XDirection PlayerXFacing = XDirection.Right;
@@ -142,13 +138,33 @@ namespace Pyramid_Plunder.Classes
                     if (wallOnRight && rightBtnFlag)
                     {
                         if (WallSlideDirection == XDirection.None)
+                        {
                             soundEngine.Play(AudioEngine.SoundEffects.WallLand);
+                            if (jumpBtnFlag == false)
+                                PlayerJumpState = JumpState.Allowed;
+                            else
+                                PlayerJumpState = JumpState.NotAllowed;
+                            if (!dashBtnFlag)
+                                dashStatus = DASH_ALLOWED;
+                            else
+                                dashStatus = DASH_NOT_ALLOWED;
+                        }
                         WallSlideDirection = XDirection.Right;
                     }
                     else if (wallOnLeft && leftBtnFlag == true)
                     {
                         if (WallSlideDirection == XDirection.None)
+                        {
                             soundEngine.Play(AudioEngine.SoundEffects.WallLand);
+                            if (jumpBtnFlag == false)
+                                PlayerJumpState = JumpState.Allowed;
+                            else
+                                PlayerJumpState = JumpState.NotAllowed;
+                            if (!dashBtnFlag)
+                                dashStatus = DASH_ALLOWED;
+                            else
+                                dashStatus = DASH_NOT_ALLOWED;
+                        }
                         WallSlideDirection = XDirection.Left;
                     }
                     else
@@ -161,7 +177,7 @@ namespace Pyramid_Plunder.Classes
             if (PlayerJumpState == JumpState.NotAllowed && jumpBtnFlag == false)
                 PlayerJumpState = JumpState.Allowed;
 
-            if (jumpBtnFlag == true //&& (InvincibleTimer < 0 || cInvincibleTimer >= STUN_END_TIME)
+            if (jumpBtnFlag == true
                 && PlayerJumpState == JumpState.Allowed && (isOnGround || midairJumps > 0 || WallSlideDirection != XDirection.None))
             {
                 if (isOnGround == false)
@@ -204,7 +220,7 @@ namespace Pyramid_Plunder.Classes
                 }
                 PlayerJumpState = JumpState.Holding;
             }
-
+            
             if (PlayerJumpState == JumpState.Holding)
             {
                 if (jumpBtnFlag == false)
@@ -274,7 +290,13 @@ namespace Pyramid_Plunder.Classes
                 dashStatus += totalTime;
                 if (dashStatus > MAX_DASH_TIME || dashBtnFlag == false)
                 {
-                    velocityX = 0;
+                    //velocityX = 0;
+                    if (LatestXArrow == XDirection.Right)
+                        velocityX = MAX_RUN_V;
+                    else if (LatestXArrow == XDirection.Left)
+                        velocityX = -MAX_RUN_V;
+                    else
+                        velocityX = 0;
                     isGravityAffected = true;
                     dashStatus = DASH_LAG_START;
                 }
@@ -377,7 +399,13 @@ namespace Pyramid_Plunder.Classes
                             else
                             {
                                 if (door.IsRoomLoaded)
+                                {
                                     roomCallback(door.LinkedRoom);
+                                    if (door.Orientation == Door.DoorOrientations.FacingLeft)
+                                        ResetActionStates(XDirection.Right);
+                                    else
+                                        ResetActionStates(XDirection.Left);
+                                }
                             }
                         }
                         break;
@@ -389,6 +417,25 @@ namespace Pyramid_Plunder.Classes
                         break;
                 }
             }
+        }
+
+        public void ResetActionStates(XDirection direction)
+        {
+            isOnGround = true;
+            PlayerJumpState = JumpState.NotAllowed;
+            PlayerXFacing = direction;
+            midairJumps = MAX_MIDAIR_JUMPS;
+            dashes = INFINITE_DASHES;
+            if (rightBtnFlag == true && leftBtnFlag == false)
+                LatestXArrow = XDirection.Right;
+            else if (leftBtnFlag == true && rightBtnFlag == false)
+                LatestXArrow = XDirection.Left;
+            else
+                LatestXArrow = XDirection.None;
+            WallSlideDirection = XDirection.None;
+            dashStatus = DASH_NOT_ALLOWED;
+            velocityY = 0;
+            velocityX = 0;
         }
 
         /// <summary>
@@ -623,7 +670,7 @@ namespace Pyramid_Plunder.Classes
                     coordinates.Y = yLine;
             }
         }
-
+                
         /// <summary>
         /// Whether or not the player is attempting an interaction
         /// </summary>
