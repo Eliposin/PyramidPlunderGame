@@ -14,7 +14,7 @@ namespace Pyramid_Plunder.Classes
         
         /// <summary>
         /// Tests to see if an object's intended x- and y-displacements are fully achievable in its
-        /// current room and position. Causes a collision and modifies the displacement value of
+        /// current room and position. Causes a collision and modifies the displacement value if
         /// it would send the object into a collideable surface.
         /// </summary>
         /// <param name="obj">The object to be evaluated.</param>
@@ -29,8 +29,8 @@ namespace Pyramid_Plunder.Classes
             if (obj.IsGravityAffected && !obj.IsOnGround)
                 obj.DisplacementY = Math.Min(obj.DisplacementY + (GRAVITY / 2) * (totalTime * totalTime), MAX_FALLING_SPEED * totalTime);
             
-            obj.DisplacementX = (float)((int)(obj.DisplacementX));
-            obj.DisplacementY = (float)((int)(obj.DisplacementY));
+            obj.DisplacementX = (float)Math.Truncate(obj.DisplacementX);
+            obj.DisplacementY = (float)Math.Truncate(obj.DisplacementY);
 
             //If the object will get stuck trying to move the originally intended amount, a collision
             //has occurred. The appropriate velocity & acceleration variables as well as boolean flags

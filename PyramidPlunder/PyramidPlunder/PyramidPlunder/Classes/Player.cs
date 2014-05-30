@@ -131,45 +131,42 @@ namespace Pyramid_Plunder.Classes
                     PlayerXFacing = XDirection.Right;
             }
 
-            if (isOnGround == false)
+            if (isOnGround == false && velocityY >= 0)
             {
-                if (velocityY >= 0)
+                if (wallOnRight && rightBtnFlag)
                 {
-                    if (wallOnRight && rightBtnFlag)
+                    if (WallSlideDirection == XDirection.None)
                     {
-                        if (WallSlideDirection == XDirection.None)
-                        {
-                            soundEngine.Play(AudioEngine.SoundEffects.WallLand);
-                            if (jumpBtnFlag == false)
-                                PlayerJumpState = JumpState.Allowed;
-                            else
-                                PlayerJumpState = JumpState.NotAllowed;
-                            if (!dashBtnFlag)
-                                dashStatus = DASH_ALLOWED;
-                            else
-                                dashStatus = DASH_NOT_ALLOWED;
-                        }
-                        WallSlideDirection = XDirection.Right;
+                        soundEngine.Play(AudioEngine.SoundEffects.WallLand);
+                        if (jumpBtnFlag == false)
+                            PlayerJumpState = JumpState.Allowed;
+                        else
+                            PlayerJumpState = JumpState.NotAllowed;
+                        if (!dashBtnFlag)
+                            dashStatus = DASH_ALLOWED;
+                        else
+                            dashStatus = DASH_NOT_ALLOWED;
                     }
-                    else if (wallOnLeft && leftBtnFlag == true)
-                    {
-                        if (WallSlideDirection == XDirection.None)
-                        {
-                            soundEngine.Play(AudioEngine.SoundEffects.WallLand);
-                            if (jumpBtnFlag == false)
-                                PlayerJumpState = JumpState.Allowed;
-                            else
-                                PlayerJumpState = JumpState.NotAllowed;
-                            if (!dashBtnFlag)
-                                dashStatus = DASH_ALLOWED;
-                            else
-                                dashStatus = DASH_NOT_ALLOWED;
-                        }
-                        WallSlideDirection = XDirection.Left;
-                    }
-                    else
-                        WallSlideDirection = XDirection.None;
+                    WallSlideDirection = XDirection.Right;
                 }
+                else if (wallOnLeft && leftBtnFlag == true)
+                {
+                    if (WallSlideDirection == XDirection.None)
+                    {
+                        soundEngine.Play(AudioEngine.SoundEffects.WallLand);
+                        if (jumpBtnFlag == false)
+                            PlayerJumpState = JumpState.Allowed;
+                        else
+                            PlayerJumpState = JumpState.NotAllowed;
+                        if (!dashBtnFlag)
+                            dashStatus = DASH_ALLOWED;
+                        else
+                            dashStatus = DASH_NOT_ALLOWED;
+                    }
+                    WallSlideDirection = XDirection.Left;
+                }
+                else
+                    WallSlideDirection = XDirection.None;
             }
             else
                 WallSlideDirection = XDirection.None;
@@ -177,8 +174,8 @@ namespace Pyramid_Plunder.Classes
             if (PlayerJumpState == JumpState.NotAllowed && jumpBtnFlag == false)
                 PlayerJumpState = JumpState.Allowed;
 
-            if (jumpBtnFlag == true
-                && PlayerJumpState == JumpState.Allowed && (isOnGround || midairJumps > 0 || WallSlideDirection != XDirection.None))
+            if (jumpBtnFlag == true && PlayerJumpState == JumpState.Allowed &&
+                (isOnGround || midairJumps > 0 || WallSlideDirection != XDirection.None))
             {
                 if (isOnGround == false)
                 {
@@ -196,15 +193,14 @@ namespace Pyramid_Plunder.Classes
                             PlayerXFacing = XDirection.Left;
                         }
                         WallSlideDirection = XDirection.None;
+                        accelerationY = 0;
                         soundEngine.Play(AudioEngine.SoundEffects.WallJump);
-                        
                     }
                     else
                     {
                         midairJumps = (byte)Math.Max(0, midairJumps - 1);
                         velocityY = JUMP_V;
                         soundEngine.Play(AudioEngine.SoundEffects.WallJump);
-                        
                     }
                 }
                 else
@@ -220,28 +216,32 @@ namespace Pyramid_Plunder.Classes
                 }
                 PlayerJumpState = JumpState.Holding;
             }
-            
-            if (PlayerJumpState == JumpState.Holding)
-            {
-                if (jumpBtnFlag == false)
-                    PlayerJumpState = JumpState.Allowed;
-            }
-            else if (velocityY < 0)
-                velocityY = Math.Min(velocityY + JUMP_DECAY * totalTime, 0);
 
-            if (dashStatus < DASH_HELD)
+            if (!isOnGround)
             {
-                if (WallSlideDirection != XDirection.None)
+                if (PlayerJumpState == JumpState.Holding)
+                {
+                    if (jumpBtnFlag == false)
+                    {
+                        PlayerJumpState = JumpState.Allowed;
+                        if (velocityY <= 0)
+                        {
+                            accelerationY = JUMP_DECAY;
+                            velocityLimitY = 0;
+                        }
+                    }
+                }
+                else if (WallSlideDirection != XDirection.None)
                 {
                     accelerationY = WALL_FRICTION_DEC;
                     velocityLimitY = MAX_WALL_SLIDE_V;
                 }
-                else
+                else if (velocityY >= 0)
                 {
                     accelerationY = 0;
                 }
             }
-
+            
             if (dashStatus == DASH_ALLOWED && dashBtnFlag == true &&
                 (dashes != 0 || WallSlideDirection != XDirection.None))
             {
@@ -290,7 +290,6 @@ namespace Pyramid_Plunder.Classes
                 dashStatus += totalTime;
                 if (dashStatus > MAX_DASH_TIME || dashBtnFlag == false)
                 {
-                    //velocityX = 0;
                     if (LatestXArrow == XDirection.Right)
                         velocityX = MAX_RUN_V;
                     else if (LatestXArrow == XDirection.Left)
