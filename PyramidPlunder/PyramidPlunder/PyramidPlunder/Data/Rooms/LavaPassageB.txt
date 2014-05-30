@@ -1,11 +1,11 @@
 #LongName
-Pyramid Lobby
+Lava Passage
 #GraphicsName
-Lobby
+LavaPassageB
 #Spawn Location X (was 1185)
-141
+203
 #Spawn Location Y (was 572)
-2166
+258
 #IsPersistant (0 = false, 1 = true)
 false
 #
@@ -20,59 +20,32 @@ Menu
 #Position (in the room)
 #
 #Number of Doors
-4
+2
 #####First Door (index 0):#####
 # Orientation
 0
 # Linked Room
-StartRoom
+Lobby
 # Linked Door (index)
-0
+1
 # Lock Type
 0
 # PositionX
 -3
 # PositionY
-2139
-#####Second Door (index 0):#####
+218
+#####Second Door (index 1):#####
 # Orientation
 1
 # Linked Room
-LavaPassageA
+DashRoom
 # Linked Door (index)
 0
 # Lock Type
 0
 # PositionX
-1650
-# PositionY
-2019
-#####Third Door (index 0):#####
-# Orientation
-0
-# Linked Room
-Vault
-# Linked Door (index)
-0
-# Lock Type
-0
-# PositionX
--3
-# PositionY
-405
-#####Fourth Door (index 0):#####
-# Orientation
-1
-# Linked Room
-SaveRoomA
-# Linked Door (index)
-0
-# Lock Type
-1
-# PositionX
-2076
-# PositionY
-470
+2770
+445
 #####Enemies#####
 #Number of Enemies
 0
