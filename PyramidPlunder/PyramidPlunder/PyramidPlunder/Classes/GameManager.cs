@@ -123,7 +123,7 @@ namespace Pyramid_Plunder.Classes
                     //Check to see if the player is trying to do something
                     if (player.InteractionFlag)
                     {
-                        GameObject tempObject = FindInteractionObject(player);
+                        GameObject tempObject = FindInteractionObject(player, InteractionTypes.PlayerAction);
                         if (tempObject != null)
                             player.InteractWith(tempObject, InteractionTypes.PlayerAction);
                     }
@@ -187,9 +187,9 @@ namespace Pyramid_Plunder.Classes
         /// one is in range
         /// </summary>
         /// <returns>The nearest object</returns>
-        private GameObject FindInteractionObject(GameObject initiator)
+        private GameObject FindInteractionObject(GameObject initiator, InteractionTypes interactionType)
         {
-            GameObject nearestObject = currentRoom.GetNearestObject(initiator.Position, player.InteractionDistance);
+            GameObject nearestObject = currentRoom.GetNearestObject(initiator.InteractionPoint, player.InteractionDistance, interactionType);
             return nearestObject;
         }
 

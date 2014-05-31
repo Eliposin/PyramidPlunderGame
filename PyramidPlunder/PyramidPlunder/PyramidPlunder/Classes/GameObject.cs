@@ -15,6 +15,7 @@ namespace Pyramid_Plunder.Classes
         protected bool isPhysicsObject;
         protected bool isSolid;
         protected bool isItem;
+        protected bool isHazard;
 
         /// <summary>
         /// Constructor call
@@ -104,12 +105,14 @@ namespace Pyramid_Plunder.Classes
             if (objectName == "RedKey")
             {
                 isItem = true;
+                isHazard = false;
                 itemType = ItemList.RedKey;
 
             }
             else
             {
                 isItem = false;
+                isHazard = false;
                 itemType = ItemList.NullItem;
             }
         }
@@ -130,6 +133,23 @@ namespace Pyramid_Plunder.Classes
         public virtual void Despawn()
         {
             isSpawned = false;
+        }
+
+        public virtual bool HasInteraction(InteractionTypes interactionType)
+        {
+            switch (interactionType)
+            {
+                case InteractionTypes.PlayerAction:
+                    if (objectName == "SavePoint")
+                        return true;
+                    break;
+                case InteractionTypes.Collision:
+                    if (isItem || isHazard)
+                        return true;
+                    break;
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -185,6 +205,20 @@ namespace Pyramid_Plunder.Classes
         }
 
         /// <summary>
+        /// Get the interaction point for the object
+        /// </summary>
+        public virtual Vector2 InteractionPoint
+        {
+            get 
+            {
+                if (hasGraphics)
+                    return new Vector2((HitBox.Width / 2) + position.X, (HitBox.Height / 2) + position.Y);
+                else
+                    return position;
+            }
+        }
+
+        /// <summary>
         /// The area considered a positive match for collision detection.
         /// </summary>
         public override Rectangle HitBox
@@ -195,6 +229,8 @@ namespace Pyramid_Plunder.Classes
                     return new Rectangle((int)position.X, (int)position.Y,
                         (int)animationDimensions[currentAnimation].X,
                         (int)animationDimensions[currentAnimation].Y);
+                else if (!hasGraphics)
+                    return new Rectangle((int)position.X, (int)position.Y, 0, 0);
                 else
                     return new Rectangle(0, 0, 0, 0);
             }

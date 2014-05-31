@@ -420,7 +420,8 @@ namespace Pyramid_Plunder.Classes
                         break;
 
                     case "SavePoint":
-                        saveCallback();
+                        if (interactionType == InteractionTypes.PlayerAction)
+                            saveCallback();
                         break;
                     default:
                         break;

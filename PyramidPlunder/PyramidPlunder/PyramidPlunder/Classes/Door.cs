@@ -108,9 +108,15 @@ namespace Pyramid_Plunder.Classes
             {
                 System.Diagnostics.Debug.WriteLine("There was an error loading the room: " + e.Message);
             }
-
         }
 
+        public override bool HasInteraction(InteractionTypes interactionType)
+        {
+            if (interactionType == InteractionTypes.PlayerAction || interactionType == InteractionTypes.Collision)
+                return true;
+            else
+                return false;
+        }
         /// <summary>
         /// Lock Type property
         /// </summary>
@@ -168,6 +174,20 @@ namespace Pyramid_Plunder.Classes
             outputString += "\n" + this.coordinates.Y;
 
             return outputString;
+        }
+
+        public override Vector2 InteractionPoint
+        {
+            get
+            {
+                float x;
+                if (orientation == DoorOrientations.FacingLeft)
+                    x = position.X;
+                else
+                    x = position.X + HitBox.Width;
+
+                return new Vector2(x, (HitBox.Height / 2) + position.Y);
+            }
         }
 
         public override Rectangle HitBox

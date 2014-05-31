@@ -9,6 +9,6 @@ MummySpriteSheet
 50
 109
 #Animation speed
-0.1
+0.3
 #Number of Frames
 2

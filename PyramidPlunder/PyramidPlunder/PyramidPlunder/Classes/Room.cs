@@ -355,7 +355,7 @@ namespace Pyramid_Plunder.Classes
         /// </summary>
         /// <param name="location">The location to check from.</param>
         /// <returns>The nearest object</returns>
-        public GameObject GetNearestObject(Vector2 location, int maxDistance)
+        public GameObject GetNearestObject(Vector2 location, int maxDistance, InteractionTypes interactionType)
         {
             if ((doorArray.Length == 0) && (enemyArray.Length == 0) && (environmentArray.Length == 0))
                 return null;
@@ -364,69 +364,26 @@ namespace Pyramid_Plunder.Classes
                 GameObject nearestObject = null;
                 float closestDistance = 0;
                 float tempDistance = 0;
-                for (int i = 0; i < doorArray.Length; i++)
+
+                foreach (GameObject obj in objectArray)
                 {
-                    if (nearestObject == null)
+                    if (interactionType != InteractionTypes.None && obj.HasInteraction(interactionType))
                     {
-                        nearestObject = doorArray[i];
-                        //closestDistance = Vector2.Distance(location, doorArray[i].Position);
-                        if (doorArray[i].Orientation == Door.DoorOrientations.FacingRight)
+                        if (nearestObject == null)
                         {
-                            closestDistance = Vector2.Distance(location,
-                                doorArray[i].Position + new Vector2(doorArray[i].HitBox.Width, 0));
+                            nearestObject = obj;
+                            closestDistance = Vector2.Distance(location, obj.InteractionPoint);
                         }
                         else
-                            closestDistance = Vector2.Distance(location, doorArray[i].Position);
+                        {
+                            tempDistance = Vector2.Distance(location, obj.InteractionPoint);
+                            if (tempDistance < closestDistance)
+                            {
+                                nearestObject = obj;
+                                closestDistance = tempDistance;
+                            }
+                        }
                     }
-                    
-                    
-                    //tempDistance = Vector2.Distance(location, doorArray[i].Position);
-                    if (doorArray[i].Orientation == Door.DoorOrientations.FacingRight)
-                    {
-                        tempDistance = Vector2.Distance(location,
-                            doorArray[i].Position + new Vector2(doorArray[i].HitBox.Width, 0));
-                    }
-                    else
-                        tempDistance = Vector2.Distance(location, doorArray[i].Position);
-
-                    if (tempDistance < closestDistance)
-                    {
-                        nearestObject = doorArray[i];
-                        closestDistance = tempDistance;
-                    }
-                    
-                }
-                for (int i = 0; i < enemyArray.Length; i++)
-                {
-                    if (nearestObject == null)
-                    {
-                        nearestObject = enemyArray[i];
-                        closestDistance = Vector2.Distance(location, enemyArray[i].Position);
-                    }
-
-                    tempDistance = Vector2.Distance(location, enemyArray[i].Position);
-                    if (tempDistance < closestDistance)
-                    {
-                        nearestObject = enemyArray[i];
-                        closestDistance = tempDistance;
-                    }
-
-                }
-                for (int i = 0; i < environmentArray.Length; i++)
-                {
-                    if (nearestObject == null)
-                    {
-                        nearestObject = environmentArray[i];
-                        closestDistance = Vector2.Distance(location, environmentArray[i].Position);
-                    }
-
-                    tempDistance = Vector2.Distance(location, environmentArray[i].Position);
-                    if (tempDistance < closestDistance)
-                    {
-                        nearestObject = environmentArray[i];
-                        closestDistance = tempDistance;
-                    }
-
                 }
 
                 if (closestDistance <= maxDistance)

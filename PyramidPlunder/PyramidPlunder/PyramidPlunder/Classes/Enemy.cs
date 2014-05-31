@@ -20,11 +20,17 @@ namespace Pyramid_Plunder.Classes
             : base(objName, content)
         {
             LoadEnemyData();
+            
         }
 
         private void LoadEnemyData()
         {
 
+        }
+
+        public override bool HasInteraction(InteractionTypes interactionType)
+        {
+            return false;
         }
 
         public void Update(GameTime time, Player player)
