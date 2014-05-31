@@ -27,13 +27,13 @@ Menu
 # Linked Room
 Lobby
 # Linked Door (index)
-2
+3
 # Lock Type
 0
 # PositionX
 -3
 # PositionY
-445
+443
 #####Second Door (index 1):#####
 # Orientation
 1
@@ -45,7 +45,7 @@ SaveRoomA
 0
 # PositionX
 1123
-445
+443
 #####Enemies#####
 #Number of Enemies
 0

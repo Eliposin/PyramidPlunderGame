@@ -44,9 +44,9 @@ LavaPassageA
 # Lock Type
 0
 # PositionX
-1650
+1673
 # PositionY
-2019
+2009
 #####Third Door (index 0):#####
 # Orientation
 0
@@ -70,7 +70,7 @@ SaveRoomA
 # Lock Type
 1
 # PositionX
-2076
+2079
 # PositionY
 470
 #####Enemies#####

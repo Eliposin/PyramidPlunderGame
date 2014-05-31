@@ -180,12 +180,12 @@ namespace Pyramid_Plunder.Classes
                 {
                     int XLocation;
                     if (orientation == DoorOrientations.FacingLeft)
-                        XLocation = (int)(position.X + (animationDimensions[currentAnimation].X * 0.3));
+                        XLocation = (int)(position.X + (animationDimensions[currentAnimation].X * 0.5));
                     else
                         XLocation = (int)position.X;
 
                     return new Rectangle(XLocation, (int)position.Y,
-                        (int)(animationDimensions[currentAnimation].X * 0.7),
+                        (int)(animationDimensions[currentAnimation].X * 0.5),
                         (int)animationDimensions[currentAnimation].Y);
                 }
             }
