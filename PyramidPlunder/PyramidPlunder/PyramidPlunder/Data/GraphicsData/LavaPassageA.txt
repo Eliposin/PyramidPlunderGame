@@ -9,7 +9,7 @@ LavaPassageA
 0
 #Dimensions of the animation (width and height)
 2927
-1000
+840
 #Animation speed
 0
 #Number of Frames

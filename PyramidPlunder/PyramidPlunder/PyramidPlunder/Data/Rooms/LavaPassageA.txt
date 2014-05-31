@@ -33,7 +33,7 @@ Lobby
 # PositionX
 -3
 # PositionY
-218
+231
 #####Second Door (index 1):#####
 # Orientation
 1
@@ -45,7 +45,7 @@ DashRoom
 0
 # PositionX
 2770
-445
+485
 #####Enemies#####
 #Number of Enemies
 0
