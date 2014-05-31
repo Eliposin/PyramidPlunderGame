@@ -16,8 +16,7 @@ namespace Pyramid_Plunder.Classes
 
         public const int PLAYER_WIDTH = 60;
         public const int PLAYER_HEIGHT = 120;
-        //private bool isSpawned;
-
+        
         private KeyboardState keyState;
         private GamePadState gpState;
 

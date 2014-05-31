@@ -93,31 +93,23 @@ namespace Pyramid_Plunder.Classes
             if (!obj.WallOnLeft)
             {
                 if (obj.checkWallLeft(room, (int)obj.DisplacementX, (int)obj.DisplacementY))
-                {
                     obj.CollideLeft();
-                }
             }
             else
             {
                 if (!obj.checkWallLeft(room, (int)obj.DisplacementX, (int)obj.DisplacementY))
-                {
                     obj.WallOnLeft = false;
-                }
             }
 
             if (!obj.WallOnRight)
             {
                 if (obj.checkWallRight(room, (int)obj.DisplacementX, (int)obj.DisplacementY))
-                {
                     obj.CollideRight();
-                }
             }
             else
             {
                 if (!obj.checkWallRight(room, (int)obj.DisplacementX, (int)obj.DisplacementY))
-                {
                     obj.WallOnRight = false;
-                }
             }
 
             if (!obj.IsOnGround)
