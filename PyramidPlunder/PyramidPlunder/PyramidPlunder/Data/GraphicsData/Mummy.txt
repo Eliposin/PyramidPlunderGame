@@ -6,9 +6,9 @@ MummySpriteSheet
 #Location on the spritesheet (y value)
 0
 #Dimensions of the animation (width and height)
-60
-120
+50
+109
 #Animation speed
-0
+0.1
 #Number of Frames
-1
+2
