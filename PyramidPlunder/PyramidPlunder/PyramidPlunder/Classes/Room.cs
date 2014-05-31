@@ -264,7 +264,9 @@ namespace Pyramid_Plunder.Classes
             for (int i = 0; i < doorArray.Length; i++)
                 doorArray[i].Draw(batch, time);
 
-            
+            //Added to draw bad guys
+            for (int i = 0; i < enemyArray.Length; i++)
+                enemyArray[i].Draw(batch, time);
 
             // TODO: Iterate through and update ALL objects
         }

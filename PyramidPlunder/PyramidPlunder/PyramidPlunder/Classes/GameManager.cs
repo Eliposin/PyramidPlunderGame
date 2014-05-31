@@ -94,6 +94,13 @@ namespace Pyramid_Plunder.Classes
                 else
                 {
                     player.Update(gameTime); //Determines what the Player is trying to do (this is where the gameTime is taken into account)
+
+                    //Determine where the room's enemies want to move, (possibly) based on where the player is currently
+                    for (int i = 0; i < currentRoom.EnemyArray.Length; i++)
+                    {
+                        currentRoom.EnemyArray[i].Update(gameTime, player);
+                    }
+
                     PhysicsEngine.Update(player, currentRoom, gameTime); //Checks for collisions and modifies Velocity
                     player.Move(); //Actually sets the new position of the object
 

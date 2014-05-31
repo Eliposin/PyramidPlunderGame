@@ -105,7 +105,6 @@ namespace Pyramid_Plunder.Classes
 
             saveCallback = saveMethod;
             roomCallback = roomMethod;
-            
         }
 
         /// <summary>
@@ -192,7 +191,6 @@ namespace Pyramid_Plunder.Classes
                             PlayerXFacing = XDirection.Left;
                         }
                         WallSlideDirection = XDirection.None;
-                        accelerationY = 0;
                         soundEngine.Play(AudioEngine.SoundEffects.WallJump);
                     }
                     else
@@ -214,6 +212,7 @@ namespace Pyramid_Plunder.Classes
                     isGravityAffected = true;
                 }
                 PlayerJumpState = JumpState.Holding;
+                accelerationY = 0;
             }
 
             if (!isOnGround)

@@ -62,8 +62,6 @@ namespace Pyramid_Plunder.Classes
         /// <param name="player">The player to reference</param>
         public void UpdateCoordinates(Vector2 playerPosition, Vector2 playerCoordinates, Rectangle roomDimensions)
         {
-            //coordinates.X = playerCoordinates.X - playerPosition.X + position.X;
-            //coordinates.Y = playerCoordinates.Y - playerPosition.Y + position.Y;
             int xLine = Player.DEFAULT_SCREEN_POSITIONX;
             int yLine = Player.DEFAULT_SCREEN_POSITIONY;
             int viewWidth = Main.DEFAULT_RESOLUTION_X;

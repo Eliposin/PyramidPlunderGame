@@ -417,6 +417,16 @@ namespace Pyramid_Plunder.Classes
             set { wallOnRight = value; }
         }
 
+        public short[] CollisionXs
+        {
+            get { return collisionXs; }
+        }
+
+        public short[] CollisionYs
+        {
+            get { return collisionYs; }
+        }
+
         /// <summary>
         /// Determines this frame's intended x- and y- displacements based on 
         /// the elapsed game time and current velocities, as well as current
@@ -602,20 +612,19 @@ namespace Pyramid_Plunder.Classes
         /// <summary>
         /// Changes all of the object's relevant properties to reflect that
         /// the top end of its hitbox has collided with a ceiling.
-        /// 
-        /// For many objects, this just means to set velocityY and
-        /// accelerationY to zero.
-        /// But for some objects, like the player class, more variables need
-        /// to change based on the object's current circumstances. In that
-        /// case, this function may be overridden so that all relevant
-        /// variables are set to the appropriate values.
-        /// 
-        /// So far the only method that should call this is PhysicsEngine.Update().
-        /// It calls it when it detects that an upward moving object has collided
-        /// with a ceiling.
-        /// There should be little to no need to call this method when defining a
-        /// new method.
         /// </summary>
+        // For many objects, this just means to set velocityY and
+        // accelerationY to zero.
+        // But for some objects, like the player class, more variables need
+        // to change based on the object's current circumstances. In that
+        // case, this function may be overridden so that all relevant
+        // variables are set to the appropriate values.
+        // 
+        // So far the only method that should call this is PhysicsEngine.Update().
+        // It calls it when it detects that an upward moving object has collided
+        // with a ceiling.
+        // There should be little to no need to call this method when defining a
+        // new method.
         public virtual void HitCeiling()
         {
             velocityY = 0;
@@ -625,19 +634,18 @@ namespace Pyramid_Plunder.Classes
         /// <summary>
         /// Changes all of the object's relevant properties to reflect that
         /// it is now airborne (i.e. not on ground).
-        /// 
-        /// For many objects, this just means to set isOnGround to false.
-        /// But for some objects, like the player class, more variables need
-        /// to change based on the object's current circumstances. In that
-        /// case, this function may be overridden so that all relevant
-        /// variables are set to the appropriate values.
-        /// 
-        /// So far the only method that should call this is PhysicsEngine.Update().
-        /// It calls it to change an object to "airborne mode" when isOnGround == true
-        /// but it detects that there is no ground beneath said object.
-        /// There should be little to no need to call this method when defining a
-        /// new method.
         /// </summary>
+        // For many objects, this just means to set isOnGround to false.
+        // But for some objects, like the player class, more variables need
+        // to change based on the object's current circumstances. In that
+        // case, this function may be overridden so that all relevant
+        // variables are set to the appropriate values.
+        // 
+        // So far the only method that should call this is PhysicsEngine.Update().
+        // It calls it to change an object to "airborne mode" when isOnGround == true
+        // but it detects that there is no ground beneath said object.
+        // There should be little to no need to call this method when defining a
+        // new method.
         public virtual void BecomeAirborne()
         {
             isOnGround = false;
@@ -650,23 +658,7 @@ namespace Pyramid_Plunder.Classes
         //boundaries. For example, these tests prevent objects from moving off the left or right
         //edges of the board. On the other hand, they do allow objects to move through the top
         //edge or fall through the bottom edge of the board.
-        //
-        //You know how in plenty of Mario games it's possible to walk on top of the board,
-        //out of the view of the viewport, to access secrets? Like in Level 1-2 of Super Mario
-        //Bros. where you hit the bricks above and then walk over the rest of the level? Can we
-        //do something like that? I think there can be a few fun rooms where the player has to
-        //jump up really high to get on top of the ceiling, then walk a little ways and fall
-        //through a hole in the ceiling to find some treasure.
-        //
-        //Also, this makes it possible to fall into a pit outside of the viewport, to cause
-        //either permanent death to the object/player or a damage and respawn the player
-        //(Like in many Zelda games).
-        //
-        //The only thing that would need to be modified to make these things happen is the
-        //function that controls how the viewport moves: it would need to stop scrolling when
-        //it gets to the edges of the map. Of course, this modification would be really easy.
-        //I have an example on the program I made a few weeks ago, if anyone wants to see.
-        
+                
         /// <summary>
         /// Checks to see if if there is ground beneath the object at its current coordinates,
         /// OR if there *will be* ground beneath the object if its coordinates are adjusted

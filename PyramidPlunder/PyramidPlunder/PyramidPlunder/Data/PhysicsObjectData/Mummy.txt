@@ -1,20 +1,20 @@
 #IS AFFECTED BY GRAVITY (0 == FALSE, 1 == TRUE)
-
+1
 #
 #ALIGNMENT (0 == FRIENDLY, 1 == ENEMY, 2 == NEUTRAL)
-
+1
 #
 #MAX HEALTH
-
+10
 #
 #ARMOR
-
+5
 #
 #MOVEMENT SPEED (PIXELS PER SECOND)
 #(IF AN OBJECT ONLY EVER MOVES AT ONE HORIZONTAL SPEED, HERE'S WHERE TO SPECIFY IT)
-
+240
 #INTERACTION DISTANCE (in pixels)
-
+150
 #
 #X- & Y- COORDINATES ON COLLISION GRID
 #A collision point will be created from each possible pair of one x-coordinate
@@ -29,10 +29,10 @@
 #X-COORDINATES ON SPRITE WHICH HAVE COLLISION POINTS
 #When these values are arranged in increasing order, the greatest difference between
 #two consecutive values will be no more than *15*.
-
+3 25 47
 #
 #Y-COORDINATES ON SPRITE WHICH HAVE COLLISION POINTS
 #When these values are arranged in increasing order, the greatest difference between
 #two consecutive values will be no more than *33*.
-
+2 55 108
 #

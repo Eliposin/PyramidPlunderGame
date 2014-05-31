@@ -101,6 +101,7 @@
     <Content Include="Data\MainMenu.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Data\PhysicsObjectData\Mummy.txt" />
     <Content Include="Data\Rooms\LavaPassageA.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
