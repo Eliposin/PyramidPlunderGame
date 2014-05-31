@@ -97,6 +97,7 @@
   <ItemGroup>
     <Content Include="Data\GraphicsData\LavaPassageA.txt" />
     <Content Include="Data\GraphicsData\LavaPassageB.txt" />
+    <Content Include="Data\GraphicsData\Mummy.txt" />
     <Content Include="Data\MainMenu.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
