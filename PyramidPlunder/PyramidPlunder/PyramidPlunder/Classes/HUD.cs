@@ -10,10 +10,10 @@ namespace Pyramid_Plunder.Classes
 {
     class HUD
     {
-        private const int HP_BAR_X = 440;
-        private const int HP_BAR_Y = 50;
-        private const int KEYCHAIN_X = 590;
-        private const int KEYCHAIN_Y = 100;
+        private const int HP_BAR_X = 100;
+        private const int HP_BAR_Y = 10;
+        private const int KEYCHAIN_X = 520;
+        private const int KEYCHAIN_Y = 15;
         private const float ROOM_DISPLAY_TIME = 3; //In Seconds
 
         private ContentManager Content;
@@ -21,11 +21,17 @@ namespace Pyramid_Plunder.Classes
         private GameGraphic keyChain;
         private Texture2D grayTexture;
         private Texture2D redTexture;
+        private Texture2D darkGrayTexture;
         private SpriteFont roomFont;
+        private SpriteFont saveFont;
 
         private string roomDisplay;
         private bool displayingRoom;
         private double roomDisplayTime;
+
+        private string saveIndicator;
+        private bool displayingSave;
+        private double saveDisplayTime;
 
         private float currentHP;
         private bool isVisible;
@@ -49,10 +55,14 @@ namespace Pyramid_Plunder.Classes
             redTexture = new Texture2D(GameResources.Device, 1, 1);
             redTexture.SetData(new[] { Color.Red });
 
+            darkGrayTexture = new Texture2D(GameResources.Device, 1, 1);
+            darkGrayTexture.SetData(new[] { new Color(102, 102, 102) });
+
             healthBar.Coordinates = new Vector2(HP_BAR_X, HP_BAR_Y);
             keyChain.Coordinates = new Vector2(KEYCHAIN_X, KEYCHAIN_Y);
 
-            roomFont = Content.Load<SpriteFont>("Fonts/RoomDisplayFont");
+            roomFont = Content.Load<SpriteFont>("Fonts/Philo42");
+            saveFont = Content.Load<SpriteFont>("Fonts/Philo18");
 
             keyArray = new bool[1];
             for (int i = 0; i < keyArray.Length; i++)
@@ -67,15 +77,24 @@ namespace Pyramid_Plunder.Classes
         /// <param name="time">The gametime to use.</param>
         public void Draw(SpriteBatch batch, GameTime time)
         {
+            batch.Draw(darkGrayTexture, new Rectangle(0, 0, 1280, 60), Color.White);
             DrawHealthBar(batch, time);
             DrawKeys(batch, time);
             
             if (displayingRoom)
             {
                 roomDisplayTime += time.ElapsedGameTime.TotalSeconds;
-                batch.DrawString(roomFont, roomDisplay, new Vector2(50, 600), Color.Blue);
+                batch.DrawString(roomFont, roomDisplay, new Vector2(700, 0), Color.DarkBlue);
                 if (roomDisplayTime >= ROOM_DISPLAY_TIME)
                     displayingRoom = false;
+            }
+
+            if (displayingSave)
+            {
+                saveDisplayTime += time.ElapsedGameTime.TotalSeconds;
+                batch.DrawString(saveFont, saveIndicator, new Vector2(525, 70), Color.Black);
+                if (saveDisplayTime >= ROOM_DISPLAY_TIME)
+                    displayingSave = false;
             }
         }
 
@@ -136,6 +155,13 @@ namespace Pyramid_Plunder.Classes
             roomDisplay = longName;
             roomDisplayTime = 0;
             displayingRoom = true;
+        }
+
+        public void DisplaySaveIndicator(string saveString)
+        {
+            saveIndicator = saveString;
+            saveDisplayTime = 0;
+            displayingSave = true;
         }
 
 

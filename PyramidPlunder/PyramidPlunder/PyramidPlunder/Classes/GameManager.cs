@@ -300,26 +300,38 @@ namespace Pyramid_Plunder.Classes
         /// </summary>
         private void SaveGame()
         {
-            string[] saveData = new string[player.CurrentItems.Length + 3];
+            
 
-            saveData[0] = currentRoom.RoomName;
-            saveData[1] = player.CurrentHealth.ToString();
-            saveData[2] = player.CurrentItems.Length.ToString();
-
-            for (int i = 0; i < player.CurrentItems.Length; i++)
-                saveData[i + 3] = player.CurrentItems[i].ToString();
-
-            if (currentStorageDevice == null)
-                currentStorageDevice = GetStorageDevice();
-
-            using (StorageContainer container = GetStorageContainer(currentStorageDevice))
+            try
             {
+                string[] saveData = new string[player.CurrentItems.Length + 3];
 
-                using (StreamWriter file = new StreamWriter(container.CreateFile("SaveGame.txt")))
+                saveData[0] = currentRoom.RoomName;
+                saveData[1] = player.CurrentHealth.ToString();
+                saveData[2] = player.CurrentItems.Length.ToString();
+
+                for (int i = 0; i < player.CurrentItems.Length; i++)
+                    saveData[i + 3] = player.CurrentItems[i].ToString();
+
+                if (currentStorageDevice == null)
+                    currentStorageDevice = GetStorageDevice();
+
+                using (StorageContainer container = GetStorageContainer(currentStorageDevice))
                 {
-                    foreach (string line in saveData)
-                        file.WriteLine(line);
+
+                    using (StreamWriter file = new StreamWriter(container.CreateFile("SaveGame.txt")))
+                    {
+                        foreach (string line in saveData)
+                            file.WriteLine(line);
+                    }
                 }
+                
+                gameHUD.DisplaySaveIndicator("Your game was saved.");
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine("There was an error when saving the game: \n" + e.Message);
+                gameHUD.DisplaySaveIndicator("Your game was not saved.");
             }
         }
 
