@@ -77,8 +77,23 @@ namespace Pyramid_Plunder.Classes
 
         public override void CollideX()
         {
-            if (!isChasingPlayer)
+            if (!isChasingPlayer && isOnGround)
                 velocityX *= -1;
+        }
+
+        public override bool isStuckAt(Room room, int dX, int dY)
+        {
+            for (int i = 0; i < room.EnemyArray.Length; i++)
+            {
+                if (this == room.EnemyArray[i])
+                    continue;
+
+                if ((position.X + dX + collisionXs.Last() >= room.EnemyArray[i].Position.X + room.EnemyArray[i].collisionXs.First()) &&
+                    (position.X + dX + collisionXs.First() <= room.EnemyArray[i].Position.X + room.EnemyArray[i].collisionXs.Last()))
+                    return true;
+            }
+
+            return base.isStuckAt(room, dX, dY);
         }
     }
 }

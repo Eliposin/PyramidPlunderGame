@@ -44,7 +44,7 @@ namespace Pyramid_Plunder.Classes
                 {
                     obj.HitCeiling();
                     obj.DisplacementY += 1;
-                    while (obj.isStuckAt(room, 0, (int)obj.DisplacementY) && obj.DisplacementY != 0)
+                    while (obj.DisplacementY != 0 && obj.isStuckAt(room, 0, (int)obj.DisplacementY))
                         obj.DisplacementY += 1;
                 }
             }
@@ -54,7 +54,7 @@ namespace Pyramid_Plunder.Classes
                 {
                     obj.Land();
                     obj.DisplacementY -= 1;
-                    while (obj.isStuckAt(room, 0, (int)obj.DisplacementY) && obj.DisplacementY != 0)
+                    while (obj.DisplacementY != 0 && obj.isStuckAt(room, 0, (int)obj.DisplacementY))
                         obj.DisplacementY -= 1;
                 }
             }
@@ -65,7 +65,7 @@ namespace Pyramid_Plunder.Classes
                 {
                     obj.CollideRight();
                     obj.DisplacementX -= 1;
-                    while (obj.isStuckAt(room, (int)obj.DisplacementX, (int)obj.DisplacementY) && obj.DisplacementX != 0)
+                    while (obj.DisplacementX != 0 && obj.isStuckAt(room, (int)obj.DisplacementX, (int)obj.DisplacementY))
                         obj.DisplacementX -= 1;
                 }
             }
@@ -76,7 +76,7 @@ namespace Pyramid_Plunder.Classes
                 {
                     obj.CollideLeft();
                     obj.DisplacementX += 1;
-                    while (obj.isStuckAt(room, (int)obj.DisplacementX, (int)obj.DisplacementY) && obj.DisplacementX != 0)
+                    while (obj.DisplacementX != 0 && obj.isStuckAt(room, (int)obj.DisplacementX, (int)obj.DisplacementY))
                         obj.DisplacementX += 1;
                 }
             }
