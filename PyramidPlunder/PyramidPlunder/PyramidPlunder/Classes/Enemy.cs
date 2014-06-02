@@ -99,7 +99,6 @@ namespace Pyramid_Plunder.Classes
                             else //if (wallOnLeft)
                                 velocityY = movementSpeed;
                         }
-
                         if (isOnGround)
                         {
                             if (wallOnRight)
@@ -196,6 +195,11 @@ namespace Pyramid_Plunder.Classes
                 if (!isChasingPlayer && isOnGround)
                     velocityX *= -1;
             }
+            //if (objectName != "WallThing")
+            //{
+            //    if (!isChasingPlayer && isOnGround)
+            //        velocityX *= -1;
+            //}
         }
 
         /// <summary>
