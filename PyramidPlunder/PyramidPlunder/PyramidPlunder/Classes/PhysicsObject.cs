@@ -499,6 +499,8 @@ namespace Pyramid_Plunder.Classes
                 //Walls/grounds/ceilings are black on the collision map, i.e. the R value is 0
                 if (room.collisionColors[(int)(coordinateX + intX + row * room.CollisionMap.Width)].R == 0)
                     return true;
+
+                
             }
             //If none of the collision points are in a black region, there is no ground.
 
@@ -827,6 +829,8 @@ namespace Pyramid_Plunder.Classes
                         //Walls/grounds/ceilings are black on the collision map, i.e. the R value is 0
                         if (room.collisionColors[CoordinateX + intX + (CoordinateY + intY) * room.CollisionMap.Width].R == 0)
                             return true;
+                    
+                            
                     }
                 }
             }
