@@ -131,7 +131,7 @@ namespace Pyramid_Plunder.Classes
             }
             catch (FileNotFoundException e)
             {
-                System.Diagnostics.Debug.WriteLine("The graphics file was not found for object: \n" + objectName + "\n" + e.Message);
+                System.Diagnostics.Debug.WriteLine("The file was not found for object: \n" + objectName + "\n" + e.Message);
                 numAnimations = 0;
                 spriteName = "";
                 animationLocation = new int[0];
@@ -142,7 +142,7 @@ namespace Pyramid_Plunder.Classes
             }
             catch (Exception e)
             {
-                System.Diagnostics.Debug.WriteLine("A graphics error occurred in object: " + objectName + e.Message);
+                System.Diagnostics.Debug.WriteLine("An error occurred in object: " + objectName + e.Message);
                 numAnimations = 0;
                 spriteName = "";
                 animationLocation = new int[0];

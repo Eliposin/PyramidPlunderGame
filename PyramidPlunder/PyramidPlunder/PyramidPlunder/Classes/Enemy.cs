@@ -54,7 +54,7 @@ namespace Pyramid_Plunder.Classes
             }
             catch (FileNotFoundException e)
             {
-                System.Diagnostics.Debug.WriteLine("The enemy file could not be found: " + e.Message);
+                System.Diagnostics.Debug.WriteLine("The file could not be found: " + e.Message);
             }
             catch (Exception e)
             {
