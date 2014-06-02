@@ -47,6 +47,14 @@ namespace Pyramid_Plunder.Classes
                     while (obj.DisplacementY != 0 && obj.IsStuck(room, 0, (int)obj.DisplacementY))
                         obj.DisplacementY += 1;
                 }
+                if (obj.SticksToSurfaces && obj.DisplacementX == 0)
+                {
+                    if (obj.WillLoseSurface(room))
+                    {
+                        while (obj.WillLoseSurface(room))
+                            obj.DisplacementY += 1;
+                    }
+                }
             }
             else if (obj.DisplacementY > 0)
             {
@@ -56,6 +64,14 @@ namespace Pyramid_Plunder.Classes
                     obj.DisplacementY -= 1;
                     while (obj.DisplacementY != 0 && obj.IsStuck(room, 0, (int)obj.DisplacementY))
                         obj.DisplacementY -= 1;
+                }
+                if (obj.SticksToSurfaces && obj.DisplacementX == 0)
+                {
+                    if (obj.WillLoseSurface(room))
+                    {
+                        while (obj.WillLoseSurface(room))
+                            obj.DisplacementY -= 1;
+                    }
                 }
             }
 
@@ -68,8 +84,25 @@ namespace Pyramid_Plunder.Classes
                     while (obj.DisplacementX != 0 && obj.IsStuck(room, (int)obj.DisplacementX, (int)obj.DisplacementY))
                         obj.DisplacementX -= 1;
                 }
+                if (!obj.MovesOffEdges && obj.IsOnGround && obj.DisplacementY == 0)
+                {
+                    if (obj.WillMovePastEdge(room))
+                    {
+                        obj.VelocityX *= -1;
+                        while (obj.WillMovePastEdge(room))
+                            obj.DisplacementX -= 1;
+                    }
+                }
+                if (obj.SticksToSurfaces && obj.DisplacementY == 0)
+                {
+                    if (obj.WillLoseSurface(room))
+                    {
+                        while (obj.WillLoseSurface(room))
+                            obj.DisplacementX -= 1;
+                    }
+                }
             }
-
+            
             if (obj.DisplacementX < 0)
             {
                 if (obj.IsStuck(room, (int)obj.DisplacementX, (int)obj.DisplacementY))
@@ -78,6 +111,23 @@ namespace Pyramid_Plunder.Classes
                     obj.DisplacementX += 1;
                     while (obj.DisplacementX != 0 && obj.IsStuck(room, (int)obj.DisplacementX, (int)obj.DisplacementY))
                         obj.DisplacementX += 1;
+                }
+                if (!obj.MovesOffEdges && obj.IsOnGround && obj.DisplacementY == 0)
+                {
+                    if (obj.WillMovePastEdge(room))
+                    {
+                        obj.VelocityX *= -1;
+                        while (obj.WillMovePastEdge(room))
+                            obj.DisplacementX += 1;
+                    }
+                }
+                if (obj.SticksToSurfaces && obj.DisplacementY == 0)
+                {
+                    if (obj.WillLoseSurface(room))
+                    {
+                        while (obj.WillLoseSurface(room))
+                            obj.DisplacementX += 1;
+                    }
                 }
             }
 

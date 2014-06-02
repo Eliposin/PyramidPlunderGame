@@ -11,9 +11,8 @@ namespace Pyramid_Plunder.Classes
     public class Enemy : PhysicsObject
     {
         protected int contactDamage;
-        protected bool walksOffEdges;
         protected bool bumpsOtherEnemies;
-        
+                
         protected bool isChasingPlayer;
         protected float timer1;             //Allows enemy to keep track of time, if necessary.
         protected float timer2;             //Allows enemy to keep track of time, if necessary.
@@ -42,9 +41,6 @@ namespace Pyramid_Plunder.Classes
                         contactDamage = int.Parse(line);
 
                         line = GameResources.getNextDataLine(sr, "#");
-                        walksOffEdges = Convert.ToBoolean(int.Parse(line));
-
-                        line = GameResources.getNextDataLine(sr, "#");
                         bumpsOtherEnemies = Convert.ToBoolean(int.Parse(line));
 
                         sr.Close();
@@ -60,7 +56,6 @@ namespace Pyramid_Plunder.Classes
             {
                 System.Diagnostics.Debug.WriteLine("An error occurred: " + e.Message);
                 contactDamage = 1;
-                walksOffEdges = false;
                 bumpsOtherEnemies = false;
             }
         }
@@ -99,6 +94,7 @@ namespace Pyramid_Plunder.Classes
                             else //if (wallOnLeft)
                                 velocityY = movementSpeed;
                         }
+
                         if (isOnGround)
                         {
                             if (wallOnRight)
@@ -230,12 +226,6 @@ namespace Pyramid_Plunder.Classes
                 }
             }
             
-            if (!walksOffEdges && isOnGround && dY == 0)
-            {
-                if (WillWalkPastLedge(room))
-                    return true;
-            }
-
             return base.IsStuck(room, dX, dY);
         }
 

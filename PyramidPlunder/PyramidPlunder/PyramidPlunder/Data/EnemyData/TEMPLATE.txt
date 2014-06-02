@@ -1,8 +1,5 @@
 #CONTACT DAMAGE#
 #Amount of HP Done upon Physical Contact#
 
-#WALKS OFF LEDGES#
-#0 == false, 1 == true#
-
 #BUMPS OTHER ENEMIES#
 #0 == false, 1 == true#

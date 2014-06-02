@@ -46,6 +46,8 @@ namespace Pyramid_Plunder.Classes
         //This can be kept at one constant value, or it can be altered under certain conditions if you
         //see fit. The player currently does this for mid-air dashing.
         protected bool isGravityAffected;   //Whether or not being ungrounded will cause downward movement.
+        protected bool movesOffEdges;
+        protected bool sticksToSurfaces;
         
         protected Alignments alignment;     //Is this a friend, enemy or neutral party to the player?
         protected int maxHealth;            //The most health points the object can hold at one time.
@@ -97,6 +99,12 @@ namespace Pyramid_Plunder.Classes
                         isGravityAffected = Convert.ToBoolean(int.Parse(line));
 
                         line = GameResources.getNextDataLine(sr, "#");
+                        movesOffEdges = Convert.ToBoolean(int.Parse(line));
+
+                        line = GameResources.getNextDataLine(sr, "#");
+                        sticksToSurfaces = Convert.ToBoolean(int.Parse(line));
+
+                        line = GameResources.getNextDataLine(sr, "#");
                         alignment = (Alignments)int.Parse(line);
 
                         line = GameResources.getNextDataLine(sr, "#");
@@ -138,6 +146,7 @@ namespace Pyramid_Plunder.Classes
             {
                 System.Diagnostics.Debug.WriteLine("An error occurred: " + e.Message);
                 isGravityAffected = false;
+                movesOffEdges = false;
                 alignment = 0;
                 maxHealth = 0;
                 armor = 0;
@@ -162,6 +171,12 @@ namespace Pyramid_Plunder.Classes
         {
             get { return velocityY; }
             set { velocityY = value; }
+        }
+
+        public float VelocityX
+        {
+            get { return velocityX; }
+            set { velocityX = value; }
         }
 
         /// <summary>
@@ -208,6 +223,16 @@ namespace Pyramid_Plunder.Classes
         public bool IsGravityAffected
         {
             get { return isGravityAffected; }
+        }
+
+        public bool MovesOffEdges
+        {
+            get { return movesOffEdges; }
+        }
+
+        public bool SticksToSurfaces
+        {
+            get { return sticksToSurfaces; }
         }
 
         /// <summary>
@@ -525,7 +550,7 @@ namespace Pyramid_Plunder.Classes
         /// </summary>
         /// <param name="room">The room the object is in.</param>
         /// <returns></returns>
-        public bool WillWalkPastLedge(Room room)
+        public bool WillMovePastEdge(Room room)
         {
             int column;
 
@@ -553,6 +578,78 @@ namespace Pyramid_Plunder.Classes
                         return false;
                 }
             }
+            return true;
+        }
+
+        public bool WillLoseSurface(Room room)
+        {
+            int column = (int)position.X;
+            int row = (int)position.Y;
+
+            if (displacementX != 0)
+            {
+                if (isOnGround)
+                {
+                    if (CheckGround(room, (int)displacementX, 0))
+                        return false;
+                    row += collisionYs.Last() + 1;
+                }
+                else if (ceilingAbove)
+                {
+                    if (CheckCeiling(room, (int)displacementX, 0))
+                        return false;
+                    row += collisionYs.First() - 1;
+                }
+                else
+                    return false;
+
+                column += (int)displacementX;
+
+                if (displacementX > 0)
+                    column += collisionXs.First() - 1;
+                else
+                    column += collisionXs.Last() + 1;
+            }
+            else if (displacementY != 0)
+            {
+                if (wallOnRight)
+                {
+                    if (CheckWallRight(room, 0, (int)displacementY))
+                        return false;
+                    column += collisionXs.Last() + 1;
+                }
+                else if (wallOnLeft)
+                {
+                    if (CheckWallLeft(room, 0, (int)displacementY))
+                        return false;
+                    column += collisionXs.First() - 1;
+                }
+                else
+                    return false;
+
+                row += (int)displacementY;
+
+                if (displacementY > 0)
+                    row += collisionXs.First() - 1;
+                else
+                    row += collisionXs.Last() + 1;
+            }
+            else
+                return false;
+
+            foreach (GameObject obj in room.ObjectArray)
+            {
+                if (obj.IsSolid)
+                {
+                    if ((column >= obj.Position.X) && (column <= obj.Position.X + obj.HitBox.Width) &&
+                        (row >= obj.Position.Y) && (row <= obj.Position.Y + obj.HitBox.Height))
+                        return false;
+                }
+            }
+
+            if (room.collisionColors[column + row * room.CollisionMap.Width].R == 0)
+                return false;
+
             return true;
         }
 
