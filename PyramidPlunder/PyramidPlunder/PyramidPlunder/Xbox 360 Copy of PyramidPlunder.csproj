@@ -85,6 +85,7 @@
     <Compile Include="Classes\GameObject.cs" />
     <Compile Include="Classes\HUD.cs" />
     <Compile Include="Classes\Menu.cs" />
+    <Compile Include="Classes\pauseMenu.cs" />
     <Compile Include="Classes\PhysicsEngine.cs" />
     <Compile Include="Classes\PhysicsObject.cs" />
     <Compile Include="Classes\Player.cs" />

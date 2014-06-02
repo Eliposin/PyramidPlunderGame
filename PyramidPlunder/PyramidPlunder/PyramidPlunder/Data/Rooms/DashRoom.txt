@@ -1,13 +1,13 @@
 #LongName
-Lava Passage
+Dash Room
 #GraphicsName
-LavaPassageA
+DashRoom
 #Spawn Location X (was 1185)
-203
+170
 #Spawn Location Y (was 572)
-258
-#IsPersistant (0 = false, 1 = true)
-false
+380
+#IsPersistant
+true
 #
 #Music
 Menu
@@ -20,32 +20,20 @@ Menu
 #Position (in the room)
 #
 #Number of Doors
-2
+1
 #####First Door (index 0):#####
 # Orientation
 0
 # Linked Room
-LavaAccess
+LavaPassageA
 # Linked Door (index)
-3
+1
 # Lock Type
 0
 # PositionX
 -3
 # PositionY
-231
-#####Second Door (index 1):#####
-# Orientation
-1
-# Linked Room
-DashRoom
-# Linked Door (index)
-0
-# Lock Type
-0
-# PositionX
-2770
-485
+348
 #####Enemies#####
 #Number of Enemies
 0

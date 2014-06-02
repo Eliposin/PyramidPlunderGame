@@ -62,36 +62,38 @@ namespace Pyramid_Plunder.Classes
         #endregion
         //for the menu we need to use the keyboard and the 
         //gamepad
-        GamePadState gp, oldGp;
-        KeyboardState keys, oldKeys;
+        protected GamePadState gp, oldGp;
+        protected KeyboardState keys, oldKeys;
         //the menu will use a spritefont instead of images
-        SpriteFont menuFont;
+        protected SpriteFont menuFont;
         //the main is basically the main game class, and since
         //I cannot figure out how to make the menu work with the game 
         //manager class, I am just going to make it work through the main
         //class
 
-        ContentManager Content;
+        protected ContentManager Content;
 
         //For the menu we need to set up different game states, which
         // will be enumerated through the main class
         public GameStates gameStates;
 
         //this integer will work for choosing the menu option
-        int menuSelect;
+        protected int menuSelect;
         //this is the color to show what the current menu option is
-        Color ColorSelected = Color.Red;
+        protected Color ColorSelected = Color.Red;
          //Gonna try to use a vector array to help make things a little bit more simple
-        Vector2[] vecMenuOpts = new Vector2[4];
+        protected Vector2[] vecMenuOpts = new Vector2[4];
         //this will be used for the menuSelect method
-        int menuTemp;
+        protected int menuTemp;
         //set up menu strings
-        String[] menuOptionsArray = { "New Game", "Load", "Options", "Exit" };
+        protected String[] menuOptionsArray = { "New Game", "Load", "Options", "Exit" };
         //empty struct
 
-        DelMenu menuCallback;
+        protected DelMenu menuCallback;
 
-        private bool isRunning;
+        protected bool isRunning;
+
+        public Menu() { }
 
         //not an empty struct, go back over old code to remember exactly why this is necessary, same with the empty struct
         public Menu(string fontName, DelMenu menuC)
@@ -147,7 +149,7 @@ namespace Pyramid_Plunder.Classes
             }
         }
 
-        public void Load()
+        public virtual void Load()
         {
             menuTemp = 0;
             gameStates = GameStates.Menu;
@@ -223,7 +225,7 @@ namespace Pyramid_Plunder.Classes
         }
         //this Function allows the user to select menu Options using keyboard keys
         //TODO: add in functionality to use gamepad DPad
-        private int MenuOptionsSelect()
+        protected int MenuOptionsSelect()
         {
            
             if ((keys.IsKeyDown(Keys.Down) && oldKeys.IsKeyUp(Keys.Down)) ||

@@ -38,7 +38,7 @@ StartRoom
 # Orientation
 1
 # Linked Room
-LavaPassageA
+LavaAccess
 # Linked Door (index)
 0
 # Lock Type

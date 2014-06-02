@@ -68,7 +68,6 @@ namespace Pyramid_Plunder.Classes
 
             gameMenu = new Menu("MenuFont", MenuCallback);
 
-
             musicManager = new BGM(gContent);
 
             fpsFont = gameContent.Load<SpriteFont>("Fonts/FPSFont");
@@ -166,11 +165,18 @@ namespace Pyramid_Plunder.Classes
             }
             else
             {
-                currentRoom.DrawBackground(spriteBatch, time);
-                player.Draw(spriteBatch, time);
-                currentRoom.DrawForeground(spriteBatch, time);
+                if (isPaused)
+                {
+                    //pM.Draw(spriteBatch);
+                }
+                else
+                {
+                    currentRoom.DrawBackground(spriteBatch, time);
+                    player.Draw(spriteBatch, time);
+                    currentRoom.DrawForeground(spriteBatch, time);
 
-                gameHUD.Draw(spriteBatch, time);
+                    gameHUD.Draw(spriteBatch, time);
+                }
             }
 
             oldCount += (float)time.ElapsedGameTime.TotalSeconds;
@@ -206,9 +212,13 @@ namespace Pyramid_Plunder.Classes
             if (tempKeyState.IsKeyDown(Keys.Escape) && keyState.IsKeyUp(Keys.Escape))
             {
                 if (isPaused == true)
+                {
                     isPaused = false;
+                }
                 else
+                {
                     isPaused = true;
+                }
             }
         }
 
