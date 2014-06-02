@@ -1,0 +1,14 @@
+#Number of animations
+1
+#Name of spritesheet
+WallThingSpriteSheet
+#First Animation Stats
+#Location on the spritesheet (y value)
+0
+#Dimensions of the animation (width and height)
+50
+50
+#Animation speed
+0.0
+#Number of Frames
+1

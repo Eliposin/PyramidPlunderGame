@@ -12,8 +12,11 @@ namespace Pyramid_Plunder.Classes
     {
         protected int contactDamage;
         protected bool walksOffEdges;
+        protected bool bumpsOtherEnemies;
         
-        protected bool isChasingPlayer = false;
+        protected bool isChasingPlayer;
+        protected float timer1;             //Allows enemy to keep track of time, if necessary.
+        protected float timer2;             //Allows enemy to keep track of time, if necessary.
         
         /// <summary>
         /// Constructs an enemy object of the type specified.
@@ -23,8 +26,8 @@ namespace Pyramid_Plunder.Classes
         public Enemy(string objName, ContentManager content)
             : base(objName, content)
         {
+            isChasingPlayer = false;
             LoadEnemyData();
-            
         }
 
         private void LoadEnemyData()
@@ -40,6 +43,9 @@ namespace Pyramid_Plunder.Classes
 
                         line = GameResources.getNextDataLine(sr, "#");
                         walksOffEdges = Convert.ToBoolean(int.Parse(line));
+
+                        line = GameResources.getNextDataLine(sr, "#");
+                        bumpsOtherEnemies = Convert.ToBoolean(int.Parse(line));
 
                         sr.Close();
                     }
@@ -77,6 +83,65 @@ namespace Pyramid_Plunder.Classes
                     {
                         if (velocityX == 0)
                             velocityX = -movementSpeed;
+                    }
+                    break;
+                case "WallThing":
+                    {
+                        if (velocityX == 0 & velocityY == 0)
+                        {
+                            if (isOnGround)
+                                velocityX = movementSpeed;
+                            else if (wallOnRight)
+                                velocityY = -movementSpeed;
+                            else if (ceilingAbove)
+                                velocityX = -movementSpeed;
+                            else //if (wallOnLeft)
+                                velocityY = movementSpeed;
+                        }
+
+                        if (isOnGround)
+                        {
+                            if (wallOnRight)
+                                velocityY = -movementSpeed;
+                        }
+                        else if (wallOnRight)
+                        {
+                            if (ceilingAbove)
+                                velocityX = -movementSpeed;
+                        }
+                        else if (ceilingAbove)
+                        {
+                            if (wallOnLeft)
+                                velocityY = movementSpeed;
+                        }
+                        else if (wallOnLeft)
+                        {
+                            if (isOnGround)
+                                velocityX = movementSpeed;
+                        }
+                        else
+                        {
+                            if (velocityX > 0)
+                            {
+                                velocityX = 0;
+                                velocityY = movementSpeed;
+                            }
+                            else if (velocityY > 0)
+                            {
+                                velocityX = -movementSpeed;
+                                velocityY = 0;
+                            }
+                            else if (velocityX < 0)
+                            {
+                                velocityX = 0;
+                                velocityY = -movementSpeed;
+                            }
+                            else //if (velocityY < 0)
+                            {
+                                velocityX = movementSpeed;
+                                velocityY = 0;
+                            }
+                        }
                     }
                     break;
                 default:
@@ -121,44 +186,62 @@ namespace Pyramid_Plunder.Classes
         /// </summary>
         public override void CollideX()
         {
-            if (!isChasingPlayer && isOnGround)
-                velocityX *= -1;
+            if (objectName == "WallThing")
+            {
+                base.CollideX();
+            }
+            else
+            {
+                if (!isChasingPlayer && isOnGround)
+                    velocityX *= -1;
+            }
         }
 
         /// <summary>
         /// Extension of PhysicsObject.IsStuckAt() for Enemies. Adds additional check for
-        /// collisions with other enemy objects before the other checks.
+        /// collisions with other enemy objects and walking off ledges before the other checks.
         /// </summary>
         /// <param name="room">The room the enemy is located in.</param>
         /// <param name="dX">An optional amount by which to adjust the Enemy's x-position for the test.</param>
         /// <param name="dY">An optional amount by which to adjust the Enemy's y-position for the test.</param>
         /// <returns></returns>
-        public override bool isStuckAt(Room room, int dX, int dY)
+        public override bool IsStuck(Room room, int dX, int dY)
         {
-            for (int i = 0; i < room.EnemyArray.Length; i++)
+            if (bumpsOtherEnemies)
             {
-                if (this == room.EnemyArray[i])
-                    continue;
+                for (int i = 0; i < room.EnemyArray.Length; i++)
+                {
+                    if (!room.EnemyArray[i].BumpsOtherEnemies)
+                        continue;
 
-                if ((position.Y + dY + collisionYs.Last() >= room.EnemyArray[i].Position.Y + room.EnemyArray[i].collisionYs.First()) &&
-                    (position.Y + dY + collisionYs.First() <= room.EnemyArray[i].Position.Y + room.EnemyArray[i].collisionYs.Last()) &&
-                    (position.X + dX + collisionXs.Last() >= room.EnemyArray[i].Position.X + room.EnemyArray[i].collisionXs.First()) &&
-                    (position.X + dX + collisionXs.First() <= room.EnemyArray[i].Position.X + room.EnemyArray[i].collisionXs.Last()))
-                    return true;
+                    if (this == room.EnemyArray[i])
+                        continue;
+
+                    if ((position.Y + dY + collisionYs.Last() >= room.EnemyArray[i].Position.Y + room.EnemyArray[i].collisionYs.First()) &&
+                        (position.Y + dY + collisionYs.First() <= room.EnemyArray[i].Position.Y + room.EnemyArray[i].collisionYs.Last()) &&
+                        (position.X + dX + collisionXs.Last() >= room.EnemyArray[i].Position.X + room.EnemyArray[i].collisionXs.First()) &&
+                        (position.X + dX + collisionXs.First() <= room.EnemyArray[i].Position.X + room.EnemyArray[i].collisionXs.Last()))
+                        return true;
+                }
             }
-
+            
             if (!walksOffEdges && isOnGround && dY == 0)
             {
                 if (WillWalkPastLedge(room))
                     return true;
             }
 
-            return base.isStuckAt(room, dX, dY);
+            return base.IsStuck(room, dX, dY);
         }
 
         public int ContactDamage
         {
             get { return contactDamage; }
+        }
+
+        public bool BumpsOtherEnemies
+        {
+            get { return bumpsOtherEnemies; }
         }
     }
 }

@@ -202,7 +202,7 @@ namespace Pyramid_Plunder.Classes
                 }
                 else
                 {
-                    BecomeAirborne();
+                    LeaveGround();
                     velocityY = JUMP_V;
                     soundEngine.Play(AudioEngine.SoundEffects.Jump);
                 }
@@ -514,7 +514,7 @@ namespace Pyramid_Plunder.Classes
             base.HitCeiling();
         }
 
-        public override void BecomeAirborne()
+        public override void LeaveGround()
         {
             dashes = MAX_MIDAIR_DASHES;
             if (dashStatus >= DASH_HELD)
@@ -522,7 +522,7 @@ namespace Pyramid_Plunder.Classes
                 dashStatus = DASH_LAG_START;
                 isGravityAffected = true;
             }
-            base.BecomeAirborne();
+            base.LeaveGround();
         }
 
         public void updateControlFlags()

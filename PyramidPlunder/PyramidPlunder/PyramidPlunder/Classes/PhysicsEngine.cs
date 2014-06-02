@@ -40,89 +40,100 @@ namespace Pyramid_Plunder.Classes
             //at which it will no longer be stuck.
             if (obj.DisplacementY < 0)
             {
-                if (obj.isStuckAt(room, 0, (int)obj.DisplacementY))
+                if (obj.IsStuck(room, 0, (int)obj.DisplacementY))
                 {
                     obj.HitCeiling();
                     obj.DisplacementY += 1;
-                    while (obj.DisplacementY != 0 && obj.isStuckAt(room, 0, (int)obj.DisplacementY))
+                    while (obj.DisplacementY != 0 && obj.IsStuck(room, 0, (int)obj.DisplacementY))
                         obj.DisplacementY += 1;
                 }
             }
             else if (obj.DisplacementY > 0)
             {
-                if (obj.isStuckAt(room, 0, (int)obj.DisplacementY))
+                if (obj.IsStuck(room, 0, (int)obj.DisplacementY))
                 {
                     obj.Land();
                     obj.DisplacementY -= 1;
-                    while (obj.DisplacementY != 0 && obj.isStuckAt(room, 0, (int)obj.DisplacementY))
+                    while (obj.DisplacementY != 0 && obj.IsStuck(room, 0, (int)obj.DisplacementY))
                         obj.DisplacementY -= 1;
                 }
             }
 
             if (obj.DisplacementX > 0)
             {
-                if (obj.isStuckAt(room, (int)obj.DisplacementX, (int)obj.DisplacementY))
+                if (obj.IsStuck(room, (int)obj.DisplacementX, (int)obj.DisplacementY))
                 {
                     obj.CollideRight();
                     obj.DisplacementX -= 1;
-                    while (obj.DisplacementX != 0 && obj.isStuckAt(room, (int)obj.DisplacementX, (int)obj.DisplacementY))
+                    while (obj.DisplacementX != 0 && obj.IsStuck(room, (int)obj.DisplacementX, (int)obj.DisplacementY))
                         obj.DisplacementX -= 1;
                 }
             }
 
             if (obj.DisplacementX < 0)
             {
-                if (obj.isStuckAt(room, (int)obj.DisplacementX, (int)obj.DisplacementY))
+                if (obj.IsStuck(room, (int)obj.DisplacementX, (int)obj.DisplacementY))
                 {
                     obj.CollideLeft();
                     obj.DisplacementX += 1;
-                    while (obj.DisplacementX != 0 && obj.isStuckAt(room, (int)obj.DisplacementX, (int)obj.DisplacementY))
+                    while (obj.DisplacementX != 0 && obj.IsStuck(room, (int)obj.DisplacementX, (int)obj.DisplacementY))
                         obj.DisplacementX += 1;
                 }
             }
 
             //Even if a displacement value goes unchanged in the above test, it's still possible that the object
-            //will have a wall beside or ground beneath them after moving their full displacements. This last
+            //will (not) have a wall beside or ground beneath them after moving their full displacements. This last
             //test checks to see if this is the case, and changes the appropriate boolean flags accordingly.
             //If the object is touching a floor in its new position, the appropriate collision-causing function
             //is called.
             //If an object was airborne at the beginning of the frame and is still airborne, its y-velocity
             //is increased by the acceleration due to gravity.
             //If it's determined that the object is now in the air, it will become airborne.
-            
+
             if (!obj.WallOnLeft)
             {
-                if (obj.checkWallLeft(room, (int)obj.DisplacementX, (int)obj.DisplacementY))
+                if (obj.CheckWallLeft(room, (int)obj.DisplacementX, (int)obj.DisplacementY))
                     obj.CollideLeft();
             }
             else
             {
-                if (!obj.checkWallLeft(room, (int)obj.DisplacementX, (int)obj.DisplacementY))
+                if (!obj.CheckWallLeft(room, (int)obj.DisplacementX, (int)obj.DisplacementY))
                     obj.WallOnLeft = false;
             }
 
             if (!obj.WallOnRight)
             {
-                if (obj.checkWallRight(room, (int)obj.DisplacementX, (int)obj.DisplacementY))
+                if (obj.CheckWallRight(room, (int)obj.DisplacementX, (int)obj.DisplacementY))
                     obj.CollideRight();
             }
             else
             {
-                if (!obj.checkWallRight(room, (int)obj.DisplacementX, (int)obj.DisplacementY))
+                if (!obj.CheckWallRight(room, (int)obj.DisplacementX, (int)obj.DisplacementY))
                     obj.WallOnRight = false;
             }
 
             if (!obj.IsOnGround)
             {
-                if (obj.checkGround(room, (int)obj.DisplacementX, (int)obj.DisplacementY))
+                if (obj.CheckGround(room, (int)obj.DisplacementX, (int)obj.DisplacementY))
                     obj.Land();
                 else if (obj.IsGravityAffected)
                     obj.VelocityY = Math.Min(obj.VelocityY + GRAVITY * totalTime, MAX_FALLING_SPEED);
             }
             else
             {
-                if (!obj.checkGround(room, (int)obj.DisplacementX, (int)obj.DisplacementY))
-                    obj.BecomeAirborne();
+                if (!obj.CheckGround(room, (int)obj.DisplacementX, (int)obj.DisplacementY))
+                    obj.LeaveGround();
+            }
+
+            if (!obj.CeilingAbove)
+            {
+                if (obj.CheckCeiling(room, (int)obj.DisplacementX, (int)obj.DisplacementY))
+                    obj.HitCeiling();
+            }
+            else
+            {
+                if (!obj.CheckCeiling(room, (int)obj.DisplacementX, (int)obj.DisplacementY))
+                    obj.LeaveCeiling();
             }
         }
 
@@ -134,9 +145,6 @@ namespace Pyramid_Plunder.Classes
         /// <returns>True if there is a collision.  False otherwise.</returns>
         public static bool CheckBoundingBoxCollision(GameObject obj1, GameObject obj2)
         {
-            //if (((obj1.HitBox.X + obj1.HitBox.Width >= obj2.HitBox.X) && (obj1.HitBox.X <= obj2.HitBox.X + obj2.HitBox.Width)) &&
-            //    ((obj1.HitBox.Y + obj1.HitBox.Height >= obj2.HitBox.Y) && (obj1.HitBox.Y <= obj2.HitBox.Y + obj2.HitBox.Height)))
-            //    return true;
             if (((obj1.HitBox.X + obj1.HitBox.Width >= obj2.HitBox.X) && (obj1.HitBox.X <= obj2.HitBox.X + obj2.HitBox.Width)) &&
                 ((obj1.HitBox.Y + obj1.HitBox.Height >= obj2.HitBox.Y) && (obj1.HitBox.Y <= obj2.HitBox.Y + obj2.HitBox.Height)))
                 return true;
