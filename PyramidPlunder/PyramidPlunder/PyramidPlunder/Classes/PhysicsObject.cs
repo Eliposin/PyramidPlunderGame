@@ -132,11 +132,11 @@ namespace Pyramid_Plunder.Classes
             }
             catch (FileNotFoundException e)
             {
-                System.Diagnostics.Debug.WriteLine("The file could not be found: " + e.Message);
+                System.Diagnostics.Debug.WriteLine("The physics file could not be found: " + e.Message);
             }
             catch (Exception e)
             {
-                System.Diagnostics.Debug.WriteLine("An error occurred: " + e.Message);
+                System.Diagnostics.Debug.WriteLine("An error occured while reading the physics file: " + e.Message);
                 isGravityAffected = false;
                 alignment = 0;
                 maxHealth = 0;
