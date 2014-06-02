@@ -75,14 +75,14 @@ SaveRoomA
 470
 #####Enemies#####
 #Number of Enemies
-2
+7
 #####First Enemy(index 0):#####
 # Enemy Name
 Mummy
 # X-Coordinate of Spawn Location
-1755
+1200
 # Y-Coordinate of Spawn Location
-1784
+2142
 #####Second Enemy(index 1):#####
 # Enemy Name
 Mummy
@@ -90,6 +90,41 @@ Mummy
 1569
 # Y-Coordinate of Spawn Location
 2142
+#####Second Enemy(index 2):#####
+# Enemy Name
+Mummy
+# X-Coordinate of Spawn Location
+850
+# Y-Coordinate of Spawn Location
+2142
+#####Second Enemy(index 3):#####
+# Enemy Name
+Mummy
+# X-Coordinate of Spawn Location
+1000
+# Y-Coordinate of Spawn Location
+2142
+#####Second Enemy(index 4):#####
+# Enemy Name
+Mummy
+# X-Coordinate of Spawn Location
+1100
+# Y-Coordinate of Spawn Location
+1208
+#####Second Enemy(index 5):#####
+# Enemy Name
+Mummy
+# X-Coordinate of Spawn Location
+1250
+# Y-Coordinate of Spawn Location
+1208
+#####Second Enemy(index 6):#####
+# Enemy Name
+Mummy
+# X-Coordinate of Spawn Location
+1080
+# Y-Coordinate of Spawn Location
+687
 #####Environment Objects#####
 #Number of Environment Objects
 0

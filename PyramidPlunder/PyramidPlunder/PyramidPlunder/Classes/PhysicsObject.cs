@@ -17,12 +17,11 @@ namespace Pyramid_Plunder.Classes
             Enemy = 1,
             Neutral = 2
         }
-        //Here, P means Pixels. e.g. P/sec means Pixels per second.
-
+        
         //These are the only variables that need to be changed or set if the object
         //moves without acceleration.
-        protected float velocityX;          //The current x-velocity, in P/sec.
-        protected float velocityY;          //The current y-velocity, in P/sec.
+        protected float velocityX;          //The current x-velocity, in Pixels/sec.
+        protected float velocityY;          //The current y-velocity, in Pixels/sec.
         
         //These next four variables are related to gradual increases/decreases to velocity.
         //See the notes below that describe their implementation.
@@ -698,11 +697,94 @@ namespace Pyramid_Plunder.Classes
                 {
                     if ((coordinateX + collisionXs.First() <= obj.Position.X + obj.HitBox.Width) &&
                         (coordinateX + collisionXs.Last() >= obj.Position.X) &&
-                        (row >= obj.Position.Y) && (row <= obj.Position.Y + obj.HitBox.Width))
+                        (row >= obj.Position.Y) && (row <= obj.Position.Y + obj.HitBox.Height))
                         return true;
                 }
             }
             return false;
+        }
+
+        /// <summary>
+        /// Checks to see if the object will walk over a ledge if they move
+        /// with their attempted horizontal displacement.
+        /// </summary>
+        /// <param name="room">The room the object is in.</param>
+        /// <returns></returns>
+        public bool WillWalkPastLedge(Room room)
+        {
+            int column;
+
+            if (displacementX > 0)
+                column = (int)(Position.X + displacementX + collisionXs.Last());
+            else if (displacementX < 0)
+                column = (int)(Position.X + displacementX + collisionXs.First());
+            else
+                return false;
+
+            int row = (int)(Position.Y + displacementY + collisionYs.Last() + 1);
+
+            if (row < 0 || row >= room.CollisionMap.Height)
+                return false;
+
+            if (room.collisionColors[column + row * room.CollisionMap.Width].R == 0)
+                return false;
+
+            foreach (GameObject obj in room.ObjectArray)
+            {
+                if (obj.IsSolid)
+                {
+                    if ((column >= obj.Position.X) && (column <= obj.Position.X + obj.HitBox.Width) &&
+                        (row >= obj.Position.Y) && (row <= obj.Position.Y + obj.HitBox.Height))
+                        return false;
+                }
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Checks to see that the object is fully grounded: instead of checking that at least
+        /// one collision point in the bottom row is sitting on either a collision region of the
+        /// map or a solid GameObject, it checks that *each* collision point in the bottom row is
+        /// sitting on either a collision region or a solid GameObject.
+        /// </summary>
+        /// <param name="room">The room in to test for groundedness.</param>
+        /// <param name="dX">The value by which to adjust the x-coordinate in the test</param>
+        /// <param name="dY">The value by which to adjust the y-coordinate in the test</param>
+        /// <returns></returns>
+        public bool CheckFullyGrounded(Room room, int dX, int dY)
+        {
+            int row = (int)Position.Y + dY + collisionYs.Last() + 1;
+            
+            if (row < 0 || row >= room.CollisionMap.Height)
+                return false;
+
+            bool pointOnSolid = false;
+
+            foreach (int intX in collisionXs)
+            {
+                int coordinateX = (int)Position.X + dX + intX;
+
+                if (room.collisionColors[coordinateX + row * room.CollisionMap.Width].R == 0)
+                    continue;
+
+                pointOnSolid = false;
+                foreach (GameObject obj in room.ObjectArray)
+                {
+                    if (obj.IsSolid)
+                    {
+                        if ((coordinateX >= obj.Position.X) &&
+                            (coordinateX <= obj.Position.X + obj.HitBox.Width) &&
+                            (row >= obj.Position.Y) && (row <= obj.Position.Y + obj.HitBox.Height))
+                        {
+                            pointOnSolid = true;
+                            break;
+                        }
+                    }
+                }
+                if (!pointOnSolid)
+                    return false;
+            }
+            return true;
         }
 
         /// <summary>

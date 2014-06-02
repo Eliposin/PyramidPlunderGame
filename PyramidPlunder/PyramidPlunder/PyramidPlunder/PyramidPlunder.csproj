@@ -110,6 +110,7 @@
     <None Include="Data\GraphicsData\LavaPassageA.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Content Include="Data\EnemyData\Mummy.txt" />
     <Content Include="Data\GraphicsData\Mummy.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

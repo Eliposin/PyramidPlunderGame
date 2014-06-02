@@ -362,13 +362,7 @@ namespace Pyramid_Plunder.Classes
             }
             base.Update(time);
         }
-
-        public void UpdateCoordinates()
-        {
-            //This only works properly if the edge is on the left side
-            coordinates.X = position.X;
-        }
-
+                
         /// <summary>
         /// Interacts with the given object and interaction type.
         /// </summary>
@@ -446,6 +440,8 @@ namespace Pyramid_Plunder.Classes
             dashStatus = DASH_NOT_ALLOWED;
             velocityY = 0;
             velocityX = 0;
+            accelerationX = 0;
+            accelerationY = 0;
         }
 
         /// <summary>

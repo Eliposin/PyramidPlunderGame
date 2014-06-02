@@ -1,0 +1,6 @@
+#CONTACT DAMAGE#
+#Amount of HP Done upon Physical Contact#
+2
+#WALKS OFF LEDGES#
+#0 == false, 1 == true#
+0
