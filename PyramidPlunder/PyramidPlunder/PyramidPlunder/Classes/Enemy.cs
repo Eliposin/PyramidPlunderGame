@@ -61,6 +61,7 @@ namespace Pyramid_Plunder.Classes
                 System.Diagnostics.Debug.WriteLine("An error occurred: " + e.Message);
                 contactDamage = 1;
                 walksOffEdges = false;
+                bumpsOtherEnemies = false;
             }
         }
 
