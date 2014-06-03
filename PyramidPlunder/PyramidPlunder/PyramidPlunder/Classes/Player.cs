@@ -75,7 +75,9 @@ namespace Pyramid_Plunder.Classes
 
         private enum Powerups
         {
-            Dash = 7
+            Dash = 7,
+            DoubleJump = 8,
+            WallJump = 9
         }
 
         private XDirection LatestXArrow = XDirection.None;

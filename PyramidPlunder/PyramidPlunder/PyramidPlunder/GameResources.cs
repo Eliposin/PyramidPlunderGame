@@ -62,7 +62,7 @@ namespace Pyramid_Plunder
     {
         NullItem = 0,
         RedKey = 1, BlueKey, YellowKey,
-        Dash = 7
+        Dash = 7, DoubleJump = 8, WallJump = 9
     }
 
     public struct RoomSaveData
