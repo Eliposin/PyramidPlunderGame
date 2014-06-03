@@ -253,13 +253,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Images\DisintegratingPlatform.jpg">
-      <Name>DisintegratingPlatform</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Images\DashPowerup.png">
       <Name>DashPowerup</Name>
       <Importer>TextureImporter</Importer>
@@ -269,6 +262,13 @@
   <ItemGroup>
     <Compile Include="Images\OptionsBackground.png">
       <Name>OptionsBackground</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Images\DisintegratingPlatformSpritesheet.png">
+      <Name>DisintegratingPlatformSpritesheet</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

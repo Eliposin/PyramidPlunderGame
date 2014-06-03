@@ -10,6 +10,7 @@ namespace Pyramid_Plunder.Classes
     public class GameObject : GameGraphic
     {
         private const float DISINTEGRATE_TIME = 1;
+        private const float DISINTEGRATE_ANIMATION_SPEED = 0.75f;
 
         protected Vector2 position;
         protected ItemList itemType;
@@ -178,6 +179,8 @@ namespace Pyramid_Plunder.Classes
             {
                 disintegrateTimer = 0;
                 isDisintegrating = false;
+                currentFrame = 0;
+                animationSpeed[currentAnimation] = 0;
             }
         }
 
@@ -211,6 +214,7 @@ namespace Pyramid_Plunder.Classes
             if (obj == "Player" && objectName == "DisintegratingPlatform" && !isDisintegrating)
             {
                 isDisintegrating = true;
+                animationSpeed[currentAnimation] = DISINTEGRATE_ANIMATION_SPEED;
             }
         }
 

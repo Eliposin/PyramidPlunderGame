@@ -1,7 +1,7 @@
 #Number of animations
 1
 #Name of spritesheet
-DisintegratingPlatform
+DisintegratingPlatformSpritesheet
 #First Animation Stats
 #Location on the spritesheet (y value)
 0
@@ -11,4 +11,4 @@ DisintegratingPlatform
 #Animation speed
 0
 #Number of Frames
-1
+6
