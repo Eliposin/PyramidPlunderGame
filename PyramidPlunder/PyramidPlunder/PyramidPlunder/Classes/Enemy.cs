@@ -75,7 +75,7 @@ namespace Pyramid_Plunder.Classes
         {
             switch (objectName)
             {
-                case "Mummy":
+                case "FloorThing":
                     {
                         if (velocityX == 0)
                             velocityX = -movementSpeed;
@@ -140,7 +140,7 @@ namespace Pyramid_Plunder.Classes
                         }
                     }
                     break;
-                default:
+                case "Mummy":
                     {
                         if ((Math.Abs(player.Position.X + player.CollisionXs.First() - position.X + collisionXs.Last()) < 450) ||
                         ((Math.Abs(player.Position.X + player.CollisionXs.Last() - position.X + collisionXs.First()) < 450)))
@@ -170,6 +170,12 @@ namespace Pyramid_Plunder.Classes
                         {
                             velocityX = -movementSpeed / 2;
                         }
+                    }
+                    break;
+                default:
+                    {
+                        if (velocityX == 0)
+                            velocityX = -movementSpeed;
                     }
                     break;
             }
