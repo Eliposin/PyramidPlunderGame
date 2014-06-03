@@ -83,6 +83,7 @@ namespace Pyramid_Plunder.Classes
             WallJump = 9
         }
 
+        private bool drawnLastFrame = true;
         private XDirection LatestXArrow = XDirection.None;
         private XDirection PlayerXFacing = XDirection.Right;
         private XDirection WallSlideDirection = XDirection.None;
@@ -492,6 +493,7 @@ namespace Pyramid_Plunder.Classes
             velocityX = 0;
             accelerationX = 0;
             accelerationY = 0;
+            drawnLastFrame = true;
         }
 
         /// <summary>
@@ -823,5 +825,17 @@ namespace Pyramid_Plunder.Classes
                 }
             }
         }
+
+        public override void Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch, GameTime time, bool playAnimations)
+        {
+            if ((damageStatus < INVINCIBLE_START) || (damageStatus >= INVINCIBLE_END) || !drawnLastFrame)
+            {
+                base.Draw(spriteBatch, time, playAnimations);
+                drawnLastFrame = true;
+            }
+            else
+                drawnLastFrame = false;
+        }
+
     }
 }
