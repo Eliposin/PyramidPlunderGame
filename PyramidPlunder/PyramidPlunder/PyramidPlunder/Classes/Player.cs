@@ -112,12 +112,13 @@ namespace Pyramid_Plunder.Classes
         private DelVoid saveCallback;
         private DelRoom roomCallback;
         private DelFreeze freezeCallback;
+        private DelString hudCallback;
 
 
         /// <summary>
         /// Creates a new Player object
         /// </summary>
-        public Player(ContentManager content, DelVoid saveMethod, DelRoom roomMethod, DelFreeze freezeMethod)
+        public Player(ContentManager content, DelVoid saveMethod, DelRoom roomMethod, DelFreeze freezeMethod, DelString hudMethod)
             : base("Player", content)
         {
             isSpawned = false;
@@ -133,6 +134,7 @@ namespace Pyramid_Plunder.Classes
             soundEngine = new AudioEngine(content, "Player");
 
             saveCallback = saveMethod;
+            hudCallback = hudMethod;
             roomCallback = roomMethod;
             freezeCallback = freezeMethod;
         }
@@ -521,6 +523,15 @@ namespace Pyramid_Plunder.Classes
                 soundEngine.Play(AudioEngine.SoundEffects.KeyGet);
             else if (item.IsPowerup)
             {
+                string info = null;
+                switch (item.ObjectName)
+                {
+                    case "DashPowerup":
+                        info = "You got the dash powerup!\nUse the triggers (or Q on a keyboard) to dash, even in midair.";
+                        break;
+                }
+                if (info != null)
+                    hudCallback(info);
                 freezeTimerMax = POWERUP_JINGLE_LENGTH;
                 freezeCallback(true, freezeTimerMax);
             }

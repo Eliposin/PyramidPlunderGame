@@ -350,10 +350,12 @@ namespace Pyramid_Plunder.Classes
 
             DeleteSave();
 
+            GameResources.RoomSaves = new List<RoomSaveData>();
+
             musicManager.SwitchMusic("Menu");
 
             currentRoom = new Room("StartRoom", -1);
-            player = new Player(gameContent, SaveGame, SwitchRooms, ToggleGameFreeze);
+            player = new Player(gameContent, SaveGame, SwitchRooms, ToggleGameFreeze, HudCallback);
             player.Spawn(currentRoom.SpawnLocation);
             gameHUD = new HUD(gameContent, player);
             gameHUD.DisplayRoomName(currentRoom.LongName);
@@ -399,7 +401,7 @@ namespace Pyramid_Plunder.Classes
                             foreach (RoomSaveData save in roomSaves)
                                 GameResources.RoomSaves.Add(save);
 
-                            player = new Player(gameContent, SaveGame, SwitchRooms, ToggleGameFreeze);
+                            player = new Player(gameContent, SaveGame, SwitchRooms, ToggleGameFreeze, HudCallback);
                             player.Spawn(currentRoom.SpawnLocation);
                             player.LoadSave(playerHealth, playerItems);
                             gameHUD = new HUD(gameContent, player);
@@ -470,6 +472,11 @@ namespace Pyramid_Plunder.Classes
                 System.Diagnostics.Debug.WriteLine("There was an error when saving the game: \n" + e.Message);
                 gameHUD.DisplaySaveIndicator("Your game was not saved.");
             }
+        }
+
+        private void HudCallback(string input)
+        {
+            gameHUD.DisplayInfo(input);
         }
 
         private void ShowDeathScreen()

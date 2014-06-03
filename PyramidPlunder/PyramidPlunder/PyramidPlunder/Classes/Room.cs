@@ -121,12 +121,9 @@ namespace Pyramid_Plunder.Classes
                             {
                                 String objectName = GameResources.getNextDataLine(sr, "#");
 
-                                if (bool.Parse(GameResources.getNextDataLine(sr, "#")))
-                                    environmentArray[i] = new GameObject(objectName, Content);
-                                else
-                                    environmentArray[i] = new GameObject(objectName, Content, false);
+                                bool objHasGraphics = bool.Parse(GameResources.getNextDataLine(sr, "#"));
 
-                                
+                                environmentArray[i] = new GameObject(objectName, Content, new Vector2(0,0), objHasGraphics, soundEngine);                                
 
                                 environmentArray[i].IsSolid = bool.Parse(GameResources.getNextDataLine(sr, "#"));
 

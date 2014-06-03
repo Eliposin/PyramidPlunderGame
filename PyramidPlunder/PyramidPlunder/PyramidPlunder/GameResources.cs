@@ -72,6 +72,7 @@ namespace Pyramid_Plunder
     }
 
     public delegate void DelVoid();
+    public delegate void DelString(string input);
     public delegate void DelMenu(MenuCallbacks menuCallback);
     public delegate void DelRoom(Classes.Room whichRoom);
     public delegate void DelFreeze(bool frozen, double length);

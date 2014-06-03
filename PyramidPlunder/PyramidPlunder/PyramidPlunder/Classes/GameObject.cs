@@ -14,6 +14,7 @@ namespace Pyramid_Plunder.Classes
 
         protected Vector2 position;
         protected ItemList itemType;
+        protected AudioEngine soundEngine;
         protected bool isSpawned;
         protected bool isPhysicsObject;
         protected bool isSolid;
@@ -31,8 +32,10 @@ namespace Pyramid_Plunder.Classes
         /// <param name="objType">The type of object that is represented.</param>
         /// <param name="content">The content manager to use.</param>
         /// <param name="spawnPosition">The default spawning position.</param>
-        public GameObject(string objName, ContentManager content, Vector2 spawnPosition, bool graphics) : base(objName, content, graphics)
+        public GameObject(string objName, ContentManager content, Vector2 spawnPosition,
+            bool graphics, AudioEngine audioEngine) : base(objName, content, graphics)
         {
+            soundEngine = audioEngine;
             position = spawnPosition;
             isPhysicsObject = false;
             isDisintegrating = false;
@@ -46,7 +49,7 @@ namespace Pyramid_Plunder.Classes
         /// <param name="objType">The type of object that is represented.</param>
         /// <param name="content">The content manager to use.</param>
         public GameObject(string objName, ContentManager content)
-            : this(objName, content, new Vector2(0, 0), true) { }
+            : this(objName, content, new Vector2(0, 0), true, null) { }
 
         /// <summary>
         /// Constructor call
@@ -55,7 +58,7 @@ namespace Pyramid_Plunder.Classes
         /// <param name="content">The content manager to use.</param>
         /// <param name="graphics">Whether or not the object has a graphic.</param>
         public GameObject(string objName, ContentManager content, bool graphics)
-            : this(objName, content, new Vector2(0, 0), graphics) { }
+            : this(objName, content, new Vector2(0, 0), graphics, null) { }
 
         /// <summary>
         /// Overrides the draw method in order to add the clause that checks to see if the object is spawned yet.
@@ -222,6 +225,7 @@ namespace Pyramid_Plunder.Classes
         {
             if (obj == "Player" && objectName == "DisintegratingPlatform" && !isDisintegrating)
             {
+                soundEngine.Play(AudioEngine.SoundEffects.PlatformCrumble);
                 isDisintegrating = true;
                 animationSpeed[currentAnimation] = DISINTEGRATE_ANIMATION_SPEED;
             }

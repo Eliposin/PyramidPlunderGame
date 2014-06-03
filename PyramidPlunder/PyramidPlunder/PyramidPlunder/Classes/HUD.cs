@@ -15,6 +15,7 @@ namespace Pyramid_Plunder.Classes
         private const int KEYCHAIN_X = 520;
         private const int KEYCHAIN_Y = 15;
         private const float ROOM_DISPLAY_TIME = 3; //In Seconds
+        private const float INFO_DISPLAY_TIME = 7;
 
         private ContentManager Content;
         private GameGraphic healthBar;
@@ -24,6 +25,7 @@ namespace Pyramid_Plunder.Classes
         private Texture2D darkGrayTexture;
         private SpriteFont roomFont;
         private SpriteFont saveFont;
+        private SpriteFont infoFont;
 
         private string roomDisplay;
         private bool displayingRoom;
@@ -32,6 +34,10 @@ namespace Pyramid_Plunder.Classes
         private string saveIndicator;
         private bool displayingSave;
         private double saveDisplayTime;
+
+        private string infoText;
+        private bool displayingInfo;
+        private double infoDisplayTime;
 
         private float currentHP;
         private bool isVisible;
@@ -63,6 +69,7 @@ namespace Pyramid_Plunder.Classes
 
             roomFont = Content.Load<SpriteFont>("Fonts/Philo42");
             saveFont = Content.Load<SpriteFont>("Fonts/Philo18");
+            infoFont = Content.Load<SpriteFont>("Fonts/Philo24");
 
             keyArray = new bool[1];
             for (int i = 0; i < keyArray.Length; i++)
@@ -95,6 +102,14 @@ namespace Pyramid_Plunder.Classes
                 batch.DrawString(saveFont, saveIndicator, new Vector2(525, 70), Color.Black);
                 if (saveDisplayTime >= ROOM_DISPLAY_TIME)
                     displayingSave = false;
+            }
+
+            if (displayingInfo)
+            {
+                infoDisplayTime += time.ElapsedGameTime.TotalSeconds;
+                batch.DrawString(infoFont, infoText, new Vector2(50, 90), Color.Black);
+                if (infoDisplayTime >= INFO_DISPLAY_TIME)
+                    displayingInfo = false;
             }
         }
 
@@ -162,6 +177,13 @@ namespace Pyramid_Plunder.Classes
             saveIndicator = saveString;
             saveDisplayTime = 0;
             displayingSave = true;
+        }
+
+        public void DisplayInfo(string info)
+        {
+            infoText = info;
+            saveDisplayTime = 0;
+            displayingInfo = true;
         }
 
 
