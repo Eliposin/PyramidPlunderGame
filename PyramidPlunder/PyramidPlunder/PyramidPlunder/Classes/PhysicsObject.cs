@@ -79,6 +79,7 @@ namespace Pyramid_Plunder.Classes
             displacementX = 0;
             displacementY = 0;
             isPhysicsObject = true;
+            currentHealth = maxHealth;
             LoadObjectData();
         }
                 

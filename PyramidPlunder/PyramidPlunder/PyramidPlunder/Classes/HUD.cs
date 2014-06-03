@@ -120,7 +120,7 @@ namespace Pyramid_Plunder.Classes
                 healthBar.HitBox.Width, healthBar.HitBox.Height), Color.White);
 
             batch.Draw(redTexture, new Rectangle((int)healthBar.Coordinates.X, (int)healthBar.Coordinates.Y,
-                (int)currentHP * healthBar.HitBox.Width, healthBar.HitBox.Height), Color.White);
+                (int)(currentHP * healthBar.HitBox.Width), healthBar.HitBox.Height), Color.White);
 
             healthBar.Draw(batch, time);
         }

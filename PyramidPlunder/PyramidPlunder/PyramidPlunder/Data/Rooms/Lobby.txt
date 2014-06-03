@@ -136,9 +136,9 @@ WallThing
 # Enemy Name
 WallThing
 # X-Coordinate of Spawn Location
-200
+417
 # Y-Coordinate of Spawn Location
-2236
+1700
 #####Environment Objects#####
 #Number of Environment Objects
 0
