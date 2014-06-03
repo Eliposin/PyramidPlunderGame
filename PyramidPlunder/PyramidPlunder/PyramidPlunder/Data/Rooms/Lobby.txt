@@ -64,7 +64,7 @@ Vault
 # Orientation
 1
 # Linked Room
-SaveRoomA
+SaveRoomB
 # Linked Door (index)
 0
 # Lock Type
