@@ -779,6 +779,7 @@ namespace Pyramid_Plunder.Classes
         {
             currentHealth = Math.Max(0, currentHealth - PIT_FALL_DAMAGE);
             damageStatus = STUN_END;
+            ResetActionStates(XDirection.Right);
         }
 
         private void CollideWithEnemy(Enemy enemy, XDirection direction)
