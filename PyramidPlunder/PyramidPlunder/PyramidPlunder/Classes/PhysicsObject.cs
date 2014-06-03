@@ -305,57 +305,60 @@ namespace Pyramid_Plunder.Classes
 
         public override void Update(GameTime time)
         {
-            float totalTime = (float)(time.ElapsedGameTime.TotalSeconds);
+            if (isSpawned)
+            {
+                float totalTime = (float)(time.ElapsedGameTime.TotalSeconds);
 
-            //If you set your object's acceleration to 0, then displacement is simply
-            //determined by velocity * time. As long as you keep acceleration to zero,
-            //the next two else if blocks involving acceleration and velocityLimits
-            //will be ignored.
-            if (accelerationX == 0)
-            {
-                displacementX = velocityX * totalTime;
-            }
-            //If your object's acceleration is nonzero, there's a little more math involved.
-            //The displacement caused by acceleration is added to the above formula, but only
-            //if it does not pass the limits on velocity you have set. Otherwise, displacement
-            //becomes equal to the limit velocity * time.
-            //After the displacement for this frame is determined, the velocity for the
-            //upcoming frame is set to either the sum of the current velocity and
-            //acceleration * time, or to the velocity limit. The value chosen is the one
-            //with the smaller absolute value, as a way to prevent the object from moving
-            //faster than you want it to.
-            else if (accelerationX > 0)
-            {
-                displacementX = totalTime * Math.Min(velocityX + (accelerationX / 2) * totalTime, velocityLimitX);
-                velocityX = Math.Min(velocityX + accelerationX * totalTime, velocityLimitX);
-            }
-            else //if (accelerationX < 0)
-            {
-                displacementX = totalTime * Math.Max(velocityX + (accelerationX / 2) * totalTime, velocityLimitX);
-                velocityX = Math.Max(velocityX + accelerationX * totalTime, velocityLimitX);
-            }
-
-            //Same description as above, but this time for the Y direction.
-            if (accelerationY == 0)
-            {
-                displacementY = velocityY * totalTime;
-            }
-            else if (accelerationY > 0)
-            {
-                displacementY = totalTime * Math.Min(velocityY + (accelerationY / 2) * totalTime, velocityLimitY);
-                velocityY = Math.Min(velocityY + accelerationY * totalTime, velocityLimitY);
-            }
-            else //if (accelerationY < 0)
-            {
-                if (accelerationY + PhysicsEngine.GRAVITY <= 0)
+                //If you set your object's acceleration to 0, then displacement is simply
+                //determined by velocity * time. As long as you keep acceleration to zero,
+                //the next two else if blocks involving acceleration and velocityLimits
+                //will be ignored.
+                if (accelerationX == 0)
                 {
-                    displacementY = totalTime * Math.Max(velocityY + (accelerationY / 2) * totalTime, velocityLimitY);
-                    velocityY = Math.Max(velocityY + accelerationY * totalTime, velocityLimitY);
+                    displacementX = velocityX * totalTime;
                 }
-                else
+                //If your object's acceleration is nonzero, there's a little more math involved.
+                //The displacement caused by acceleration is added to the above formula, but only
+                //if it does not pass the limits on velocity you have set. Otherwise, displacement
+                //becomes equal to the limit velocity * time.
+                //After the displacement for this frame is determined, the velocity for the
+                //upcoming frame is set to either the sum of the current velocity and
+                //acceleration * time, or to the velocity limit. The value chosen is the one
+                //with the smaller absolute value, as a way to prevent the object from moving
+                //faster than you want it to.
+                else if (accelerationX > 0)
+                {
+                    displacementX = totalTime * Math.Min(velocityX + (accelerationX / 2) * totalTime, velocityLimitX);
+                    velocityX = Math.Min(velocityX + accelerationX * totalTime, velocityLimitX);
+                }
+                else //if (accelerationX < 0)
+                {
+                    displacementX = totalTime * Math.Max(velocityX + (accelerationX / 2) * totalTime, velocityLimitX);
+                    velocityX = Math.Max(velocityX + accelerationX * totalTime, velocityLimitX);
+                }
+
+                //Same description as above, but this time for the Y direction.
+                if (accelerationY == 0)
+                {
+                    displacementY = velocityY * totalTime;
+                }
+                else if (accelerationY > 0)
                 {
                     displacementY = totalTime * Math.Min(velocityY + (accelerationY / 2) * totalTime, velocityLimitY);
                     velocityY = Math.Min(velocityY + accelerationY * totalTime, velocityLimitY);
+                }
+                else //if (accelerationY < 0)
+                {
+                    if (accelerationY + PhysicsEngine.GRAVITY <= 0)
+                    {
+                        displacementY = totalTime * Math.Max(velocityY + (accelerationY / 2) * totalTime, velocityLimitY);
+                        velocityY = Math.Max(velocityY + accelerationY * totalTime, velocityLimitY);
+                    }
+                    else
+                    {
+                        displacementY = totalTime * Math.Min(velocityY + (accelerationY / 2) * totalTime, velocityLimitY);
+                        velocityY = Math.Min(velocityY + accelerationY * totalTime, velocityLimitY);
+                    }
                 }
             }
         }

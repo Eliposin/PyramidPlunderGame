@@ -36,7 +36,14 @@ LavaPassageA
 353
 #####Enemies#####
 #Number of Enemies
-0
+1
+#####First Enemy(index 0):#####
+# Enemy Name
+Mummy
+# X-Coordinate of Spawn Location
+1220
+# Y-Coordinate of Spawn Location
+423
 #Number of Environment Objects
 4
 #Type of Object

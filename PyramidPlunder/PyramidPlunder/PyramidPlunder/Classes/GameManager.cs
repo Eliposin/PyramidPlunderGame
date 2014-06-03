@@ -132,6 +132,13 @@ namespace Pyramid_Plunder.Classes
                             player.Update(gameTime); //Determines what the Player is trying to do (this is where the gameTime is taken into account)
                         }
 
+                        for (int i = 0; i < currentRoom.ObjectArray.Length; i++)
+                        {
+                            if (currentRoom.ObjectArray[i].IsPhysicsObject && currentRoom.ObjectArray[i].IsSpawned &&
+                                currentRoom.ObjectArray[i].Position.Y > currentRoom.CollisionMap.Height)
+                                currentRoom.ObjectArray[i].Despawn();
+                        }
+
                         //Determine where the room's enemies want to move, (possibly) based on where the player is currently
                         foreach (Enemy enemy in currentRoom.EnemyArray)
                             enemy.Update(gameTime, player);

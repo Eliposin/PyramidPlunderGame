@@ -817,7 +817,8 @@ namespace Pyramid_Plunder.Classes
         {
             foreach (Enemy enemy in room.EnemyArray)
             {
-                if ((position.Y + collisionYs.Last() >= enemy.Position.Y + enemy.CollisionYs.First()) &&
+                if (enemy.IsSpawned &&
+                    (position.Y + collisionYs.Last() >= enemy.Position.Y + enemy.CollisionYs.First()) &&
                     (position.Y + collisionYs.First() <= enemy.Position.Y + enemy.CollisionYs.Last()) &&
                     (position.X + collisionXs.Last() >= enemy.Position.X + enemy.CollisionXs.First()) &&
                     (position.X + collisionXs.First() <= enemy.Position.X + enemy.CollisionXs.Last()))

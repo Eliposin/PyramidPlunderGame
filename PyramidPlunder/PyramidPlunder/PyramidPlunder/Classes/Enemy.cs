@@ -144,10 +144,14 @@ namespace Pyramid_Plunder.Classes
                     {
                         if ((Math.Abs(player.Position.X + player.CollisionXs.First() - position.X + collisionXs.Last()) < 450) ||
                         ((Math.Abs(player.Position.X + player.CollisionXs.Last() - position.X + collisionXs.First()) < 450)))
+                        {
+                            movesOffEdges = true;
                             isChasingPlayer = true;
+                        }
                         else if (isChasingPlayer)
                         {
                             isChasingPlayer = false;
+                            movesOffEdges = false;
                             velocityX /= 2;
                         }
 
@@ -218,7 +222,7 @@ namespace Pyramid_Plunder.Classes
             {
                 for (int i = 0; i < room.EnemyArray.Length; i++)
                 {
-                    if (!room.EnemyArray[i].BumpsOtherEnemies)
+                    if (!room.EnemyArray[i].BumpsOtherEnemies || !room.EnemyArray[i].isSpawned)
                         continue;
 
                     if (this == room.EnemyArray[i])
