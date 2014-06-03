@@ -22,7 +22,13 @@ namespace Pyramid_Plunder.Classes
             Attack = 4,
             Land = 5,
             DoorOpen = 6,
-            KeyGet = 7
+            KeyGet = 7,
+            ItemGet = 8,
+            MenuSelect = 9,
+            MenuClick = 10,
+            SaveChime = 11,
+            PlatformCrumble = 12,
+            EffectInstance = 13
         }
 
         private SoundEffect jump1;
@@ -34,6 +40,14 @@ namespace Pyramid_Plunder.Classes
         //private SoundEffect wallJump;
         private SoundEffect doorOpen;
         private SoundEffect keyGet;
+        private SoundEffect itemGet;
+        private SoundEffect menuSelect;
+        private SoundEffect menuClick;
+        private SoundEffect saveChime;
+        private SoundEffect platformCrumble;
+        private SoundEffect torch;
+        private SoundEffect lavaLoop;
+        private SoundEffectInstance soundInstance;
 
         private float volume = 1f; //TODO: Call menu's volume parameter to get the user defined varaible.
         private const float zero = 0f;
@@ -53,39 +67,84 @@ namespace Pyramid_Plunder.Classes
         {
             objectName = name;
 
-            switch (objectName)
+            try
             {
-                case "Player":
-                    jump1 = content.Load<SoundEffect>("Sounds/hup1");
-                    jump2 = content.Load<SoundEffect>("Sounds/hup2");
-                    jump3 = content.Load<SoundEffect>("Sounds/hup3");
-                    dash = content.Load<SoundEffect>("Sounds/Dash");
-                    land = content.Load<SoundEffect>("Sounds/land");
-                    wallLand = content.Load<SoundEffect>("Sounds/wallland");
-                    keyGet = content.Load<SoundEffect>("Sounds/Key");
-                    break;
+                switch (objectName)
+                {
+                    case "Player":
+                        jump1 = content.Load<SoundEffect>("Sounds/hup1");
+                        jump2 = content.Load<SoundEffect>("Sounds/hup2");
+                        jump3 = content.Load<SoundEffect>("Sounds/hup3");
+                        dash = content.Load<SoundEffect>("Sounds/Dash");
+                        land = content.Load<SoundEffect>("Sounds/land");
+                        wallLand = content.Load<SoundEffect>("Sounds/wallland");
+                        keyGet = content.Load<SoundEffect>("Sounds/Key");
+                        itemGet = content.Load<SoundEffect>("Sounds/Item Jingle");
+                        platformCrumble = content.Load<SoundEffect>("Sounds/PlatformCrumble");
+                        break;
 
 
-                case "Vault":
-                case "StartRoom":
-                case "Lobby":
-                case "SaveRoomA":
-                case "LavaPassageA":
-                case "LavaPassageB":
-                case "LavaAccess":
-                case "StairwayToHell":
-                case "DashRoom":
-                    doorOpen = content.Load<SoundEffect>("Sounds/DoorGrind");
-                    break;
+                    case "SaveRoomA":
+                        doorOpen = content.Load<SoundEffect>("Sounds/DoorGrind");
+                        saveChime = content.Load<SoundEffect>("Sounds/SaveChime");
+                        break;
 
-                default: break;
+                    case "Vault":
+                        doorOpen = content.Load<SoundEffect>("Sounds/DoorGrind");
+                        torch = content.Load<SoundEffect>("Sounds/Torch");
+                        soundInstance = torch.CreateInstance();
+                        soundInstance.Volume = volume;
+                        soundInstance.IsLooped = true;
+                        //soundInstance.Play();
+                        break;
+
+
+                    case "LavaPassageA":
+                    case "LavaPassageB":
+                    case "StairwayToHell":
+                    case "DashRoom":
+                        doorOpen = content.Load<SoundEffect>("Sounds/DoorGrind");
+                        platformCrumble = content.Load<SoundEffect>("Sounds/PlatformCrumble");
+                        lavaLoop = content.Load<SoundEffect>("Sounds/LavaLoop");
+                        soundInstance = lavaLoop.CreateInstance();
+                        soundInstance.Volume = volume;
+                        soundInstance.IsLooped = true;
+                        //soundInstance.Play();
+                        break;
+
+                    case "LavaAccess":
+                        doorOpen = content.Load<SoundEffect>("Sounds/DoorGrind");
+                        platformCrumble = content.Load<SoundEffect>("Sounds/PlatformCrumble");
+                        break;
+
+                    case "StartRoom":
+                    case "Lobby":
+                        doorOpen = content.Load<SoundEffect>("Sounds/DoorGrind");
+                        break;
+
+                    case "Menu":
+                        menuClick = content.Load<SoundEffect>("Sounds/MenuClick");
+                        menuSelect = content.Load<SoundEffect>("Sounds/MenuSelect");
+                        break;
+
+                    default: break;
+                }
+            }
+            catch(NullReferenceException e)
+            {
+
+                System.Diagnostics.Debug.WriteLine("Error loading audio clip(s) for object: " + objectName +
+                    "\n" + e.Message);
             }
 
         }
 
+
         /// <summary>
-        /// Plays called soundeffect.
+        /// Plays the called soundeffect. Returns debug line if sound effect is 
+        /// not loaded.
         /// </summary>
+        /// <param name="effect">Pass desired soundeffect.</param>
         public void Play(SoundEffects effect)
         {
             try
@@ -149,6 +208,26 @@ namespace Pyramid_Plunder.Classes
                         keyGet.Play(volume, zero, zero);
                         break;
 
+                    //Called by room switch.
+                    case SoundEffects.EffectInstance:
+                        //If current room has a looping sound, play that sound.
+                        switch (objectName)
+                        {
+                            case "LavaPassageA":
+                            case "LavaPassageB":
+                            case "StairwayToHell":
+                            case "DashRoom":
+                            case "Vault":
+                                soundInstance.Play();
+                                break;
+                            default: break;
+                        }
+                        break;
+                    
+                    case SoundEffects.ItemGet:
+                        itemGet.Play(volume, zero, zero);
+                        break;
+
                     default: break;
                 }
             }
@@ -166,6 +245,10 @@ namespace Pyramid_Plunder.Classes
     {
         private Song menu;
         private Song main;
+        private Song levelMusicIntro;
+        private Song levelMusicLoop;
+        private Song SaveMusicLoop;
+
 
         private string currentMusicName;
 

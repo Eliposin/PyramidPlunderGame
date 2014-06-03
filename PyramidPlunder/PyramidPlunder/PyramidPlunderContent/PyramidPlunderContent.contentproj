@@ -303,7 +303,7 @@
     <Compile Include="Sounds\LavaLoop.mp3">
       <Name>LavaLoop</Name>
       <Importer>Mp3Importer</Importer>
-      <Processor>SongProcessor</Processor>
+      <Processor>SoundEffectProcessor</Processor>
     </Compile>
     <Compile Include="Sounds\LevelMusicIntro.mp3">
       <Name>LevelMusicIntro</Name>

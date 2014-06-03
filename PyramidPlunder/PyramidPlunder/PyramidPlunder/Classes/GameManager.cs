@@ -556,6 +556,8 @@ namespace Pyramid_Plunder.Classes
             currentRoom = whichRoom;
 
             musicManager.SwitchMusic(currentRoom.MusicName);
+            currentRoom.PlaySoundInstance();
+
             
             player.Spawn(currentRoom.SpawnLocation);
             gameHUD.DisplayRoomName(currentRoom.LongName);

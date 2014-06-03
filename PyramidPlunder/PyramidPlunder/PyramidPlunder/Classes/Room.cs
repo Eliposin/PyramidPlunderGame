@@ -421,5 +421,11 @@ namespace Pyramid_Plunder.Classes
         {
             get { return longName; }
         }
+
+        public void PlaySoundInstance()
+        {
+            soundEngine.Play(AudioEngine.SoundEffects.EffectInstance);
+        }
+
     }
 }
