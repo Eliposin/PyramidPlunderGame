@@ -221,15 +221,15 @@ namespace Pyramid_Plunder.Classes
                     PlayerJumpState = JumpState.Allowed;
 
                 if (jumpBtnFlag == true && PlayerJumpState == JumpState.Allowed &&
-                    (isOnGround || midairJumps > 0 || WallSlideDirection != XDirection.None))
+                    (isOnGround || midairJumps > 0 || wallOnLeft || wallOnRight))
                 {
                     if (isOnGround == false)
                     {
-                        if (WallSlideDirection != XDirection.None)
+                        if (wallOnRight || wallOnLeft)
                         {
                             velocityY = WALL_JUMP_V_Y;
                             velocityX = WALL_JUMP_V_X;
-                            if (WallSlideDirection == XDirection.Left)
+                            if (wallOnLeft)
                             {
                                 velocityX *= -1;
                                 PlayerXFacing = XDirection.Right;

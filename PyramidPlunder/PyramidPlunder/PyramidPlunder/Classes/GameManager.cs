@@ -352,7 +352,7 @@ namespace Pyramid_Plunder.Classes
 
             GameResources.RoomSaves = new List<RoomSaveData>();
 
-            musicManager.SwitchMusic("Menu");
+            musicManager.SwitchMusic("Level");
 
             currentRoom = new Room("StartRoom", -1);
             player = new Player(gameContent, SaveGame, SwitchRooms, ToggleGameFreeze, HudCallback);
