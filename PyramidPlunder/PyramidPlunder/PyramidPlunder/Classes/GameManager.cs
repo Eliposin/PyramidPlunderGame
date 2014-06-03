@@ -97,28 +97,20 @@ namespace Pyramid_Plunder.Classes
                 }
                 else
                 {
-                    //added for now just cause I got tired of falling into the infinite abyss...
-                    if (player.Position.Y >= currentRoom.CollisionMap.Height + player.HitBox.Height)
-                        player.Position = currentRoom.SpawnLocation;
-                    else
-                    {
-                        if (player.IsVulnerable)
-                            player.DetectEnemyCollisions(currentRoom);
-                        player.Update(gameTime); //Determines what the Player is trying to do (this is where the gameTime is taken into account)
-                    }
-
-                    //Determine where the room's enemies want to move, (possibly) based on where the player is currently
-                    for (int i = 0; i < currentRoom.EnemyArray.Length; i++)
                     if (!isFrozen)
                     {
                         //added for now just cause I got tired of falling into the infinite abyss...
                         if (player.Position.Y >= currentRoom.CollisionMap.Height + player.HitBox.Height)
                         {
-                            player.Position = currentRoom.SpawnLocation;
                             currentRoom.Reset();
+                            player.Position = currentRoom.SpawnLocation;
                         }
                         else
+                        {
+                            if (player.IsVulnerable)
+                                player.DetectEnemyCollisions(currentRoom);
                             player.Update(gameTime); //Determines what the Player is trying to do (this is where the gameTime is taken into account)
+                        }
 
                         //Determine where the room's enemies want to move, (possibly) based on where the player is currently
                         foreach (Enemy enemy in currentRoom.EnemyArray)
