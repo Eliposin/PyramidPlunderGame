@@ -369,6 +369,20 @@ namespace Pyramid_Plunder.Classes
                             for (int i = 0; i < playerItems.Length; i++)
                                 playerItems[i] = bool.Parse(GameResources.getNextDataLine(sr, "#"));
 
+                            RoomSaveData[] roomSaves = new RoomSaveData[int.Parse(GameResources.getNextDataLine(sr, "#"))];
+
+                            for (int i = 0; i < roomSaves.Length; i ++)
+                            {
+                                roomSaves[i].roomName = GameResources.getNextDataLine(sr, "#");
+                                bool[] items = new bool[int.Parse(GameResources.getNextDataLine(sr, "#"))];
+                                for (int j = 0; j < items.Length; j++)
+                                    items[j] = bool.Parse(GameResources.getNextDataLine(sr, "#"));
+                            }
+
+                            GameResources.RoomSaves = new List<RoomSaveData>();
+                            foreach (RoomSaveData save in roomSaves)
+                                GameResources.RoomSaves.Add(save);
+
                             player = new Player(gameContent, SaveGame, SwitchRooms, ToggleGameFreeze);
                             player.Spawn(currentRoom.SpawnLocation);
                             player.LoadSave(playerHealth, playerItems);
@@ -401,14 +415,24 @@ namespace Pyramid_Plunder.Classes
 
             try
             {
-                string[] saveData = new string[player.CurrentItems.Length + 3];
+                List<string> saveData = new List<string>();
 
-                saveData[0] = currentRoom.RoomName;
-                saveData[1] = player.CurrentHealth.ToString();
-                saveData[2] = player.CurrentItems.Length.ToString();
+                saveData.Add(currentRoom.RoomName);
+                saveData.Add(player.CurrentHealth.ToString());
+                saveData.Add(player.CurrentItems.Length.ToString());
 
-                for (int i = 0; i < player.CurrentItems.Length; i++)
-                    saveData[i + 3] = player.CurrentItems[i].ToString();
+                foreach (bool item in player.CurrentItems)
+                    saveData.Add(item.ToString());
+
+                saveData.Add(GameResources.RoomSaves.Count.ToString());
+
+                foreach (RoomSaveData roomSave in GameResources.RoomSaves)
+                {
+                    saveData.Add(roomSave.roomName);
+                    saveData.Add(roomSave.objectsAreSpawned.Length.ToString());
+                    foreach (bool obj in roomSave.objectsAreSpawned)
+                        saveData.Add(obj.ToString());
+                }
 
                 if (currentStorageDevice == null)
                     currentStorageDevice = GetStorageDevice();
