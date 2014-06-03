@@ -20,12 +20,14 @@ namespace Pyramid_Plunder.Classes
     {
         private bool isPaused;
         private bool inGame;
+        private bool isDeathScreenUp;
         private KeyboardState keyState;
         private GamePadState gamePadState;
         private GameSettings gameSettings;
         private DelVoid exitCallback;
 
         private Menu gameMenu;
+        private GameGraphic deathScreen;
         private Room currentRoom;
         private Room oldRoom;
         private Player player;
@@ -80,6 +82,8 @@ namespace Pyramid_Plunder.Classes
 
             isFrozen = false;
             freezeTimer = 0;
+
+            isDeathScreenUp = false;
         }
 
         /// <summary>
@@ -102,7 +106,7 @@ namespace Pyramid_Plunder.Classes
                         if (player.DeathSequenceEnded)
                         {
                             player.ResetActionStates(Player.XDirection.Right);
-                            LoadGame();
+                            ShowDeathScreen();
                         }
                         else if (player.IsDeadAndStill)
                             player.StartDeathSequence();
@@ -165,11 +169,20 @@ namespace Pyramid_Plunder.Classes
                     }
                     else
                     {
-                        freezeTimer += gameTime.ElapsedGameTime.TotalSeconds;
-                        if (freezeTimer >= freezeTimerMax)
+                        if (freezeTimerMax != -1)
                         {
-                            freezeTimer = 0;
-                            isFrozen = false;
+                            freezeTimer += gameTime.ElapsedGameTime.TotalSeconds;
+                            if (freezeTimer >= freezeTimerMax)
+                            {
+                                freezeTimer = 0;
+                                isFrozen = false;
+                            }
+                        }
+
+                        if (isDeathScreenUp && CheckInputButton(Keys.Enter, Buttons.Start))
+                        {
+                            ResetGame();
+                            LoadGame();
                         }
                     }
 
@@ -204,11 +217,15 @@ namespace Pyramid_Plunder.Classes
                 }
                 else
                 {
+                    
                     currentRoom.DrawBackground(spriteBatch, time, !isFrozen);
                     player.Draw(spriteBatch, time, !isFrozen);
                     currentRoom.DrawForeground(spriteBatch, time, !isFrozen);
 
                     gameHUD.Draw(spriteBatch, time);
+
+                    if (isDeathScreenUp)
+                        deathScreen.Draw(spriteBatch, time);
                 }
             }
 
@@ -236,13 +253,27 @@ namespace Pyramid_Plunder.Classes
             return nearestObject;
         }
 
+        private bool CheckInputButton(Keys key, Buttons button)
+        {
+            KeyboardState tempKeyState = Keyboard.GetState();
+            GamePadState tempGamePadState = GamePad.GetState(PlayerIndex.One);
+
+            if ((tempKeyState.IsKeyDown(key) && keyState.IsKeyUp(key)) ||
+                tempGamePadState.IsButtonDown(button) && gamePadState.IsButtonUp(button))
+                return true;
+            else
+                return false;
+        }
+
         /// <summary>
         /// Checks to see if the game is paused.
         /// </summary>
         private void CheckPaused()
         {
             KeyboardState tempKeyState = Keyboard.GetState();
-            if (tempKeyState.IsKeyDown(Keys.Escape) && keyState.IsKeyUp(Keys.Escape))
+            GamePadState tempGamePadState = GamePad.GetState(PlayerIndex.One);
+            if ((tempKeyState.IsKeyDown(Keys.Escape) && keyState.IsKeyUp(Keys.Escape)) ||
+                tempGamePadState.IsButtonDown(Buttons.Back) && gamePadState.IsButtonUp(Buttons.Back))
             {
                 if (isPaused == true)
                 {
@@ -283,13 +314,24 @@ namespace Pyramid_Plunder.Classes
             }
         }
 
+        private void ResetGame()
+        {
+            currentRoom.Dispose();
+            player.ResetActionStates(Player.XDirection.Right);
+            isDeathScreenUp = false;
+            isFrozen = false;
+        }
+
         /// <summary>
         /// Starts a new game, getting rid of the menu, deleting old saves, and opening up the starting room.
         /// </summary>
         private void StartNewGame()
         {
-            gameMenu.Dispose();
-            gameMenu = null;
+            if (gameMenu != null)
+            {
+                gameMenu.Dispose();
+                gameMenu = null;
+            }
 
             DeleteSave();
 
@@ -303,6 +345,7 @@ namespace Pyramid_Plunder.Classes
             
             isPaused = false;
             inGame = true;
+            
         }
 
         /// <summary>
@@ -387,6 +430,14 @@ namespace Pyramid_Plunder.Classes
                 System.Diagnostics.Debug.WriteLine("There was an error when saving the game: \n" + e.Message);
                 gameHUD.DisplaySaveIndicator("Your game was not saved.");
             }
+        }
+
+        private void ShowDeathScreen()
+        {
+            isFrozen = true;
+            freezeTimerMax = -1;
+            deathScreen = new GameGraphic("DeathScreen", gameContent);
+            isDeathScreenUp = true;
         }
 
         /// <summary>
