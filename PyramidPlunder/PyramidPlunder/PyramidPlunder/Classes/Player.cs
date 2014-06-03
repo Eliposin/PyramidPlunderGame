@@ -53,6 +53,7 @@ namespace Pyramid_Plunder.Classes
         const float KNOCK_BACK_V = 840;
 
         const int PIT_FALL_DAMAGE = 2;
+        const int HAZARD_DAMAGE = 2;
         const float VULNERABLE = -1;
         const float INVINCIBLE_START = 0;
         const float STUN_END = 0.375F;          //How long (seconds) the object is stunned upon taking damage.
@@ -783,6 +784,13 @@ namespace Pyramid_Plunder.Classes
             ResetActionStates(XDirection.Right);
         }
 
+        public void ReceiveHazardDamage()
+        {
+            currentHealth = Math.Max(0, currentHealth - HAZARD_DAMAGE);
+            damageStatus = STUN_END;
+            ResetActionStates(XDirection.Right);
+        }
+
         private void CollideWithEnemy(Enemy enemy, XDirection direction)
         {
             soundEngine.Play(AudioEngine.SoundEffects.Jump);
@@ -827,6 +835,22 @@ namespace Pyramid_Plunder.Classes
                     }
                 }
             }
+        }
+
+        public bool CheckHazards(Room room)
+        {
+            foreach (GameObject obj in room.EnvironmentArray)
+            {
+                if (obj.IsHazard)
+                {
+                    if ((position.X + collisionXs.Last() >= obj.Position.X) &&
+                        (position.X + collisionXs.First() <= obj.Position.X + obj.HitBox.Width) &&
+                        (position.Y + collisionYs.Last() >= obj.Position.Y) &&
+                        (position.Y + collisionYs.First() <= obj.Position.Y + obj.HitBox.Height))
+                        return true;
+                }
+            }
+            return false;
         }
 
         public override void Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch, GameTime time, bool playAnimations)

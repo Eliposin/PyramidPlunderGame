@@ -119,6 +119,12 @@ namespace Pyramid_Plunder.Classes
                             player.ReceivePitFallDamage();
                             player.Position = currentRoom.SpawnLocation;
                         }
+                        else if (player.CheckHazards(currentRoom))
+                        {
+                            currentRoom.Reset();
+                            player.ReceiveHazardDamage();
+                            player.Position = currentRoom.SpawnLocation;
+                        }
                         else
                         {
                             if (player.IsVulnerable)

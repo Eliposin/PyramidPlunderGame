@@ -150,6 +150,15 @@ namespace Pyramid_Plunder.Classes
                     itemType = ItemList.Dash;
                     break;
                 }
+                case "Lava":
+                {
+                    isItem = false;
+                    isKey = false;
+                    isPowerup = false;
+                    isHazard = true;
+                    itemType = ItemList.NullItem;
+                    break;
+                }
                 default:
                 {
                     isItem = false;
@@ -252,6 +261,11 @@ namespace Pyramid_Plunder.Classes
         {
             get { return isSolid; }
             set { isSolid = value; }
+        }
+
+        public bool IsHazard
+        {
+            get { return isHazard; }
         }
 
         /// <summary>

@@ -71,4 +71,44 @@ FloorThing
 # Y-Coordinate of Spawn Location
 475
 #Number of Environment Objects
-0
+4
+#Type Of Object
+Lava
+#HasGraphic
+true
+#IsSolid
+false
+#PositionX
+391
+#PositionY
+723
+#Type Of Object
+Lava
+#HasGraphic
+true
+#IsSolid
+false
+#PositionX
+931
+#PositionY
+723
+#Type Of Object
+Lava
+#HasGraphic
+true
+#IsSolid
+false
+#PositionX
+1471
+#PositionY
+723
+#Type Of Object
+Lava
+#HasGraphic
+true
+#IsSolid
+false
+#PositionX
+1853
+#PositionY
+723

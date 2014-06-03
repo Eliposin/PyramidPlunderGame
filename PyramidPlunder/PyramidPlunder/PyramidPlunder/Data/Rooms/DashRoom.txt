@@ -38,7 +38,7 @@ LavaPassageA
 #Number of Enemies
 0
 #Number of Environment Objects
-2
+4
 #Type of Object
 DisintegratingPlatform
 #HasGraphic
@@ -59,3 +59,23 @@ false
 1125
 # PositionY
 470
+#Type of Object
+Lava
+#HasGraphic
+true
+#IsSolid
+false
+#PositionX
+394
+#PositionY
+601
+#Type of Object
+Lava
+#HasGraphic
+true
+#IsSolid
+false
+#PositionX
+1354
+#PositionY
+601

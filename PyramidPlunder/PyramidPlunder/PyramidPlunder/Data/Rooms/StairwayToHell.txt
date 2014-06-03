@@ -65,7 +65,7 @@ SaveRoomA
 0
 #####Environment Objects#####
 #Number of Environment Objects
-6
+10
 #Type of Object
 DisintegratingPlatform
 #HasGraphic
@@ -126,3 +126,43 @@ true
 1472
 # PositionY
 1026
+#Type of Object
+Lava
+#HasGraphic
+true
+#IsSolid
+false
+#PositionX
+599
+#PositionY
+461
+#Type Of Object
+Lava
+#HasGraphic
+true
+#IsSolid
+false
+#PositionX
+1139
+#PositionY
+461
+#Type of Object
+Lava
+#HasGraphic
+true
+#IsSolid
+false
+#PositionX
+728
+#PositionY
+1587
+#Type Of Object
+Lava
+#HasGraphic
+true
+#IsSolid
+false
+#PositionX
+1268
+#PositionY
+1587
