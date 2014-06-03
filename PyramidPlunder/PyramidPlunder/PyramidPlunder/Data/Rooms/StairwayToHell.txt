@@ -10,7 +10,7 @@ StairwayToHell
 false
 #
 #Music
-Menu
+Level
 #Doors
 #Orientation (0 = facing right, 1 = facing left)
 #Linked Room (String)

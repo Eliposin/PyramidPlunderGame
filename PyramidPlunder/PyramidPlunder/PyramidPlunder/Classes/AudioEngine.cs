@@ -41,10 +41,10 @@ namespace Pyramid_Plunder.Classes
         private SoundEffect doorOpen;
         private SoundEffect keyGet;
         private SoundEffect itemGet;
-        private SoundEffect menuSelect;
-        private SoundEffect menuClick;
-        private SoundEffect saveChime;
-        private SoundEffect platformCrumble;
+        private SoundEffect menuSelect; //TODO
+        private SoundEffect menuClick;  //TODO
+        private SoundEffect saveChime; 
+        private SoundEffect platformCrumble; //TODO
         private SoundEffect torch;
         private SoundEffect lavaLoop;
         private SoundEffectInstance soundInstance;
@@ -228,6 +228,22 @@ namespace Pyramid_Plunder.Classes
                         itemGet.Play(volume, zero, zero);
                         break;
 
+                    case SoundEffects.SaveChime:
+                        saveChime.Play(volume, zero, zero);
+                        break;
+
+                    case SoundEffects.MenuClick:
+                        menuClick.Play(volume, zero, zero);
+                        break;
+
+                    case SoundEffects.MenuSelect:
+                        menuSelect.Play(volume, zero, zero);
+                        break;
+
+                    case SoundEffects.PlatformCrumble:
+                        platformCrumble.Play(volume, zero, zero);
+                        break;
+
                     default: break;
                 }
             }
@@ -256,14 +272,16 @@ namespace Pyramid_Plunder.Classes
         {
             menu = content.Load<Song>("Sounds/MenuScreen");
             main = content.Load<Song>("Sounds/MainTitle");
+            levelMusicLoop = content.Load<Song>("Sounds/LevelMusicLoopish");
+            SaveMusicLoop = content.Load<Song>("Sounds/SaveMusicLoop");
             play();
         }
         public void play()
         {
             MediaPlayer.Volume = 1f;
-            MediaPlayer.Play(main);
+            //MediaPlayer.Play(main);
             MediaPlayer.IsRepeating = true;
-            currentMusicName = "Main";
+            currentMusicName = "Null";
         }
 
         public void SwitchMusic(string musicName)
@@ -281,6 +299,16 @@ namespace Pyramid_Plunder.Classes
                         MediaPlayer.Stop();
                         MediaPlayer.Play(menu);
                         currentMusicName = "Menu";
+                        break;
+                    case "Level":
+                        MediaPlayer.Stop();
+                        MediaPlayer.Play(levelMusicLoop);
+                        currentMusicName = "Level";
+                        break;
+                    case "Save":
+                        MediaPlayer.Stop();
+                        MediaPlayer.Play(SaveMusicLoop);
+                        currentMusicName = "Save";
                         break;
                     default: break;
                 }

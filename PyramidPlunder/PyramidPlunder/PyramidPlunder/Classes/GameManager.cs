@@ -75,6 +75,8 @@ namespace Pyramid_Plunder.Classes
 
             musicManager = new BGM(gContent);
 
+            musicManager.SwitchMusic("Main");
+
             fpsFont = gameContent.Load<SpriteFont>("Fonts/FPSFont");
             fpsCount = 0;
             oldCount = 0;

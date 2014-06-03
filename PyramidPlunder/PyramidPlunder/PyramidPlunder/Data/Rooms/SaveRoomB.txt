@@ -10,7 +10,7 @@ SaveRoom
 false
 #
 #Music
-Menu
+Save
 #Doors
 #Orientation (0 = facing right, 1 = facing left)
 #Linked Room (String)

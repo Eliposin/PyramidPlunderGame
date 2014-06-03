@@ -335,8 +335,8 @@
       <Importer>Mp3Importer</Importer>
       <Processor>SongProcessor</Processor>
     </Compile>
-    <Compile Include="Sounds\SaferMusicLoop.mp3">
-      <Name>SaferMusicLoop</Name>
+    <Compile Include="Sounds\SaveMusicLoop.mp3">
+      <Name>SaveMusicLoop</Name>
       <Importer>Mp3Importer</Importer>
       <Processor>SongProcessor</Processor>
     </Compile>
@@ -349,6 +349,13 @@
       <Name>Torch</Name>
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Sounds\LevelMusicLoopish.mp3">
+      <Name>LevelMusicLoopish</Name>
+      <Importer>Mp3Importer</Importer>
+      <Processor>SongProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

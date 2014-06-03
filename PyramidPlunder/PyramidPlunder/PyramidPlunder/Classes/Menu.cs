@@ -95,6 +95,8 @@ namespace Pyramid_Plunder.Classes
 
         public Menu() { }
 
+        private AudioEngine soundEngine;
+
         //not an empty struct, go back over old code to remember exactly why this is necessary, same with the empty struct
         public Menu(string fontName, DelMenu menuC)
         {
@@ -108,6 +110,8 @@ namespace Pyramid_Plunder.Classes
             menuFont = Content.Load<SpriteFont>("Fonts/" + fontName);
 
             isRunning = true;
+
+            soundEngine = new AudioEngine(Content, "Menu");
         }
 
         private void LoadMenuButtons()
@@ -143,23 +147,27 @@ namespace Pyramid_Plunder.Classes
                     if (menuSelect == 0 && ((keys.IsKeyDown(Keys.Enter) && oldKeys.IsKeyUp(Keys.Enter)) ||
                         (gp.IsButtonDown(Buttons.A) && oldGp.IsButtonDown(Buttons.A))))
                     {
+                        soundEngine.Play(AudioEngine.SoundEffects.MenuSelect);
                         isRunning = false;
                         menuCallback(MenuCallbacks.NewGame);
                     }
                     else if (menuSelect == 1 && ((keys.IsKeyDown(Keys.Enter) && oldKeys.IsKeyUp(Keys.Enter)) ||
                         (gp.IsButtonDown(Buttons.A) && oldGp.IsButtonDown(Buttons.A))))
                     {
+                        soundEngine.Play(AudioEngine.SoundEffects.MenuSelect);
                         isRunning = false;
                         menuCallback(MenuCallbacks.LoadGame);
                     }
                     else if (menuSelect == 2 && ((keys.IsKeyDown(Keys.Enter) && oldKeys.IsKeyUp(Keys.Enter)) ||
                         (gp.IsButtonDown(Buttons.A) && oldGp.IsButtonDown(Buttons.A))))
                     {
+                        soundEngine.Play(AudioEngine.SoundEffects.MenuSelect);
                         //gameStates = GameStates.Options;
                     }
                     else if (menuSelect == 3 && ((keys.IsKeyDown(Keys.Enter) && oldKeys.IsKeyUp(Keys.Enter)) ||
                         (gp.IsButtonDown(Buttons.A) && oldGp.IsButtonDown(Buttons.A))))
                     {
+                        soundEngine.Play(AudioEngine.SoundEffects.MenuSelect);
                         menuCallback(MenuCallbacks.Quit);
                     }
                 }
@@ -191,19 +199,19 @@ namespace Pyramid_Plunder.Classes
                 }
             }
         }
+
         //this Function allows the user to select menu Options using keyboard keys
-        //TODO: add in functionality to use gamepad DPad
         protected int MenuOptionsSelect()
         {
            
             if ((keys.IsKeyDown(Keys.Down) && oldKeys.IsKeyUp(Keys.Down)) ||
                 (gp.IsButtonDown(Buttons.DPadDown) && oldGp.IsButtonUp(Buttons.DPadDown)) ||
-
                 (gp.ThumbSticks.Left.Y <= -THUMBSTICK_THRESHOLD && oldGp.ThumbSticks.Left.Y > -THUMBSTICK_THRESHOLD))
 
             {
                 menuTemp++;
                 if (menuTemp >= vecMenuOpts.Length) menuTemp = 0;
+                soundEngine.Play(AudioEngine.SoundEffects.MenuClick);
             }
 
             else if ((keys.IsKeyDown(Keys.Up) && oldKeys.IsKeyUp(Keys.Up)) ||
@@ -212,6 +220,7 @@ namespace Pyramid_Plunder.Classes
             {
                 menuTemp--;
                 if (menuTemp < 0) menuTemp = vecMenuOpts.Length - 1;
+                soundEngine.Play(AudioEngine.SoundEffects.MenuClick);
             }
 
             return menuTemp;

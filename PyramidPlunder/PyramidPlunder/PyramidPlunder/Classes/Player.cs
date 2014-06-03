@@ -424,6 +424,7 @@ namespace Pyramid_Plunder.Classes
             if (otherObject.ItemType != ItemList.NullItem && interactionType == InteractionTypes.Collision)
             {
                 PickUpItem(otherObject);
+                soundEngine.Play(AudioEngine.SoundEffects.ItemGet);
             }
             else
             {
@@ -838,6 +839,5 @@ namespace Pyramid_Plunder.Classes
             else
                 drawnLastFrame = false;
         }
-
     }
 }
