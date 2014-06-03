@@ -374,9 +374,10 @@ namespace Pyramid_Plunder.Classes
                             for (int i = 0; i < roomSaves.Length; i ++)
                             {
                                 roomSaves[i].roomName = GameResources.getNextDataLine(sr, "#");
-                                bool[] items = new bool[int.Parse(GameResources.getNextDataLine(sr, "#"))];
-                                for (int j = 0; j < items.Length; j++)
-                                    items[j] = bool.Parse(GameResources.getNextDataLine(sr, "#"));
+                                bool[] objects = new bool[int.Parse(GameResources.getNextDataLine(sr, "#"))];
+                                for (int j = 0; j < objects.Length; j++)
+                                    objects[j] = bool.Parse(GameResources.getNextDataLine(sr, "#"));
+                                roomSaves[i].objectsAreSpawned = objects;
                             }
 
                             GameResources.RoomSaves = new List<RoomSaveData>();
