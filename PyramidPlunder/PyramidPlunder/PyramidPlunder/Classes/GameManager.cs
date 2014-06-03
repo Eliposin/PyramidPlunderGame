@@ -38,6 +38,9 @@ namespace Pyramid_Plunder.Classes
         private int fpsCount;
         private float oldCount;
         private int drawCalls;
+        private bool isFrozen;
+        private double freezeTimerMax;
+        private double freezeTimer;
 
         private struct GameSettings
         {
@@ -75,6 +78,8 @@ namespace Pyramid_Plunder.Classes
             oldCount = 0;
             drawCalls = 0;
 
+            isFrozen = false;
+            freezeTimer = 0;
         }
 
         /// <summary>
@@ -92,51 +97,67 @@ namespace Pyramid_Plunder.Classes
                 }
                 else
                 {
-                    //added for now just cause I got tired of falling into the infinite abyss...
-                    if (player.Position.Y >= currentRoom.CollisionMap.Height + player.HitBox.Height)
-                        player.Position = currentRoom.SpawnLocation;
-                    else
-                    player.Update(gameTime); //Determines what the Player is trying to do (this is where the gameTime is taken into account)
-
-                    //Determine where the room's enemies want to move, (possibly) based on where the player is currently
-                    for (int i = 0; i < currentRoom.EnemyArray.Length; i++)
+                    if (!isFrozen)
                     {
-                        currentRoom.EnemyArray[i].Update(gameTime, player);
-                    }
-
-                    PhysicsEngine.Update(player, currentRoom, gameTime); //Checks for collisions and modifies Velocity
-                    player.Move(); //Actually sets the new position of the object
-
-                    //Do the same thing for each physics object in the current room.
-                    for (int i = 0; i < currentRoom.ObjectArray.Length; i++)
-                    {
-                        if (currentRoom.ObjectArray[i].IsPhysicsObject)
+                        //added for now just cause I got tired of falling into the infinite abyss...
+                        if (player.Position.Y >= currentRoom.CollisionMap.Height + player.HitBox.Height)
                         {
-                            PhysicsEngine.Update((PhysicsObject)currentRoom.ObjectArray[i], currentRoom, gameTime);
-                            ((PhysicsObject)currentRoom.ObjectArray[i]).Move();
+                            player.Position = currentRoom.SpawnLocation;
+                            currentRoom.Reset();
+                        }
+                        else
+                            player.Update(gameTime); //Determines what the Player is trying to do (this is where the gameTime is taken into account)
+
+                        //Determine where the room's enemies want to move, (possibly) based on where the player is currently
+                        foreach (Enemy enemy in currentRoom.EnemyArray)
+                            enemy.Update(gameTime, player);
+
+                        foreach (GameObject obj in currentRoom.EnvironmentArray)
+                            obj.Update(gameTime);
+
+                        PhysicsEngine.Update(player, currentRoom, gameTime); //Checks for collisions and modifies Velocity
+                        player.Move(); //Actually sets the new position of the object
+
+                        //Do the same thing for each physics object in the current room.
+                        for (int i = 0; i < currentRoom.ObjectArray.Length; i++)
+                        {
+                            if (currentRoom.ObjectArray[i].IsPhysicsObject)
+                            {
+                                PhysicsEngine.Update((PhysicsObject)currentRoom.ObjectArray[i], currentRoom, gameTime);
+                                ((PhysicsObject)currentRoom.ObjectArray[i]).Move();
+                            }
+                        }
+
+                        //Finally, update the drawing position of the objects in the room.
+                        player.UpdateCoordinates(currentRoom.CollisionMap.Bounds);
+
+                        currentRoom.UpdateCoordinates(player.Position, player.Coordinates, currentRoom.CollisionMap.Bounds);
+                        player.updateControlFlags(); //new
+
+                        //Check to see if the player is trying to do something
+                        if (player.InteractionFlag)
+                        {
+                            GameObject tempObject = FindInteractionObject(player, InteractionTypes.PlayerAction);
+                            if (tempObject != null)
+                                player.InteractWith(tempObject, InteractionTypes.PlayerAction);
+                        }
+
+                        for (int i = 0; i < currentRoom.ObjectArray.Length; i++)
+                        {
+                            if (currentRoom.ObjectArray[i].IsSpawned)
+                            {
+                                if (PhysicsEngine.CheckBoundingBoxCollision(player, currentRoom.ObjectArray[i]))
+                                    player.InteractWith(currentRoom.ObjectArray[i], InteractionTypes.Collision);
+                            }
                         }
                     }
-
-                    //Finally, update the drawing position of the objects in the room.
-                    player.UpdateCoordinates(currentRoom.CollisionMap.Bounds);
-
-                    currentRoom.UpdateCoordinates(player.Position, player.Coordinates, currentRoom.CollisionMap.Bounds);
-                    player.updateControlFlags(); //new
-
-                    //Check to see if the player is trying to do something
-                    if (player.InteractionFlag)
+                    else
                     {
-                        GameObject tempObject = FindInteractionObject(player, InteractionTypes.PlayerAction);
-                        if (tempObject != null)
-                            player.InteractWith(tempObject, InteractionTypes.PlayerAction);
-                    }
-
-                    for (int i = 0; i < currentRoom.ObjectArray.Length; i++)
-                    {
-                        if (currentRoom.ObjectArray[i].IsSpawned)
+                        freezeTimer += gameTime.ElapsedGameTime.TotalSeconds;
+                        if (freezeTimer >= freezeTimerMax)
                         {
-                            if (PhysicsEngine.CheckBoundingBoxCollision(player, currentRoom.ObjectArray[i]))
-                                player.InteractWith(currentRoom.ObjectArray[i], InteractionTypes.Collision);
+                            freezeTimer = 0;
+                            isFrozen = false;
                         }
                     }
 
@@ -171,9 +192,9 @@ namespace Pyramid_Plunder.Classes
                 }
                 else
                 {
-                    currentRoom.DrawBackground(spriteBatch, time);
-                    player.Draw(spriteBatch, time);
-                    currentRoom.DrawForeground(spriteBatch, time);
+                    currentRoom.DrawBackground(spriteBatch, time, !isFrozen);
+                    player.Draw(spriteBatch, time, !isFrozen);
+                    currentRoom.DrawForeground(spriteBatch, time, !isFrozen);
 
                     gameHUD.Draw(spriteBatch, time);
                 }
@@ -262,8 +283,8 @@ namespace Pyramid_Plunder.Classes
 
             musicManager.SwitchMusic("Menu");
 
-            currentRoom = new Room("StartRoom", -1);
-            player = new Player(gameContent, SaveGame, SwitchRooms);
+            currentRoom = new Room("DashRoom", -1);
+            player = new Player(gameContent, SaveGame, SwitchRooms, ToggleGameFreeze);
             player.Spawn(currentRoom.SpawnLocation);
             gameHUD = new HUD(gameContent, player);
             gameHUD.DisplayRoomName(currentRoom.LongName);
@@ -293,7 +314,7 @@ namespace Pyramid_Plunder.Classes
                             for (int i = 0; i < playerItems.Length; i++)
                                 playerItems[i] = bool.Parse(GameResources.getNextDataLine(sr, "#"));
 
-                            player = new Player(gameContent, SaveGame, SwitchRooms);
+                            player = new Player(gameContent, SaveGame, SwitchRooms, ToggleGameFreeze);
                             player.Spawn(currentRoom.SpawnLocation);
                             player.LoadSave(playerHealth, playerItems);
                             gameHUD = new HUD(gameContent, player);
@@ -407,6 +428,17 @@ namespace Pyramid_Plunder.Classes
                 return null;
             }
             
+        }
+
+        private void ToggleGameFreeze(bool frozen, double length)
+        {
+            if (frozen)
+            {
+                freezeTimerMax = length;
+                isFrozen = true;
+            }
+            else
+                isFrozen = false;
         }
 
         /// <summary>

@@ -306,7 +306,7 @@ namespace Pyramid_Plunder.Classes
         /// </summary>
         /// <param name="time">The elapsed game time.</param>
 
-        public virtual void Update(GameTime time)
+        public override void Update(GameTime time)
         {
             float totalTime = (float)(time.ElapsedGameTime.TotalSeconds);
 
@@ -506,12 +506,15 @@ namespace Pyramid_Plunder.Classes
 
             foreach (GameObject obj in room.ObjectArray)
             {
-                if (obj.IsSolid)
+                if (obj.IsSolid && obj.IsSpawned)
                 {
                     if ((coordinateX + collisionXs.First() <= obj.Position.X + obj.HitBox.Width) &&
                         (coordinateX + collisionXs.Last() >= obj.Position.X) &&
                         (row >= obj.Position.Y) && (row <= obj.Position.Y + obj.HitBox.Height))
+                    {
+                        obj.StandingOn(objectName);
                         return true;
+                    }
                 }
             }
             return false;
@@ -538,7 +541,7 @@ namespace Pyramid_Plunder.Classes
 
             foreach (GameObject obj in room.ObjectArray)
             {
-                if (obj.IsSolid)
+                if (obj.IsSolid && obj.IsSpawned)
                 {
                     if ((coordinateX + collisionXs.First() <= obj.Position.X + obj.HitBox.Width) &&
                         (coordinateX + collisionXs.Last() >= obj.Position.X) &&
@@ -576,7 +579,7 @@ namespace Pyramid_Plunder.Classes
 
             foreach (GameObject obj in room.ObjectArray)
             {
-                if (obj.IsSolid)
+                if (obj.IsSolid && obj.IsSpawned)
                 {
                     if ((column >= obj.Position.X) && (column <= obj.Position.X + obj.HitBox.Width) &&
                         (row >= obj.Position.Y) && (row <= obj.Position.Y + obj.HitBox.Height))
@@ -644,7 +647,7 @@ namespace Pyramid_Plunder.Classes
 
             foreach (GameObject obj in room.ObjectArray)
             {
-                if (obj.IsSolid)
+                if (obj.IsSolid && obj.IsSpawned)
                 {
                     if ((column >= obj.Position.X) && (column <= obj.Position.X + obj.HitBox.Width) &&
                         (row >= obj.Position.Y) && (row <= obj.Position.Y + obj.HitBox.Height))
@@ -687,7 +690,7 @@ namespace Pyramid_Plunder.Classes
                 pointOnSolid = false;
                 foreach (GameObject obj in room.ObjectArray)
                 {
-                    if (obj.IsSolid)
+                    if (obj.IsSolid && obj.IsSpawned)
                     {
                         if ((coordinateX >= obj.Position.X) &&
                             (coordinateX <= obj.Position.X + obj.HitBox.Width) &&
@@ -738,7 +741,7 @@ namespace Pyramid_Plunder.Classes
 
             foreach (GameObject obj in room.ObjectArray)
             {
-                if (obj.IsSolid)
+                if (obj.IsSolid && obj.IsSpawned)
                 {
                     if ((coordinateY + collisionYs.First() <= obj.Position.Y + obj.HitBox.Width) &&
                         (coordinateY + collisionYs.Last() >= obj.Position.Y) &&
@@ -784,7 +787,7 @@ namespace Pyramid_Plunder.Classes
 
             foreach (GameObject obj in room.ObjectArray)
             {
-                if (obj.IsSolid)
+                if (obj.IsSolid && obj.IsSpawned)
                 {
                     if ((coordinateY + collisionYs.First() <= obj.Position.Y + obj.HitBox.Width) &&
                         (coordinateY + collisionYs.Last() >= obj.Position.Y) &&
@@ -836,7 +839,7 @@ namespace Pyramid_Plunder.Classes
             }
             foreach (GameObject obj in room.ObjectArray)
             {
-                if (obj.IsSolid)
+                if (obj.IsSolid && obj.IsSpawned)
                 {
                     if ((CoordinateX + collisionXs.First() <= obj.Position.X + obj.HitBox.Width) &&
                         (CoordinateX + collisionXs.Last() >= obj.Position.X) &&

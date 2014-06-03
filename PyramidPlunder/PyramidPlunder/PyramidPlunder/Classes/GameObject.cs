@@ -9,13 +9,20 @@ namespace Pyramid_Plunder.Classes
 {
     public class GameObject : GameGraphic
     {
+        private const float DISINTEGRATE_TIME = 1;
+
         protected Vector2 position;
         protected ItemList itemType;
         protected bool isSpawned;
         protected bool isPhysicsObject;
         protected bool isSolid;
         protected bool isItem;
+        protected bool isKey;
+        protected bool isPowerup;
         protected bool isHazard;
+        protected bool isDisintegrating;
+
+        private double disintegrateTimer;
 
         /// <summary>
         /// Constructor call
@@ -27,6 +34,8 @@ namespace Pyramid_Plunder.Classes
         {
             position = spawnPosition;
             isPhysicsObject = false;
+            isDisintegrating = false;
+            disintegrateTimer = 0;
             Initialize();
         }
 
@@ -55,6 +64,24 @@ namespace Pyramid_Plunder.Classes
         {
             if (isSpawned)
                 base.Draw(batch, time);
+        }
+
+        public override void Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch, GameTime time, bool playAnimations)
+        {
+            if (isSpawned)
+                base.Draw(spriteBatch, time, playAnimations);
+        }
+
+        public virtual void Update(GameTime time)
+        {
+            if (isDisintegrating)
+            {
+                disintegrateTimer += time.ElapsedGameTime.TotalSeconds;
+                if (disintegrateTimer >= DISINTEGRATE_TIME)
+                {
+                    Despawn();
+                }
+            }
         }
 
         /// <summary>
@@ -102,18 +129,35 @@ namespace Pyramid_Plunder.Classes
         /// </summary>
         protected virtual void Initialize()
         {
-            if (objectName == "RedKey")
+            switch (objectName)
             {
-                isItem = true;
-                isHazard = false;
-                itemType = ItemList.RedKey;
-
-            }
-            else
-            {
-                isItem = false;
-                isHazard = false;
-                itemType = ItemList.NullItem;
+                case "RedKey":
+                {
+                    isItem = true;
+                    isKey = true;
+                    isPowerup = false;
+                    isHazard = false;
+                    itemType = ItemList.RedKey;
+                    break;
+                }
+                case "DashPowerup":
+                {
+                    isItem = true;
+                    isKey = false;
+                    isPowerup = true;
+                    isHazard = false;
+                    itemType = ItemList.Dash;
+                    break;
+                }
+                default:
+                {
+                    isItem = false;
+                    isKey = false;
+                    isPowerup = false;
+                    isHazard = false;
+                    itemType = ItemList.NullItem;
+                    break;
+                }
             }
         }
 
@@ -125,6 +169,16 @@ namespace Pyramid_Plunder.Classes
         {
             isSpawned = true;
             Position = location;
+        }
+
+        public virtual void Spawn()
+        {
+            isSpawned = true;
+            if (objectName == "DisintegratingPlatform")
+            {
+                disintegrateTimer = 0;
+                isDisintegrating = false;
+            }
         }
 
         /// <summary>
@@ -150,6 +204,14 @@ namespace Pyramid_Plunder.Classes
             }
 
             return false;
+        }
+
+        public virtual void StandingOn(string obj)
+        {
+            if (obj == "Player" && objectName == "DisintegratingPlatform" && !isDisintegrating)
+            {
+                isDisintegrating = true;
+            }
         }
 
         /// <summary>
@@ -202,6 +264,16 @@ namespace Pyramid_Plunder.Classes
         public bool IsSpawned
         {
             get { return isSpawned; }
+        }
+
+        public bool IsKey
+        {
+            get { return isKey; }
+        }
+
+        public bool IsPowerup
+        {
+            get { return isPowerup; }
         }
 
         /// <summary>

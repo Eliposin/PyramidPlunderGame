@@ -105,10 +105,6 @@ namespace Pyramid_Plunder.Classes
 
             LoadMenuButtons();
 
-            //vecMenuOpts[0] = VecNew;
-            //vecMenuOpts[1] = VecLoad;
-            //vecMenuOpts[2] = VecOptions;
-            //vecMenuOpts[3] = VecExit;
             menuFont = Content.Load<SpriteFont>("Fonts/" + fontName);
 
             isRunning = true;
@@ -116,37 +112,9 @@ namespace Pyramid_Plunder.Classes
 
         private void LoadMenuButtons()
         {
-            try
-            {
-                using (Stream stream = TitleContainer.OpenStream("Data/MainMenu.txt"))
-                {
-                    using (StreamReader sr = new StreamReader(stream))
-                    {
-
-                    String line = GameResources.getNextDataLine(sr, "#");
-
-                    int numberOfButtons = Convert.ToInt16(line);
-
-                    vecMenuOpts = new Vector2[numberOfButtons];
-
-                    for (int i = 0; i < numberOfButtons; i++)
-                    {
-                        vecMenuOpts[i] = new Vector2(int.Parse(GameResources.getNextDataLine(sr, "#")),
-                            int.Parse(GameResources.getNextDataLine(sr, "#")));
-                    }
-
-                    sr.Close();
-                    }
-                }
-            }
-            catch (FileNotFoundException e)
-            {
-                System.Diagnostics.Debug.WriteLine("The file could not be found: " + e.Message);
-            }
-            catch (Exception e)
-            {
-                System.Diagnostics.Debug.WriteLine("There was an error: " + e.Message);
-            }
+            vecMenuOpts = new Vector2[4];
+            for (int i = 0; i < vecMenuOpts.Length; i++)
+                vecMenuOpts[i] = new Vector2(100, 100 + (50 * i));
         }
 
         public virtual void Load()

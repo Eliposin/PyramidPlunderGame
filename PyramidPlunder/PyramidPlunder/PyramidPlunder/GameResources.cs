@@ -61,8 +61,8 @@ namespace Pyramid_Plunder
     public enum ItemList : byte
     {
         NullItem = 0,
-        RedKey = 1,
-        DoubleJump, Dash
+        RedKey = 1, BlueKey, YellowKey,
+        Dash = 7
     }
 
     public struct RoomSaveData
@@ -74,12 +74,13 @@ namespace Pyramid_Plunder
     public delegate void DelVoid();
     public delegate void DelMenu(MenuCallbacks menuCallback);
     public delegate void DelRoom(Classes.Room whichRoom);
+    public delegate void DelFreeze(bool frozen, double length);
 
     
 
     public static class GameResources
     {
-        public const int NUM_ITEMS = 4;
+        public const int NUM_ITEMS = 10;
         
 
         private static GameServiceContainer gameServices;
