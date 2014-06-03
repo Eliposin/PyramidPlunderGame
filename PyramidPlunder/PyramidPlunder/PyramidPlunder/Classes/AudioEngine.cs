@@ -59,7 +59,7 @@ namespace Pyramid_Plunder.Classes
                     jump1 = content.Load<SoundEffect>("Sounds/hup1");
                     jump2 = content.Load<SoundEffect>("Sounds/hup2");
                     jump3 = content.Load<SoundEffect>("Sounds/hup3");
-                    dash = content.Load<SoundEffect>("Sounds/Wooshal2");
+                    dash = content.Load<SoundEffect>("Sounds/Dash");
                     land = content.Load<SoundEffect>("Sounds/land");
                     wallLand = content.Load<SoundEffect>("Sounds/wallland");
                     keyGet = content.Load<SoundEffect>("Sounds/Key");
@@ -177,7 +177,7 @@ namespace Pyramid_Plunder.Classes
         }
         public void play()
         {
-            MediaPlayer.Volume = 0.5f;
+            MediaPlayer.Volume = 1f;
             MediaPlayer.Play(main);
             MediaPlayer.IsRepeating = true;
             currentMusicName = "Main";

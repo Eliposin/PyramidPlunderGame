@@ -168,13 +168,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Sounds\wooshal2.wav">
-      <Name>wooshal2</Name>
-      <Importer>WavImporter</Importer>
-      <Processor>SoundEffectProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Fonts\FPSFont.spritefont">
       <Name>FPSFont</Name>
       <Importer>FontDescriptionImporter</Importer>
