@@ -17,7 +17,7 @@ namespace Pyramid_Plunder.Classes
         public const int PLAYER_WIDTH = 60;
         public const int PLAYER_HEIGHT = 120;
 
-        public const double POWERUP_JINGLE_LENGTH = 3; //In seconds
+        public const double POWERUP_JINGLE_LENGTH = 7; //In seconds
         
         private KeyboardState keyState;
         private GamePadState gpState;

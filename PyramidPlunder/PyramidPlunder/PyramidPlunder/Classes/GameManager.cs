@@ -411,7 +411,7 @@ namespace Pyramid_Plunder.Classes
                         }
                     }
 
-                    musicManager.SwitchMusic("Menu");
+                    musicManager.SwitchMusic(currentRoom.MusicName);
 
                 }
             }
