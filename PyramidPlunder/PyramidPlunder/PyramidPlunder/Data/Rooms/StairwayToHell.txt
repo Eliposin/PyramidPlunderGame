@@ -51,9 +51,9 @@ LavaAccess
 # Orientation
 0
 # Linked Room
-SaveRoom
+SaveRoomA
 # Linked Door (index)
-0
+1
 # Lock Type
 0
 # PositionX

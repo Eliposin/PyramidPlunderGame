@@ -1,5 +1,5 @@
 #LongName
-Save Room A
+Save Room B
 #GraphicsName
 SaveRoom
 #Spawn Location X (was 1185)
@@ -25,9 +25,9 @@ Menu
 # Orientation
 0
 # Linked Room
-(unassigned)
+Lobby
 # Linked Door (index)
-0
+3
 # Lock Type
 0
 # PositionX
@@ -38,9 +38,9 @@ Menu
 # Orientation
 1
 # Linked Room
-StairwayToHell
+SaveRoomB
 # Linked Door (index)
-2
+0
 # Lock Type
 0
 # PositionX
