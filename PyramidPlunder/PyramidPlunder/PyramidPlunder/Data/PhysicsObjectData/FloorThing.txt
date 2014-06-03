@@ -2,7 +2,7 @@
 1
 #
 #MOVES OFF EDGES (0 == FALSE, 1 == TRUE)
-1
+0
 #
 #STICKS TO SURFACES (0 == FALSE, 1 == TRUE)
 0
@@ -11,10 +11,10 @@
 1
 #
 #MAX HEALTH
-10
+5
 #
 #ARMOR
-5
+0
 #
 #MOVEMENT SPEED (PIXELS PER SECOND)
 #(IF AN OBJECT ONLY EVER MOVES AT ONE HORIZONTAL SPEED, HERE'S WHERE TO SPECIFY IT)
@@ -35,10 +35,10 @@
 #X-COORDINATES ON SPRITE WHICH HAVE COLLISION POINTS
 #When these values are arranged in increasing order, the greatest difference between
 #two consecutive values will be no more than *15*.
-3 25 47
+0 37 74
 #
 #Y-COORDINATES ON SPRITE WHICH HAVE COLLISION POINTS
 #When these values are arranged in increasing order, the greatest difference between
 #two consecutive values will be no more than *33*.
-2 55 108
+0 37 74
 #
