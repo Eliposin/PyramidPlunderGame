@@ -75,7 +75,21 @@ LavaPassageA
 877
 #####Enemies#####
 #Number of Enemies
-0
+2
+#####First Enemy(index 0):#####
+# Enemy Name
+WallThing
+# X-Coordinate of Spawn Location
+281
+# Y-Coordinate of Spawn Location
+515
+#####Second Enemy(index 1):#####
+# Enemy Name
+WallThing
+# X-Coordinate of Spawn Location
+1037
+# Y-Coordinate of Spawn Location
+515
 #####Environment Objects#####
 #Number of Environment Objects
 2

@@ -75,70 +75,56 @@ SaveRoomB
 470
 #####Enemies#####
 #Number of Enemies
-9
+7
 #####First Enemy(index 0):#####
+# Enemy Name
+FloorThing
+# X-Coordinate of Spawn Location
+670
+# Y-Coordinate of Spawn Location
+2127
+#####Second Enemy(index 1):#####
 # Enemy Name
 FloorThing
 # X-Coordinate of Spawn Location
 1200
 # Y-Coordinate of Spawn Location
-2142
-#####Second Enemy(index 1):#####
+2176
+#####Third Enemy(index 2):#####
 # Enemy Name
 FloorThing
 # X-Coordinate of Spawn Location
 1544
 # Y-Coordinate of Spawn Location
-2142
-#####Second Enemy(index 2):#####
+2176
+#####Fourth Enemy(index 3):#####
 # Enemy Name
 FloorThing
 # X-Coordinate of Spawn Location
 850
 # Y-Coordinate of Spawn Location
-2142
-#####Second Enemy(index 3):#####
-# Enemy Name
-FloorThing
-# X-Coordinate of Spawn Location
-1000
-# Y-Coordinate of Spawn Location
-2142
-#####Second Enemy(index 4):#####
-# Enemy Name
-FloorThing
-# X-Coordinate of Spawn Location
-1100
-# Y-Coordinate of Spawn Location
-1208
-#####Second Enemy(index 5):#####
-# Enemy Name
-FloorThing
-# X-Coordinate of Spawn Location
-1250
-# Y-Coordinate of Spawn Location
-1208
-#####Second Enemy(index 6):#####
+2176
+#####Fifth Enemy(index 4):#####
 # Enemy Name
 FloorThing
 # X-Coordinate of Spawn Location
 1080
 # Y-Coordinate of Spawn Location
 687
-#####Second Enemy(index 7):#####
+#####Sixth Enemy(index 5):#####
 # Enemy Name
 WallThing
 # X-Coordinate of Spawn Location
 1340
 # Y-Coordinate of Spawn Location
 748
-#####Second Enemy(index 8):#####
+#####Seventh Enemy(index 6):#####
 # Enemy Name
 WallThing
 # X-Coordinate of Spawn Location
-417
+1116
 # Y-Coordinate of Spawn Location
-1700
+1268
 #####Environment Objects#####
 #Number of Environment Objects
 0

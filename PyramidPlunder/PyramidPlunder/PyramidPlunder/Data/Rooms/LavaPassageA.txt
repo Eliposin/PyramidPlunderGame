@@ -48,6 +48,27 @@ DashRoom
 485
 #####Enemies#####
 #Number of Enemies
-0
+3
+#####First Enemy(index 0):#####
+# Enemy Name
+WallThing
+# X-Coordinate of Spawn Location
+1078
+# Y-Coordinate of Spawn Location
+549
+#####Second Enemy(index 1):#####
+# Enemy Name
+WallThing
+# X-Coordinate of Spawn Location
+1738
+# Y-Coordinate of Spawn Location
+429
+#####Third Enemy(index 2):#####
+# Enemy Name
+FloorThing
+# X-Coordinate of Spawn Location
+2026
+# Y-Coordinate of Spawn Location
+475
 #Number of Environment Objects
 0
