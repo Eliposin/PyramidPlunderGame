@@ -100,7 +100,10 @@ namespace Pyramid_Plunder.Classes
                     if (!isFrozen)
                     {
                         if (player.DeathSequenceEnded)
+                        {
+                            player.ResetActionStates(Player.XDirection.Right);
                             LoadGame();
+                        }
                         else if (player.IsDeadAndStill)
                             player.StartDeathSequence();
 
