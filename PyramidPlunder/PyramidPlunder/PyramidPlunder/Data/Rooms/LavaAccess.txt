@@ -33,7 +33,7 @@ Lobby
 # PositionX
 -3
 # PositionY
-132
+137
 #####Second Door (index 0):#####
 # Orientation
 1
@@ -46,7 +46,7 @@ Lobby
 # PositionX
 1123
 # PositionY
-132
+137
 #####Third Door (index 0):#####
 # Orientation
 0
@@ -59,7 +59,7 @@ Lobby
 # PositionX
 163
 # PositionY
-962
+877
 #####Fourth Door (index 0):#####
 # Orientation
 1
@@ -72,10 +72,31 @@ LavaPassageA
 # PositionX
 1049
 # PositionY
-962
+877
 #####Enemies#####
 #Number of Enemies
 0
 #####Environment Objects#####
 #Number of Environment Objects
-0
+2
+#Type of Object
+DisintegratingPlatform
+#HasGraphic
+true
+#IsSolid
+true
+# PositionX
+470
+# PositionY
+375
+#################
+#Type of Object
+DisintegratingPlatform
+#HasGraphic
+true
+#IsSolid
+true
+# PositionX
+800
+# PositionY
+375

@@ -33,7 +33,7 @@ LavaPassageA
 # PositionX
 -3
 # PositionY
-348
+353
 #####Enemies#####
 #Number of Enemies
 0

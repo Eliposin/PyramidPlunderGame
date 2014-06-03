@@ -7,7 +7,7 @@ LavaAccess
 0
 #Dimensions of the animation (width and height)
 1280
-1241
+1150
 #Animation speed
 0
 #Number of Frames
