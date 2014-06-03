@@ -73,6 +73,8 @@ namespace Pyramid_Plunder.Classes
                 case "LavaPassageA":
                 case "LavaPassageB":
                 case "LavaAccess":
+                case "StairwayToHell":
+                case "DashRoom":
                     doorOpen = content.Load<SoundEffect>("Sounds/DoorGrind");
                     break;
 

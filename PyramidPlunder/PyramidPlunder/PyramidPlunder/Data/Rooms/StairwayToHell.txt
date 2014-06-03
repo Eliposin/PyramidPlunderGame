@@ -1,11 +1,11 @@
 #LongName
-Lava Access
+Stairway to Hell
 #GraphicsName
-LavaAccess
+StairwayToHell
 #Spawn Location X (was 1185)
-176
+1619
 #Spawn Location Y (was 572)
-163
+113
 #IsPersistant (0 = false, 1 = true)
 false
 #
@@ -20,20 +20,20 @@ Menu
 #Position (in the room)
 #
 #Number of Doors
-4
+3
 #####First Door (index 0):#####
 # Orientation
-0
-# Linked Room
-Lobby
-# Linked Door (index)
 1
+# Linked Room
+LavaAccess
+# Linked Door (index)
+2
 # Lock Type
 0
 # PositionX
--3
+1709
 # PositionY
-137
+208
 #####Second Door (index 0):#####
 # Orientation
 1
@@ -42,43 +42,30 @@ Lobby
 # Linked Door (index)
 0
 # Lock Type
-1
+0
 # PositionX
-1123
+1709
 # PositionY
-137
-#####Third Door (index 0):#####
+776
+#####Second Door (index 0):#####
 # Orientation
 0
 # Linked Room
-StairwayToHell
+SaveRoom
 # Linked Door (index)
 0
 # Lock Type
 0
 # PositionX
-163
+18
 # PositionY
-877
-#####Fourth Door (index 0):#####
-# Orientation
-1
-# Linked Room
-LavaPassageA
-# Linked Door (index)
-0
-# Lock Type
-0
-# PositionX
-1049
-# PositionY
-877
+1415
 #####Enemies#####
 #Number of Enemies
 0
 #####Environment Objects#####
 #Number of Environment Objects
-2
+6
 #Type of Object
 DisintegratingPlatform
 #HasGraphic
@@ -86,10 +73,9 @@ true
 #IsSolid
 true
 # PositionX
-470
+1206
 # PositionY
-375
-#################
+364
 #Type of Object
 DisintegratingPlatform
 #HasGraphic
@@ -97,6 +83,46 @@ true
 #IsSolid
 true
 # PositionX
-800
+795
 # PositionY
-375
+364
+#Type of Object
+DisintegratingPlatform
+#HasGraphic
+true
+#IsSolid
+true
+# PositionX
+1037
+# PositionY
+1427
+#Type of Object
+DisintegratingPlatform
+#HasGraphic
+true
+#IsSolid
+true
+# PositionX
+1269
+# PositionY
+1299
+#Type of Object
+DisintegratingPlatform
+#HasGraphic
+true
+#IsSolid
+true
+# PositionX
+984
+# PositionY
+1156
+#Type of Object
+DisintegratingPlatform
+#HasGraphic
+true
+#IsSolid
+true
+# PositionX
+1472
+# PositionY
+1026
