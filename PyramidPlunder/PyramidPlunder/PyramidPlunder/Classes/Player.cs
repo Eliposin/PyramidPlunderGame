@@ -50,14 +50,17 @@ namespace Pyramid_Plunder.Classes
         const float TOO_FAST_DEC = -2700f;
         const float STOP_DEC = -2160f;
         const float BRAKE_DEC = 4320f;
-        const float KNOCK_BACK_V = 720;
+        const float KNOCK_BACK_V = 840;
 
+        const int PIT_FALL_DAMAGE = 2;
         const float VULNERABLE = -1;
         const float INVINCIBLE_START = 0;
-        const float STUN_END = 0.5F;           //How long (seconds) the object is stunned upon taking damage.
-                                            //Should be zero if no stun.
-        const float INVINCIBLE_END = 2;    //How long (seconds) the object is invincible upon taking damage.
-                                            //Should be greater than stunTime.
+        const float STUN_END = 0.375F;          //How long (seconds) the object is stunned upon taking damage.
+                                                //Should be zero if no stun.
+        const float INVINCIBLE_END = 2;         //How long (seconds) the object is invincible upon taking damage.
+                                                //Should be greater than stunTime.
+        const float DEATH_SEQUENCE_END = -2;
+        const float DEATH_SEQUENCE_START = -7;
         
         public enum XDirection
         {
@@ -87,7 +90,7 @@ namespace Pyramid_Plunder.Classes
         private byte midairJumps = MAX_MIDAIR_JUMPS;
         private sbyte dashes = INFINITE_DASHES;
         private float dashStatus = DASH_ALLOWED;
-        protected float vulnerabilityStatus = VULNERABLE;
+        protected float damageStatus = VULNERABLE;
 
         private bool freezeTimerRunning;
         private double freezeTimerMax;
@@ -146,11 +149,11 @@ namespace Pyramid_Plunder.Classes
         {
             float totalTime = (float)(time.ElapsedGameTime.TotalSeconds);
 
-            if (vulnerabilityStatus >= INVINCIBLE_END)
+            if (damageStatus >= INVINCIBLE_END)
             {
-                vulnerabilityStatus = VULNERABLE;
+                damageStatus = VULNERABLE;
             }
-            else if (vulnerabilityStatus >= STUN_END)
+            else if (damageStatus >= STUN_END)
             {
                 if (rightBtnFlag == true && leftBtnFlag == false)
                     LatestXArrow = XDirection.Right;
@@ -160,7 +163,7 @@ namespace Pyramid_Plunder.Classes
                     LatestXArrow = XDirection.None;
             }
 
-            if (vulnerabilityStatus < INVINCIBLE_START || vulnerabilityStatus >= STUN_END)
+            if (currentHealth > 0 && (damageStatus < INVINCIBLE_START || damageStatus >= STUN_END))
             {
                 if (dashStatus < DASH_HELD)
                 {
@@ -402,8 +405,11 @@ namespace Pyramid_Plunder.Classes
                     }
                 }
             }
-            if (vulnerabilityStatus >= INVINCIBLE_START)
-                vulnerabilityStatus += totalTime;
+            
+            if (damageStatus >= INVINCIBLE_START)
+                damageStatus += totalTime;
+            else if (damageStatus < DEATH_SEQUENCE_END)
+                damageStatus = Math.Min(DEATH_SEQUENCE_END, damageStatus + totalTime);
             base.Update(time);
         }
                 
@@ -744,7 +750,33 @@ namespace Pyramid_Plunder.Classes
 
         public bool IsVulnerable
         {
-            get { return (vulnerabilityStatus < 0); }
+            get { return (currentHealth > 0 && damageStatus < 0); }
+        }
+
+        public bool IsDeadAndStill
+        {
+            get
+            {
+                return ((currentHealth == 0) && (velocityX == 0) &&
+                    (velocityY == 0) && (isOnGround) &&
+                    damageStatus == VULNERABLE);
+            }
+        }
+
+        public void StartDeathSequence()
+        {
+            damageStatus = DEATH_SEQUENCE_START;
+        }
+
+        public bool DeathSequenceEnded
+        {
+            get { return damageStatus == DEATH_SEQUENCE_END; }
+        }
+
+        public void ReceivePitFallDamage()
+        {
+            currentHealth = Math.Max(0, currentHealth - PIT_FALL_DAMAGE);
+            damageStatus = STUN_END;
         }
 
         private void CollideWithEnemy(Enemy enemy, XDirection direction)
@@ -752,14 +784,21 @@ namespace Pyramid_Plunder.Classes
             soundEngine.Play(AudioEngine.SoundEffects.Jump);
             currentHealth = Math.Max(0, currentHealth - enemy.ContactDamage);
             if (direction == XDirection.Left)
+            {
                 velocityX = KNOCK_BACK_V;
+                accelerationX = STOP_DEC;
+            }
             else
+            {
                 velocityX = -KNOCK_BACK_V;
-            LatestXArrow = XDirection.None;
-            accelerationX = 0;
+                accelerationX = -STOP_DEC;
+            }
+            velocityLimitX = 0;
             accelerationY = 0;
+            LatestXArrow = XDirection.None;
             isGravityAffected = true;
-            vulnerabilityStatus = INVINCIBLE_START;
+            if (currentHealth > 0)
+                damageStatus = INVINCIBLE_START;
         }
 
         public void DetectEnemyCollisions(Room room)

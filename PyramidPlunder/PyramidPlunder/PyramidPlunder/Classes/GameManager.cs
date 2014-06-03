@@ -99,10 +99,15 @@ namespace Pyramid_Plunder.Classes
                 {
                     if (!isFrozen)
                     {
-                        //added for now just cause I got tired of falling into the infinite abyss...
+                        if (player.DeathSequenceEnded)
+                            LoadGame();
+                        else if (player.IsDeadAndStill)
+                            player.StartDeathSequence();
+
                         if (player.Position.Y >= currentRoom.CollisionMap.Height + player.HitBox.Height)
                         {
                             currentRoom.Reset();
+                            player.ReceivePitFallDamage();
                             player.Position = currentRoom.SpawnLocation;
                         }
                         else
