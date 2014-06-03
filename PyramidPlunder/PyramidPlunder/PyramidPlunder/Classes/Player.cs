@@ -64,14 +64,19 @@ namespace Pyramid_Plunder.Classes
             None = 0,
             Right = 1,
             Left = 2
-        };
+        }
 
         private enum JumpState
         {
             NotAllowed = 0,
             Allowed = 1,
             Holding = 2
-        };
+        }
+
+        private enum Powerups
+        {
+            Dash = 7
+        }
 
         private XDirection LatestXArrow = XDirection.None;
         private XDirection PlayerXFacing = XDirection.Right;
@@ -601,15 +606,16 @@ namespace Pyramid_Plunder.Classes
                     (gpState.Buttons.A == ButtonState.Released && newGPState.Buttons.A == ButtonState.Pressed))
                 jumpBtnFlag = true;
 
-            if ((keyState.IsKeyUp(Keys.Z) && newKeyState.IsKeyDown(Keys.Z)) ||
-                    (keyState.IsKeyUp(Keys.Q) && newKeyState.IsKeyDown(Keys.Q)))
+            if (itemArray[(int)Powerups.Dash] &&
+                ((keyState.IsKeyUp(Keys.Z) && newKeyState.IsKeyDown(Keys.Z)) ||
+                    (keyState.IsKeyUp(Keys.Q) && newKeyState.IsKeyDown(Keys.Q))))
                 dashBtnFlag = true;
-            else if (gpState.Triggers.Right == 0 && newGPState.Triggers.Right > 0)
+            else if (itemArray[(int)Powerups.Dash] && (gpState.Triggers.Right == 0 && newGPState.Triggers.Right > 0))
             {
                 PlayerXFacing = XDirection.Right;
                 dashBtnFlag = true;
             }
-            else if (gpState.Triggers.Left == 0 && newGPState.Triggers.Left > 0)
+            else if (itemArray[(int)Powerups.Dash] && (gpState.Triggers.Left == 0 && newGPState.Triggers.Left > 0))
             {
                 PlayerXFacing = XDirection.Left;
                 dashBtnFlag = true;
@@ -669,7 +675,8 @@ namespace Pyramid_Plunder.Classes
                 jumpBtnFlag = false;
             }
 
-            if ((keyState.IsKeyDown(Keys.Z) && newKeyState.IsKeyUp(Keys.Z)) ||
+            if (itemArray[(int)Powerups.Dash] &&
+                (keyState.IsKeyDown(Keys.Z) && newKeyState.IsKeyUp(Keys.Z)) ||
                 (keyState.IsKeyDown(Keys.Q) && newKeyState.IsKeyUp(Keys.Q)) ||
                 (gpState.Triggers.Right > 0 && newGPState.Triggers.Right == 0) ||
                 (gpState.Triggers.Left > 0 && newGPState.Triggers.Left == 0))

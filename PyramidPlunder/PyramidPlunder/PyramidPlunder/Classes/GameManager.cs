@@ -287,7 +287,7 @@ namespace Pyramid_Plunder.Classes
 
             musicManager.SwitchMusic("Menu");
 
-            currentRoom = new Room("DashRoom", -1);
+            currentRoom = new Room("StartRoom", -1);
             player = new Player(gameContent, SaveGame, SwitchRooms, ToggleGameFreeze);
             player.Spawn(currentRoom.SpawnLocation);
             gameHUD = new HUD(gameContent, player);
