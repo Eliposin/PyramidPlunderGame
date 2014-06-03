@@ -61,12 +61,13 @@ namespace Pyramid_Plunder.Classes
         /// Draws the graphic to the spritebatch based on the properties about the spritesheet and current animation.
         /// </summary>
         /// <param name="spriteBatch">The SpriteBatch to draw to.</param>
-        public virtual void Draw(SpriteBatch spriteBatch, GameTime time)
+        public virtual void Draw(SpriteBatch spriteBatch, GameTime time, bool playAnimations)
         {
             // TODO: Drawing code
             if (isLoaded && hasGraphics)
             {
-                DetermineAnimationFrame(time);
+                if (playAnimations)
+                    DetermineAnimationFrame(time);
 
                 Vector2 drawVector = new Vector2(coordinates.X, coordinates.Y);
 
@@ -76,6 +77,11 @@ namespace Pyramid_Plunder.Classes
 
                 spriteBatch.Draw(sprite, drawVector, sourceRectangle, Color.White);
             }
+        }
+
+        public virtual void Draw(SpriteBatch spriteBatch, GameTime time)
+        {
+            Draw(spriteBatch, time, true);
         }
 
         /// <summary>

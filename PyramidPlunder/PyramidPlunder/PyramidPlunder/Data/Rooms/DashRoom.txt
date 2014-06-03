@@ -38,4 +38,24 @@ LavaPassageA
 #Number of Enemies
 0
 #Number of Environment Objects
-0
+2
+#Type of Object
+DisintegratingPlatform
+#HasGraphic
+true
+#IsSolid
+true
+# PositionX
+582
+# PositionY
+538
+#Type of Object
+DashPowerup
+#HasGraphic
+true
+#IsSolid
+false
+# PositionX
+1125
+# PositionY
+470

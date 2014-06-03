@@ -16,6 +16,8 @@ namespace Pyramid_Plunder.Classes
 
         public const int PLAYER_WIDTH = 60;
         public const int PLAYER_HEIGHT = 120;
+
+        public const double POWERUP_JINGLE_LENGTH = 3; //In seconds
         
         private KeyboardState keyState;
         private GamePadState gpState;
@@ -80,6 +82,11 @@ namespace Pyramid_Plunder.Classes
         private float dashStatus = DASH_ALLOWED;
         protected float vulnerabilityStatus = VULNERABLE;
 
+        private bool freezeTimerRunning;
+        private double freezeTimerMax;
+        private double freezeTimerCurrent;
+
+
         private bool upBtnFlag = false;
         private bool downBtnFlag = false;
         private bool leftBtnFlag = false;
@@ -92,12 +99,13 @@ namespace Pyramid_Plunder.Classes
 
         private DelVoid saveCallback;
         private DelRoom roomCallback;
+        private DelFreeze freezeCallback;
 
 
         /// <summary>
         /// Creates a new Player object
         /// </summary>
-        public Player(ContentManager content, DelVoid saveMethod, DelRoom roomMethod)
+        public Player(ContentManager content, DelVoid saveMethod, DelRoom roomMethod, DelFreeze freezeMethod)
             : base("Player", content)
         {
             isSpawned = false;
@@ -114,6 +122,7 @@ namespace Pyramid_Plunder.Classes
 
             saveCallback = saveMethod;
             roomCallback = roomMethod;
+            freezeCallback = freezeMethod;
         }
 
         /// <summary>
@@ -486,12 +495,18 @@ namespace Pyramid_Plunder.Classes
         /// <summary>
         /// Picks up the designated item, despawning it and adding it to the player's inventory.
         /// </summary>
-        /// <param name="key"></param>
+        /// <param name="item">The item that was picked up.</param>
         private void PickUpItem(GameObject item)
         {
             itemArray[(byte)item.ItemType] = true;
             item.Despawn();
-            soundEngine.Play(AudioEngine.SoundEffects.KeyGet);
+            if (item.IsKey)
+                soundEngine.Play(AudioEngine.SoundEffects.KeyGet);
+            else if (item.IsPowerup)
+            {
+                freezeTimerMax = POWERUP_JINGLE_LENGTH;
+                freezeCallback(true, freezeTimerMax);
+            }
         }
 
         public override void Land()

@@ -56,73 +56,6 @@ namespace Pyramid_Plunder.Classes
             
         }
 
-        ///<summary>
-        ///Determines which room should be passed into the background constructor based on the room's name
-        ///</summary>
-        ///<param name="roomName">The name of the room as a String</param>
-        ///<returns>Which room in the GameObjectList</returns>
-        //private GameObjectList whichRoom(String roomName)
-        //{
-        //    switch (roomName)
-        //    {
-        //        case "StartRoom":
-        //            return GameObjectList.StartRoom;
-        //        case "SaveRoom":
-        //            return GameObjectList.SaveRoom;
-        //        case "Vault":
-        //            return GameObjectList.Vault;
-        //        case "Lobby":
-        //            return GameObjectList.Lobby;
-        //        default:
-        //            return GameObjectList.NullObject;
-        //    }
-        //}
-
-        /// <summary>
-        /// An Array of Door Objects representing all possible entrances
-        /// and exits to the room.
-        /// </summary>
-        public Door[] DoorArray
-        {
-            get { return doorArray; }
-            
-        }
-
-        /// <summary>
-        /// An Array of Enemies representing all enemies that exist in the room.
-        /// </summary>
-        public Enemy[] EnemyArray
-        {
-            get { return enemyArray; }
-        }
-
-        /// <summary>
-        /// Accessor for the EnvironmentArray
-        /// </summary>
-        public GameObject[] EnvironmentArray
-        {
-            get { return environmentArray; }
-        }
-
-        /// <summary>
-        /// Whether or not the room is reset when the player leaves.
-        /// </summary>
-        public bool IsPersistant
-        {
-            get { return isPersistant; }
-            
-            set { isPersistant = value; }
-
-        }
-
-        /// <summary>
-        /// The bitmap containing collision information for the room
-        /// </summary>
-        public Texture2D CollisionMap
-        {
-            get { return collisionMap; }
-        }
-
         /// <summary>
         ///  Loads the room into memory. 
         ///  If IsPersistant is set to true, loads up the previously saved State file
@@ -259,29 +192,39 @@ namespace Pyramid_Plunder.Classes
         /// Draws the parts of the room that should appear in front of the player to the spritebatch.
         /// </summary>
         /// <param name="batch">The SpriteBatch to draw to.</param>
-        public void DrawForeground(SpriteBatch batch, GameTime time)
+        public void DrawForeground(SpriteBatch batch, GameTime time, bool playAnimations)
         {
             for (int i = 0; i < doorArray.Length; i++)
-                doorArray[i].Draw(batch, time);
+                doorArray[i].Draw(batch, time, playAnimations);
 
             //Added to draw bad guys
             for (int i = 0; i < enemyArray.Length; i++)
-                enemyArray[i].Draw(batch, time);
+                enemyArray[i].Draw(batch, time, playAnimations);
 
             // TODO: Iterate through and update ALL objects
+        }
+
+        public void DrawForeground(SpriteBatch batch, GameTime time)
+        {
+            DrawForeground(batch, time, true);
         }
 
         /// <summary>
         /// Draws the parts of the room that should appear behind the player to the spritebatch.
         /// </summary>
         /// <param name="batch">The SpriteBatch to draw to.</param>
-        public void DrawBackground(SpriteBatch batch, GameTime time)
+        public void DrawBackground(SpriteBatch batch, GameTime time, bool playAnimations)
         {
-            background.Draw(batch, time);
+            background.Draw(batch, time, playAnimations);
 
             for (int i = 0; i < environmentArray.Length; i++)
-                environmentArray[i].Draw(batch, time);
+                environmentArray[i].Draw(batch, time, playAnimations);
             // TODO: Iterate through and update ALL objects
+        }
+
+        public void DrawBackground(SpriteBatch batch, GameTime time)
+        {
+            DrawBackground(batch, time, true);
         }
 
         /// <summary>
@@ -350,6 +293,15 @@ namespace Pyramid_Plunder.Classes
             }
         }
 
+        public void Reset()
+        {
+            foreach (GameObject obj in environmentArray)
+            {
+                if (obj.ObjectName == "DisintegratingPlatform")
+                    obj.Spawn();
+            }
+        }
+
         /// <summary>
         /// Finds the nearest GameObject to the given location
         /// </summary>
@@ -391,6 +343,51 @@ namespace Pyramid_Plunder.Classes
                 else
                     return null;
             }
+        }
+
+        /// <summary>
+        /// The bitmap containing collision information for the room
+        /// </summary>
+        public Texture2D CollisionMap
+        {
+            get { return collisionMap; }
+        }
+
+        /// <summary>
+        /// An Array of Door Objects representing all possible entrances
+        /// and exits to the room.
+        /// </summary>
+        public Door[] DoorArray
+        {
+            get { return doorArray; }
+
+        }
+
+        /// <summary>
+        /// An Array of Enemies representing all enemies that exist in the room.
+        /// </summary>
+        public Enemy[] EnemyArray
+        {
+            get { return enemyArray; }
+        }
+
+        /// <summary>
+        /// Accessor for the EnvironmentArray
+        /// </summary>
+        public GameObject[] EnvironmentArray
+        {
+            get { return environmentArray; }
+        }
+
+        /// <summary>
+        /// Whether or not the room is reset when the player leaves.
+        /// </summary>
+        public bool IsPersistant
+        {
+            get { return isPersistant; }
+
+            set { isPersistant = value; }
+
         }
 
         /// <summary>
