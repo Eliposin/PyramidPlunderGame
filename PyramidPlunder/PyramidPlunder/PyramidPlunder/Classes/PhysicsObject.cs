@@ -740,7 +740,7 @@ namespace Pyramid_Plunder.Classes
             {
                 if (obj.IsSolid && obj.IsSpawned)
                 {
-                    if ((coordinateY + collisionYs.First() <= obj.Position.Y + obj.HitBox.Width) &&
+                    if ((coordinateY + collisionYs.First() <= obj.Position.Y + obj.HitBox.Height) &&
                         (coordinateY + collisionYs.Last() >= obj.Position.Y) &&
                         (column >= obj.Position.X) && (column <= obj.Position.X + obj.HitBox.Width))
                         return true;
@@ -786,7 +786,7 @@ namespace Pyramid_Plunder.Classes
             {
                 if (obj.IsSolid && obj.IsSpawned)
                 {
-                    if ((coordinateY + collisionYs.First() <= obj.Position.Y + obj.HitBox.Width) &&
+                    if ((coordinateY + collisionYs.First() <= obj.Position.Y + obj.HitBox.Height) &&
                         (coordinateY + collisionYs.Last() >= obj.Position.Y) &&
                         (column >= obj.Position.X) && (column <= obj.Position.X + obj.HitBox.Width))
                         return true;

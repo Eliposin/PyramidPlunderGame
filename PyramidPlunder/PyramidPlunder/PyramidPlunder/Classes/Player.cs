@@ -60,7 +60,7 @@ namespace Pyramid_Plunder.Classes
         const float INVINCIBLE_END = 2;         //How long (seconds) the object is invincible upon taking damage.
                                                 //Should be greater than stunTime.
         const float DEATH_SEQUENCE_END = -2;
-        const float DEATH_SEQUENCE_START = -7;
+        const float DEATH_SEQUENCE_START = -4;
         
         public enum XDirection
         {
