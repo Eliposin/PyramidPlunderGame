@@ -314,5 +314,15 @@ namespace Pyramid_Plunder.Classes
                 }
             }
         }
+
+        public void PauseMusic()
+        {
+            MediaPlayer.Pause();
+        }
+
+        public void UnpauseMusic()
+        {
+            MediaPlayer.Resume();
+        }
     }
 }

@@ -191,6 +191,7 @@ namespace Pyramid_Plunder.Classes
                             {
                                 freezeTimer = 0;
                                 isFrozen = false;
+                                musicManager.UnpauseMusic();
                             }
                         }
 
@@ -546,6 +547,7 @@ namespace Pyramid_Plunder.Classes
             {
                 freezeTimerMax = length;
                 isFrozen = true;
+                musicManager.PauseMusic();
             }
             else
                 isFrozen = false;
