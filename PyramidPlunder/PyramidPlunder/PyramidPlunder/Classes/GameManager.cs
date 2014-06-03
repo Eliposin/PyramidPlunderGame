@@ -221,7 +221,7 @@ namespace Pyramid_Plunder.Classes
                     currentRoom.DrawBackground(spriteBatch, time, !isFrozen);
                     player.Draw(spriteBatch, time, !isFrozen);
                     currentRoom.DrawForeground(spriteBatch, time, !isFrozen);
-
+                    
                     gameHUD.Draw(spriteBatch, time);
 
                     if (isDeathScreenUp)

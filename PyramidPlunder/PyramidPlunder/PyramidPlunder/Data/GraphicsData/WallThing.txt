@@ -9,6 +9,6 @@ WallThingSpriteSheet
 50
 50
 #Animation speed
-0.0
+1.0
 #Number of Frames
-1
+4

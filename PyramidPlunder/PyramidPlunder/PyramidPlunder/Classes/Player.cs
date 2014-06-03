@@ -809,18 +809,19 @@ namespace Pyramid_Plunder.Classes
             foreach (Enemy enemy in room.EnemyArray)
             {
                 if ((position.Y + collisionYs.Last() >= enemy.Position.Y + enemy.CollisionYs.First()) &&
-                    (position.Y + collisionYs.First() <= enemy.Position.Y + enemy.CollisionYs.Last()))
+                    (position.Y + collisionYs.First() <= enemy.Position.Y + enemy.CollisionYs.Last()) &&
+                    (position.X + collisionXs.Last() >= enemy.Position.X + enemy.CollisionXs.First()) &&
+                    (position.X + collisionXs.First() <= enemy.Position.X + enemy.CollisionXs.Last()))
                 {
-                    if ((position.X + collisionXs.First() <= enemy.Position.X + enemy.CollisionXs.First()) &&
-                        position.X + collisionXs.Last() >= enemy.Position.X + enemy.CollisionXs.First())
-                    {
-                        CollideWithEnemy(enemy, XDirection.Right);
-                        return;
-                    }
-                    else if ((position.X + collisionXs.First() <= enemy.Position.X + enemy.CollisionXs.Last()) &&
-                        position.X + collisionXs.Last() >= enemy.Position.X + enemy.CollisionXs.Last())
+                    if ((position.X + collisionXs.First() <= enemy.Position.X + enemy.CollisionXs.Last()) &&
+                        position.X + collisionXs.First() >= enemy.Position.X + enemy.CollisionXs.First())
                     {
                         CollideWithEnemy(enemy, XDirection.Left);
+                        return;
+                    }
+                    else
+                    {
+                        CollideWithEnemy(enemy, XDirection.Right);
                         return;
                     }
                 }
