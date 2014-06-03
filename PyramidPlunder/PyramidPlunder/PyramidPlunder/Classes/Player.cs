@@ -48,6 +48,14 @@ namespace Pyramid_Plunder.Classes
         const float TOO_FAST_DEC = -2700f;
         const float STOP_DEC = -2160f;
         const float BRAKE_DEC = 4320f;
+        const float KNOCK_BACK_V = 720;
+
+        const float VULNERABLE = -1;
+        const float INVINCIBLE_START = 0;
+        const float STUN_END = 0.5F;           //How long (seconds) the object is stunned upon taking damage.
+                                            //Should be zero if no stun.
+        const float INVINCIBLE_END = 2;    //How long (seconds) the object is invincible upon taking damage.
+                                            //Should be greater than stunTime.
         
         public enum XDirection
         {
@@ -70,6 +78,7 @@ namespace Pyramid_Plunder.Classes
         private byte midairJumps = MAX_MIDAIR_JUMPS;
         private sbyte dashes = INFINITE_DASHES;
         private float dashStatus = DASH_ALLOWED;
+        protected float vulnerabilityStatus = VULNERABLE;
 
         private bool upBtnFlag = false;
         private bool downBtnFlag = false;
@@ -120,246 +129,265 @@ namespace Pyramid_Plunder.Classes
         public override void Update(GameTime time)
         {
             float totalTime = (float)(time.ElapsedGameTime.TotalSeconds);
-            
-            if (dashStatus < DASH_HELD)
+
+            if (vulnerabilityStatus >= INVINCIBLE_END)
             {
-                if (LatestXArrow == XDirection.Left && PlayerXFacing == XDirection.Right)
-                    PlayerXFacing = XDirection.Left;
-                else if (LatestXArrow == XDirection.Right && PlayerXFacing == XDirection.Left)
-                    PlayerXFacing = XDirection.Right;
+                vulnerabilityStatus = VULNERABLE;
+            }
+            else if (vulnerabilityStatus >= STUN_END)
+            {
+                if (rightBtnFlag == true && leftBtnFlag == false)
+                    LatestXArrow = XDirection.Right;
+                else if (leftBtnFlag == true && rightBtnFlag == false)
+                    LatestXArrow = XDirection.Left;
+                else
+                    LatestXArrow = XDirection.None;
             }
 
-            if (isOnGround == false && velocityY >= 0)
+            if (vulnerabilityStatus < INVINCIBLE_START || vulnerabilityStatus >= STUN_END)
             {
-                if (wallOnRight && rightBtnFlag)
+                if (dashStatus < DASH_HELD)
                 {
-                    if (WallSlideDirection == XDirection.None)
-                    {
-                        soundEngine.Play(AudioEngine.SoundEffects.WallLand);
-                        if (jumpBtnFlag == false)
-                            PlayerJumpState = JumpState.Allowed;
-                        else
-                            PlayerJumpState = JumpState.NotAllowed;
-                        if (!dashBtnFlag)
-                            dashStatus = DASH_ALLOWED;
-                        else
-                            dashStatus = DASH_NOT_ALLOWED;
-                    }
-                    WallSlideDirection = XDirection.Right;
+                    if (LatestXArrow == XDirection.Left && PlayerXFacing == XDirection.Right)
+                        PlayerXFacing = XDirection.Left;
+                    else if (LatestXArrow == XDirection.Right && PlayerXFacing == XDirection.Left)
+                        PlayerXFacing = XDirection.Right;
                 }
-                else if (wallOnLeft && leftBtnFlag == true)
+
+                if (isOnGround == false && velocityY >= 0)
                 {
-                    if (WallSlideDirection == XDirection.None)
+                    if (wallOnRight && rightBtnFlag)
                     {
-                        soundEngine.Play(AudioEngine.SoundEffects.WallLand);
-                        if (jumpBtnFlag == false)
-                            PlayerJumpState = JumpState.Allowed;
-                        else
-                            PlayerJumpState = JumpState.NotAllowed;
-                        if (!dashBtnFlag)
-                            dashStatus = DASH_ALLOWED;
-                        else
-                            dashStatus = DASH_NOT_ALLOWED;
+                        if (WallSlideDirection == XDirection.None)
+                        {
+                            soundEngine.Play(AudioEngine.SoundEffects.WallLand);
+                            if (jumpBtnFlag == false)
+                                PlayerJumpState = JumpState.Allowed;
+                            else
+                                PlayerJumpState = JumpState.NotAllowed;
+                            if (!dashBtnFlag)
+                                dashStatus = DASH_ALLOWED;
+                            else
+                                dashStatus = DASH_NOT_ALLOWED;
+                        }
+                        WallSlideDirection = XDirection.Right;
                     }
-                    WallSlideDirection = XDirection.Left;
+                    else if (wallOnLeft && leftBtnFlag == true)
+                    {
+                        if (WallSlideDirection == XDirection.None)
+                        {
+                            soundEngine.Play(AudioEngine.SoundEffects.WallLand);
+                            if (jumpBtnFlag == false)
+                                PlayerJumpState = JumpState.Allowed;
+                            else
+                                PlayerJumpState = JumpState.NotAllowed;
+                            if (!dashBtnFlag)
+                                dashStatus = DASH_ALLOWED;
+                            else
+                                dashStatus = DASH_NOT_ALLOWED;
+                        }
+                        WallSlideDirection = XDirection.Left;
+                    }
+                    else
+                        WallSlideDirection = XDirection.None;
                 }
                 else
                     WallSlideDirection = XDirection.None;
-            }
-            else
-                WallSlideDirection = XDirection.None;
 
-            if (PlayerJumpState == JumpState.NotAllowed && jumpBtnFlag == false)
-                PlayerJumpState = JumpState.Allowed;
+                if (PlayerJumpState == JumpState.NotAllowed && jumpBtnFlag == false)
+                    PlayerJumpState = JumpState.Allowed;
 
-            if (jumpBtnFlag == true && PlayerJumpState == JumpState.Allowed &&
-                (isOnGround || midairJumps > 0 || WallSlideDirection != XDirection.None))
-            {
-                if (isOnGround == false)
+                if (jumpBtnFlag == true && PlayerJumpState == JumpState.Allowed &&
+                    (isOnGround || midairJumps > 0 || WallSlideDirection != XDirection.None))
                 {
-                    if (WallSlideDirection != XDirection.None)
+                    if (isOnGround == false)
                     {
-                        velocityY = WALL_JUMP_V_Y;
-                        velocityX = WALL_JUMP_V_X;
-                        if (WallSlideDirection == XDirection.Left)
+                        if (WallSlideDirection != XDirection.None)
                         {
-                            velocityX *= -1;
-                            PlayerXFacing = XDirection.Right;
+                            velocityY = WALL_JUMP_V_Y;
+                            velocityX = WALL_JUMP_V_X;
+                            if (WallSlideDirection == XDirection.Left)
+                            {
+                                velocityX *= -1;
+                                PlayerXFacing = XDirection.Right;
+                            }
+                            else
+                            {
+                                PlayerXFacing = XDirection.Left;
+                            }
+                            WallSlideDirection = XDirection.None;
+                            soundEngine.Play(AudioEngine.SoundEffects.WallJump);
                         }
                         else
                         {
-                            PlayerXFacing = XDirection.Left;
+                            midairJumps = (byte)Math.Max(0, midairJumps - 1);
+                            velocityY = JUMP_V;
+                            soundEngine.Play(AudioEngine.SoundEffects.WallJump);
                         }
-                        WallSlideDirection = XDirection.None;
-                        soundEngine.Play(AudioEngine.SoundEffects.WallJump);
                     }
                     else
                     {
-                        midairJumps = (byte)Math.Max(0, midairJumps - 1);
+                        LeaveGround();
                         velocityY = JUMP_V;
-                        soundEngine.Play(AudioEngine.SoundEffects.WallJump);
+                        soundEngine.Play(AudioEngine.SoundEffects.Jump);
                     }
-                }
-                else
-                {
-                    LeaveGround();
-                    velocityY = JUMP_V;
-                    soundEngine.Play(AudioEngine.SoundEffects.Jump);
-                }
-                if (dashStatus >= DASH_HELD)
-                {
-                    dashStatus = DASH_LAG_START;
-                    isGravityAffected = true;
-                }
-                PlayerJumpState = JumpState.Holding;
-                accelerationY = 0;
-            }
-
-            if (!isOnGround)
-            {
-                if (PlayerJumpState == JumpState.Holding)
-                {
-                    if (jumpBtnFlag == false)
+                    if (dashStatus >= DASH_HELD)
                     {
-                        PlayerJumpState = JumpState.Allowed;
-                        if (velocityY <= 0)
-                        {
-                            accelerationY = JUMP_DECAY;
-                            velocityLimitY = 0;
-                        }
+                        dashStatus = DASH_LAG_START;
+                        isGravityAffected = true;
                     }
-                }
-                else if (WallSlideDirection != XDirection.None)
-                {
-                    accelerationY = WALL_FRICTION_DEC;
-                    velocityLimitY = MAX_WALL_SLIDE_V;
-                }
-                else if (velocityY >= 0)
-                {
+                    PlayerJumpState = JumpState.Holding;
                     accelerationY = 0;
                 }
-            }
-            
-            if (dashStatus == DASH_ALLOWED && dashBtnFlag == true &&
-                (dashes != 0 || WallSlideDirection != XDirection.None))
-            {
-                dashStatus = DASH_HELD;
-                accelerationX = 0;
-                if (WallSlideDirection == XDirection.Right)
-                {
-                    velocityX = -DASH_V;
-                    PlayerXFacing = XDirection.Left;
-                }
-                else if (WallSlideDirection == XDirection.Left)
-                {
-                    velocityX = DASH_V;
-                    PlayerXFacing = XDirection.Right;
-                }
-                else
-                {
-                    if (dashes > 0)
-                        dashes--;
-                    if (PlayerXFacing == XDirection.Right)
-                    {
-                        velocityX = DASH_V;
-                        velocityLimitX = DASH_V;
-                    }
-                    else
-                    {
-                        velocityX = -DASH_V;
-                        velocityLimitX = -DASH_V;
-                    }
-                }
+
                 if (!isOnGround)
                 {
-                    isGravityAffected = false;
-                    velocityY = 0;
-                    accelerationY = 0;
+                    if (PlayerJumpState == JumpState.Holding)
+                    {
+                        if (jumpBtnFlag == false)
+                        {
+                            PlayerJumpState = JumpState.Allowed;
+                            if (velocityY <= 0)
+                            {
+                                accelerationY = JUMP_DECAY;
+                                velocityLimitY = 0;
+                            }
+                        }
+                    }
+                    else if (WallSlideDirection != XDirection.None)
+                    {
+                        accelerationY = WALL_FRICTION_DEC;
+                        velocityLimitY = MAX_WALL_SLIDE_V;
+                    }
+                    else if (velocityY >= 0)
+                    {
+                        accelerationY = 0;
+                    }
                 }
-                soundEngine.Play(AudioEngine.SoundEffects.Dash);
-            }
-            else if (dashStatus < DASH_NOT_ALLOWED)
-                dashStatus = Math.Min(dashStatus + totalTime, DASH_NOT_ALLOWED);
-            else if (dashStatus == DASH_NOT_ALLOWED && dashBtnFlag == false)
-                dashStatus = DASH_ALLOWED;
 
-            if (dashStatus >= DASH_HELD)
-            {
-                dashStatus += totalTime;
-                if (dashStatus > MAX_DASH_TIME || dashBtnFlag == false)
+                if (dashStatus == DASH_ALLOWED && dashBtnFlag == true &&
+                    (dashes != 0 || WallSlideDirection != XDirection.None))
+                {
+                    dashStatus = DASH_HELD;
+                    accelerationX = 0;
+                    if (WallSlideDirection == XDirection.Right)
+                    {
+                        velocityX = -DASH_V;
+                        PlayerXFacing = XDirection.Left;
+                    }
+                    else if (WallSlideDirection == XDirection.Left)
+                    {
+                        velocityX = DASH_V;
+                        PlayerXFacing = XDirection.Right;
+                    }
+                    else
+                    {
+                        if (dashes > 0)
+                            dashes--;
+                        if (PlayerXFacing == XDirection.Right)
+                        {
+                            velocityX = DASH_V;
+                            velocityLimitX = DASH_V;
+                        }
+                        else
+                        {
+                            velocityX = -DASH_V;
+                            velocityLimitX = -DASH_V;
+                        }
+                    }
+                    if (!isOnGround)
+                    {
+                        isGravityAffected = false;
+                        velocityY = 0;
+                        accelerationY = 0;
+                    }
+                    soundEngine.Play(AudioEngine.SoundEffects.Dash);
+                }
+                else if (dashStatus < DASH_NOT_ALLOWED)
+                    dashStatus = Math.Min(dashStatus + totalTime, DASH_NOT_ALLOWED);
+                else if (dashStatus == DASH_NOT_ALLOWED && dashBtnFlag == false)
+                    dashStatus = DASH_ALLOWED;
+
+                if (dashStatus >= DASH_HELD)
+                {
+                    dashStatus += totalTime;
+                    if (dashStatus > MAX_DASH_TIME || dashBtnFlag == false)
+                    {
+                        if (LatestXArrow == XDirection.Right)
+                            velocityX = MAX_RUN_V;
+                        else if (LatestXArrow == XDirection.Left)
+                            velocityX = -MAX_RUN_V;
+                        else
+                            velocityX = 0;
+                        isGravityAffected = true;
+                        dashStatus = DASH_LAG_START;
+                    }
+                }
+                else
                 {
                     if (LatestXArrow == XDirection.Right)
-                        velocityX = MAX_RUN_V;
+                    {
+                        if (velocityX < 0)
+                        {
+                            accelerationX = BRAKE_DEC;
+                            velocityLimitX = 0;
+                        }
+                        else if (velocityX <= MAX_RUN_V)
+                        {
+                            accelerationX = RUN_ACC;
+                            velocityLimitX = MAX_RUN_V;
+                        }
+                        else
+                        {
+                            accelerationX = TOO_FAST_DEC;
+                            velocityLimitX = MAX_RUN_V;
+                        }
+                    }
                     else if (LatestXArrow == XDirection.Left)
-                        velocityX = -MAX_RUN_V;
-                    else
-                        velocityX = 0;
-                    isGravityAffected = true;
-                    dashStatus = DASH_LAG_START;
-                }
-            }
-            else
-            {
-                if (LatestXArrow == XDirection.Right)
-                {
-                    if (velocityX < 0)
                     {
-                        accelerationX = BRAKE_DEC;
-                        velocityLimitX = 0;
+                        if (velocityX > 0)
+                        {
+                            accelerationX = -BRAKE_DEC;
+                            velocityLimitX = 0;
+                        }
+                        else if (velocityX >= -MAX_RUN_V)
+                        {
+                            accelerationX = -RUN_ACC;
+                            velocityLimitX = -MAX_RUN_V;
+                        }
+                        else
+                        {
+                            accelerationX = -TOO_FAST_DEC;
+                            velocityLimitX = -MAX_RUN_V;
+                        }
                     }
-                    else if (velocityX <= MAX_RUN_V)
+                    else if (velocityX != 0)
                     {
-                        accelerationX = RUN_ACC;
-                        velocityLimitX = MAX_RUN_V;
-                    }
-                    else
-                    {
-                        accelerationX = TOO_FAST_DEC;
-                        velocityLimitX = MAX_RUN_V;
-                    }
-                }
-                else if (LatestXArrow == XDirection.Left)
-                {
-                    if (velocityX > 0)
-                    {
-                        accelerationX = -BRAKE_DEC;
-                        velocityLimitX = 0;
-                    }
-                    else if (velocityX >= -MAX_RUN_V)
-                    {
-                        accelerationX = -RUN_ACC;
-                        velocityLimitX = -MAX_RUN_V;
-                    }
-                    else
-                    {
-                        accelerationX = -TOO_FAST_DEC;
-                        velocityLimitX = -MAX_RUN_V;
-                    }
-                }
-                else if (velocityX != 0)
-                {
-                    if (velocityX > MAX_RUN_V)
-                    {
-                        accelerationX = TOO_FAST_DEC;
-                        velocityLimitX = MAX_RUN_V;
-                    }
-                    else if (velocityX > 0)
-                    {
-                        accelerationX = STOP_DEC;
-                        velocityLimitX = 0;
-                    }
-                    else if (velocityX < -MAX_RUN_V)
-                    {
-                        accelerationX = -TOO_FAST_DEC;
-                        velocityLimitX = -MAX_RUN_V;
-                    }
-                    else if (velocityX < 0)
-                    {
-                        accelerationX = -STOP_DEC;
-                        velocityLimitX = 0;
+                        if (velocityX > MAX_RUN_V)
+                        {
+                            accelerationX = TOO_FAST_DEC;
+                            velocityLimitX = MAX_RUN_V;
+                        }
+                        else if (velocityX > 0)
+                        {
+                            accelerationX = STOP_DEC;
+                            velocityLimitX = 0;
+                        }
+                        else if (velocityX < -MAX_RUN_V)
+                        {
+                            accelerationX = -TOO_FAST_DEC;
+                            velocityLimitX = -MAX_RUN_V;
+                        }
+                        else if (velocityX < 0)
+                        {
+                            accelerationX = -STOP_DEC;
+                            velocityLimitX = 0;
+                        }
                     }
                 }
             }
+            if (vulnerabilityStatus >= INVINCIBLE_START)
+                vulnerabilityStatus += totalTime;
             base.Update(time);
         }
                 
@@ -688,6 +716,49 @@ namespace Pyramid_Plunder.Classes
         public bool[] CurrentItems
         {
             get { return itemArray; }
+        }
+
+        public bool IsVulnerable
+        {
+            get { return (vulnerabilityStatus < 0); }
+        }
+
+        private void CollideWithEnemy(Enemy enemy, XDirection direction)
+        {
+            soundEngine.Play(AudioEngine.SoundEffects.Jump);
+            currentHealth = Math.Max(0, currentHealth - enemy.ContactDamage);
+            if (direction == XDirection.Left)
+                velocityX = KNOCK_BACK_V;
+            else
+                velocityX = -KNOCK_BACK_V;
+            LatestXArrow = XDirection.None;
+            accelerationX = 0;
+            accelerationY = 0;
+            isGravityAffected = true;
+            vulnerabilityStatus = INVINCIBLE_START;
+        }
+
+        public void DetectEnemyCollisions(Room room)
+        {
+            foreach (Enemy enemy in room.EnemyArray)
+            {
+                if ((position.Y + collisionYs.Last() >= enemy.Position.Y + enemy.CollisionYs.First()) &&
+                    (position.Y + collisionYs.First() <= enemy.Position.Y + enemy.CollisionYs.Last()))
+                {
+                    if ((position.X + collisionXs.First() <= enemy.Position.X + enemy.CollisionXs.First()) &&
+                        position.X + collisionXs.Last() >= enemy.Position.X + enemy.CollisionXs.First())
+                    {
+                        CollideWithEnemy(enemy, XDirection.Right);
+                        return;
+                    }
+                    else if ((position.X + collisionXs.First() <= enemy.Position.X + enemy.CollisionXs.Last()) &&
+                        position.X + collisionXs.Last() >= enemy.Position.X + enemy.CollisionXs.Last())
+                    {
+                        CollideWithEnemy(enemy, XDirection.Left);
+                        return;
+                    }
+                }
+            }
         }
     }
 }

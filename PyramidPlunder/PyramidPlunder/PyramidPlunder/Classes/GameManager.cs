@@ -96,7 +96,11 @@ namespace Pyramid_Plunder.Classes
                     if (player.Position.Y >= currentRoom.CollisionMap.Height + player.HitBox.Height)
                         player.Position = currentRoom.SpawnLocation;
                     else
-                    player.Update(gameTime); //Determines what the Player is trying to do (this is where the gameTime is taken into account)
+                    {
+                        if (player.IsVulnerable)
+                            player.DetectEnemyCollisions(currentRoom);
+                        player.Update(gameTime); //Determines what the Player is trying to do (this is where the gameTime is taken into account)
+                    }
 
                     //Determine where the room's enemies want to move, (possibly) based on where the player is currently
                     for (int i = 0; i < currentRoom.EnemyArray.Length; i++)

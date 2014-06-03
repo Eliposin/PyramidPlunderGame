@@ -27,8 +27,8 @@ namespace Pyramid_Plunder.Classes
         //See the notes below that describe their implementation.
         protected float velocityLimitX;     //The max/min x-velocity obtainable in the current action, in P/sec.
         protected float velocityLimitY;     //The max/min y-velocity obtainable in the current action, in P/sec.
-        protected float accelerationX;  //The current x-acceleration, in P/sec/sec.
-        protected float accelerationY;  //The current y-acceleration, in P/sec/sec.
+        protected float accelerationX;      //The current x-acceleration, in P/sec/sec.
+        protected float accelerationY;      //The current y-acceleration, in P/sec/sec.
 
         //These variables should never be altered outside of PhysicsObject.Update, PhysicsObject.Move, or
         //PhysicsEngine.Update.
@@ -37,9 +37,7 @@ namespace Pyramid_Plunder.Classes
 
         protected int damage;               //How much damage has been taken.
         protected int currentHealth;        //-1 if the object is inanimate or invulnerable.
-        protected float invincibilityTimer; //How long the object has been invincible for. Set to negative
-                                            //when the object is not invincible.
-
+        
         //These 3 variables should never be altered outside of PhysicsObject.Land() or PhysicsEngine.Update().
         protected bool isOnGround;          //Whether or not the object is on the ground.
         protected bool ceilingAbove;        //Whether or not there is an obstruction above the object.
@@ -55,8 +53,6 @@ namespace Pyramid_Plunder.Classes
         protected Alignments alignment;     //Is this a friend, enemy or neutral party to the player?
         protected int maxHealth;            //The most health points the object can hold at one time.
         protected float armor;              //The amount or percentage by which to reduce damage from attacks.
-        protected float stunTime;           //For how long the object is stunned upon taking damage.
-        protected float invincibileTime;    //For how long the object is 
         protected int movementSpeed;        //If an object only ever moves at one horizontal speed,
                                             //here's where to store it.
         protected int interactionDistance;
