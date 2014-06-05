@@ -69,7 +69,7 @@ FloorThing
 # X-Coordinate of Spawn Location
 2026
 # Y-Coordinate of Spawn Location
-475
+510
 #Number of Environment Objects
 4
 #Type Of Object

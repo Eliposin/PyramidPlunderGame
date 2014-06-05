@@ -84,6 +84,12 @@ namespace Pyramid_Plunder.Classes
             WallJump = 9
         }
 
+        private enum Animations
+        {
+            WalkRight = 0, WalkLeft = 1,
+            JumpRight = 2, JumpLeft
+        }
+
         private bool drawnLastFrame = true;
         private XDirection LatestXArrow = XDirection.None;
         private XDirection PlayerXFacing = XDirection.Right;
@@ -137,6 +143,12 @@ namespace Pyramid_Plunder.Classes
             hudCallback = hudMethod;
             roomCallback = roomMethod;
             freezeCallback = freezeMethod;
+
+            currentAnimation = (int)Animations.WalkLeft;
+            looping = true;
+            animationSpeed[currentAnimation] = 0;
+            animationSpeed[currentAnimation] = defaultAnimationSpeed[currentAnimation];
+
         }
 
         /// <summary>
@@ -427,7 +439,6 @@ namespace Pyramid_Plunder.Classes
             if (otherObject.ItemType != ItemList.NullItem && interactionType == InteractionTypes.Collision)
             {
                 PickUpItem(otherObject);
-                soundEngine.Play(AudioEngine.SoundEffects.ItemGet);
             }
             else
             {
@@ -523,6 +534,7 @@ namespace Pyramid_Plunder.Classes
                 soundEngine.Play(AudioEngine.SoundEffects.KeyGet);
             else if (item.IsPowerup)
             {
+                soundEngine.Play(AudioEngine.SoundEffects.ItemGet);
                 string info = null;
                 switch (item.ObjectName)
                 {
