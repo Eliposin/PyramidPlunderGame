@@ -152,7 +152,10 @@ namespace Pyramid_Plunder.Classes
                         {
                             isChasingPlayer = false;
                             movesOffEdges = false;
-                            velocityX /= 2;
+                            //velocityX /= 2;
+                            velocityX = movementSpeed / 2;
+                            accelerationX = 0;
+                            velocityLimitX = 0;
                         }
 
                         if (isChasingPlayer)
@@ -160,19 +163,29 @@ namespace Pyramid_Plunder.Classes
                             if (isOnGround)
                             {
                                 if (player.Position.X + player.CollisionXs.First() > position.X + collisionXs.Last())
-                                    velocityX = movementSpeed;
-                                else if (player.Position.X + player.CollisionXs.Last() < position.X + collisionXs.First())
-                                    velocityX = -movementSpeed;
-                                else
-                                    velocityX = 0;
+                                {
+                                    velocityLimitX = 360;
+                                    accelerationX = 2160;
+                                }
+                                //velocityX = movementSpeed;
+                                else //if (player.Position.X + player.CollisionXs.Last() < position.X + collisionXs.First())
+                                {
+                                    velocityLimitX = -360;
+                                    accelerationX = -2160;
+                                }
+                                    //velocityX = -movementSpeed;
+                                    //else
+                                    //    velocityX = 0;
 
-                                if ((wallOnLeft && velocityX < 0) || (wallOnRight && velocityX > 0))
-                                    velocityY = -900;
+                                    if ((wallOnLeft && velocityX < 0) || (wallOnRight && velocityX > 0))
+                                        velocityY = -900;
                             }
                         }
                         else if (velocityX == 0)
                         {
                             velocityX = -movementSpeed / 2;
+                            velocityLimitX = 0;
+                            accelerationX = 0;
                         }
                     }
                     break;
