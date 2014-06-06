@@ -75,42 +75,35 @@ SaveRoomB
 470
 #####Enemies#####
 #Number of Enemies
-7
+6
 #####First Enemy(index 0):#####
 # Enemy Name
 FloorThing
 # X-Coordinate of Spawn Location
 670
 # Y-Coordinate of Spawn Location
-2127
+2162
 #####Second Enemy(index 1):#####
 # Enemy Name
 FloorThing
 # X-Coordinate of Spawn Location
 1200
 # Y-Coordinate of Spawn Location
-2176
-#####Third Enemy(index 2):#####
-# Enemy Name
-FloorThing
-# X-Coordinate of Spawn Location
-1544
-# Y-Coordinate of Spawn Location
-2176
+2211
 #####Fourth Enemy(index 3):#####
 # Enemy Name
 FloorThing
 # X-Coordinate of Spawn Location
 850
 # Y-Coordinate of Spawn Location
-2176
+2211
 #####Fifth Enemy(index 4):#####
 # Enemy Name
 FloorThing
 # X-Coordinate of Spawn Location
 1080
 # Y-Coordinate of Spawn Location
-687
+722
 #####Sixth Enemy(index 5):#####
 # Enemy Name
 WallThing

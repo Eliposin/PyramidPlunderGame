@@ -458,7 +458,6 @@ namespace Pyramid_Plunder.Classes
 
                 using (StorageContainer container = GetStorageContainer(currentStorageDevice))
                 {
-
                     using (StreamWriter file = new StreamWriter(container.CreateFile("SaveGame.txt")))
                     {
                         foreach (string line in saveData)

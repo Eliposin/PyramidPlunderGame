@@ -514,7 +514,6 @@ namespace Pyramid_Plunder.Classes
             if (otherObject.ItemType != ItemList.NullItem && interactionType == InteractionTypes.Collision)
             {
                 PickUpItem(otherObject);
-                soundEngine.Play(AudioEngine.SoundEffects.ItemGet);
             }
             else
             {
@@ -619,6 +618,7 @@ namespace Pyramid_Plunder.Classes
                 soundEngine.Play(AudioEngine.SoundEffects.KeyGet);
             else if (item.IsPowerup)
             {
+                soundEngine.Play(AudioEngine.SoundEffects.ItemGet);
                 string info = null;
                 switch (item.ObjectName)
                 {
