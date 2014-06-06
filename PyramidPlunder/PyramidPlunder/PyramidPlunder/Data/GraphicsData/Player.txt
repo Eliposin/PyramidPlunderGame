@@ -1,5 +1,5 @@
 #Number of animations
-14
+12
 #Name of spritesheet
 PlayerSpritesheet
 #
@@ -73,7 +73,7 @@ PlayerSpritesheet
 60
 120
 #Animation speed
-5
+1.5
 #Number of Frames
 3
 #Eighth Animation Stats
@@ -83,7 +83,7 @@ PlayerSpritesheet
 60
 120
 #Animation speed
-5
+1.5
 #Number of Frames
 3
 #Ninth Animation Stats
@@ -110,39 +110,19 @@ PlayerSpritesheet
 #Location on the spritesheet (y value)
 1200
 #Dimensions of the animation (width and height)
-60
+120
 120
 #Animation speed
-0
+0.75
 #Number of Frames
-1
+2
 #Twelfth Animation Stats
 #Location on the spritesheet (y value)
 1320
 #Dimensions of the animation (width and height)
-60
+120
 120
 #Animation speed
-0
+0.75
 #Number of Frames
-1
-#Thirteenth Animation Stats
-#Location on the spritesheet (y value)
-1440
-#Dimensions of the animation (width and height)
-120
-60
-#Animation speed
-0
-#Number of Frames
-1
-#Fourteenth Animation Stats
-#Location on the spritesheet (y value)
-1500
-#Dimensions of the animation (width and height)
-120
-60
-#Animation speed
-0
-#Number of Frames
-1
+2

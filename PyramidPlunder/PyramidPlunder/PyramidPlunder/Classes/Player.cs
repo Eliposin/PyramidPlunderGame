@@ -61,8 +61,11 @@ namespace Pyramid_Plunder.Classes
         const float INVINCIBLE_END = 2;         //How long (seconds) the object is invincible upon taking damage.
                                                 //Should be greater than stunTime.
         const float DEATH_SEQUENCE_END = -2;
-        const float DROP_DEAD = -3;
-        const float DEATH_SEQUENCE_START = -4;
+        
+        ////Uncommment this value for normal deaths
+        //const float DEATH_SEQUENCE_START = -3;
+        //Uncomment this value to prolong epic deaths
+        const float DEATH_SEQUENCE_START = -7;
         
         public enum XDirection
         {
@@ -99,8 +102,6 @@ namespace Pyramid_Plunder.Classes
             DamageLeft = 9,
             DyingRight = 10,
             DyingLeft = 11,
-            DeadRight = 12,
-            DeadLeft = 13
         }
 
         private bool drawnLastFrame = true;
@@ -132,8 +133,7 @@ namespace Pyramid_Plunder.Classes
         private DelRoom roomCallback;
         private DelFreeze freezeCallback;
         private DelString hudCallback;
-
-
+        
         /// <summary>
         /// Creates a new Player object
         /// </summary>
@@ -211,7 +211,6 @@ namespace Pyramid_Plunder.Classes
                                 dashStatus = DASH_ALLOWED;
                             else
                                 dashStatus = DASH_NOT_ALLOWED;
-                            //currentAnimation = (int)PlayerAnimations.WallSlideRight;
                         }
                         WallSlideDirection = XDirection.Right;
                     }
@@ -228,7 +227,6 @@ namespace Pyramid_Plunder.Classes
                                 dashStatus = DASH_ALLOWED;
                             else
                                 dashStatus = DASH_NOT_ALLOWED;
-                            //currentAnimation = (int)PlayerAnimations.WallSlideLeft;
                         }
                         WallSlideDirection = XDirection.Left;
                     }
@@ -371,12 +369,6 @@ namespace Pyramid_Plunder.Classes
                 {
                     if (LatestXArrow == XDirection.Right)
                     {
-                        //if (isOnGround)
-                        //    currentAnimation = (int)PlayerAnimations.WalkRight;
-                        //else if (WallSlideDirection == XDirection.None)
-                        //    currentAnimation = (int)PlayerAnimations.JumpRight;
-                        //animationSpeed[currentAnimation] = velocityX / MAX_RUN_V;
-
                         if (velocityX < 0)
                         {
                             accelerationX = BRAKE_DEC;
@@ -395,12 +387,6 @@ namespace Pyramid_Plunder.Classes
                     }
                     else if (LatestXArrow == XDirection.Left)
                     {
-                        //if (isOnGround)
-                        //    currentAnimation = (int)PlayerAnimations.WalkLeft;
-                        //else if (WallSlideDirection == XDirection.None)
-                        //    currentAnimation = (int)PlayerAnimations.JumpLeft;
-                        //animationSpeed[currentAnimation] = -velocityX / MAX_RUN_V;
-
                         if (velocityX > 0)
                         {
                             accelerationX = -BRAKE_DEC;
@@ -423,31 +409,22 @@ namespace Pyramid_Plunder.Classes
                         {
                             accelerationX = TOO_FAST_DEC;
                             velocityLimitX = MAX_RUN_V;
-                            //animationSpeed[currentAnimation] = velocityX / MAX_RUN_V;
                         }
                         else if (velocityX > 0)
                         {
                             accelerationX = STOP_DEC;
                             velocityLimitX = 0;
-                            //animationSpeed[currentAnimation] = velocityX / MAX_RUN_V;
                         }
                         else if (velocityX < -MAX_RUN_V)
                         {
                             accelerationX = -TOO_FAST_DEC;
                             velocityLimitX = -MAX_RUN_V;
-                            //animationSpeed[currentAnimation] = -velocityX / MAX_RUN_V;
                         }
                         else if (velocityX < 0)
                         {
                             accelerationX = -STOP_DEC;
                             velocityLimitX = 0;
-                            //animationSpeed[currentAnimation] = -velocityX / MAX_RUN_V;
                         }
-                    }
-                    else
-                    {
-                        //animationSpeed[currentAnimation] = 0;
-                        currentFrame = 0;
                     }
                 }
             }
@@ -456,14 +433,11 @@ namespace Pyramid_Plunder.Classes
                 damageStatus += totalTime;
             else if (damageStatus < DEATH_SEQUENCE_END)
                 damageStatus = Math.Min(DEATH_SEQUENCE_END, damageStatus + totalTime);
-            base.Update(time);
-
+            
             if (PlayerXFacing == XDirection.Right)
             {
-                if (damageStatus < DROP_DEAD)
-                    currentAnimation = (int)PlayerAnimations.DyingRight;
-                else if (damageStatus < VULNERABLE)
-                    currentAnimation = (int)PlayerAnimations.DeadRight;
+                if (currentHealth <= 0)
+                    currentAnimation = currentAnimation = (int)PlayerAnimations.DyingRight;
                 else if (damageStatus >= INVINCIBLE_START && damageStatus < STUN_END)
                     currentAnimation = (int)PlayerAnimations.DamageRight;
                 else if (dashStatus >= DASH_HELD)
@@ -475,15 +449,16 @@ namespace Pyramid_Plunder.Classes
                 else
                 {
                     currentAnimation = (int)PlayerAnimations.WalkRight;
-                    animationSpeed[currentAnimation] = velocityX / MAX_RUN_V;
+                    if (damageStatus >= STUN_END)
+                        animationSpeed[currentAnimation] = 2 * velocityX / MAX_RUN_V;
+                    else
+                        animationSpeed[currentAnimation] = velocityX / MAX_RUN_V;
                 }
             }
             else
             {
-                if (damageStatus < DROP_DEAD)
-                    currentAnimation = (int)PlayerAnimations.DyingLeft;
-                else if (damageStatus < VULNERABLE)
-                    currentAnimation = (int)PlayerAnimations.DeadLeft;
+                if (currentHealth <= 0)
+                    currentAnimation = currentAnimation = (int)PlayerAnimations.DyingLeft;
                 else if (damageStatus >= INVINCIBLE_START && damageStatus < STUN_END)
                     currentAnimation = (int)PlayerAnimations.DamageLeft;
                 else if (dashStatus >= DASH_HELD)
@@ -495,13 +470,22 @@ namespace Pyramid_Plunder.Classes
                 else
                 {
                     currentAnimation = (int)PlayerAnimations.WalkLeft;
-                    animationSpeed[currentAnimation] = -velocityX / MAX_RUN_V;
+                    if (damageStatus >= STUN_END)
+                        animationSpeed[currentAnimation] = 2 * -velocityX / MAX_RUN_V;
+                    else
+                        animationSpeed[currentAnimation] = -velocityX / MAX_RUN_V;
                 }
             }
-            if (dashStatus >= DASH_HELD)
+            if (velocityX == 0 && currentHealth > 0)
+                currentFrame = 0;
+
+            if (currentAnimation == (int)PlayerAnimations.DashLeft || currentAnimation == (int)PlayerAnimations.DashRight ||
+                currentAnimation == (int)PlayerAnimations.DyingLeft || currentAnimation == (int)PlayerAnimations.DyingRight)
                 looping = false;
             else
                 looping = true;
+
+            base.Update(time);
         }
                 
         /// <summary>
@@ -567,6 +551,7 @@ namespace Pyramid_Plunder.Classes
         public void ResetActionStates(XDirection direction)
         {
             isOnGround = true;
+            isGravityAffected = true;
             PlayerJumpState = JumpState.NotAllowed;
             PlayerXFacing = direction;
             midairJumps = MAX_MIDAIR_JUMPS;
@@ -592,7 +577,7 @@ namespace Pyramid_Plunder.Classes
             velocityX = 0;
             accelerationX = 0;
             accelerationY = 0;
-            drawnLastFrame = true;            
+            drawnLastFrame = true;
         }
 
         /// <summary>
@@ -655,11 +640,19 @@ namespace Pyramid_Plunder.Classes
             midairJumps = MAX_MIDAIR_JUMPS;
             dashes = INFINITE_DASHES;
 
-            if (PlayerXFacing == XDirection.Right)
-                currentAnimation = (int)PlayerAnimations.WalkRight;
+            if (currentHealth > 0)
+            {
+                base.Land();
+            }
             else
-                currentAnimation = (int)PlayerAnimations.WalkLeft;
-            base.Land();
+            {
+                isOnGround = true;
+                accelerationY = 0;
+                if (DisplacementY <= 2)
+                    velocityY = 0;
+                else
+                    velocityY *= -0.5f;
+            }
         }
 
         public override void CollideX()
@@ -694,10 +687,6 @@ namespace Pyramid_Plunder.Classes
                 dashStatus = DASH_LAG_START;
                 isGravityAffected = true;
             }
-            if (PlayerXFacing == XDirection.Right)
-                currentAnimation = (int)PlayerAnimations.JumpRight;
-            else
-                currentAnimation = (int)PlayerAnimations.JumpLeft;
             base.LeaveGround();
         }
 
@@ -740,16 +729,17 @@ namespace Pyramid_Plunder.Classes
                 dashBtnFlag = true;
             else if (itemArray[(int)Powerups.Dash] && (gpState.Triggers.Right == 0 && newGPState.Triggers.Right > 0))
             {
-                PlayerXFacing = XDirection.Right;
+                if (currentHealth > 0)
+                    PlayerXFacing = XDirection.Right;
                 dashBtnFlag = true;
             }
             else if (itemArray[(int)Powerups.Dash] && (gpState.Triggers.Left == 0 && newGPState.Triggers.Left > 0))
             {
-                PlayerXFacing = XDirection.Left;
+                if (currentHealth > 0)
+                    PlayerXFacing = XDirection.Left;
                 dashBtnFlag = true;
             }
-
-
+            
             if (keyState.IsKeyUp(Keys.E) && newKeyState.IsKeyDown(Keys.E) ||
                 (gpState.Buttons.X == ButtonState.Released && newGPState.Buttons.X == ButtonState.Pressed))
                 interactBtnFlag = true;
@@ -808,7 +798,6 @@ namespace Pyramid_Plunder.Classes
                 (keyState.IsKeyDown(Keys.Q) && newKeyState.IsKeyUp(Keys.Q)) ||
                 (gpState.Triggers.Right > 0 && newGPState.Triggers.Right == 0) ||
                 (gpState.Triggers.Left > 0 && newGPState.Triggers.Left == 0))
-
                 dashBtnFlag = false;
 
             //if (keyState.IsKeyDown(Keys.E) && newState.IsKeyUp(Keys.E))
@@ -870,7 +859,16 @@ namespace Pyramid_Plunder.Classes
 
         public bool IsVulnerable
         {
-            get { return (currentHealth > 0 && damageStatus < 0); }
+            ////Uncomment this version for normal deaths
+            //get { return (currentHealth > 0 && damageStatus < 0); }
+
+            //Uncomment this version for epic deaths
+            get { return (damageStatus < 0); }
+        }
+
+        public bool IsDead
+        {
+            get { return (currentHealth <= 0 && damageStatus == VULNERABLE); }
         }
 
         public bool IsDeadAndStill
@@ -896,14 +894,16 @@ namespace Pyramid_Plunder.Classes
         public void ReceivePitFallDamage()
         {
             currentHealth = Math.Max(0, currentHealth - PIT_FALL_DAMAGE);
-            damageStatus = STUN_END;
+            if (currentHealth > 0)
+                damageStatus = STUN_END;
             ResetActionStates(XDirection.Right);
         }
 
         public void ReceiveHazardDamage()
         {
             currentHealth = Math.Max(0, currentHealth - HAZARD_DAMAGE);
-            damageStatus = STUN_END;
+            if (currentHealth > 0)
+                damageStatus = STUN_END;
             ResetActionStates(XDirection.Right);
         }
 
@@ -927,6 +927,14 @@ namespace Pyramid_Plunder.Classes
             isGravityAffected = true;
             if (currentHealth > 0)
                 damageStatus = INVINCIBLE_START;
+            else
+            {
+                velocityY -= 500;
+                ////Uncomment these next two lines if you want him "spring back to life" after
+                ////being hit while "dead":
+                //currentFrame = 0;
+                //animationSpeed[currentAnimation] = defaultAnimationSpeed[currentAnimation];
+            }
         }
 
         public void DetectEnemyCollisions(Room room)
@@ -978,7 +986,9 @@ namespace Pyramid_Plunder.Classes
                 drawnLastFrame = true;
             }
             else
+            {
                 drawnLastFrame = false;
+            }
         }
     }
 }

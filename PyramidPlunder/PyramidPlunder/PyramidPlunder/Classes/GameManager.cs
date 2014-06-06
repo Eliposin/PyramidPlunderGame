@@ -107,10 +107,9 @@ namespace Pyramid_Plunder.Classes
                     {
                         if (player.DeathSequenceEnded)
                         {
-                            player.ResetActionStates(Player.XDirection.Right);
                             ShowDeathScreen();
                         }
-                        else if (player.IsDeadAndStill)
+                        else if (player.IsDead)
                             player.StartDeathSequence();
 
                         if (player.Position.Y >= currentRoom.CollisionMap.Height + player.HitBox.Height)
