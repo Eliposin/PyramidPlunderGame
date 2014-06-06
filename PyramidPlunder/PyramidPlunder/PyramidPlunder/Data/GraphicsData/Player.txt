@@ -1,5 +1,5 @@
 #Number of animations
-4
+14
 #Name of spritesheet
 PlayerSpritesheet
 #
@@ -12,7 +12,7 @@ PlayerSpritesheet
 #Animation speed
 1
 #Number of Frames
-8
+4
 #
 #Second Animation Stats
 #Location on the spritesheet (y value)
@@ -23,7 +23,7 @@ PlayerSpritesheet
 #Animation speed
 1
 #Number of Frames
-8
+4
 #
 #Third Animation Stats
 #Location on the spritesheet (y value)
@@ -32,9 +32,9 @@ PlayerSpritesheet
 60
 120
 #Animation speed
-1
+0
 #Number of Frames
-8
+1
 #
 #Fourth Animation Stats
 #Location on the spritesheet (y value)
@@ -43,6 +43,106 @@ PlayerSpritesheet
 60
 120
 #Animation speed
-1
+0
 #Number of Frames
-8
+1
+#Fifth Animation Stats
+#Location on the spritesheet (y value)
+480
+#Dimensions of the animation (width and height)
+60
+120
+#Animation speed
+0
+#Number of Frames
+1
+#Sixth Animation Stats
+#Location on the spritesheet (y value)
+600
+#Dimensions of the animation (width and height)
+60
+120
+#Animation speed
+0
+#Number of Frames
+1
+#Seventh Animation Stats
+#Location on the spritesheet (y value)
+720
+#Dimensions of the animation (width and height)
+60
+120
+#Animation speed
+5
+#Number of Frames
+3
+#Eighth Animation Stats
+#Location on the spritesheet (y value)
+840
+#Dimensions of the animation (width and height)
+60
+120
+#Animation speed
+5
+#Number of Frames
+3
+#Ninth Animation Stats
+#Location on the spritesheet (y value)
+960
+#Dimensions of the animation (width and height)
+60
+120
+#Animation speed
+0
+#Number of Frames
+1
+#Tenth Animation Stats
+#Location on the spritesheet (y value)
+1080
+#Dimensions of the animation (width and height)
+60
+120
+#Animation speed
+0
+#Number of Frames
+1
+#Eleventh Animation Stats
+#Location on the spritesheet (y value)
+1200
+#Dimensions of the animation (width and height)
+60
+120
+#Animation speed
+0
+#Number of Frames
+1
+#Twelfth Animation Stats
+#Location on the spritesheet (y value)
+1320
+#Dimensions of the animation (width and height)
+60
+120
+#Animation speed
+0
+#Number of Frames
+1
+#Thirteenth Animation Stats
+#Location on the spritesheet (y value)
+1440
+#Dimensions of the animation (width and height)
+120
+60
+#Animation speed
+0
+#Number of Frames
+1
+#Fourteenth Animation Stats
+#Location on the spritesheet (y value)
+1500
+#Dimensions of the animation (width and height)
+120
+60
+#Animation speed
+0
+#Number of Frames
+1

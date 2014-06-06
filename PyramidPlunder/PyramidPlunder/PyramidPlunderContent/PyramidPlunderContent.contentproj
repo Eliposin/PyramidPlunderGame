@@ -75,6 +75,7 @@
       <Name>PlayerSpritesheet</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_ColorKeyColor>255, 255, 255, 255</ProcessorParameters_ColorKeyColor>
     </Compile>
     <Compile Include="Images\SaveRoom.jpg">
       <Name>SaveRoom</Name>

@@ -61,6 +61,7 @@ namespace Pyramid_Plunder.Classes
         const float INVINCIBLE_END = 2;         //How long (seconds) the object is invincible upon taking damage.
                                                 //Should be greater than stunTime.
         const float DEATH_SEQUENCE_END = -2;
+        const float DROP_DEAD = -3;
         const float DEATH_SEQUENCE_START = -4;
         
         public enum XDirection
@@ -82,6 +83,24 @@ namespace Pyramid_Plunder.Classes
             Dash = 7,
             DoubleJump = 8,
             WallJump = 9
+        }
+
+        private enum PlayerAnimations
+        {
+            WalkRight = 0,
+            WalkLeft = 1,
+            JumpRight = 2,
+            JumpLeft = 3,
+            WallSlideRight = 4,
+            WallSlideLeft = 5,
+            DashRight = 6,
+            DashLeft = 7,
+            DamageRight = 8,
+            DamageLeft = 9,
+            DyingRight = 10,
+            DyingLeft = 11,
+            DeadRight = 12,
+            DeadLeft = 13
         }
 
         private bool drawnLastFrame = true;
@@ -192,6 +211,7 @@ namespace Pyramid_Plunder.Classes
                                 dashStatus = DASH_ALLOWED;
                             else
                                 dashStatus = DASH_NOT_ALLOWED;
+                            //currentAnimation = (int)PlayerAnimations.WallSlideRight;
                         }
                         WallSlideDirection = XDirection.Right;
                     }
@@ -208,6 +228,7 @@ namespace Pyramid_Plunder.Classes
                                 dashStatus = DASH_ALLOWED;
                             else
                                 dashStatus = DASH_NOT_ALLOWED;
+                            //currentAnimation = (int)PlayerAnimations.WallSlideLeft;
                         }
                         WallSlideDirection = XDirection.Left;
                     }
@@ -350,6 +371,12 @@ namespace Pyramid_Plunder.Classes
                 {
                     if (LatestXArrow == XDirection.Right)
                     {
+                        //if (isOnGround)
+                        //    currentAnimation = (int)PlayerAnimations.WalkRight;
+                        //else if (WallSlideDirection == XDirection.None)
+                        //    currentAnimation = (int)PlayerAnimations.JumpRight;
+                        //animationSpeed[currentAnimation] = velocityX / MAX_RUN_V;
+
                         if (velocityX < 0)
                         {
                             accelerationX = BRAKE_DEC;
@@ -368,6 +395,12 @@ namespace Pyramid_Plunder.Classes
                     }
                     else if (LatestXArrow == XDirection.Left)
                     {
+                        //if (isOnGround)
+                        //    currentAnimation = (int)PlayerAnimations.WalkLeft;
+                        //else if (WallSlideDirection == XDirection.None)
+                        //    currentAnimation = (int)PlayerAnimations.JumpLeft;
+                        //animationSpeed[currentAnimation] = -velocityX / MAX_RUN_V;
+
                         if (velocityX > 0)
                         {
                             accelerationX = -BRAKE_DEC;
@@ -390,22 +423,31 @@ namespace Pyramid_Plunder.Classes
                         {
                             accelerationX = TOO_FAST_DEC;
                             velocityLimitX = MAX_RUN_V;
+                            //animationSpeed[currentAnimation] = velocityX / MAX_RUN_V;
                         }
                         else if (velocityX > 0)
                         {
                             accelerationX = STOP_DEC;
                             velocityLimitX = 0;
+                            //animationSpeed[currentAnimation] = velocityX / MAX_RUN_V;
                         }
                         else if (velocityX < -MAX_RUN_V)
                         {
                             accelerationX = -TOO_FAST_DEC;
                             velocityLimitX = -MAX_RUN_V;
+                            //animationSpeed[currentAnimation] = -velocityX / MAX_RUN_V;
                         }
                         else if (velocityX < 0)
                         {
                             accelerationX = -STOP_DEC;
                             velocityLimitX = 0;
+                            //animationSpeed[currentAnimation] = -velocityX / MAX_RUN_V;
                         }
+                    }
+                    else
+                    {
+                        //animationSpeed[currentAnimation] = 0;
+                        currentFrame = 0;
                     }
                 }
             }
@@ -415,6 +457,51 @@ namespace Pyramid_Plunder.Classes
             else if (damageStatus < DEATH_SEQUENCE_END)
                 damageStatus = Math.Min(DEATH_SEQUENCE_END, damageStatus + totalTime);
             base.Update(time);
+
+            if (PlayerXFacing == XDirection.Right)
+            {
+                if (damageStatus < DROP_DEAD)
+                    currentAnimation = (int)PlayerAnimations.DyingRight;
+                else if (damageStatus < VULNERABLE)
+                    currentAnimation = (int)PlayerAnimations.DeadRight;
+                else if (damageStatus >= INVINCIBLE_START && damageStatus < STUN_END)
+                    currentAnimation = (int)PlayerAnimations.DamageRight;
+                else if (dashStatus >= DASH_HELD)
+                    currentAnimation = (int)PlayerAnimations.DashRight;
+                else if (WallSlideDirection == XDirection.Right)
+                    currentAnimation = (int)PlayerAnimations.WallSlideRight;
+                else if (!isOnGround)
+                    currentAnimation = (int)PlayerAnimations.JumpRight;
+                else
+                {
+                    currentAnimation = (int)PlayerAnimations.WalkRight;
+                    animationSpeed[currentAnimation] = velocityX / MAX_RUN_V;
+                }
+            }
+            else
+            {
+                if (damageStatus < DROP_DEAD)
+                    currentAnimation = (int)PlayerAnimations.DyingLeft;
+                else if (damageStatus < VULNERABLE)
+                    currentAnimation = (int)PlayerAnimations.DeadLeft;
+                else if (damageStatus >= INVINCIBLE_START && damageStatus < STUN_END)
+                    currentAnimation = (int)PlayerAnimations.DamageLeft;
+                else if (dashStatus >= DASH_HELD)
+                    currentAnimation = (int)PlayerAnimations.DashLeft;
+                else if (WallSlideDirection == XDirection.Left)
+                    currentAnimation = (int)PlayerAnimations.WallSlideLeft;
+                else if (!isOnGround)
+                    currentAnimation = (int)PlayerAnimations.JumpLeft;
+                else
+                {
+                    currentAnimation = (int)PlayerAnimations.WalkLeft;
+                    animationSpeed[currentAnimation] = -velocityX / MAX_RUN_V;
+                }
+            }
+            if (dashStatus >= DASH_HELD)
+                looping = false;
+            else
+                looping = true;
         }
                 
         /// <summary>
@@ -486,18 +573,27 @@ namespace Pyramid_Plunder.Classes
             midairJumps = MAX_MIDAIR_JUMPS;
             dashes = INFINITE_DASHES;
             if (rightBtnFlag == true && leftBtnFlag == false)
+            {
                 LatestXArrow = XDirection.Right;
+                currentFrame = (int)PlayerAnimations.WalkRight;
+            }
             else if (leftBtnFlag == true && rightBtnFlag == false)
+            {
                 LatestXArrow = XDirection.Left;
+                currentFrame = (int)PlayerAnimations.WalkLeft;
+            }
             else
+            {
                 LatestXArrow = XDirection.None;
+                currentFrame = (int)PlayerAnimations.WalkRight;
+            }
             WallSlideDirection = XDirection.None;
             dashStatus = DASH_NOT_ALLOWED;
             velocityY = 0;
             velocityX = 0;
             accelerationX = 0;
             accelerationY = 0;
-            drawnLastFrame = true;
+            drawnLastFrame = true;            
         }
 
         /// <summary>
@@ -558,6 +654,11 @@ namespace Pyramid_Plunder.Classes
 
             midairJumps = MAX_MIDAIR_JUMPS;
             dashes = INFINITE_DASHES;
+
+            if (PlayerXFacing == XDirection.Right)
+                currentAnimation = (int)PlayerAnimations.WalkRight;
+            else
+                currentAnimation = (int)PlayerAnimations.WalkLeft;
             base.Land();
         }
 
@@ -593,6 +694,10 @@ namespace Pyramid_Plunder.Classes
                 dashStatus = DASH_LAG_START;
                 isGravityAffected = true;
             }
+            if (PlayerXFacing == XDirection.Right)
+                currentAnimation = (int)PlayerAnimations.JumpRight;
+            else
+                currentAnimation = (int)PlayerAnimations.JumpLeft;
             base.LeaveGround();
         }
 
