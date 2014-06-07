@@ -22,7 +22,7 @@ namespace Pyramid_Plunder.Classes
         private KeyboardState keyState;
         private GamePadState gpState;
 
-        private AudioEngine soundEngine;
+        private new AudioEngine soundEngine;
         
         const short MAX_JUMP_HEIGHT = -250;
         float JUMP_V;
@@ -114,11 +114,7 @@ namespace Pyramid_Plunder.Classes
         private float dashStatus = DASH_ALLOWED;
         protected float damageStatus = VULNERABLE;
 
-        private bool freezeTimerRunning;
         private double freezeTimerMax;
-        private double freezeTimerCurrent;
-
-
         private bool upBtnFlag = false;
         private bool downBtnFlag = false;
         private bool leftBtnFlag = false;
@@ -613,8 +609,8 @@ namespace Pyramid_Plunder.Classes
                 }
                 if (info != null)
                     hudCallback(info);
-                freezeTimerMax = POWERUP_JINGLE_LENGTH;
-                freezeCallback(true, freezeTimerMax);
+                //freezeTimerMax = POWERUP_JINGLE_LENGTH;
+                //freezeCallback(true, freezeTimerMax);
             }
         }
 

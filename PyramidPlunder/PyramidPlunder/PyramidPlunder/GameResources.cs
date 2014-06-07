@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace Pyramid_Plunder
 {
@@ -102,6 +103,26 @@ namespace Pyramid_Plunder
                 line = sr.ReadLine();
             while (line.Substring(0).StartsWith(delimiter));
             return line;
+        }
+
+        /// <summary>
+        /// Checks a button to see if it has been newly pressed since the last update.
+        /// </summary>
+        /// <param name="key">The key on the keyboard to check.</param>
+        /// <param name="button">The button on the gamepad to check.</param>
+        /// <param name="oldKeyState">The old keyboard state to check against.</param>
+        /// <param name="newKeyState">The new keyboard state to check against.</param>
+        /// <param name="oldGamePadState">The old gamepad state to check against.</param>
+        /// <param name="newGamePadState">The new gamepad state to check against.</param>
+        /// <returns></returns>
+        public static bool CheckInputButton(Keys key, Buttons button, KeyboardState oldKeyState, KeyboardState newKeyState,
+            GamePadState oldGamePadState, GamePadState newGamePadState)
+        {
+            if ((newKeyState.IsKeyDown(key) && oldKeyState.IsKeyUp(key)) ||
+                newGamePadState.IsButtonDown(button) && oldGamePadState.IsButtonUp(button))
+                return true;
+            else
+                return false;
         }
 
         public static GameServiceContainer GameServices

@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.GamerServices;
+using PyramidPlunder.Classes;
 
 namespace Pyramid_Plunder.Classes
 {
@@ -21,10 +22,15 @@ namespace Pyramid_Plunder.Classes
         private bool isPaused;
         private bool inGame;
         private bool isDeathScreenUp;
-        private KeyboardState keyState;
-        private GamePadState gamePadState;
+        
         private GameSettings gameSettings;
         private DelVoid exitCallback;
+
+        private KeyboardState oldKeyState;
+        private KeyboardState newKeyState;
+        private GamePadState oldGamePadState;
+        private GamePadState newGamePadState;
+
 
         private Menu gameMenu;
         private GameGraphic deathScreen;
@@ -33,6 +39,7 @@ namespace Pyramid_Plunder.Classes
         private Player player;
         private HUD gameHUD;
         private BGM musicManager;
+        private InfoBox infoBox;
         private ContentManager gameContent;
         private StorageDevice currentStorageDevice;
 
@@ -67,8 +74,12 @@ namespace Pyramid_Plunder.Classes
             gameContent = gContent;
             GameResources.GameServices = services;
 
-            keyState = Keyboard.GetState();
-            gamePadState = GamePad.GetState(PlayerIndex.One);
+            oldKeyState = Keyboard.GetState();
+            newKeyState = Keyboard.GetState();
+
+            oldGamePadState = GamePad.GetState(PlayerIndex.One);
+            newGamePadState = GamePad.GetState(PlayerIndex.One);
+
             LoadGameSettings();
 
             gameMenu = new Menu("MenuFont", MenuCallback);
@@ -94,6 +105,8 @@ namespace Pyramid_Plunder.Classes
         /// <param name="gameTime">The GameTime to use when calculating change over time.</param>
         public void Update(GameTime gameTime)
         {
+            newKeyState = Keyboard.GetState();
+
             if (inGame)
             {
                 CheckPaused();
@@ -183,22 +196,25 @@ namespace Pyramid_Plunder.Classes
                     }
                     else
                     {
-                        if (freezeTimerMax != -1)
-                        {
-                            freezeTimer += gameTime.ElapsedGameTime.TotalSeconds;
-                            if (freezeTimer >= freezeTimerMax)
-                            {
-                                freezeTimer = 0;
-                                isFrozen = false;
-                                musicManager.UnpauseMusic();
-                            }
-                        }
+                        //if (freezeTimerMax > 0)
+                        //{
+                        //    freezeTimer += gameTime.ElapsedGameTime.TotalSeconds;
+                        //    if (freezeTimer >= freezeTimerMax)
+                        //    {
+                        //        freezeTimer = 0;
+                        //        isFrozen = false;
+                        //        musicManager.UnpauseMusic();
+                        //    }
+                        //}
 
-                        if (isDeathScreenUp && CheckInputButton(Keys.Enter, Buttons.Start))
+                        if (isDeathScreenUp && GameResources.CheckInputButton(Keys.Enter, Buttons.Start, oldKeyState, newKeyState, oldGamePadState, newGamePadState))
                         {
                             ResetGame();
                             LoadGame();
                         }
+
+                        if (infoBox != null)
+                            infoBox.Update(gameTime);
                     }
 
                     gameHUD.Update(gameTime, player);
@@ -210,7 +226,7 @@ namespace Pyramid_Plunder.Classes
                     gameMenu.Update(gameTime);
             }
 
-            
+            oldKeyState = newKeyState;
 
         }
 
@@ -230,20 +246,29 @@ namespace Pyramid_Plunder.Classes
                 {
                     //pM.Draw(spriteBatch);
                 }
-                else
-                {
-                    
-                    currentRoom.DrawBackground(spriteBatch, time, !isFrozen);
-                    player.Draw(spriteBatch, time, !isFrozen);
-                    currentRoom.DrawForeground(spriteBatch, time, !isFrozen);
-                    
-                    gameHUD.Draw(spriteBatch, time);
 
-                    if (isDeathScreenUp)
-                        deathScreen.Draw(spriteBatch, time);
-                }
+                
+                    
+                currentRoom.DrawBackground(spriteBatch, time, !isFrozen);
+                player.Draw(spriteBatch, time, !isFrozen);
+                currentRoom.DrawForeground(spriteBatch, time, !isFrozen);
+                    
+                gameHUD.Draw(spriteBatch, time);
+
+                if (isFrozen && infoBox != null)
+                    infoBox.Draw(spriteBatch, time);
+
+                if (isDeathScreenUp)
+                    deathScreen.Draw(spriteBatch, time);
             }
 
+            DrawFPS(spriteBatch, time);
+            
+
+        }
+
+        private void DrawFPS(SpriteBatch spriteBatch, GameTime time)
+        {
             oldCount += (float)time.ElapsedGameTime.TotalSeconds;
             drawCalls++;
             if (oldCount >= 1)
@@ -254,7 +279,6 @@ namespace Pyramid_Plunder.Classes
             }
 
             spriteBatch.DrawString(fpsFont, "FPS: " + fpsCount, new Vector2(10, 10), new Color(0,255,0));
-
         }
 
         /// <summary>
@@ -268,35 +292,25 @@ namespace Pyramid_Plunder.Classes
             return nearestObject;
         }
 
-        private bool CheckInputButton(Keys key, Buttons button)
-        {
-            KeyboardState tempKeyState = Keyboard.GetState();
-            GamePadState tempGamePadState = GamePad.GetState(PlayerIndex.One);
-
-            if ((tempKeyState.IsKeyDown(key) && keyState.IsKeyUp(key)) ||
-                tempGamePadState.IsButtonDown(button) && gamePadState.IsButtonUp(button))
-                return true;
-            else
-                return false;
-        }
+        
 
         /// <summary>
         /// Checks to see if the game is paused.
         /// </summary>
         private void CheckPaused()
         {
-            KeyboardState tempKeyState = Keyboard.GetState();
-            GamePadState tempGamePadState = GamePad.GetState(PlayerIndex.One);
-            if ((tempKeyState.IsKeyDown(Keys.Escape) && keyState.IsKeyUp(Keys.Escape)) ||
-                tempGamePadState.IsButtonDown(Buttons.Back) && gamePadState.IsButtonUp(Buttons.Back))
+            if (GameResources.CheckInputButton(Keys.Escape, Buttons.Start, oldKeyState, newKeyState, oldGamePadState, newGamePadState))
             {
-                if (isPaused == true)
+                if (isPaused)
                 {
                     isPaused = false;
+                    isFrozen = false;
                 }
                 else
                 {
+                    isFrozen = true;
                     isPaused = true;
+                    freezeTimerMax = -1;
                 }
             }
         }
@@ -475,7 +489,20 @@ namespace Pyramid_Plunder.Classes
 
         private void HudCallback(string input)
         {
-            gameHUD.DisplayInfo(input);
+            //gameHUD.DisplayInfo(input);
+            infoBox = new InfoBox(input, InfoBoxCallback);
+            isFrozen = true;
+            musicManager.PauseMusic();
+        }
+
+        private void InfoBoxCallback()
+        {
+            infoBox.Dispose();
+            infoBox = null;
+            isFrozen = false;
+            freezeTimerMax = -1;
+            freezeTimer = 0;
+            musicManager.UnpauseMusic();
         }
 
         private void ShowDeathScreen()

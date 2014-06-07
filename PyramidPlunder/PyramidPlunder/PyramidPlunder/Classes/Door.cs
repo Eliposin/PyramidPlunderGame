@@ -36,7 +36,7 @@ namespace Pyramid_Plunder.Classes
         private Room linkedRoom;
         private System.Threading.Thread roomThread;
 
-        private AudioEngine soundEngine;
+        private new AudioEngine soundEngine;
 
         /// <summary>
         /// Constructor call.  Creates a new Door object.

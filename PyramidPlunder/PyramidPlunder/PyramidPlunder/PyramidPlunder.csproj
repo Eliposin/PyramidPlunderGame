@@ -93,6 +93,7 @@
     <Compile Include="Classes\GameManager.cs" />
     <Compile Include="Classes\GameObject.cs" />
     <Compile Include="Classes\HUD.cs" />
+    <Compile Include="Classes\InfoBox.cs" />
     <Compile Include="Classes\Menu.cs" />
     <Compile Include="Classes\PhysicsEngine.cs" />
     <Compile Include="Classes\PhysicsObject.cs" />
@@ -104,6 +105,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Data\GraphicsData\InfoBox.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Data\GraphicsData\LavaPassageB.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
