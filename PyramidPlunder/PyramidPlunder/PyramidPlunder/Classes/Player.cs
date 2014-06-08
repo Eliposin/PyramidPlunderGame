@@ -553,20 +553,11 @@ namespace Pyramid_Plunder.Classes
             midairJumps = MAX_MIDAIR_JUMPS;
             dashes = INFINITE_DASHES;
             if (rightBtnFlag == true && leftBtnFlag == false)
-            {
                 LatestXArrow = XDirection.Right;
-                currentFrame = (int)PlayerAnimations.WalkRight;
-            }
             else if (leftBtnFlag == true && rightBtnFlag == false)
-            {
                 LatestXArrow = XDirection.Left;
-                currentFrame = (int)PlayerAnimations.WalkLeft;
-            }
             else
-            {
                 LatestXArrow = XDirection.None;
-                currentFrame = (int)PlayerAnimations.WalkRight;
-            }
             WallSlideDirection = XDirection.None;
             dashStatus = DASH_NOT_ALLOWED;
             velocityY = 0;
