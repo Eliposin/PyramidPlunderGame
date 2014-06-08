@@ -630,7 +630,6 @@ namespace Pyramid_Plunder.Classes
             {
                 oldRoom.Dispose();
                 oldRoom = null;
-            }   
-        }
+            }
     }
 }

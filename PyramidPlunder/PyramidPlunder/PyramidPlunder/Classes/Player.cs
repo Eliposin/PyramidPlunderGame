@@ -916,6 +916,7 @@ namespace Pyramid_Plunder.Classes
         public void StartDeathSequence()
         {
             damageStatus = DEATH_SEQUENCE_START;
+            //Death music here.
         }
 
         public bool DeathSequenceEnded
