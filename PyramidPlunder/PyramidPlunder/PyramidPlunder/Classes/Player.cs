@@ -23,7 +23,7 @@ namespace Pyramid_Plunder.Classes
         private GamePadState gpState;
 
         private new AudioEngine soundEngine;
-        
+
         const short MAX_JUMP_HEIGHT = -250;
         float JUMP_V;
         float WALL_JUMP_V_X;
@@ -131,6 +131,8 @@ namespace Pyramid_Plunder.Classes
         private DelRoom roomCallback;
         private DelFreeze freezeCallback;
         private DelSB hudCallback;
+
+        private Door loadingDoor;
 
         private short[] lifeCollisionXs;
         private short[] lifeCollisionYs;
@@ -536,29 +538,22 @@ namespace Pyramid_Plunder.Classes
                                 else
                                     hudCallback("This door is locked.", false);
                             }
-                            else
-                            {
-                                if (door.IsRoomLoaded)
-                                {
-                                    roomCallback(door.LinkedRoom);
-                                    if (door.Orientation == Door.DoorOrientations.FacingLeft)
-                                        ResetActionStates(XDirection.Right);
-                                    else
-                                        ResetActionStates(XDirection.Left);
-                                }
-                            }
                         }
                         else if (!otherObject.IsSolid && interactionType == InteractionTypes.Collision)
                         {
                             Door door = (Door)otherObject;
                             if (door.IsRoomLoaded)
-                            {
                                 roomCallback(door.LinkedRoom);
-                                if (door.Orientation == Door.DoorOrientations.FacingLeft)
-                                    ResetActionStates(XDirection.Right);
-                                else
-                                    ResetActionStates(XDirection.Left);
+                            else
+                            {
+                                loadingDoor = door;
+                                GameManager.ToggleFreeze(true);
                             }
+
+                            if (door.Orientation == Door.DoorOrientations.FacingLeft)
+                                ResetActionStates(XDirection.Right);
+                            else
+                                ResetActionStates(XDirection.Left);
                         }
                         break;
 
@@ -572,6 +567,16 @@ namespace Pyramid_Plunder.Classes
                     default:
                         break;
                 }
+            }
+        }
+
+        public void CheckLoadedRoom()
+        {
+            if (loadingDoor != null && loadingDoor.IsRoomLoaded)
+            {
+                GameManager.ToggleFreeze(false);
+                roomCallback(loadingDoor.LinkedRoom);
+                loadingDoor = null;
             }
         }
 

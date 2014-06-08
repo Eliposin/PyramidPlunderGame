@@ -26,6 +26,7 @@ namespace Pyramid_Plunder.Classes
         public Color[] collisionColors;
 
         private bool isPersistant;
+        private bool isLoaded;
 
         public AudioEngine soundEngine;
 
@@ -41,6 +42,8 @@ namespace Pyramid_Plunder.Classes
             roomName = name;
             Content = new ContentManager(GameResources.GameServices, "Content");
             soundEngine = new AudioEngine(Content, roomName);
+
+            isLoaded = false;
             
             Load("Data/Rooms/" + roomName + ".txt", doorIndex);
 
@@ -161,6 +164,7 @@ namespace Pyramid_Plunder.Classes
                             }
 
                             sr.Close();
+                            isLoaded = true;
                         }
                     }
 
@@ -383,8 +387,15 @@ namespace Pyramid_Plunder.Classes
         {
             get { return isPersistant; }
 
-            set { isPersistant = value; }
+            //set { isPersistant = value; }
+        }
 
+        /// <summary>
+        /// Whether or not the room has been loaded into memory.
+        /// </summary>
+        public bool IsLoaded
+        {
+            get { return isLoaded; }
         }
 
         /// <summary>

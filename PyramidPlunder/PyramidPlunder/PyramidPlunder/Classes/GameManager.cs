@@ -36,6 +36,7 @@ namespace Pyramid_Plunder.Classes
         private GameGraphic deathScreen;
         private Room currentRoom;
         private Room oldRoom;
+        private Door loadingDoor;
         private Player player;
         private HUD gameHUD;
         private BGM musicManager;
@@ -47,7 +48,7 @@ namespace Pyramid_Plunder.Classes
         private int fpsCount;
         private float oldCount;
         private int drawCalls;
-        private bool isFrozen;
+        private static bool isFrozen;
         private double freezeTimerMax;
         private double freezeTimer;
 
@@ -196,16 +197,7 @@ namespace Pyramid_Plunder.Classes
                     }
                     else
                     {
-                        //if (freezeTimerMax > 0)
-                        //{
-                        //    freezeTimer += gameTime.ElapsedGameTime.TotalSeconds;
-                        //    if (freezeTimer >= freezeTimerMax)
-                        //    {
-                        //        freezeTimer = 0;
-                        //        isFrozen = false;
-                        //        musicManager.UnpauseMusic();
-                        //    }
-                        //}
+                        player.CheckLoadedRoom();
 
                         if (isDeathScreenUp && GameResources.CheckInputButton(Keys.Enter, Buttons.Start, oldKeyState, newKeyState, oldGamePadState, newGamePadState))
                         {
@@ -265,6 +257,11 @@ namespace Pyramid_Plunder.Classes
             DrawFPS(spriteBatch, time);
             
 
+        }
+
+        public static void ToggleFreeze(bool frozen)
+        {
+            isFrozen = frozen;
         }
 
         private void DrawFPS(SpriteBatch spriteBatch, GameTime time)
@@ -602,18 +599,20 @@ namespace Pyramid_Plunder.Classes
         /// <param name="whichRoom">The room to switch to.</param>
         private void SwitchRooms(Room whichRoom)
         {
+
             oldRoom = currentRoom;
             currentRoom = whichRoom;
 
             musicManager.SwitchMusic(currentRoom.MusicName);
             currentRoom.PlaySoundInstance();
 
-            
+
             player.Spawn(currentRoom.SpawnLocation);
             gameHUD.DisplayRoomName(currentRoom.LongName);
 
             System.Threading.Thread roomDisposeThread = new System.Threading.Thread(DisposeRoom);
             roomDisposeThread.Start();
+
         }
 
         /// <summary>
