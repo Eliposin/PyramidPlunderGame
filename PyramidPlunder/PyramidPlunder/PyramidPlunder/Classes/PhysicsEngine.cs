@@ -11,6 +11,7 @@ namespace Pyramid_Plunder.Classes
         //Variable GameTime
         public const float GRAVITY = 4320f;         //acceleration due to gravity, in Pixels/sec/sec.
         public const int MAX_FALLING_SPEED = 3000;  //Maximum falling velocity obtainable, in Pixels/sec.
+        private const short STUCK_OBJ_DISPLACEMENT = 10;
         
         /// <summary>
         /// Tests to see if an object's intended x- and y-displacements are fully achievable in its
@@ -102,8 +103,7 @@ namespace Pyramid_Plunder.Classes
                     }
                 }
             }
-            
-            if (obj.DisplacementX < 0)
+            else if (obj.DisplacementX < 0)
             {
                 if (obj.IsStuck(room, (int)obj.DisplacementX, (int)obj.DisplacementY))
                 {
@@ -128,6 +128,16 @@ namespace Pyramid_Plunder.Classes
                         while (obj.WillLoseSurface(room))
                             obj.DisplacementX += 1;
                     }
+                }
+            }
+            else if (obj.DisplacementX == 0 && obj.DisplacementY == 0)
+            {
+                if (obj.IsStuck(room, 0, 0))
+                {
+                    if (obj.WallOnLeft && !obj.WallOnRight)
+                        obj.DisplacementX += STUCK_OBJ_DISPLACEMENT;
+                    else if (obj.WallOnRight && !obj.WallOnLeft)
+                        obj.DisplacementX -= STUCK_OBJ_DISPLACEMENT;
                 }
             }
 

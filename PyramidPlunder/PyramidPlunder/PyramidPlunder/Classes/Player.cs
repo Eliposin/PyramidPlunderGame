@@ -62,10 +62,12 @@ namespace Pyramid_Plunder.Classes
                                                 //Should be greater than stunTime.
         const float DEATH_SEQUENCE_END = -2;
         
-        ////Uncommment this value for normal deaths
+        ////Uncommment these values for normal deaths
         //const float DEATH_SEQUENCE_START = -3;
-        //Uncomment this value to prolong epic deaths
+        //const float SWITCH_TO_DEATH = -2.9f;
+        //Uncomment these values to prolong epic deaths
         const float DEATH_SEQUENCE_START = -7;
+        const float SWITCH_TO_DEAD_FRAME = -6.9f;
         
         public enum XDirection
         {
@@ -129,6 +131,12 @@ namespace Pyramid_Plunder.Classes
         private DelRoom roomCallback;
         private DelFreeze freezeCallback;
         private DelString hudCallback;
+
+        private short[] lifeCollisionXs;
+        private short[] lifeCollisionYs;
+
+        private short[] deathCollisionXs;
+        private short[] deathCollisionYs;
         
         /// <summary>
         /// Creates a new Player object
@@ -152,6 +160,17 @@ namespace Pyramid_Plunder.Classes
             hudCallback = hudMethod;
             roomCallback = roomMethod;
             freezeCallback = freezeMethod;
+
+            lifeCollisionXs = new short[collisionXs.Length];
+            lifeCollisionYs = new short[collisionYs.Length];
+
+            deathCollisionXs = new short[collisionYs.Length];
+            deathCollisionYs = new short[collisionXs.Length];
+
+            Array.Copy(collisionXs, lifeCollisionXs, collisionXs.Length);
+            Array.Copy(collisionYs, lifeCollisionYs, collisionYs.Length);
+            Array.Copy(collisionXs, deathCollisionYs, collisionXs.Length);
+            Array.Copy(collisionYs, deathCollisionXs, collisionYs.Length);
         }
 
         /// <summary>
@@ -424,7 +443,14 @@ namespace Pyramid_Plunder.Classes
                     }
                 }
             }
-            
+
+            if ((damageStatus >= SWITCH_TO_DEAD_FRAME) && (damageStatus <= DEATH_SEQUENCE_END) &&
+                (currentFrame == 0))
+            {
+                SwitchToDeathCollision();
+                currentFrame++;
+            }
+
             if (damageStatus >= INVINCIBLE_START)
                 damageStatus += totalTime;
             else if (damageStatus < DEATH_SEQUENCE_END)
@@ -628,9 +654,7 @@ namespace Pyramid_Plunder.Classes
             dashes = INFINITE_DASHES;
 
             if (currentHealth > 0)
-            {
                 base.Land();
-            }
             else
             {
                 isOnGround = true;
@@ -654,7 +678,13 @@ namespace Pyramid_Plunder.Classes
                 else
                     PlayerJumpState = JumpState.Allowed;
             }
-            base.CollideX();
+            if (currentHealth < 0)
+            {
+                accelerationX = 0;
+                velocityX *= -0.5f;
+            }
+            else
+                base.CollideX();
         }
 
         public override void HitCeiling()
@@ -875,7 +905,16 @@ namespace Pyramid_Plunder.Classes
 
         public bool DeathSequenceEnded
         {
-            get { return damageStatus == DEATH_SEQUENCE_END; }
+            get
+            {
+                if (damageStatus == DEATH_SEQUENCE_END)
+                {
+                    SwitchToLifeCollision();
+                    return true;
+                }
+                else
+                    return false;
+            }
         }
 
         public void ReceivePitFallDamage()
@@ -883,7 +922,9 @@ namespace Pyramid_Plunder.Classes
             currentHealth = Math.Max(0, currentHealth - PIT_FALL_DAMAGE);
             if (currentHealth > 0)
                 damageStatus = STUN_END;
-            ResetActionStates(XDirection.Right);
+            else
+                damageStatus = VULNERABLE;
+            ResetActionStates(PlayerXFacing);
         }
 
         public void ReceiveHazardDamage()
@@ -891,7 +932,9 @@ namespace Pyramid_Plunder.Classes
             currentHealth = Math.Max(0, currentHealth - HAZARD_DAMAGE);
             if (currentHealth > 0)
                 damageStatus = STUN_END;
-            ResetActionStates(XDirection.Right);
+            else
+                damageStatus = VULNERABLE;
+            ResetActionStates(PlayerXFacing);
         }
 
         private void CollideWithEnemy(Enemy enemy, XDirection direction)
@@ -963,6 +1006,22 @@ namespace Pyramid_Plunder.Classes
                 }
             }
             return false;
+        }
+
+        private void SwitchToDeathCollision()
+        {
+            collisionXs = new short[deathCollisionXs.Length];
+            collisionYs = new short[deathCollisionYs.Length];
+            Array.Copy(deathCollisionXs, collisionXs, deathCollisionXs.Length);
+            Array.Copy(deathCollisionYs, collisionYs, deathCollisionYs.Length);
+        }
+
+        private void SwitchToLifeCollision()
+        {
+            collisionXs = new short[lifeCollisionXs.Length];
+            collisionYs = new short[lifeCollisionYs.Length];
+            Array.Copy(lifeCollisionXs, collisionXs, lifeCollisionXs.Length);
+            Array.Copy(lifeCollisionYs, collisionYs, lifeCollisionYs.Length);
         }
 
         public override void Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch, GameTime time, bool playAnimations)

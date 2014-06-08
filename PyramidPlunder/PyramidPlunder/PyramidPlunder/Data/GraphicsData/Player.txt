@@ -73,7 +73,7 @@ PlayerSpritesheet
 60
 120
 #Animation speed
-1.5
+2
 #Number of Frames
 3
 #Eighth Animation Stats
@@ -83,7 +83,7 @@ PlayerSpritesheet
 60
 120
 #Animation speed
-1.5
+2
 #Number of Frames
 3
 #Ninth Animation Stats
@@ -113,7 +113,7 @@ PlayerSpritesheet
 120
 120
 #Animation speed
-0.75
+0
 #Number of Frames
 2
 #Twelfth Animation Stats
@@ -123,6 +123,6 @@ PlayerSpritesheet
 120
 120
 #Animation speed
-0.75
+0
 #Number of Frames
 2
