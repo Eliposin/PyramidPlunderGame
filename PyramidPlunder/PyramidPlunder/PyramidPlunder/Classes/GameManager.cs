@@ -197,7 +197,8 @@ namespace Pyramid_Plunder.Classes
                     }
                     else
                     {
-                        player.CheckLoadedRoom();
+                        if (player.CheckLoadedRoom())
+                            InfoBoxCallback();
 
                         if (isDeathScreenUp && GameResources.CheckInputButton(Keys.Enter, Buttons.Start, oldKeyState, newKeyState, oldGamePadState, newGamePadState))
                         {
@@ -475,7 +476,7 @@ namespace Pyramid_Plunder.Classes
                     }
                 }
 
-                HudCallback("Your game was saved.", false);
+                HudCallback("Your game was saved.", false, true);
             }
             catch (Exception e)
             {
@@ -484,10 +485,10 @@ namespace Pyramid_Plunder.Classes
             }
         }
 
-        private void HudCallback(string input, bool pauseMusic)
+        private void HudCallback(string input, bool pauseMusic, bool removable)
         {
             //gameHUD.DisplayInfo(input);
-            infoBox = new InfoBox(input, InfoBoxCallback);
+            infoBox = new InfoBox(input, InfoBoxCallback, removable);
             isFrozen = true;
             if (pauseMusic)
                 musicManager.PauseMusic();

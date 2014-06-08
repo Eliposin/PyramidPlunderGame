@@ -25,8 +25,9 @@ namespace PyramidPlunder.Classes
 
         private string message;
         private string instruction;
+        private bool isRemovable;
 
-        public InfoBox(string m, DelVoid cb)
+        public InfoBox(string m, DelVoid cb, bool removable)
         {
             Content = new ContentManager(GameResources.GameServices, "Content");
             background = new GameGraphic("InfoBox", Content);
@@ -38,19 +39,26 @@ namespace PyramidPlunder.Classes
             oldGamePadState = GamePad.GetState(PlayerIndex.One);
             newGamePadState = GamePad.GetState(PlayerIndex.One);
 
-            instruction = "A/Enter: Okay";
+            isRemovable = removable;
+            if (isRemovable)
+                instruction = "A/Enter: Okay";
+            else
+                instruction = "";
         }
 
         public void Update(GameTime gameTime)
         {
-            newKeyState = Keyboard.GetState();
-            newGamePadState = GamePad.GetState(PlayerIndex.One);
+            if (isRemovable)
+            {
+                newKeyState = Keyboard.GetState();
+                newGamePadState = GamePad.GetState(PlayerIndex.One);
 
-            if (GameResources.CheckInputButton(Keys.Enter, Buttons.A, oldKeyState, newKeyState, oldGamePadState, newGamePadState))
-                callback();
+                if (GameResources.CheckInputButton(Keys.Enter, Buttons.A, oldKeyState, newKeyState, oldGamePadState, newGamePadState))
+                    callback();
 
-            oldKeyState = newKeyState;
-            oldGamePadState = newGamePadState;
+                oldKeyState = newKeyState;
+                oldGamePadState = newGamePadState;
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
