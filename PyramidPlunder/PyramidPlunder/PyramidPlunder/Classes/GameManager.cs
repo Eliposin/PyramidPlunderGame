@@ -477,8 +477,8 @@ namespace Pyramid_Plunder.Classes
                             file.WriteLine(line);
                     }
                 }
-                
-                gameHUD.DisplaySaveIndicator("Your game was saved.");
+
+                HudCallback("Your game was saved.", false);
             }
             catch (Exception e)
             {

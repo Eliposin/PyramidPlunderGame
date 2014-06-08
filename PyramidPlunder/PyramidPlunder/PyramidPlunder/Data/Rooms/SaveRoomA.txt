@@ -1,11 +1,11 @@
 #LongName
 Save Room A
 #GraphicsName
-SaveRoom
+SaveRoomA
 #Spawn Location X (was 1185)
-612
+518
 #Spawn Location Y (was 572)
-430
+407
 #IsPersistant (0 = false, 1 = true)
 false
 #
@@ -20,21 +20,8 @@ Save
 #Position (in the room)
 #
 #Number of Doors
-2
+1
 #####First Door (index 0):#####
-# Orientation
-0
-# Linked Room
-(unassigned)
-# Linked Door (index)
-0
-# Lock Type
-0
-# PositionX
--3
-# PositionY
-443
-#####Second Door (index 1):#####
 # Orientation
 1
 # Linked Room
@@ -45,7 +32,8 @@ StairwayToHell
 0
 # PositionX
 1123
-443
+# PositionY
+473
 #####Enemies#####
 #Number of Enemies
 0
@@ -58,6 +46,6 @@ false
 #IsSolid
 false
 #X Location
-640
+550
 #Y Location
-500
+425

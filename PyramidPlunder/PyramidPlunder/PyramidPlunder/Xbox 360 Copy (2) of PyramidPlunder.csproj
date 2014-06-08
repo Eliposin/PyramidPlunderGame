@@ -171,6 +171,9 @@
     <Content Include="Data\GraphicsData\InfoBox.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Data\GraphicsData\SaveRoomA.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Game.ico" />
     <None Include="GameThumbnail.png">
       <XnaPlatformSpecific>true</XnaPlatformSpecific>

@@ -564,7 +564,10 @@ namespace Pyramid_Plunder.Classes
 
                     case "SavePoint":
                         if (interactionType == InteractionTypes.PlayerAction)
+                        {
+                            currentHealth = maxHealth;
                             saveCallback();
+                        }
                         break;
                     default:
                         break;
@@ -628,8 +631,6 @@ namespace Pyramid_Plunder.Classes
                 }
                 if (info != null)
                     hudCallback(info, true);
-                //freezeTimerMax = POWERUP_JINGLE_LENGTH;
-                //freezeCallback(true, freezeTimerMax);
             }
         }
 
