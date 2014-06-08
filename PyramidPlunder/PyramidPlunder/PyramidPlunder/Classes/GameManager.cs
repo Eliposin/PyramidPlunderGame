@@ -487,12 +487,13 @@ namespace Pyramid_Plunder.Classes
             }
         }
 
-        private void HudCallback(string input)
+        private void HudCallback(string input, bool pauseMusic)
         {
             //gameHUD.DisplayInfo(input);
             infoBox = new InfoBox(input, InfoBoxCallback);
             isFrozen = true;
-            musicManager.PauseMusic();
+            if (pauseMusic)
+                musicManager.PauseMusic();
         }
 
         private void InfoBoxCallback()

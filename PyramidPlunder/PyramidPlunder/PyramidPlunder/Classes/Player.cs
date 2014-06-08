@@ -130,7 +130,7 @@ namespace Pyramid_Plunder.Classes
         private DelVoid saveCallback;
         private DelRoom roomCallback;
         private DelFreeze freezeCallback;
-        private DelString hudCallback;
+        private DelSB hudCallback;
 
         private short[] lifeCollisionXs;
         private short[] lifeCollisionYs;
@@ -141,7 +141,7 @@ namespace Pyramid_Plunder.Classes
         /// <summary>
         /// Creates a new Player object
         /// </summary>
-        public Player(ContentManager content, DelVoid saveMethod, DelRoom roomMethod, DelFreeze freezeMethod, DelString hudMethod)
+        public Player(ContentManager content, DelVoid saveMethod, DelRoom roomMethod, DelFreeze freezeMethod, DelSB hudMethod)
             : base("Player", content)
         {
             isSpawned = false;
@@ -533,6 +533,8 @@ namespace Pyramid_Plunder.Classes
                             {
                                 if (itemArray[(byte)door.LockType] == true)
                                     door.Open();
+                                else
+                                    hudCallback("This door is locked.", false);
                             }
                             else
                             {
@@ -625,7 +627,7 @@ namespace Pyramid_Plunder.Classes
                         break;
                 }
                 if (info != null)
-                    hudCallback(info);
+                    hudCallback(info, true);
                 //freezeTimerMax = POWERUP_JINGLE_LENGTH;
                 //freezeCallback(true, freezeTimerMax);
             }
