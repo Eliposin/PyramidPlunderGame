@@ -107,6 +107,7 @@ namespace Pyramid_Plunder.Classes
         public void Update(GameTime gameTime)
         {
             newKeyState = Keyboard.GetState();
+            newGamePadState = GamePad.GetState(PlayerIndex.One);
 
             if (inGame)
             {
@@ -220,6 +221,7 @@ namespace Pyramid_Plunder.Classes
             }
 
             oldKeyState = newKeyState;
+            oldGamePadState = newGamePadState;
 
         }
 
@@ -297,18 +299,21 @@ namespace Pyramid_Plunder.Classes
         /// </summary>
         private void CheckPaused()
         {
-            if (GameResources.CheckInputButton(Keys.Escape, Buttons.Start, oldKeyState, newKeyState, oldGamePadState, newGamePadState))
+            if (!isDeathScreenUp)
             {
-                if (isPaused)
+                if (GameResources.CheckInputButton(Keys.Escape, Buttons.Start, oldKeyState, newKeyState, oldGamePadState, newGamePadState))
                 {
-                    isPaused = false;
-                    isFrozen = false;
-                }
-                else
-                {
-                    isFrozen = true;
-                    isPaused = true;
-                    freezeTimerMax = -1;
+                    if (isPaused)
+                    {
+                        isPaused = false;
+                        isFrozen = false;
+                    }
+                    else
+                    {
+                        isFrozen = true;
+                        isPaused = true;
+                        freezeTimerMax = -1;
+                    }
                 }
             }
         }

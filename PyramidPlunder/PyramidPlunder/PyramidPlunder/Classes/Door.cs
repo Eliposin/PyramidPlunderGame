@@ -159,6 +159,11 @@ namespace Pyramid_Plunder.Classes
             get { return isRoomLoaded; }
         }
 
+        public string LinkedRoomName
+        {
+            get { return linkedRoomName; }
+        }
+
         /// <summary>
         /// Overriding Public To String that returns the door object in the form necessary to read it in from a file.
         /// </summary>

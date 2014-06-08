@@ -531,12 +531,16 @@ namespace Pyramid_Plunder.Classes
                         if (interactionType == InteractionTypes.PlayerAction)
                         {
                             Door door = (Door)otherObject;
+                            
                             if (!door.IsOpen)
                             {
-                                if (itemArray[(byte)door.LockType] == true)
-                                    door.Open();
-                                else
+                                if (!itemArray[(byte)door.LockType])
                                     hudCallback("This door is locked.", false, true);
+                                else if (door.LinkedRoomName == "(unassigned)")
+                                    hudCallback("This door appears to go nowhere.", false, true);
+                                else
+                                    door.Open();
+                                    
                             }
                         }
                         else if (!otherObject.IsSolid && interactionType == InteractionTypes.Collision)
