@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PyramidPlunder", "PyramidPlunder\PyramidPlunder\PyramidPlunder.csproj", "{9CF15BC0-C5AA-44C4-8B1E-B28CC68AF5EB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PyramidPlunderContent", "PyramidPlunder\PyramidPlunderContent\PyramidPlunderContent.contentproj", "{8EBF900E-255E-44EB-B4E1-F1A0480678D3}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xbox 360 Copy (2) of PyramidPlunder", "PyramidPlunder\PyramidPlunder\Xbox 360 Copy (2) of PyramidPlunder.csproj", "{A64DECC1-D305-4F94-9460-491A88B51477}"
 EndProject
 Global
@@ -31,6 +33,14 @@ Global
 		{9CF15BC0-C5AA-44C4-8B1E-B28CC68AF5EB}.Release|x86.Build.0 = Release|x86
 		{9CF15BC0-C5AA-44C4-8B1E-B28CC68AF5EB}.Release|Xbox 360.ActiveCfg = Release|x86
 		{9CF15BC0-C5AA-44C4-8B1E-B28CC68AF5EB}.Release|Xbox 360.Build.0 = Release|x86
+		{8EBF900E-255E-44EB-B4E1-F1A0480678D3}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{8EBF900E-255E-44EB-B4E1-F1A0480678D3}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{8EBF900E-255E-44EB-B4E1-F1A0480678D3}.Debug|x86.ActiveCfg = Debug|x86
+		{8EBF900E-255E-44EB-B4E1-F1A0480678D3}.Debug|Xbox 360.ActiveCfg = Debug|x86
+		{8EBF900E-255E-44EB-B4E1-F1A0480678D3}.Release|Any CPU.ActiveCfg = Release|x86
+		{8EBF900E-255E-44EB-B4E1-F1A0480678D3}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{8EBF900E-255E-44EB-B4E1-F1A0480678D3}.Release|x86.ActiveCfg = Release|x86
+		{8EBF900E-255E-44EB-B4E1-F1A0480678D3}.Release|Xbox 360.ActiveCfg = Release|x86
 		{A64DECC1-D305-4F94-9460-491A88B51477}.Debug|Any CPU.ActiveCfg = Debug|Xbox 360
 		{A64DECC1-D305-4F94-9460-491A88B51477}.Debug|Mixed Platforms.ActiveCfg = Debug|Xbox 360
 		{A64DECC1-D305-4F94-9460-491A88B51477}.Debug|Mixed Platforms.Build.0 = Debug|Xbox 360
