@@ -421,7 +421,6 @@
       <Name>ThePitLightingMap</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
-    </Compile>
     <Compile Include="Sounds\Death and GameOver.mp3">
       <Name>Death and GameOver</Name>
       <Importer>Mp3Importer</Importer>
