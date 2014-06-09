@@ -8,6 +8,8 @@ LavaPassageA
 258
 #IsPersistant (0 = false, 1 = true)
 false
+#HasLighting
+false
 #
 #Music
 Level

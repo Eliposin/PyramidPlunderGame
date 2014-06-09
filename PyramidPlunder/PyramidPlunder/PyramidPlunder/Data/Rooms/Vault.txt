@@ -8,6 +8,8 @@ Vault
 460
 #IsPersistant
 true
+#HasLighting
+false
 #
 #Music
 Level

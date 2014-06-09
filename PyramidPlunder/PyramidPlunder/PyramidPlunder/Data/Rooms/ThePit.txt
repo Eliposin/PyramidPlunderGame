@@ -1,18 +1,18 @@
 #LongName
-Pyramid Lobby
+The Pit
 #GraphicsName
-Lobby
+ThePit
 #Spawn Location X (was 1185)
-141
+188
 #Spawn Location Y (was 572)
-2166
+370
 #IsPersistant (0 = false, 1 = true)
 false
 #HasLighting
-false
+true
 #
 #Music
-Level
+Menu
 #Doors
 #Orientation (0 = facing right, 1 = facing left)
 #Linked Room (String)
@@ -27,99 +27,101 @@ Level
 # Orientation
 0
 # Linked Room
-StartRoom
+StairwayToHell
 # Linked Door (index)
-0
+1
 # Lock Type
 0
 # PositionX
 -3
 # PositionY
-2139
+343
 #####Second Door (index 0):#####
 # Orientation
-1
+0
 # Linked Room
-LavaAccess
+(unassigned)
 # Linked Door (index)
 0
 # Lock Type
 0
 # PositionX
-1673
+205
 # PositionY
-2009
+1814
 #####Third Door (index 0):#####
 # Orientation
 0
 # Linked Room
-Vault
+(unassigned)
 # Linked Door (index)
 0
 # Lock Type
 0
 # PositionX
--3
+261
 # PositionY
-405
+2156
 #####Fourth Door (index 0):#####
 # Orientation
 1
 # Linked Room
-SaveRoomB
+(unassigned)
 # Linked Door (index)
 0
 # Lock Type
-1
+0
 # PositionX
-2079
+1739
 # PositionY
-470
+2156
 #####Enemies#####
 #Number of Enemies
-6
-#####First Enemy(index 0):#####
-# Enemy Name
-FloorThing
-# X-Coordinate of Spawn Location
-670
-# Y-Coordinate of Spawn Location
-2162
-#####Second Enemy(index 1):#####
-# Enemy Name
-FloorThing
-# X-Coordinate of Spawn Location
-1200
-# Y-Coordinate of Spawn Location
-2211
-#####Fourth Enemy(index 3):#####
-# Enemy Name
-FloorThing
-# X-Coordinate of Spawn Location
-850
-# Y-Coordinate of Spawn Location
-2211
-#####Fifth Enemy(index 4):#####
-# Enemy Name
-FloorThing
-# X-Coordinate of Spawn Location
-1080
-# Y-Coordinate of Spawn Location
-722
-#####Sixth Enemy(index 5):#####
-# Enemy Name
-WallThing
-# X-Coordinate of Spawn Location
-1340
-# Y-Coordinate of Spawn Location
-748
-#####Seventh Enemy(index 6):#####
-# Enemy Name
-WallThing
-# X-Coordinate of Spawn Location
-1116
-# Y-Coordinate of Spawn Location
-1268
+0
 #####Environment Objects#####
 #Number of Environment Objects
-0
+4
+#
+#Type of Object
+DisintegratingPlatform
+#HasGraphic
+true
+#IsSolid
+true
+# PositionX
+554
+# PositionY
+541
+#
+#Type of Object
+DisintegratingPlatform
+#HasGraphic
+true
+#IsSolid
+true
+# PositionX
+874
+# PositionY
+541
+#
+#Type of Object
+DisintegratingPlatform
+#HasGraphic
+true
+#IsSolid
+true
+# PositionX
+1179
+# PositionY
+541
+#
+#Type of Object
+DisintegratingPlatform
+#HasGraphic
+true
+#IsSolid
+true
+# PositionX
+1476
+# PositionY
+541

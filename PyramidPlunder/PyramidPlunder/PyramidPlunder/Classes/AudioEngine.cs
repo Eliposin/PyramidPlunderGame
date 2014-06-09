@@ -113,6 +113,7 @@ namespace Pyramid_Plunder.Classes
                         break;
 
                     case "LavaAccess":
+                    case "ThePit":
                         doorOpen = content.Load<SoundEffect>("Sounds/DoorGrind");
                         platformCrumble = content.Load<SoundEffect>("Sounds/PlatformCrumble");
                         break;
