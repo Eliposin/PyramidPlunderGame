@@ -10,6 +10,8 @@ namespace Pyramid_Plunder.Classes
 {
     public class Enemy : PhysicsObject
     {
+        const int MUMMY_MAXSPEED = 200;
+
         protected int contactDamage;
         protected bool bumpsOtherEnemies;
                 
@@ -164,13 +166,13 @@ namespace Pyramid_Plunder.Classes
                             {
                                 if (player.Position.X + player.CollisionXs.First() > position.X + collisionXs.Last())
                                 {
-                                    velocityLimitX = 360;
+                                    velocityLimitX = MUMMY_MAXSPEED;
                                     accelerationX = 2160;
                                 }
                                 //velocityX = movementSpeed;
                                 else //if (player.Position.X + player.CollisionXs.Last() < position.X + collisionXs.First())
                                 {
-                                    velocityLimitX = -360;
+                                    velocityLimitX = -MUMMY_MAXSPEED;
                                     accelerationX = -2160;
                                 }
                                     //velocityX = -movementSpeed;

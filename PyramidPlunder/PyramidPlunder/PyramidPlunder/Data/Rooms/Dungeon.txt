@@ -50,7 +50,25 @@ ThePit
 859
 ########################Enemies############################
 #Number of Enemies
-0
+3
+# Enemy Name
+Mummy
+# X-Coordinate of Spawn Location
+600
+# Y-Coordinate of Spawn Location
+600
+# Enemy Name
+Mummy
+# X-Coordinate of Spawn Location
+950
+# Y-Coordinate of Spawn Location
+600
+# Enemy Name
+Mummy
+# X-Coordinate of Spawn Location
+1200
+# Y-Coordinate of Spawn Location
+600
 ##################EnvironmentObjects#######################
 #Number of Environment Objects
 6
