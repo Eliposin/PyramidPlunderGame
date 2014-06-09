@@ -8,6 +8,8 @@ StairwayToHell
 113
 #IsPersistant (0 = false, 1 = true)
 false
+#HasLighting
+false
 #
 #Music
 Level
@@ -38,7 +40,7 @@ LavaAccess
 # Orientation
 1
 # Linked Room
-(unassigned)
+ThePit
 # Linked Door (index)
 0
 # Lock Type

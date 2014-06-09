@@ -8,7 +8,8 @@ DashRoom
 380
 #IsPersistant
 true
-#
+#HasLighting
+false
 #Music
 Level
 #Doors

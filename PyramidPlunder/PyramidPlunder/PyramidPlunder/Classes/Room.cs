@@ -16,6 +16,7 @@ namespace Pyramid_Plunder.Classes
         private Vector2 spawnLocation;
         private Texture2D collisionMap;
         private GameObject background;
+        private GameObject lightingMap;
         private ContentManager Content;
         
         private string musicName;
@@ -27,6 +28,7 @@ namespace Pyramid_Plunder.Classes
 
         private bool isPersistant;
         private bool isLoaded;
+        private bool hasLighting;
 
         public AudioEngine soundEngine;
 
@@ -55,6 +57,11 @@ namespace Pyramid_Plunder.Classes
             collisionMap.GetData<Color>(collisionColors);
             background = new GameObject(graphicsName, Content);
             background.Spawn(new Vector2(0, 0));
+            if (hasLighting)
+            {
+                lightingMap = new GameObject(graphicsName + "LightingMap", Content);
+                lightingMap.Spawn(new Vector2(0, 0));
+            }
 
             
         }
@@ -86,6 +93,7 @@ namespace Pyramid_Plunder.Classes
                                                         Convert.ToInt16(GameResources.getNextDataLine(sr, "#")));
 
                             isPersistant = bool.Parse(GameResources.getNextDataLine(sr, "#"));
+                            hasLighting = bool.Parse(GameResources.getNextDataLine(sr, "#"));
 
                             musicName = GameResources.getNextDataLine(sr, "#");
 
@@ -184,6 +192,8 @@ namespace Pyramid_Plunder.Classes
         public void UpdateCoordinates(Vector2 playerPosition, Vector2 playerCoordinates, Rectangle roomDimensions)
         {
             background.UpdateCoordinates(playerPosition, playerCoordinates, roomDimensions);
+            if (hasLighting)
+                lightingMap.UpdateCoordinates(playerPosition, playerCoordinates, roomDimensions);
             for (int i = 0; i < objectArray.Length; i++)
                 objectArray[i].UpdateCoordinates(playerPosition, playerCoordinates, roomDimensions);
             // TODO: Iterate through and update ALL objects
@@ -201,6 +211,9 @@ namespace Pyramid_Plunder.Classes
             //Added to draw bad guys
             for (int i = 0; i < enemyArray.Length; i++)
                 enemyArray[i].Draw(batch, time, playAnimations);
+
+            if (hasLighting)
+                lightingMap.Draw(batch, time);
 
             // TODO: Iterate through and update ALL objects
         }

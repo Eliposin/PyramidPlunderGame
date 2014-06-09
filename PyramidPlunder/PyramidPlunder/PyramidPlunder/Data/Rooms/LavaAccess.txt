@@ -8,6 +8,8 @@ LavaAccess
 163
 #IsPersistant (0 = false, 1 = true)
 false
+#HasLighting
+false
 #
 #Music
 Level
