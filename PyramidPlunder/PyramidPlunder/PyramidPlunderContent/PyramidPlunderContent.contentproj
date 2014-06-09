@@ -405,6 +405,9 @@
   <ItemGroup>
     <Compile Include="Sounds\DeathMusic.mp3">
       <Name>DeathMusic</Name>
+      <Importer>Mp3Importer</Importer>
+      <Processor>SongProcessor</Processor>
+    </Compile>
     <Compile Include="Images\ThePit.jpg">
       <Name>ThePit</Name>
       <Importer>TextureImporter</Importer>
@@ -421,10 +424,6 @@
       <Name>ThePitLightingMap</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
-    <Compile Include="Sounds\Death and GameOver.mp3">
-      <Name>Death and GameOver</Name>
-      <Importer>Mp3Importer</Importer>
-      <Processor>SongProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
