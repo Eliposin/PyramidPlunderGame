@@ -966,7 +966,7 @@ namespace Pyramid_Plunder.Classes
 
         private void CollideWithEnemy(Enemy enemy, XDirection direction)
         {
-            soundEngine.Play(AudioEngine.SoundEffects.Jump);
+            soundEngine.Play(AudioEngine.SoundEffects.Hurt);
             currentHealth = Math.Max(0, currentHealth - enemy.ContactDamage);
             if (direction == XDirection.Left)
             {

@@ -28,12 +28,16 @@ namespace Pyramid_Plunder.Classes
             MenuClick = 10,
             SaveChime = 11,
             PlatformCrumble = 12,
-            EffectInstance = 13
+            EffectInstance = 13,
+            Hurt = 14
         }
 
         private SoundEffect jump1;
         private SoundEffect jump2;
         private SoundEffect jump3;
+        private SoundEffect oof1;
+        private SoundEffect oof2;
+        private SoundEffect oof3;
         private SoundEffect dash;
         private SoundEffect land;
         private SoundEffect wallLand;
@@ -75,6 +79,9 @@ namespace Pyramid_Plunder.Classes
                         jump1 = content.Load<SoundEffect>("Sounds/hup1");
                         jump2 = content.Load<SoundEffect>("Sounds/hup2");
                         jump3 = content.Load<SoundEffect>("Sounds/hup3");
+                        oof1 = content.Load<SoundEffect>("Sounds/oof1");
+                        oof2 = content.Load<SoundEffect>("Sounds/oof2");
+                        oof3 = content.Load<SoundEffect>("Sounds/oof3");
                         dash = content.Load<SoundEffect>("Sounds/Dash");
                         land = content.Load<SoundEffect>("Sounds/land");
                         wallLand = content.Load<SoundEffect>("Sounds/wallland");
@@ -82,7 +89,6 @@ namespace Pyramid_Plunder.Classes
                         itemGet = content.Load<SoundEffect>("Sounds/Item Jingle");
                         platformCrumble = content.Load<SoundEffect>("Sounds/PlatformCrumble");
                         break;
-
 
                     case "SaveRoomA":
                         doorOpen = content.Load<SoundEffect>("Sounds/DoorGrind");
@@ -243,6 +249,24 @@ namespace Pyramid_Plunder.Classes
 
                     case SoundEffects.PlatformCrumble:
                         platformCrumble.Play(volume, zero, zero);
+                        break;
+
+                    case SoundEffects.Hurt:
+                        i = rnd.Next(0, 3);
+                        switch (i)
+                        {
+                            case 0:
+                                oof1.Play();
+                                break;
+                            case 1:
+                                oof2.Play();
+                                break;
+                            case 2:
+                                oof3.Play();
+                                break;
+                            default:
+                                break;
+                        }
                         break;
 
                     default: break;
