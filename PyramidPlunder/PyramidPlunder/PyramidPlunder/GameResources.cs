@@ -40,6 +40,12 @@ namespace Pyramid_Plunder
         PlayerAction
     }
 
+    public enum InteractionActions : byte
+    {
+        None,
+        Lever
+    }
+
     public enum MenuCallbacks : byte
     {
         NewGame = 0,

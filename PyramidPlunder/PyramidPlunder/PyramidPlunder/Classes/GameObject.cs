@@ -162,6 +162,15 @@ namespace Pyramid_Plunder.Classes
                     itemType = ItemList.NullItem;
                     break;
                 }
+                case "FloorSpikes":
+                {
+                    isItem = false;
+                    isKey = false;
+                    isPowerup = false;
+                    isHazard = true;
+                    itemType = ItemList.NullItem;
+                    break;
+                }
                 default:
                 {
                     isItem = false;
@@ -209,9 +218,15 @@ namespace Pyramid_Plunder.Classes
             switch (interactionType)
             {
                 case InteractionTypes.PlayerAction:
-                    if (objectName == "SavePoint")
-                        return true;
-                    break;
+                    switch (objectName)
+                    {
+                        case "SavePoint":
+                            return true;
+                        case "Lever":
+                            return true;
+                        default:
+                            return false;
+                    }
                 case InteractionTypes.Collision:
                     if (isItem || isHazard)
                         return true;
@@ -231,14 +246,26 @@ namespace Pyramid_Plunder.Classes
             }
         }
 
+        public void SwitchLever()
+        {
+            if (objectName == "Lever")
+            {
+                if (currentFrame == 0)
+                    currentFrame = 1;
+                else
+                    currentFrame = 0;
+            }
+        }
+
         /// <summary>
         /// Deals with object interactions between each other.
         /// </summary>
         /// <param name="otherObject">The other object to interact with.</param>
-        public virtual void InteractWith(GameObject otherObject, InteractionTypes interactionType)
+        public virtual InteractionActions InteractWith(GameObject otherObject, InteractionTypes interactionType)
         {
             // TODO: Add the interaction chart for each possible object interaction.
             // The owner of this method is considered the "initiator" of the interaction
+            return InteractionActions.None;
         }
 
         /// <summary>

@@ -24,7 +24,11 @@ namespace Pyramid_Plunder.Classes
         public static void Update(PhysicsObject obj, Room room, GameTime time)
         {
             float totalTime = (float)(time.ElapsedGameTime.TotalSeconds);
-            
+
+            if (obj.IsGravityAffected && obj.ObjectName != "Player")
+            {
+                int k = 0;
+            }
             //All ungrounded, gravity-affected objects will have the displacement caused by
             //gravity in this frame added to their y-displacement.
             if (obj.IsGravityAffected && !obj.IsOnGround)

@@ -11,7 +11,7 @@ namespace Pyramid_Plunder.Classes
     {
         private Enemy[] enemyArray;
         private Door[] doorArray;
-        private GameObject[] environmentArray;
+        private PhysicsObject[] environmentArray;
         private GameObject[] objectArray;
         private Vector2 spawnLocation;
         private Texture2D collisionMap;
@@ -126,7 +126,7 @@ namespace Pyramid_Plunder.Classes
                             }
 
                             numberOfEnvironmentObjects = Int16.Parse(GameResources.getNextDataLine(sr, "#"));
-                            environmentArray = new GameObject[numberOfEnvironmentObjects];
+                            environmentArray = new PhysicsObject[numberOfEnvironmentObjects];
 
                             for (int i = 0; i < numberOfEnvironmentObjects; i++)
                             {
@@ -134,7 +134,7 @@ namespace Pyramid_Plunder.Classes
 
                                 bool objHasGraphics = bool.Parse(GameResources.getNextDataLine(sr, "#"));
 
-                                environmentArray[i] = new GameObject(objectName, Content, new Vector2(0,0), objHasGraphics, soundEngine);                                
+                                environmentArray[i] = new PhysicsObject(objectName, Content, new Vector2(0,0), objHasGraphics, soundEngine, false);                                
 
                                 environmentArray[i].IsSolid = bool.Parse(GameResources.getNextDataLine(sr, "#"));
 
@@ -239,6 +239,25 @@ namespace Pyramid_Plunder.Classes
         public void DrawBackground(SpriteBatch batch, GameTime time)
         {
             DrawBackground(batch, time, true);
+        }
+
+        public void PlayerInteraction(InteractionActions interaction)
+        {
+            switch (interaction)
+            {
+                case InteractionActions.Lever:
+                    for (int i = 0; i < environmentArray.Length; i++)
+                    {
+                        if (environmentArray[i].ObjectName == "FallingSpikePlatform")
+                        {
+                            environmentArray[i].IsOnGround = false;
+                            environmentArray[i].IsGravityAffected = true;
+                        }
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
 
         /// <summary>

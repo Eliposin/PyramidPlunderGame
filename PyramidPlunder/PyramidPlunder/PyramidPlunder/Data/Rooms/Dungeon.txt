@@ -1,16 +1,15 @@
 #LongName
-The Pit
+Dungeon
 #GraphicsName
-ThePit
+Dungeon
 #Spawn Location X (was 1185)
-188
+202
 #Spawn Location Y (was 572)
-370
-#IsPersistant (0 = false, 1 = true)
+399
+#IsPersistant
 false
 #HasLighting
 true
-#
 #Music
 Menu
 #Doors
@@ -22,106 +21,102 @@ Menu
 #Position (in the room)
 #
 #Number of Doors
-4
+2
 #####First Door (index 0):#####
 # Orientation
 0
 # Linked Room
-StairwayToHell
+ThePit
 # Linked Door (index)
-1
+2
 # Lock Type
 0
 # PositionX
 -3
 # PositionY
-343
+568
 #####Second Door (index 0):#####
-# Orientation
-0
-# Linked Room
-(unassigned)
-# Linked Door (index)
-0
-# Lock Type
-0
-# PositionX
-205
-# PositionY
-1814
-#####Third Door (index 0):#####
-# Orientation
-0
-# Linked Room
-(unassigned)
-# Linked Door (index)
-0
-# Lock Type
-0
-# PositionX
-261
-# PositionY
-2156
-#####Fourth Door (index 0):#####
 # Orientation
 1
 # Linked Room
-Dungeon
+(unassigned)
 # Linked Door (index)
 0
 # Lock Type
 0
 # PositionX
-1739
+3038
 # PositionY
-2156
-#####Enemies#####
+859
+########################Enemies############################
 #Number of Enemies
 0
-#####Environment Objects#####
+##################EnvironmentObjects#######################
 #Number of Environment Objects
-4
-#
+6
 #Type of Object
-DisintegratingPlatform
+FallingSpikePlatform
 #HasGraphic
 true
 #IsSolid
 true
 # PositionX
-554
+1312
 # PositionY
-541
+419
 #
 #Type of Object
-DisintegratingPlatform
+Lever
 #HasGraphic
 true
 #IsSolid
 true
 # PositionX
-874
+1686
 # PositionY
-541
+340
 #
 #Type of Object
-DisintegratingPlatform
+FloorSpikes
 #HasGraphic
 true
 #IsSolid
-true
+false
 # PositionX
-1179
+2229
 # PositionY
-541
+770
 #
 #Type of Object
-DisintegratingPlatform
+FloorSpikes
 #HasGraphic
 true
 #IsSolid
-true
+false
 # PositionX
-1476
+2459
 # PositionY
-541
+851
+#
+#Type of Object
+FloorSpikes
+#HasGraphic
+true
+#IsSolid
+false
+# PositionX
+2651
+# PositionY
+910
+#
+#Type of Object
+FloorSpikes
+#HasGraphic
+true
+#IsSolid
+false
+# PositionX
+2818
+# PositionY
+977
+#

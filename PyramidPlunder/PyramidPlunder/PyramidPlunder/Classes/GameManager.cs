@@ -186,7 +186,11 @@ namespace Pyramid_Plunder.Classes
                         {
                             GameObject tempObject = FindInteractionObject(player, InteractionTypes.PlayerAction);
                             if (tempObject != null)
-                                player.InteractWith(tempObject, InteractionTypes.PlayerAction);
+                            {
+                                InteractionActions interaction = player.InteractWith(tempObject, InteractionTypes.PlayerAction);
+                                if (interaction != InteractionActions.None)
+                                    currentRoom.PlayerInteraction(interaction);
+                            }
                         }
 
                         for (int i = 0; i < currentRoom.ObjectArray.Length; i++)

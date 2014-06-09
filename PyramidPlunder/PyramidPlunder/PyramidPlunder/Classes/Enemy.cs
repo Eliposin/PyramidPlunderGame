@@ -23,7 +23,7 @@ namespace Pyramid_Plunder.Classes
         /// <param name="objName">The type of enemy.</param>
         /// <param name="content">The Content Manager to load from.</param>
         public Enemy(string objName, ContentManager content)
-            : base(objName, content)
+            : base(objName, content, new Vector2(0, 0), true, null, true)
         {
             isChasingPlayer = false;
             LoadEnemyData();

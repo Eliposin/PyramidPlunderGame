@@ -517,7 +517,7 @@ namespace Pyramid_Plunder.Classes
         /// </summary>
         /// <param name="otherObject">The object to interaction type.</param>
         /// <param name="interactionType">The type of interaction to take place.</param>
-        public override void InteractWith(GameObject otherObject, InteractionTypes interactionType)
+        public override InteractionActions InteractWith(GameObject otherObject, InteractionTypes interactionType)
         {
             if (otherObject.ItemType != ItemList.NullItem && interactionType == InteractionTypes.Collision)
             {
@@ -540,7 +540,8 @@ namespace Pyramid_Plunder.Classes
                                     hudCallback("This door appears to go nowhere.", false, true);
                                 else
                                     door.Open();
-                                    
+
+                                return InteractionActions.None;
                             }
                         }
                         else if (!otherObject.IsSolid && interactionType == InteractionTypes.Collision)
@@ -559,6 +560,8 @@ namespace Pyramid_Plunder.Classes
                                 ResetActionStates(XDirection.Right);
                             else
                                 ResetActionStates(XDirection.Left);
+
+                            return InteractionActions.None;
                         }
                         break;
 
@@ -567,12 +570,21 @@ namespace Pyramid_Plunder.Classes
                         {
                             currentHealth = maxHealth;
                             saveCallback();
+                            return InteractionActions.None;
+                        }
+                        break;
+                    case "Lever":
+                        if (interactionType == InteractionTypes.PlayerAction)
+                        {
+                            otherObject.SwitchLever();
+                            return InteractionActions.Lever;
                         }
                         break;
                     default:
-                        break;
+                        return InteractionActions.None;
                 }
             }
+            return InteractionActions.None;
         }
 
         public bool CheckLoadedRoom()

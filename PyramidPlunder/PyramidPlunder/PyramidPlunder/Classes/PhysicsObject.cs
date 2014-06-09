@@ -49,6 +49,7 @@ namespace Pyramid_Plunder.Classes
         protected bool isGravityAffected;   //Whether or not being ungrounded will cause downward movement.
         protected bool movesOffEdges;
         protected bool sticksToSurfaces;
+        protected bool isEnemy;
         
         protected Alignments alignment;     //Is this a friend, enemy or neutral party to the player?
         protected int maxHealth;            //The most health points the object can hold at one time.
@@ -68,19 +69,26 @@ namespace Pyramid_Plunder.Classes
         /// <param name="objType">The type of object that is represented.</param>
         /// <param name="content">The content manager to load assets to.</param>
         public PhysicsObject(string objName, ContentManager content)
-            : base(objName, content)
+            : this(objName, content, new Vector2(0, 0), true, null, false) { }
+
+        public PhysicsObject(string objName, ContentManager content, Vector2 spawnPosition, bool graphics, AudioEngine audioEngine, bool enemy)
+            : base (objName, content, spawnPosition, graphics, audioEngine)
         {
-            velocityX = 0;
-            velocityY = 0;
-            accelerationX = 0;
-            accelerationY = 0;
-            velocityLimitX = 0;
-            velocityLimitY = 0;
-            displacementX = 0;
-            displacementY = 0;
-            isPhysicsObject = true;
-            currentHealth = maxHealth;
-            LoadObjectData();
+            CheckObjectType();
+            if (isPhysicsObject)
+            {
+                velocityX = 0;
+                velocityY = 0;
+                accelerationX = 0;
+                accelerationY = 0;
+                velocityLimitX = 0;
+                velocityLimitY = 0;
+                displacementX = 0;
+                displacementY = 0;
+                isOnGround = false;
+                currentHealth = maxHealth;
+                LoadObjectData();
+            }
         }
                 
         /// <summary>
@@ -157,6 +165,27 @@ namespace Pyramid_Plunder.Classes
             }
         }
 
+        private void CheckObjectType()
+        {
+            if (isEnemy)
+            {
+                isPhysicsObject = true;
+            }
+            else
+            {
+                switch (objectName)
+                {
+                    case "FallingSpikePlatform":
+                    case "Player":
+                        isPhysicsObject = true;
+                        break;
+                    default:
+                        isPhysicsObject = false;
+                        break;
+                }
+            }
+        }
+
         /// <summary>
         /// Gets or sets the object's velocity in the y-direction.
         /// </summary>
@@ -223,6 +252,7 @@ namespace Pyramid_Plunder.Classes
         public bool IsGravityAffected
         {
             get { return isGravityAffected; }
+            set { isGravityAffected = value; }
         }
 
         public bool MovesOffEdges
@@ -247,6 +277,7 @@ namespace Pyramid_Plunder.Classes
         public bool IsOnGround
         {
             get { return isOnGround; }
+            set { isOnGround = value; }
         }
 
         public bool CeilingAbove
@@ -361,6 +392,8 @@ namespace Pyramid_Plunder.Classes
                     }
                 }
             }
+
+            base.Update(time);
         }
 
         /// <summary>
