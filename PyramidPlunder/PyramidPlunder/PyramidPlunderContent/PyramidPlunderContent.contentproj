@@ -403,8 +403,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Sounds\Death and GameOver.mp3">
-      <Name>Death and GameOver</Name>
+    <Compile Include="Sounds\DeathMusic.mp3">
+      <Name>DeathMusic</Name>
       <Importer>Mp3Importer</Importer>
       <Processor>SongProcessor</Processor>
     </Compile>

@@ -274,6 +274,7 @@ namespace Pyramid_Plunder.Classes
             main = content.Load<Song>("Sounds/MainTitle");
             levelMusicLoop = content.Load<Song>("Sounds/LevelMusicLoopish");
             saveMusicLoop = content.Load<Song>("Sounds/SaveMusicLoop");
+            deathMusic = content.Load<Song>("Sounds/DeathMusic");
 
             play();
         }

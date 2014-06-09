@@ -125,8 +125,10 @@ namespace Pyramid_Plunder.Classes
                             ShowDeathScreen();
                         }
                         else if (player.IsDead)
+                        {
                             player.StartDeathSequence();
-
+                            musicManager.SwitchMusic("Death");
+                        }
                         if (player.Position.Y >= currentRoom.CollisionMap.Height + player.HitBox.Height)
                         {
                             currentRoom.Reset();
@@ -221,7 +223,7 @@ namespace Pyramid_Plunder.Classes
             }
 
             oldKeyState = newKeyState;
-            oldGamePadState = newGamePadState;
+            oldGamePadState = newGamePadState; //add statement referencing isdead from the player class to call the deathmusic.
 
         }
 
@@ -631,6 +633,6 @@ namespace Pyramid_Plunder.Classes
                 oldRoom.Dispose();
                 oldRoom = null;
             }
-        }
+            }
     }
 }
