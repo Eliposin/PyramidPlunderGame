@@ -35,7 +35,7 @@
 #X-COORDINATES ON SPRITE WHICH HAVE COLLISION POINTS
 #When these values are arranged in increasing order, the greatest difference between
 #two consecutive values will be no more than *15*.
-0 72 144 216 288 360
+0 72 144 216 288 359
 #
 #Y-COORDINATES ON SPRITE WHICH HAVE COLLISION POINTS
 #When these values are arranged in increasing order, the greatest difference between
