@@ -264,8 +264,8 @@ namespace Pyramid_Plunder.Classes
         private Song main;
         private Song levelMusicIntro;
         private Song levelMusicLoop;
-        private Song SaveMusicLoop;
-
+        private Song saveMusicLoop;
+        private Song deathMusic;
 
         private string currentMusicName;
 
@@ -274,13 +274,13 @@ namespace Pyramid_Plunder.Classes
             menu = content.Load<Song>("Sounds/MenuScreen");
             main = content.Load<Song>("Sounds/MainTitle");
             levelMusicLoop = content.Load<Song>("Sounds/LevelMusicLoopish");
-            SaveMusicLoop = content.Load<Song>("Sounds/SaveMusicLoop");
+            saveMusicLoop = content.Load<Song>("Sounds/SaveMusicLoop");
+
             play();
         }
         public void play()
         {
             MediaPlayer.Volume = 1f;
-            //MediaPlayer.Play(main);
             MediaPlayer.IsRepeating = true;
             currentMusicName = "Null";
         }
@@ -308,8 +308,13 @@ namespace Pyramid_Plunder.Classes
                         break;
                     case "Save":
                         MediaPlayer.Stop();
-                        MediaPlayer.Play(SaveMusicLoop);
+                        MediaPlayer.Play(saveMusicLoop);
                         currentMusicName = "Save";
+                        break;
+                    case "Death":
+                        MediaPlayer.Stop();
+                        MediaPlayer.Play(deathMusic);
+                        currentMusicName = "Death";
                         break;
                     default: break;
                 }
