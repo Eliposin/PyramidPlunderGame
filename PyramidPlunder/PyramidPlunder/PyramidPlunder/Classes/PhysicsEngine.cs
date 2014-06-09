@@ -27,7 +27,7 @@ namespace Pyramid_Plunder.Classes
 
             if (obj.IsGravityAffected && obj.ObjectName != "Player")
             {
-                int k = 0;
+                ;
             }
             //All ungrounded, gravity-affected objects will have the displacement caused by
             //gravity in this frame added to their y-displacement.

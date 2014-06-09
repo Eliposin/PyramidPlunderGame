@@ -535,14 +535,12 @@ namespace Pyramid_Plunder.Classes
                 //Walls/grounds/ceilings are black on the collision map, i.e. the R value is 0
                 if (room.collisionColors[(int)(coordinateX + intX + row * room.CollisionMap.Width)].R == 0)
                     return true;
-
-                
             }
             //If none of the collision points are in a black region, there is no ground.
 
             foreach (GameObject obj in room.ObjectArray)
             {
-                if (obj.IsSolid && obj.IsSpawned)
+                if (obj.IsSolid && obj.IsSpawned && this != obj)
                 {
                     if ((coordinateX + collisionXs.First() <= obj.Position.X + obj.HitBox.Width) &&
                         (coordinateX + collisionXs.Last() >= obj.Position.X) &&
@@ -577,7 +575,7 @@ namespace Pyramid_Plunder.Classes
 
             foreach (GameObject obj in room.ObjectArray)
             {
-                if (obj.IsSolid && obj.IsSpawned)
+                if (obj.IsSolid && obj.IsSpawned && this != obj)
                 {
                     if ((coordinateX + collisionXs.First() <= obj.Position.X + obj.HitBox.Width) &&
                         (coordinateX + collisionXs.Last() >= obj.Position.X) &&
@@ -726,7 +724,7 @@ namespace Pyramid_Plunder.Classes
                 pointOnSolid = false;
                 foreach (GameObject obj in room.ObjectArray)
                 {
-                    if (obj.IsSolid && obj.IsSpawned)
+                    if (obj.IsSolid && obj.IsSpawned && this != obj)
                     {
                         if ((coordinateX >= obj.Position.X) &&
                             (coordinateX <= obj.Position.X + obj.HitBox.Width) &&
@@ -777,7 +775,7 @@ namespace Pyramid_Plunder.Classes
 
             foreach (GameObject obj in room.ObjectArray)
             {
-                if (obj.IsSolid && obj.IsSpawned)
+                if (obj.IsSolid && obj.IsSpawned && this != obj)
                 {
                     if ((coordinateY + collisionYs.First() <= obj.Position.Y + obj.HitBox.Height) &&
                         (coordinateY + collisionYs.Last() >= obj.Position.Y) &&
@@ -823,7 +821,7 @@ namespace Pyramid_Plunder.Classes
 
             foreach (GameObject obj in room.ObjectArray)
             {
-                if (obj.IsSolid && obj.IsSpawned)
+                if (obj.IsSolid && obj.IsSpawned && this != obj)
                 {
                     if ((coordinateY + collisionYs.First() <= obj.Position.Y + obj.HitBox.Height) &&
                         (coordinateY + collisionYs.Last() >= obj.Position.Y) &&
@@ -875,7 +873,7 @@ namespace Pyramid_Plunder.Classes
             }
             foreach (GameObject obj in room.ObjectArray)
             {
-                if (obj.IsSolid && obj.IsSpawned)
+                if (obj.IsSolid && obj.IsSpawned && this != obj)
                 {
                     if ((CoordinateX + collisionXs.First() <= obj.Position.X + obj.HitBox.Width) &&
                         (CoordinateX + collisionXs.Last() >= obj.Position.X) &&
