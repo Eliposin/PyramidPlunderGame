@@ -123,11 +123,12 @@ namespace Pyramid_Plunder.Classes
                         if (player.DeathSequenceEnded)
                         {
                             ShowDeathScreen();
+                            musicManager.SwitchMusic("Death");
                         }
                         else if (player.IsDead)
                         {
+                            musicManager.PauseMusic();
                             player.StartDeathSequence();
-                            musicManager.SwitchMusic("Death");
                         }
                         if (player.Position.Y >= currentRoom.CollisionMap.Height + player.HitBox.Height)
                         {
