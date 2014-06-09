@@ -177,6 +177,9 @@ namespace Pyramid_Plunder.Classes
                 {
                     case "FallingSpikePlatform":
                     case "Player":
+                    case "FloorThing":
+                    case "Mummy":
+                    case "WallThing":
                         isPhysicsObject = true;
                         break;
                     default:
