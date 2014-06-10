@@ -63,6 +63,8 @@ namespace Pyramid_Plunder.Classes
         protected short[] collisionXs;
         protected short[] collisionYs;
 
+        public PhysicsObject riding;
+        
         /// <summary>
         /// Constructor call
         /// </summary>
@@ -87,6 +89,7 @@ namespace Pyramid_Plunder.Classes
                 displacementY = 0;
                 isOnGround = false;
                 currentHealth = maxHealth;
+                riding = null;
                 LoadObjectData();
             }
         }
@@ -396,6 +399,12 @@ namespace Pyramid_Plunder.Classes
                 }
             }
 
+            //if (riding != null)
+            //{
+            //    displacementX += riding.DisplacementX;
+            //    displacementY += riding.DisplacementY;
+            //}
+
             base.Update(time);
         }
 
@@ -498,6 +507,7 @@ namespace Pyramid_Plunder.Classes
         public virtual void LeaveGround()
         {
             isOnGround = false;
+            riding = null;
         }
 
         public virtual void LeaveCeiling()
@@ -547,6 +557,8 @@ namespace Pyramid_Plunder.Classes
                         (row >= obj.Position.Y) && (row <= obj.Position.Y + obj.HitBox.Height))
                     {
                         obj.StandingOn(objectName);
+                        if(obj.IsPhysicsObject)
+                            riding = (PhysicsObject)obj;
                         return true;
                     }
                 }
@@ -866,8 +878,6 @@ namespace Pyramid_Plunder.Classes
                         //Walls/grounds/ceilings are black on the collision map, i.e. the R value is 0
                         if (room.collisionColors[CoordinateX + intX + (CoordinateY + intY) * room.CollisionMap.Width].R == 0)
                             return true;
-                    
-                            
                     }
                 }
             }
@@ -879,7 +889,11 @@ namespace Pyramid_Plunder.Classes
                         (CoordinateX + collisionXs.Last() >= obj.Position.X) &&
                         (CoordinateY + collisionYs.First() <= obj.Position.Y + obj.HitBox.Height) &&
                         (CoordinateY + collisionYs.Last() >= obj.Position.Y))
+                    {
+                        if (dX == 0 & obj.IsPhysicsObject)
+                            riding = (PhysicsObject)obj;
                         return true;
+                    }
                 }
             }
             return false;
@@ -893,7 +907,11 @@ namespace Pyramid_Plunder.Classes
         {
             //After the physics engine sets the displacements to the amounts the object actually
             //*can* move, it adds those displacements to its current position.
-            base.Position = new Vector2(Position.X + displacementX, Position.Y + displacementY);
+            //if (riding != null)
+            //    base.Position = new Vector2(Position.X + displacementX + riding.DisplacementX, Position.Y + displacementY + riding.DisplacementY);
+            //else
+                base.Position = new Vector2(Position.X + displacementX, Position.Y + displacementY);
+            
             //Then the displacement values will start at zero for the next frame.
             displacementX = 0;
             displacementY = 0;

@@ -169,8 +169,9 @@ namespace Pyramid_Plunder.Classes
                         {
                             if (player.IsVulnerable)
                                 player.DetectEnemyCollisions(currentRoom);
-                            player.Update(gameTime); //Determines what the Player is trying to do (this is where the gameTime is taken into account)
                         }
+                        ////Moved down for falling platforms
+                        //player.Update(gameTime); //Determines what the Player is trying to do (this is where the gameTime is taken into account)
 
                         for (int i = 0; i < currentRoom.ObjectArray.Length; i++)
                         {
@@ -178,26 +179,58 @@ namespace Pyramid_Plunder.Classes
                                 currentRoom.ObjectArray[i].Position.Y > currentRoom.CollisionMap.Height)
                                 currentRoom.ObjectArray[i].Despawn();
                         }
+                        
+                        ////Original update loop for enemies and environment objects, before implementing riding of physics objects
+                        ////Determine where the room's enemies want to move, (possibly) based on where the player is currently
+                        //foreach (Enemy enemy in currentRoom.EnemyArray)
+                        //    enemy.Update(gameTime, player);
 
-                        //Determine where the room's enemies want to move, (possibly) based on where the player is currently
-                        foreach (Enemy enemy in currentRoom.EnemyArray)
-                            enemy.Update(gameTime, player);
+                        //foreach (GameObject obj in currentRoom.EnvironmentArray)
+                        //    obj.Update(gameTime);
 
                         foreach (GameObject obj in currentRoom.EnvironmentArray)
-                            obj.Update(gameTime);
+                        {
+                            if(obj.IsPhysicsObject && ((PhysicsObject)obj).riding == null)
+                                obj.Update(gameTime);
+                        }
 
-                        PhysicsEngine.Update(player, currentRoom, gameTime); //Checks for collisions and modifies Velocity
-                        player.Move(); //Actually sets the new position of the object
+                        foreach (GameObject obj in currentRoom.EnvironmentArray)
+                        {
+                            if (!obj.IsPhysicsObject || (obj.IsPhysicsObject && ((PhysicsObject)obj).riding != null))
+                                obj.Update(gameTime);
+                        }
 
+                        foreach (Enemy enemy in currentRoom.EnemyArray)
+                                enemy.Update(gameTime, player);
+
+                        player.Update(gameTime);
+                        
                         //Do the same thing for each physics object in the current room.
+                        //for (int i = 0; i < currentRoom.ObjectArray.Length; i++)
+                        //{
+                        //    if (currentRoom.ObjectArray[i].IsPhysicsObject)
+                        //    {
+                        //        PhysicsEngine.Update((PhysicsObject)currentRoom.ObjectArray[i], currentRoom, gameTime);
+                        //       ((PhysicsObject)currentRoom.ObjectArray[i]).Move();
+                        //    }
+                        //}
                         for (int i = 0; i < currentRoom.ObjectArray.Length; i++)
                         {
                             if (currentRoom.ObjectArray[i].IsPhysicsObject)
                             {
                                 PhysicsEngine.Update((PhysicsObject)currentRoom.ObjectArray[i], currentRoom, gameTime);
+                            }
+                        }
+                        PhysicsEngine.Update(player, currentRoom, gameTime); //Checks for collisions and modifies Velocity
+
+                        for (int i = 0; i < currentRoom.ObjectArray.Length; i++)
+                        {
+                            if (currentRoom.ObjectArray[i].IsPhysicsObject)
+                            {
                                 ((PhysicsObject)currentRoom.ObjectArray[i]).Move();
                             }
                         }
+                        player.Move(); //Actually sets the new position of the object
 
                         //Finally, update the drawing position of the objects in the room.
                         player.UpdateCoordinates(currentRoom.CollisionMap.Bounds);

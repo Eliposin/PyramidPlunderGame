@@ -23,6 +23,7 @@ namespace Pyramid_Plunder.Classes
         /// <param name="time">The amount of time since the last frame.</param>
         public static void Update(PhysicsObject obj, Room room, GameTime time)
         {
+            PhysicsObject ridingAtStart = obj.riding;
             float totalTime = (float)(time.ElapsedGameTime.TotalSeconds);
             //All ungrounded, gravity-affected objects will have the displacement caused by
             //gravity in this frame added to their y-displacement.
@@ -193,6 +194,12 @@ namespace Pyramid_Plunder.Classes
             {
                 if (!obj.CheckCeiling(room, (int)obj.DisplacementX, (int)obj.DisplacementY))
                     obj.LeaveCeiling();
+            }
+
+            if ((obj.riding != null) && (obj.riding == ridingAtStart))
+            {
+                obj.DisplacementX += ridingAtStart.DisplacementX;
+                obj.DisplacementY += ridingAtStart.DisplacementY;
             }
         }
 
