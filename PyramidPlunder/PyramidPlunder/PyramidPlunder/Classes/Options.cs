@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Pyramid_Plunder.Classes
 {
-    class Options : GameManager
+    class Options
     {
         public const float THUMBSTICK_THRESHOLD = 0.3f;
         protected GamePadState gp, oldGp;

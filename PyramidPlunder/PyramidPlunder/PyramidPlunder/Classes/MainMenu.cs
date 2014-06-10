@@ -7,9 +7,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Pyramid_Plunder.Classes
 {
-    public class PauseMenu : GameMenu
+    public class MainMenu : GameMenu
     {
-        private MenuNode ResumeButton;
+        private MenuNode StartButton;
         private MenuNode LoadButton;
         private MenuNode OptionsButton;
         private MenuNode QuitButton;
@@ -20,27 +20,25 @@ namespace Pyramid_Plunder.Classes
 
         private OptionsMenu optionsMenu;
         private bool isOptionsDisplayed;
-        private bool isPaused;
 
-        public PauseMenu(DelMenu c, GameManager.GameSettings settings)
+        public MainMenu(DelMenu c, GameManager.GameSettings settings)
         {
             gameSettings = settings;
             callback = c;
             InitializeButtons();
             font = Content.Load<SpriteFont>("Fonts/MenuFont");
-            background = new GameGraphic("OptionsMenuBackground", Content);
+            background = new GameGraphic("MainMenuBackground", Content);
 
-            selectedNode = ResumeButton;
-            ResumeButton.IsSelected = true;
+            selectedNode = StartButton;
+            StartButton.IsSelected = true;
 
             nodeList = new List<MenuNode>();
-            nodeList.Add(ResumeButton);
+            nodeList.Add(StartButton);
             nodeList.Add(LoadButton);
             nodeList.Add(OptionsButton);
             nodeList.Add(QuitButton);
 
             hasFocus = true;
-            isPaused = true;
             isOptionsDisplayed = false;
         }
 
@@ -67,26 +65,26 @@ namespace Pyramid_Plunder.Classes
 
         protected override void InitializeButtons()
         {
-            ResumeButton = new MenuNode();
+            StartButton = new MenuNode();
             LoadButton = new MenuNode();
             OptionsButton = new MenuNode();
             QuitButton = new MenuNode();
 
 
-            ResumeButton.Name = "Resume Game";
-            ResumeButton.Selectable = true;
-            ResumeButton.IsSelected = false;
-            ResumeButton.Position = new Vector2(400, 100);
-            ResumeButton.Up = QuitButton;
-            ResumeButton.Down = LoadButton;
-            ResumeButton.Left = null;
-            ResumeButton.Right = null;
+            StartButton.Name = "Start New Game";
+            StartButton.Selectable = true;
+            StartButton.IsSelected = false;
+            StartButton.Position = new Vector2(150, 100);
+            StartButton.Up = QuitButton;
+            StartButton.Down = LoadButton;
+            StartButton.Left = null;
+            StartButton.Right = null;
 
             LoadButton.Name = "Load Saved Game";
             LoadButton.Selectable = true;
             LoadButton.IsSelected = false;
-            LoadButton.Position = new Vector2(400, 200);
-            LoadButton.Up = ResumeButton;
+            LoadButton.Position = new Vector2(150, 200);
+            LoadButton.Up = StartButton;
             LoadButton.Down = OptionsButton;
             LoadButton.Left = null;
             LoadButton.Right = null;
@@ -94,7 +92,7 @@ namespace Pyramid_Plunder.Classes
             OptionsButton.Name = "Options...";
             OptionsButton.Selectable = true;
             OptionsButton.IsSelected = false;
-            OptionsButton.Position = new Vector2(400, 300);
+            OptionsButton.Position = new Vector2(150, 300);
             OptionsButton.Up = LoadButton;
             OptionsButton.Down = QuitButton;
             OptionsButton.Left = null;
@@ -103,19 +101,17 @@ namespace Pyramid_Plunder.Classes
             QuitButton.Name = "Quit";
             QuitButton.Selectable = true;
             QuitButton.IsSelected = false;
-            QuitButton.Position = new Vector2(400, 400);
+            QuitButton.Position = new Vector2(150, 400);
             QuitButton.Up = OptionsButton;
-            QuitButton.Down = ResumeButton;
+            QuitButton.Down = StartButton;
             QuitButton.Left = null;
             QuitButton.Right = null;
         }
 
         protected override void Select(MenuNode button)
         {
-            if (button == ResumeButton)
-            {
-                isPaused = false;
-            }
+            if (button == StartButton)
+                callback(MenuCallbacks.NewGame);
             else if (button == LoadButton)
                 callback(MenuCallbacks.LoadGame);
             else if (button == QuitButton)
@@ -134,11 +130,6 @@ namespace Pyramid_Plunder.Classes
             hasFocus = true;
             optionsMenu.Dispose();
             optionsMenu = null;
-        }
-
-        public bool IsPaused
-        {
-            get { return isPaused; }
         }
     }
 }

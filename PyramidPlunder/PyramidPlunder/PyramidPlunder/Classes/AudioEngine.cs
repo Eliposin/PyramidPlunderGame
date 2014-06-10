@@ -53,7 +53,8 @@ namespace Pyramid_Plunder.Classes
         private SoundEffect lavaLoop;
         private SoundEffectInstance soundInstance;
 
-        private float volume = 1f; //TODO: Call menu's volume parameter to get the user defined varaible.
+        private static float volume = 1f; //TODO: Call menu's volume parameter to get the user defined varaible.
+
         private const float zero = 0f;
 
         // Stores the called object type for reference.
@@ -164,13 +165,13 @@ namespace Pyramid_Plunder.Classes
                         switch (i)
                         {
                             case 0:
-                                jump1.Play();
+                                jump1.Play(volume, zero, zero);
                                 break;
                             case 1:
-                                jump2.Play();
+                                jump2.Play(volume, zero, zero);
                                 break;
                             case 2:
-                                jump3.Play();
+                                jump3.Play(volume, zero, zero);
                                 break;
                             default:
                                 break;
@@ -182,13 +183,13 @@ namespace Pyramid_Plunder.Classes
                         switch (i)
                         {
                             case 0:
-                                jump1.Play();
+                                jump1.Play(volume, zero, zero);
                                 break;
                             case 1:
-                                jump2.Play();
+                                jump2.Play(volume, zero, zero);
                                 break;
                             case 2:
-                                jump3.Play();
+                                jump3.Play(volume, zero, zero);
                                 break;
                             default:
                                 break;
@@ -256,13 +257,13 @@ namespace Pyramid_Plunder.Classes
                         switch (i)
                         {
                             case 0:
-                                oof1.Play();
+                                oof1.Play(volume, zero, zero);
                                 break;
                             case 1:
-                                oof2.Play();
+                                oof2.Play(volume, zero, zero);
                                 break;
                             case 2:
-                                oof3.Play();
+                                oof3.Play(volume, zero, zero);
                                 break;
                             default:
                                 break;
@@ -277,6 +278,12 @@ namespace Pyramid_Plunder.Classes
                 System.Diagnostics.Debug.WriteLine("The audio clip was not loaded for object: " + objectName +
                     "\n" + e.Message);
             }
+        }
+
+        public static float Volume
+        {
+            get { return volume; }
+            set { volume = value; }
         }
     }
  
@@ -293,6 +300,8 @@ namespace Pyramid_Plunder.Classes
 
         private string currentMusicName;
 
+        private static float volume = 1f;
+
         public BGM(ContentManager content)
         {
             menu = content.Load<Song>("Sounds/MenuScreen");
@@ -303,9 +312,16 @@ namespace Pyramid_Plunder.Classes
 
             play();
         }
+
+        public static void UpdateVolume(float newVolume)
+        {
+            volume = newVolume;
+            MediaPlayer.Volume = volume;
+        }
+
         public void play()
         {
-            MediaPlayer.Volume = 1f;
+            MediaPlayer.Volume = volume;
             MediaPlayer.IsRepeating = true;
             currentMusicName = "Null";
         }
@@ -319,26 +335,31 @@ namespace Pyramid_Plunder.Classes
                     case "Main":
                         MediaPlayer.Stop();
                         MediaPlayer.Play(main);
+                        MediaPlayer.Volume = volume;
                         currentMusicName = "Main";
                         break;
                     case "Menu":
                         MediaPlayer.Stop();
                         MediaPlayer.Play(menu);
+                        MediaPlayer.Volume = volume;
                         currentMusicName = "Menu";
                         break;
                     case "Level":
                         MediaPlayer.Stop();
                         MediaPlayer.Play(levelMusicLoop);
+                        MediaPlayer.Volume = volume;
                         currentMusicName = "Level";
                         break;
                     case "Save":
                         MediaPlayer.Stop();
                         MediaPlayer.Play(saveMusicLoop);
+                        MediaPlayer.Volume = volume;
                         currentMusicName = "Save";
                         break;
                     case "Death":
                         MediaPlayer.Stop();
                         MediaPlayer.Play(deathMusic);
+                        MediaPlayer.Volume = volume;
                         currentMusicName = "Death";
                         break;
                     default: break;
@@ -354,6 +375,12 @@ namespace Pyramid_Plunder.Classes
         public void UnpauseMusic()
         {
             MediaPlayer.Resume();
+        }
+
+        public static float Volume
+        {
+            get { return volume; }
+            set { volume = value; }
         }
     }
 }

@@ -9,7 +9,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.GamerServices;
-using PyramidPlunder.Classes;
 
 namespace Pyramid_Plunder.Classes
 {
@@ -17,7 +16,7 @@ namespace Pyramid_Plunder.Classes
     /// The GameManager class is the top managing class for the game.  Its purpose is to 
     /// handle the structure and flow of the classes and program.
     /// </summary>
-    class GameManager
+    public class GameManager
     {
         private bool isPaused;
         private bool inGame;
@@ -32,7 +31,8 @@ namespace Pyramid_Plunder.Classes
         private GamePadState newGamePadState;
 
 
-        private Menu gameMenu;
+        private MainMenu gameMenu;
+        private PauseMenu pauseMenu;
         private GameGraphic deathScreen;
         private Room currentRoom;
         private Room oldRoom;
@@ -52,9 +52,22 @@ namespace Pyramid_Plunder.Classes
         private double freezeTimerMax;
         private double freezeTimer;
 
-        private struct GameSettings
+        public class GameSettings
         {
+            public float MusicVolume;
+            public float SoundEffectsVolume;
 
+            public GameSettings()
+            {
+                MusicVolume = 0.75f;
+                SoundEffectsVolume = 0.75f;
+            }
+            
+            public void UpdateVolume()
+            {
+                AudioEngine.Volume = SoundEffectsVolume;
+                BGM.UpdateVolume(MusicVolume);
+            }
         }
 
         /// <summary>
@@ -83,7 +96,7 @@ namespace Pyramid_Plunder.Classes
 
             LoadGameSettings();
 
-            gameMenu = new Menu("MenuFont", MenuCallback);
+            gameMenu = new MainMenu(MenuCallback, gameSettings);
 
             musicManager = new BGM(gContent);
 
@@ -114,7 +127,17 @@ namespace Pyramid_Plunder.Classes
                 CheckPaused();
                 if (isPaused)
                 {
-
+                    if (pauseMenu != null)
+                    {
+                        pauseMenu.Update(gameTime);
+                        if (!pauseMenu.IsPaused)
+                        {
+                            isPaused = false;
+                            isFrozen = false;
+                            pauseMenu.Dispose();
+                            pauseMenu = null;
+                        }
+                    }
                 }
                 else
                 {
@@ -240,17 +263,10 @@ namespace Pyramid_Plunder.Classes
         {
             if (!inGame)
             {
-                gameMenu.Draw(spriteBatch);
+                gameMenu.Draw(spriteBatch, time);
             }
             else
-            {
-                if (isPaused)
-                {
-                    //pM.Draw(spriteBatch);
-                }
-
-                
-                    
+            { 
                 currentRoom.DrawBackground(spriteBatch, time, !isFrozen);
                 player.Draw(spriteBatch, time, !isFrozen);
                 currentRoom.DrawForeground(spriteBatch, time, !isFrozen);
@@ -262,6 +278,11 @@ namespace Pyramid_Plunder.Classes
 
                 if (isDeathScreenUp)
                     deathScreen.Draw(spriteBatch, time);
+                
+                if (isPaused)
+                {
+                    pauseMenu.Draw(spriteBatch, time);
+                }
             }
 
             DrawFPS(spriteBatch, time);
@@ -314,12 +335,15 @@ namespace Pyramid_Plunder.Classes
                     {
                         isPaused = false;
                         isFrozen = false;
+                        pauseMenu.Dispose();
+                        pauseMenu = null;
                     }
                     else
                     {
                         isFrozen = true;
                         isPaused = true;
                         freezeTimerMax = -1;
+                        pauseMenu = new PauseMenu(MenuCallback, gameSettings);
                     }
                 }
             }
@@ -330,7 +354,7 @@ namespace Pyramid_Plunder.Classes
         /// </summary>
         private void LoadGameSettings()
         {
-            // TODO: Actually load the game settings
+            gameSettings = new GameSettings();
         }
 
         /// <summary>
@@ -345,6 +369,8 @@ namespace Pyramid_Plunder.Classes
                     StartNewGame();
                     break;
                 case MenuCallbacks.LoadGame:
+                    if (inGame)
+                        ResetGame();
                     LoadGame();
                     break;
                 case MenuCallbacks.Quit:

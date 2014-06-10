@@ -1063,5 +1063,10 @@ namespace Pyramid_Plunder.Classes
                 drawnLastFrame = false;
             }
         }
+
+        public XDirection CurrentDirection
+        {
+            get { return PlayerXFacing; }
+        }
     }
 }

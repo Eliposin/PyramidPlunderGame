@@ -87,14 +87,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\AudioEngine.cs" />
+    <Compile Include="Classes\PauseMenu.cs" />
     <Compile Include="Classes\Door.cs" />
     <Compile Include="Classes\Enemy.cs" />
     <Compile Include="Classes\GameGraphic.cs" />
     <Compile Include="Classes\GameManager.cs" />
+    <Compile Include="Classes\GameMenu.cs" />
     <Compile Include="Classes\GameObject.cs" />
     <Compile Include="Classes\HUD.cs" />
     <Compile Include="Classes\InfoBox.cs" />
-    <Compile Include="Classes\Menu.cs" />
+    <Compile Include="Classes\MainMenu.cs" />
+    <Compile Include="Classes\MenuOld.cs" />
+    <Compile Include="Classes\Options.cs" />
+    <Compile Include="Classes\OptionsMenu.cs" />
     <Compile Include="Classes\PhysicsEngine.cs" />
     <Compile Include="Classes\PhysicsObject.cs" />
     <Compile Include="Classes\Player.cs" />
@@ -105,6 +110,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Data\GraphicsData\OptionsMenuBackground.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\GraphicsData\MainMenuBackground.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Data\GraphicsData\Lever.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
