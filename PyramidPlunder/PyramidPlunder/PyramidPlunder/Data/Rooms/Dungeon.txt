@@ -28,7 +28,7 @@ Menu
 # Linked Room
 ThePit
 # Linked Door (index)
-2
+3
 # Lock Type
 0
 # PositionX
