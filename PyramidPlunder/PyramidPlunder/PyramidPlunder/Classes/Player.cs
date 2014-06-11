@@ -60,10 +60,10 @@ namespace Pyramid_Plunder.Classes
                                                 //Should be zero if no stun.
         const float INVINCIBLE_END = 2;         //How long (seconds) the object is invincible upon taking damage.
                                                 //Should be greater than stunTime.
-        const float DEATH_SEQUENCE_END = -2;
-        const float DEATH_SEQUENCE_START = -4.5f;
-        const float SWITCH_TO_DEAD_FRAME = -4.4f;
-        const float DEATH_SEQUENCE_TIME_EXTENSION = 0.017f;
+        const float DEATH_SEQUENCE_END_NO_RAGDOLL = -5;
+        const float DEATH_SEQUENCE_END_WITH_RAGDOLL = -2;
+        const float DEATH_SEQUENCE_START = -7;
+        const float SWITCH_TO_DEAD_FRAME = -6.9f;
         
         public enum XDirection
         {
@@ -111,6 +111,7 @@ namespace Pyramid_Plunder.Classes
         private sbyte dashes = INFINITE_DASHES;
         private float dashStatus = DASH_ALLOWED;
         protected float damageStatus = VULNERABLE;
+        protected float deathSequenceEndTime = DEATH_SEQUENCE_END_NO_RAGDOLL;
 
         private double freezeTimerMax;
         private bool upBtnFlag = false;
@@ -442,7 +443,7 @@ namespace Pyramid_Plunder.Classes
                 }
             }
 
-            if ((damageStatus >= SWITCH_TO_DEAD_FRAME) && (damageStatus <= DEATH_SEQUENCE_END) &&
+            if ((damageStatus >= SWITCH_TO_DEAD_FRAME) && (damageStatus <= deathSequenceEndTime) &&
                 (currentFrame == 0))
             {
                 SwitchToDeathCollision();
@@ -451,8 +452,8 @@ namespace Pyramid_Plunder.Classes
 
             if (damageStatus >= INVINCIBLE_START)
                 damageStatus += totalTime;
-            else if (damageStatus < DEATH_SEQUENCE_END)
-                damageStatus = Math.Min(DEATH_SEQUENCE_END, damageStatus + totalTime);
+            else if (damageStatus < deathSequenceEndTime)
+                damageStatus = Math.Min(deathSequenceEndTime, damageStatus + totalTime);
             
             if (PlayerXFacing == XDirection.Right)
             {
@@ -926,9 +927,10 @@ namespace Pyramid_Plunder.Classes
         {
             get
             {
-                if (damageStatus == DEATH_SEQUENCE_END)
+                if (damageStatus == deathSequenceEndTime)
                 {
                     SwitchToLifeCollision();
+                    deathSequenceEndTime = DEATH_SEQUENCE_END_NO_RAGDOLL;
                     return true;
                 }
                 else
@@ -979,8 +981,7 @@ namespace Pyramid_Plunder.Classes
             else
             {
                 velocityY -= 500;
-                if (damageStatus < DEATH_SEQUENCE_END)
-                    damageStatus -= DEATH_SEQUENCE_TIME_EXTENSION;
+                deathSequenceEndTime = DEATH_SEQUENCE_END_WITH_RAGDOLL;
                 ////Uncomment these next two lines if you want him "spring back to life" after
                 ////being hit while "dead":
                 //currentFrame = 0;
