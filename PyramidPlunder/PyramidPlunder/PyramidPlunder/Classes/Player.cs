@@ -61,13 +61,9 @@ namespace Pyramid_Plunder.Classes
         const float INVINCIBLE_END = 2;         //How long (seconds) the object is invincible upon taking damage.
                                                 //Should be greater than stunTime.
         const float DEATH_SEQUENCE_END = -2;
-        
-        ////Uncommment these values for normal deaths
-        //const float DEATH_SEQUENCE_START = -3;
-        //const float SWITCH_TO_DEATH = -2.9f;
-        //Uncomment these values to prolong epic deaths
-        const float DEATH_SEQUENCE_START = -7;
-        const float SWITCH_TO_DEAD_FRAME = -6.9f;
+        const float DEATH_SEQUENCE_START = -4.5f;
+        const float SWITCH_TO_DEAD_FRAME = -4.4f;
+        const float DEATH_SEQUENCE_TIME_EXTENSION = 0.017f;
         
         public enum XDirection
         {
@@ -773,13 +769,13 @@ namespace Pyramid_Plunder.Classes
                 dashBtnFlag = true;
             else if (itemArray[(int)Powerups.Dash] && (gpState.Triggers.Right == 0 && newGPState.Triggers.Right > 0))
             {
-                if (currentHealth > 0)
+                if (currentHealth > 0 && dashStatus < DASH_HELD && dashStatus >= DASH_ALLOWED)
                     PlayerXFacing = XDirection.Right;
                 dashBtnFlag = true;
             }
             else if (itemArray[(int)Powerups.Dash] && (gpState.Triggers.Left == 0 && newGPState.Triggers.Left > 0))
             {
-                if (currentHealth > 0)
+                if (currentHealth > 0 && dashStatus < DASH_HELD && dashStatus >= DASH_ALLOWED)
                     PlayerXFacing = XDirection.Left;
                 dashBtnFlag = true;
             }
@@ -903,10 +899,6 @@ namespace Pyramid_Plunder.Classes
 
         public bool IsVulnerable
         {
-            ////Uncomment this version for normal deaths
-            //get { return (currentHealth > 0 && damageStatus < 0); }
-
-            //Uncomment this version for epic deaths
             get { return (damageStatus < 0); }
         }
 
@@ -987,6 +979,8 @@ namespace Pyramid_Plunder.Classes
             else
             {
                 velocityY -= 500;
+                if (damageStatus < DEATH_SEQUENCE_END)
+                    damageStatus -= DEATH_SEQUENCE_TIME_EXTENSION;
                 ////Uncomment these next two lines if you want him "spring back to life" after
                 ////being hit while "dead":
                 //currentFrame = 0;

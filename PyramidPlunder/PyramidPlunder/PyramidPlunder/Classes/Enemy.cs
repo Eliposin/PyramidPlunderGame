@@ -169,18 +169,13 @@ namespace Pyramid_Plunder.Classes
                                     velocityLimitX = MUMMY_MAXSPEED;
                                     accelerationX = 2160;
                                 }
-                                //velocityX = movementSpeed;
                                 else //if (player.Position.X + player.CollisionXs.Last() < position.X + collisionXs.First())
                                 {
                                     velocityLimitX = -MUMMY_MAXSPEED;
                                     accelerationX = -2160;
                                 }
-                                    //velocityX = -movementSpeed;
-                                    //else
-                                    //    velocityX = 0;
-
-                                    if ((wallOnLeft && velocityX < 0) || (wallOnRight && velocityX > 0))
-                                        velocityY = -900;
+                                if ((wallOnLeft && velocityX < 0) || (wallOnRight && velocityX > 0))
+                                    velocityY = -900;
                             }
                         }
                         else if (velocityX == 0)
@@ -216,11 +211,6 @@ namespace Pyramid_Plunder.Classes
                 if (!isChasingPlayer && isOnGround)
                     velocityX *= -1;
             }
-            //if (objectName != "WallThing")
-            //{
-            //    if (!isChasingPlayer && isOnGround)
-            //        velocityX *= -1;
-            //}
         }
 
         /// <summary>
