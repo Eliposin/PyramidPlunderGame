@@ -9,6 +9,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Pyramid_Plunder.Classes
 {
+    /// <summary>
+    /// The class for objects that move, are affected by gravity, and/or collide with floors/ceilings/walls and solid objects.
+    /// </summary>
     public class PhysicsObject : GameObject
     {
         public enum Alignments : byte

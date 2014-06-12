@@ -97,8 +97,6 @@
     <Compile Include="Classes\HUD.cs" />
     <Compile Include="Classes\InfoBox.cs" />
     <Compile Include="Classes\MainMenu.cs" />
-    <Compile Include="Classes\MenuOld.cs" />
-    <Compile Include="Classes\Options.cs" />
     <Compile Include="Classes\OptionsMenu.cs" />
     <Compile Include="Classes\PhysicsEngine.cs" />
     <Compile Include="Classes\PhysicsObject.cs" />

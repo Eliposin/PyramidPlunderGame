@@ -9,6 +9,9 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Pyramid_Plunder.Classes
 {
+    /// <summary>
+    /// The class representing the character the player controls during the game.
+    /// </summary>
     public class Player : PhysicsObject
     {
         public const int DEFAULT_SCREEN_POSITIONX = 610; //The player's ideal x-coordinates on the screen
@@ -55,18 +58,20 @@ namespace Pyramid_Plunder.Classes
                                                 //direction opposite of their current running direction. (Pixels/sec/sec)
         const float KNOCK_BACK_V = 840;         //Velocity at which the character is knocked back after enemy collision. (Pixels/sec)
 
-        const int PIT_FALL_DAMAGE = 2;          //Amount of Health points lost
-        const int HAZARD_DAMAGE = 2;
-        const float VULNERABLE = -1;
-        const float INVINCIBLE_START = 0;
+        const int PIT_FALL_DAMAGE = 2;          //Amount of Health points lost when falling into a pit.
+        const int HAZARD_DAMAGE = 2;            //Amount of Health points lost when touching a hazard.
+        
+        //These constants are the various significant values that the damageStatus property attains during gameplay.
+        const float VULNERABLE = -1;            //Player is susceptible to colliding with enemies.
+        const float INVINCIBLE_START = 0;       //Player has just become invincible.
         const float STUN_END = 0.375F;          //How long (seconds) the object is stunned upon taking damage.
                                                 //Should be zero if no stun.
         const float INVINCIBLE_END = 2;         //How long (seconds) the object is invincible upon taking damage.
                                                 //Should be greater than stunTime.
-        const float DEATH_SEQUENCE_END_NO_RAGDOLL = -5;
-        const float DEATH_SEQUENCE_END_WITH_RAGDOLL = -2;
-        const float DEATH_SEQUENCE_START = -7;
-        const float SWITCH_TO_DEAD_FRAME = -6.9f;
+        const float DEATH_SEQUENCE_END_NO_RAGDOLL = -5;     //The end of a death sequence in which no enemies ragdolled the player.
+        const float DEATH_SEQUENCE_END_WITH_RAGDOLL = -2;   //The end of a death sequence in which enemies ragdolled the player.
+        const float DEATH_SEQUENCE_START = -7;              //The player has just died and now the death sequence has begun.
+        const float SWITCH_TO_DEAD_FRAME = -6.9f;           //The player is in the death sequence and is now switching to its lying sprite/hitbox.
         
         public enum XDirection
         {
@@ -105,23 +110,34 @@ namespace Pyramid_Plunder.Classes
             DyingLeft = 11,
         }
 
-        private bool drawnLastFrame = true;
-        private XDirection LatestXArrow = XDirection.None;
-        private XDirection PlayerXFacing = XDirection.Right;
-        private XDirection WallSlideDirection = XDirection.None;
-        private JumpState PlayerJumpState = JumpState.Allowed;
-        private byte midairJumps = MAX_MIDAIR_JUMPS;
-        private sbyte dashes = INFINITE_DASHES;
-        private float dashStatus = DASH_ALLOWED;
-        protected float damageStatus = VULNERABLE;
-        protected float deathSequenceEndTime = DEATH_SEQUENCE_END_NO_RAGDOLL;
+        private bool drawnLastFrame = true;                 //Used to make the character blink during its invincibility phase.
+        private XDirection LatestXArrow = XDirection.None;  //The latest horizontal direction (left or right) or lack thereof (none)
+                                                            //pressed on the arrow pad or joystick.
+        private XDirection PlayerXFacing = XDirection.Right;//The direction the player is facing
+        private XDirection WallSlideDirection = XDirection.None;    //The side of the player that the wall it is sliding on is touching:
+                                                                    //Left, right, or none.
+        private JumpState PlayerJumpState = JumpState.Allowed;      //Whether the character is allowed to jump or is currently jumping.
+        private byte midairJumps = MAX_MIDAIR_JUMPS;                //How many midair jumps the player is allowed to perform at any given moment.
+        private sbyte dashes = INFINITE_DASHES;                     //How many dashes the player is allowed to perform at any given moment.
+        private float dashStatus = DASH_ALLOWED;                    //Keeps track of if or when the character will dash in response to presses of
+                                                                    //the dash button.
+        protected float damageStatus = VULNERABLE;                  //Keeps track of if or for how long the player has been damaged and/or dead, or
+                                                                    //if they are susceptible to damage.
+        protected float deathSequenceEndTime = DEATH_SEQUENCE_END_NO_RAGDOLL;   //The damageStatus value at which the death sequence ends and
+                                                                                //the game over screen appears.
 
+        private double freezeTimerMax;
+
+        //Flags which for each relevant button specifying if it it being pressed.
+        private bool upBtnFlag = false;
+        private bool downBtnFlag = false;
         private bool leftBtnFlag = false;
         private bool rightBtnFlag = false;
         private bool jumpBtnFlag = false;
         private bool dashBtnFlag = false;
         private bool interactBtnFlag = false;
 
+        //Flags which specify which powerups the player has obtained.
         private bool[] itemArray;
 
         private DelVoid saveCallback;
@@ -130,9 +146,11 @@ namespace Pyramid_Plunder.Classes
 
         private Door loadingDoor;
 
+        //The arrays assigned to collisionXs and collisionYs when the player is alive
         private short[] lifeCollisionXs;
         private short[] lifeCollisionYs;
 
+        //The arrays assigned to collisionXs and collisionYs when the player is dead
         private short[] deathCollisionXs;
         private short[] deathCollisionYs;
         
@@ -180,6 +198,11 @@ namespace Pyramid_Plunder.Classes
             coordinates = new Vector2(DEFAULT_SCREEN_POSITIONX, DEFAULT_SCREEN_POSITIONY);
         }
 
+        /// <summary>
+        /// Determines the player's intended x and y velocities based on the most recent user input,
+        /// while updating other action-related properties.
+        /// </summary>
+        /// <param name="time">The amount of gametime that has elapsed since the last frame.</param>
         public override void Update(GameTime time)
         {
             float totalTime = (float)(time.ElapsedGameTime.TotalSeconds);
@@ -581,7 +604,7 @@ namespace Pyramid_Plunder.Classes
             }
             return InteractionActions.None;
         }
-
+                
         public bool CheckLoadedRoom()
         {
             if (loadingDoor != null && loadingDoor.IsRoomLoaded)
@@ -594,6 +617,12 @@ namespace Pyramid_Plunder.Classes
             return false;
         }
 
+        /// <summary>
+        /// Resets all relevant properties to their "fresh"/initial states.
+        /// Used for when the player enters rooms, spawns/respawns, or starts
+        /// a new game.
+        /// </summary>
+        /// <param name="direction">The direction the player should face.</param>
         public void ResetActionStates(XDirection direction)
         {
             isOnGround = true;
@@ -653,6 +682,10 @@ namespace Pyramid_Plunder.Classes
             }
         }
 
+        /// <summary>
+        /// Changes all of the player's relevant properties to reflect that
+        /// the bottom side of its collision box has just hit a floor.
+        /// </summary>
         public override void Land()
         {
             soundEngine.Play(AudioEngine.SoundEffects.Land);
@@ -688,6 +721,11 @@ namespace Pyramid_Plunder.Classes
             }
         }
 
+        /// <summary>
+        /// Changes all of the player's relevant properties to reflect that
+        /// the left or right side of its collision box has just hit a wall
+        /// or a horizontal edge of the map.
+        /// </summary>
         public override void CollideX()
         {
             if (dashStatus >= DASH_HELD)
@@ -709,6 +747,10 @@ namespace Pyramid_Plunder.Classes
                 base.CollideX();
         }
 
+        /// <summary>
+        /// Changes all of the player's relevant properties to reflect that
+        /// the top end of its collision box has just hit a ceiling.
+        /// </summary>
         public override void HitCeiling()
         {
             if (jumpBtnFlag == false)
@@ -718,6 +760,10 @@ namespace Pyramid_Plunder.Classes
             base.HitCeiling();
         }
 
+        /// <summary>
+        /// Changes all of the player's relevant properties to reflect that
+        /// it has just now become airborne (i.e. no longer on ground).
+        /// </summary>
         public override void LeaveGround()
         {
             dashes = MAX_MIDAIR_DASHES;
@@ -729,6 +775,9 @@ namespace Pyramid_Plunder.Classes
             base.LeaveGround();
         }
 
+        /// <summary>
+        /// Analyzes user input and updates the control flags for the player character.
+        /// </summary>
         public void updateControlFlags()
         {
             KeyboardState newKeyState = Keyboard.GetState();
@@ -827,14 +876,16 @@ namespace Pyramid_Plunder.Classes
                 (gpState.Triggers.Left > 0 && newGPState.Triggers.Left == 0))
                 dashBtnFlag = false;
 
-            //if (keyState.IsKeyDown(Keys.E) && newState.IsKeyUp(Keys.E))
-            //    interactBtnFlag = false;
-
             keyState = newKeyState;
             gpState = newGPState;
 
         }
 
+        /// <summary>
+        /// Updates the coordinates on the screen at which the player will be
+        /// drawn.
+        /// </summary>
+        /// <param name="roomDimensions">The dimensions of the room the player is in.</param>
         public void UpdateCoordinates(Rectangle roomDimensions)
         {
             int xLine = Player.DEFAULT_SCREEN_POSITIONX;
@@ -879,36 +930,47 @@ namespace Pyramid_Plunder.Classes
             get { return interactBtnFlag; }
         }
 
+        /// <summary>
+        /// Returns the array of flags which keeps track of the powerups the
+        /// Player has obtained.
+        /// </summary>
         public bool[] CurrentItems
         {
             get { return itemArray; }
         }
 
+        /// <summary>
+        /// Returns true if the player is susceptible to collision with enemies;
+        /// false otherwise.
+        /// </summary>
         public bool IsVulnerable
         {
             get { return (damageStatus < 0); }
         }
 
+        /// <summary>
+        /// Returns true if the player's health has reached zero and it has
+        /// finished flinching; false otherwise.
+        /// </summary>
         public bool IsDead
         {
             get { return (currentHealth <= 0 && damageStatus == VULNERABLE); }
         }
-
-        public bool IsDeadAndStill
-        {
-            get
-            {
-                return ((currentHealth == 0) && (velocityX == 0) &&
-                    (velocityY == 0) && (isOnGround) &&
-                    damageStatus == VULNERABLE);
-            }
-        }
-
+                
+        /// <summary>
+        /// Begin the sequence that occurs right after the player's health has reached
+        /// zero and the player is officially dying.
+        /// </summary>
         public void StartDeathSequence()
         {
             damageStatus = DEATH_SEQUENCE_START;
         }
 
+        /// <summary>
+        /// Returns whether the death sequence has ended; if it has, the
+        /// player's collision coordinates and deathSequence end time are
+        /// reset to their living counterparts.
+        /// </summary>
         public bool DeathSequenceEnded
         {
             get
@@ -924,6 +986,9 @@ namespace Pyramid_Plunder.Classes
             }
         }
 
+        /// <summary>
+        /// Initiate damage, respawn and invincibility due falling through the bottom of the map.
+        /// </summary>
         public void ReceivePitFallDamage()
         {
             currentHealth = Math.Max(0, currentHealth - PIT_FALL_DAMAGE);
@@ -934,6 +999,10 @@ namespace Pyramid_Plunder.Classes
             ResetActionStates(PlayerXFacing);
         }
 
+        /// <summary>
+        /// Initiate damage, respawn and invincibility due to touching a hazard
+        /// like lava or spikes.
+        /// </summary>
         public void ReceiveHazardDamage()
         {
             currentHealth = Math.Max(0, currentHealth - HAZARD_DAMAGE);
@@ -944,6 +1013,12 @@ namespace Pyramid_Plunder.Classes
             ResetActionStates(PlayerXFacing);
         }
 
+        /// <summary>
+        /// Initiate damage and flinching caused by collision with a specific
+        /// enemy object from a specific direction.
+        /// </summary>
+        /// <param name="enemy">The enemy to collide with.</param>
+        /// <param name="direction">The side of the player that the enemy is touching.</param>
         private void CollideWithEnemy(Enemy enemy, XDirection direction)
         {
             soundEngine.Play(AudioEngine.SoundEffects.Hurt);
@@ -968,13 +1043,13 @@ namespace Pyramid_Plunder.Classes
             {
                 velocityY -= 500;
                 deathSequenceEndTime = DEATH_SEQUENCE_END_WITH_RAGDOLL;
-                ////Uncomment these next two lines if you want him "spring back to life" after
-                ////being hit while "dead":
-                //currentFrame = 0;
-                //animationSpeed[currentAnimation] = defaultAnimationSpeed[currentAnimation];
             }
         }
 
+        /// <summary>
+        /// Checks for geometric collision with all of the enemies in the room.
+        /// </summary>
+        /// <param name="room">The room the player is currently in.</param>
         public void DetectEnemyCollisions(Room room)
         {
             foreach (Enemy enemy in room.EnemyArray)
@@ -1000,6 +1075,11 @@ namespace Pyramid_Plunder.Classes
             }
         }
 
+        /// <summary>
+        /// Checks if the player is touching any hazards in the room.
+        /// </summary>
+        /// <param name="room">The room in which the character is in.</param>
+        /// <returns></returns>
         public bool CheckHazards(Room room)
         {
             foreach (GameObject obj in room.EnvironmentArray)
@@ -1016,6 +1096,10 @@ namespace Pyramid_Plunder.Classes
             return false;
         }
 
+        /// <summary>
+        /// Sets collisionXs and collisionYs to the arrays for collision for
+        /// when the character is dead.
+        /// </summary>
         private void SwitchToDeathCollision()
         {
             collisionXs = new short[deathCollisionXs.Length];
@@ -1024,6 +1108,10 @@ namespace Pyramid_Plunder.Classes
             Array.Copy(deathCollisionYs, collisionYs, deathCollisionYs.Length);
         }
 
+        /// <summary>
+        /// Sets collisionXs and collisionYs to the arrays for collision for
+        /// when the character is alive.
+        /// </summary>
         private void SwitchToLifeCollision()
         {
             collisionXs = new short[lifeCollisionXs.Length];
@@ -1032,6 +1120,13 @@ namespace Pyramid_Plunder.Classes
             Array.Copy(lifeCollisionYs, collisionYs, lifeCollisionYs.Length);
         }
 
+        /// <summary>
+        /// Draws the player to the screen. Player will not be drawn every other frame when
+        /// it is invincible.
+        /// </summary>
+        /// <param name="spriteBatch">The SpriteBatch to draw to.</param>
+        /// <param name="time">The game time elapsed since the last frame.</param>
+        /// <param name="playAnimations"></param>
         public override void Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch, GameTime time, bool playAnimations)
         {
             if ((damageStatus < INVINCIBLE_START) || (damageStatus >= INVINCIBLE_END) || !drawnLastFrame)
@@ -1045,6 +1140,9 @@ namespace Pyramid_Plunder.Classes
             }
         }
 
+        /// <summary>
+        /// Returns the direction (left or right) that the player is facing.
+        /// </summary>
         public XDirection CurrentDirection
         {
             get { return PlayerXFacing; }
