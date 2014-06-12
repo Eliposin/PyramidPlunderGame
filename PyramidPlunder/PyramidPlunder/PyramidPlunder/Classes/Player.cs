@@ -129,7 +129,6 @@ namespace Pyramid_Plunder.Classes
 
         private DelVoid saveCallback;
         private DelRoom roomCallback;
-        private DelFreeze freezeCallback;
         private DelSB hudCallback;
 
         private Door loadingDoor;
@@ -143,7 +142,7 @@ namespace Pyramid_Plunder.Classes
         /// <summary>
         /// Creates a new Player object
         /// </summary>
-        public Player(ContentManager content, DelVoid saveMethod, DelRoom roomMethod, DelFreeze freezeMethod, DelSB hudMethod)
+        public Player(ContentManager content, DelVoid saveMethod, DelRoom roomMethod, DelSB hudMethod)
             : base("Player", content)
         {
             isSpawned = false;
@@ -161,7 +160,6 @@ namespace Pyramid_Plunder.Classes
             saveCallback = saveMethod;
             hudCallback = hudMethod;
             roomCallback = roomMethod;
-            freezeCallback = freezeMethod;
 
             lifeCollisionXs = new short[collisionXs.Length];
             lifeCollisionYs = new short[collisionYs.Length];

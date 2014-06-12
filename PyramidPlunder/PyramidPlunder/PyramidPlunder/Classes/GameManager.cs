@@ -52,17 +52,26 @@ namespace Pyramid_Plunder.Classes
         private double freezeTimerMax;
         private double freezeTimer;
 
+        /// <summary>
+        /// A simple class to hold game settings
+        /// </summary>
         public class GameSettings
         {
             public float MusicVolume;
             public float SoundEffectsVolume;
 
+            /// <summary>
+            /// Constructor call
+            /// </summary>
             public GameSettings()
             {
                 MusicVolume = 0.75f;
                 SoundEffectsVolume = 0.75f;
             }
             
+            /// <summary>
+            /// Updates the volume settings in the audio engine
+            /// </summary>
             public void UpdateVolume()
             {
                 AudioEngine.Volume = SoundEffectsVolume;
@@ -323,11 +332,20 @@ namespace Pyramid_Plunder.Classes
 
         }
 
+        /// <summary>
+        /// A static method that allows any class to independently toggle the frozen state of the game.
+        /// </summary>
+        /// <param name="frozen">Whether the game should become frozen or unfrozen.</param>
         public static void ToggleFreeze(bool frozen)
         {
             isFrozen = frozen;
         }
 
+        /// <summary>
+        /// Draws the frames-per-second of the game onto the corner of the screen
+        /// </summary>
+        /// <param name="spriteBatch">The spritebatch to draw to.</param>
+        /// <param name="time">The gametime to use for FPS calculation.</param>
         private void DrawFPS(SpriteBatch spriteBatch, GameTime time)
         {
             oldCount += (float)time.ElapsedGameTime.TotalSeconds;
@@ -352,8 +370,6 @@ namespace Pyramid_Plunder.Classes
             GameObject nearestObject = currentRoom.GetNearestObject(initiator.InteractionPoint, player.InteractionDistance, interactionType);
             return nearestObject;
         }
-
-        
 
         /// <summary>
         /// Checks to see if the game is paused.
@@ -383,7 +399,8 @@ namespace Pyramid_Plunder.Classes
         }
 
         /// <summary>
-        /// Loads the game settings from a file
+        /// Loads the game settings from a file (just kidding actually just creates a new
+        /// instance of the GameSettings class)
         /// </summary>
         private void LoadGameSettings()
         {
@@ -412,6 +429,9 @@ namespace Pyramid_Plunder.Classes
             }
         }
 
+        /// <summary>
+        /// Resets the state of the game to allow it to start again
+        /// </summary>
         private void ResetGame()
         {
             currentRoom.Dispose();
@@ -438,7 +458,7 @@ namespace Pyramid_Plunder.Classes
             musicManager.SwitchMusic("Level");
 
             currentRoom = new Room("StartRoom", -1);
-            player = new Player(gameContent, SaveGame, SwitchRooms, ToggleGameFreeze, HudCallback);
+            player = new Player(gameContent, SaveGame, SwitchRooms, DisplayInfoBox);
             player.Spawn(currentRoom.SpawnLocation);
             gameHUD = new HUD(gameContent, player);
             gameHUD.DisplayRoomName(currentRoom.LongName);
@@ -484,7 +504,7 @@ namespace Pyramid_Plunder.Classes
                             foreach (RoomSaveData save in roomSaves)
                                 GameResources.RoomSaves.Add(save);
 
-                            player = new Player(gameContent, SaveGame, SwitchRooms, ToggleGameFreeze, HudCallback);
+                            player = new Player(gameContent, SaveGame, SwitchRooms, DisplayInfoBox);
                             player.Spawn(currentRoom.SpawnLocation);
                             player.LoadSave(playerHealth, playerItems);
                             gameHUD = new HUD(gameContent, player);
@@ -512,8 +532,6 @@ namespace Pyramid_Plunder.Classes
         /// </summary>
         private void SaveGame()
         {
-            
-
             try
             {
                 List<string> saveData = new List<string>();
@@ -547,7 +565,7 @@ namespace Pyramid_Plunder.Classes
                     }
                 }
 
-                HudCallback("Your game was saved.", false, true);
+                DisplayInfoBox("Your game was saved.", false, true);
             }
             catch (Exception e)
             {
@@ -556,7 +574,13 @@ namespace Pyramid_Plunder.Classes
             }
         }
 
-        private void HudCallback(string input, bool pauseMusic, bool removable)
+        /// <summary>
+        /// Creates an instance of the InfoBox class to pop up on the screen.
+        /// </summary>
+        /// <param name="input">The message to display.</param>
+        /// <param name="pauseMusic">Whether or not to pause the music.</param>
+        /// <param name="removable">Whether or not the user can manually remove the box.</param>
+        private void DisplayInfoBox(string input, bool pauseMusic, bool removable)
         {
             //gameHUD.DisplayInfo(input);
             infoBox = new InfoBox(input, InfoBoxCallback, removable);
@@ -565,6 +589,9 @@ namespace Pyramid_Plunder.Classes
                 musicManager.PauseMusic();
         }
 
+        /// <summary>
+        /// A callback method from the InfoBox class that gets rid of the current InfoBox
+        /// </summary>
         private void InfoBoxCallback()
         {
             infoBox.Dispose();
@@ -575,6 +602,9 @@ namespace Pyramid_Plunder.Classes
             musicManager.UnpauseMusic();
         }
 
+        /// <summary>
+        /// Displays the Death Screen
+        /// </summary>
         private void ShowDeathScreen()
         {
             isFrozen = true;
@@ -636,18 +666,6 @@ namespace Pyramid_Plunder.Classes
             
         }
 
-        private void ToggleGameFreeze(bool frozen, double length)
-        {
-            if (frozen)
-            {
-                freezeTimerMax = length;
-                isFrozen = true;
-                musicManager.PauseMusic();
-            }
-            else
-                isFrozen = false;
-        }
-
         /// <summary>
         /// Deletes any saved data files
         /// </summary>
@@ -697,6 +715,6 @@ namespace Pyramid_Plunder.Classes
                 oldRoom.Dispose();
                 oldRoom = null;
             }
-            }
+        }
     }
 }
