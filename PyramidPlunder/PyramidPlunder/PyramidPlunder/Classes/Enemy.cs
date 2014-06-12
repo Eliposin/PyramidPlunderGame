@@ -8,14 +8,20 @@ using Microsoft.Xna.Framework.Content;
 
 namespace Pyramid_Plunder.Classes
 {
+    /// <summary>
+    /// The class representing the enemy creatures attempting to harm the player during the game.
+    /// </summary>
     public class Enemy : PhysicsObject
     {
-        const int MUMMY_MAXSPEED = 200;
+        const int MUMMY_MAXSPEED = 200;     //The maximum walk speed for the mummy.
 
-        protected int contactDamage;
-        protected bool bumpsOtherEnemies;
+        protected int contactDamage;        //The amount by which the player's health decreases
+                                            //upon colliding into this enemy.
+        protected bool bumpsOtherEnemies;   //Whether the enemy is treated as a solid object and
+                                            //will not walk into other enemies who have this property
+                                            //set to true.
                 
-        protected bool isChasingPlayer;
+        protected bool isChasingPlayer;     //Whether the enemy is chasing the player or not.
         protected float timer1;             //Allows enemy to keep track of time, if necessary.
         protected float timer2;             //Allows enemy to keep track of time, if necessary.
         
@@ -31,6 +37,9 @@ namespace Pyramid_Plunder.Classes
             LoadEnemyData();
         }
 
+        /// <summary>
+        /// Reads the Enemy object's properties in from a file for the object's specific enemy type.
+        /// </summary>
         private void LoadEnemyData()
         {
             try
@@ -244,11 +253,19 @@ namespace Pyramid_Plunder.Classes
             return base.IsStuck(room, dX, dY);
         }
 
+        /// <summary>
+        /// Returns the amount by which the players health count decreases
+        /// upon collision with this Enemy.
+        /// </summary>
         public int ContactDamage
         {
             get { return contactDamage; }
         }
 
+        /// <summary>
+        /// Returns true if the enemy is treated as a solid object and will not walk
+        /// through other enemies treated as solid objects.
+        /// </summary>
         public bool BumpsOtherEnemies
         {
             get { return bumpsOtherEnemies; }
