@@ -47,8 +47,8 @@ namespace Pyramid_Plunder.Classes
         //This can be kept at one constant value, or it can be altered under certain conditions if you
         //see fit. The player currently does this for mid-air dashing.
         protected bool isGravityAffected;   //Whether or not being ungrounded will cause downward movement.
-        protected bool movesOffEdges;
-        protected bool sticksToSurfaces;
+        protected bool movesOffEdges;       //Will an object keep moving or stop when it reaches a floor's edge?
+        protected bool sticksToSurfaces;    //Can an object walk up walls/ceilings/etc?
         protected bool isEnemy;
         
         protected Alignments alignment;     //Is this a friend, enemy or neutral party to the player?
@@ -63,7 +63,7 @@ namespace Pyramid_Plunder.Classes
         protected short[] collisionXs;
         protected short[] collisionYs;
 
-        public PhysicsObject riding;
+        public PhysicsObject riding;        //The object, like a platform, the object is currently "riding"
         
         /// <summary>
         /// Constructor call
@@ -73,6 +73,16 @@ namespace Pyramid_Plunder.Classes
         public PhysicsObject(string objName, ContentManager content)
             : this(objName, content, new Vector2(0, 0), true, null, false) { }
 
+        /// <summary>
+        /// Another constructor that also specifies position, whether the object is an enemy,
+        /// whether it has graphics that will be drawn, and the source of its sounds, if it produces any.
+        /// </summary>
+        /// <param name="objName">The type of object that is represented.</param>
+        /// <param name="content">The content manager to load assets to.</param>
+        /// <param name="spawnPosition">The coordinates in the room at which the object will start.</param>
+        /// <param name="graphics">Whether the object has graphics that will be drawn to the screen.</param>
+        /// <param name="audioEngine">The AudioEngine object that produces this object's sounds.</param>
+        /// <param name="enemy">Whether the object is an enemy.</param>
         public PhysicsObject(string objName, ContentManager content, Vector2 spawnPosition, bool graphics, AudioEngine audioEngine, bool enemy)
             : base (objName, content, spawnPosition, graphics, audioEngine)
         {
@@ -97,7 +107,6 @@ namespace Pyramid_Plunder.Classes
         /// <summary>
         /// Loads in the object's data from the data file associated with that object
         /// </summary>
-        /// <param name="objType">The type of object that is represented.</param>
         private void LoadObjectData()
         {
             try
@@ -168,6 +177,10 @@ namespace Pyramid_Plunder.Classes
             }
         }
 
+        /// <summary>
+        /// Identifies an object as a PhysicsObject if it is an enemy or its object name
+        /// matches one of the specified PhysicsObject type names.
+        /// </summary>
         private void CheckObjectType()
         {
             if (isEnemy)
@@ -195,19 +208,15 @@ namespace Pyramid_Plunder.Classes
         /// <summary>
         /// Gets or sets the object's velocity in the y-direction.
         /// </summary>
-        // So far the only method that calls this is PhysicsEngine.Update().
-        // It calls it to set and get the velocityY variable when the object
-        // is affected by gravity.
-        // The only other time I imagine another method may want to call this
-        // property is if another object with AI wants to determine what this
-        // object's vertical velocity is. Otherwise, not many other methods
-        // should call this.
         public float VelocityY
         {
             get { return velocityY; }
             set { velocityY = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the object's velocity in the x-direction.
+        /// </summary>
         public float VelocityX
         {
             get { return velocityX; }
@@ -218,12 +227,6 @@ namespace Pyramid_Plunder.Classes
         /// Gets or sets the amount by which the object will move in the
         /// x-direction during the current frame.
         /// </summary>
-        // So far the only method that should call this is PhysicsEngine.Update().
-        // It calls it to set and get the displacementX variable.
-        // The only other time I imagine another method may want to call this
-        // property is if another object with AI wants to determine if, when, and
-        // how much this object is moving during a frame. Otherwise, not many other
-        // methods should call this.
         public float DisplacementX
         {
             get { return displacementX; }
@@ -234,12 +237,6 @@ namespace Pyramid_Plunder.Classes
         /// Gets or sets the amount by which the object will move in the
         /// y-direction during the current frame.
         /// </summary>
-        // So far the only method that should call this is PhysicsEngine.Update().
-        // It calls it to set and get the displacementY variable.
-        // The only other time I imagine another method may want to call this
-        // property is if another object with AI wants to determine if, when, and
-        // how much this object is moving during a frame. Otherwise, not many other
-        // methods should call this.
         public float DisplacementY
         {
             get { return displacementY; }
@@ -247,45 +244,44 @@ namespace Pyramid_Plunder.Classes
         }
 
         /// <summary>
-        /// Returns the flag which keeps track of whether the object is affected by
+        /// Sets or gets the flag which keeps track of whether the object is affected by
         /// gravity.
         /// </summary>
-        // So far the only method that should call this is PhysicsEngine.Update().
-        // It calls it to access the isGravityAffected flag and determine if gravity
-        // should be applied to the object.
-        // There should be little to no need to call this method when defining a
-        // new method.
         public bool IsGravityAffected
         {
             get { return isGravityAffected; }
             set { isGravityAffected = value; }
         }
 
+        /// <summary>
+        /// Returns the boolean specifying whether or not the object moves off of edges.
+        /// </summary>
         public bool MovesOffEdges
         {
             get { return movesOffEdges; }
         }
 
+        /// <summary>
+        /// Returns the boolean specifying whether or not the object sticks to walls/floors/ceilings.
+        /// </summary>
         public bool SticksToSurfaces
         {
             get { return sticksToSurfaces; }
         }
 
         /// <summary>
-        /// Returns the flag which keeps track of whether the object is grounded.
+        /// Sets or gets the flag which keeps track of whether the object is grounded.
         /// </summary>
-        // So far the only method that should call this is PhysicsEngine.Update().
-        // It calls it to access the isOnGround flag and determine if gravity should
-        // be applied to the object.
-        // The only other time I imagine another method may want to call this
-        // property is if another object with AI wants to determine if this object
-        // is currently on the ground. Otherwise, not many other methods should call this.
         public bool IsOnGround
         {
             get { return isOnGround; }
             set { isOnGround = value; }
         }
 
+        /// <summary>
+        /// Returns the boolean specifying whether the top of the object's collision box
+        /// is touching a ceiling.
+        /// </summary>
         public bool CeilingAbove
         {
             get { return ceilingAbove; }
@@ -293,14 +289,8 @@ namespace Pyramid_Plunder.Classes
 
         /// <summary>
         /// Gets or sets the flag which keeps track of whether the object is touching
-        /// a wall on its left side.
+        /// a wall on the left side of its collision box.
         /// </summary>
-        // So far the only method that should call this is PhysicsEngine.Update().
-        // It calls it to access and set the wallOnLeft flag accordingly.
-        // The only other time I imagine another method may want to call this
-        // property is if another object with AI wants to determine if this object
-        // is currently up against a wall. Otherwise, not many other methods should
-        // call this.
         public bool WallOnLeft
         {
             get { return wallOnLeft; }
@@ -309,25 +299,27 @@ namespace Pyramid_Plunder.Classes
 
         /// <summary>
         /// Gets or sets the flag which keeps track of whether the object is touching
-        /// a wall on its right side.
+        /// a wall on the right side of its collision box.
         /// </summary>
-        // So far the only method that should call this is PhysicsEngine.Update().
-        // It calls it to access and set the wallOnRight flag accordingly.
-        // The only other time I imagine another method may want to call this
-        // property is if another object with AI wants to determine if this object
-        // is currently up against a wall. Otherwise, not many other methods should
-        // call this.
         public bool WallOnRight
         {
             get { return wallOnRight; }
             set { wallOnRight = value; }
         }
 
+        /// <summary>
+        /// Returns the array containing the x-coordinates that are used in
+        /// collision detection.
+        /// </summary>
         public short[] CollisionXs
         {
             get { return collisionXs; }
         }
 
+        /// <summary>
+        /// Returns the array containing the y-coordinates that are used in
+        /// collision detection.
+        /// </summary>
         public short[] CollisionYs
         {
             get { return collisionYs; }
@@ -338,7 +330,7 @@ namespace Pyramid_Plunder.Classes
         /// the elapsed game time and current velocities, as well as current
         /// accelerations and maximum velocities if acceleration is nonzero.
         /// </summary>
-        /// <param name="time">The elapsed game time.</param>
+        /// <param name="time">The elapsed game time since the last frame.</param>
 
         public override void Update(GameTime time)
         {
@@ -398,32 +390,13 @@ namespace Pyramid_Plunder.Classes
                     }
                 }
             }
-
-            //if (riding != null)
-            //{
-            //    displacementX += riding.DisplacementX;
-            //    displacementY += riding.DisplacementY;
-            //}
-
             base.Update(time);
         }
 
         /// <summary>
         /// Changes all of the object's relevant properties to reflect that
-        /// the bottom side of its hitbox has collided with a ground.
+        /// the bottom side of its collision box has just hit a floor.
         /// </summary>
-        // For many objects, this just means to set velocityY and
-        // accelerationY to zero, and isOnGround to true.
-        // But for some objects, like the player class, more variables need
-        // to change based on the object's current circumstances. In that
-        // case, this function may be overridden so that all relevant
-        // variables are set to the appropriate values.
-        // 
-        // So far the only method that should call this is PhysicsEngine.Update().
-        // It calls it when it detects that a vertically-moving object has
-        // collided with a ground.
-        // There should be little to no need to call this method when defining a
-        // new method.
         public virtual void Land()
         {
             isOnGround = true;
@@ -433,33 +406,31 @@ namespace Pyramid_Plunder.Classes
 
         /// <summary>
         /// Changes all of the object's relevant properties to reflect that
-        /// the left or right side of its hitbox has collided with a wall
+        /// the left or right side of its collision box has just hit a wall
         /// or a horizontal edge of the map.
         /// </summary>
-        // For many objects, this just means to set velocityX and
-        // accelerationX to zero.
-        // But for some objects, like the player class, more variables need
-        // to change based on the object's current circumstances. In that
-        // case, this function may be overridden so that all relevant
-        // variables are set to the appropriate values.
-        // 
-        // So far the only method that should call this is PhysicsEngine.Update().
-        // It calls it when it detects that a horizontally-moving object has
-        // collided with a ceiling.
-        // There should be little to no need to call this method when defining a
-        // new method.
         public virtual void CollideX()
         {
             velocityX = 0;
             accelerationX = 0;
         }
 
+        /// <summary>
+        /// Changes all of the object's relevant properties to reflect
+        /// that the left side of its collision box has just hit a wall
+        /// or the left edge of the map.
+        /// </summary>
         public void CollideLeft()
         {
             CollideX();
             wallOnLeft = true;
         }
 
+        /// <summary>
+        /// Changes all of the object's relevant properties to reflect
+        /// that the right side of its collision box has just hit a wall
+        /// or the right edge of the map.
+        /// </summary>
         public void CollideRight()
         {
             CollideX();
@@ -468,20 +439,8 @@ namespace Pyramid_Plunder.Classes
 
         /// <summary>
         /// Changes all of the object's relevant properties to reflect that
-        /// the top end of its hitbox has collided with a ceiling.
+        /// the top end of its collision box has just hit a ceiling.
         /// </summary>
-        // For many objects, this just means to set velocityY and
-        // accelerationY to zero.
-        // But for some objects, like the player class, more variables need
-        // to change based on the object's current circumstances. In that
-        // case, this function may be overridden so that all relevant
-        // variables are set to the appropriate values.
-        // 
-        // So far the only method that should call this is PhysicsEngine.Update().
-        // It calls it when it detects that an upward moving object has collided
-        // with a ceiling.
-        // There should be little to no need to call this method when defining a
-        // new method.
         public virtual void HitCeiling()
         {
             ceilingAbove = true;
@@ -491,34 +450,27 @@ namespace Pyramid_Plunder.Classes
 
         /// <summary>
         /// Changes all of the object's relevant properties to reflect that
-        /// it is now airborne (i.e. not on ground).
+        /// it has just now become airborne (i.e. no longer on ground).
         /// </summary>
-        // For many objects, this just means to set isOnGround to false.
-        // But for some objects, like the player class, more variables need
-        // to change based on the object's current circumstances. In that
-        // case, this function may be overridden so that all relevant
-        // variables are set to the appropriate values.
-        // 
-        // So far the only method that should call this is PhysicsEngine.Update().
-        // It calls it to change an object to "airborne mode" when isOnGround == true
-        // but it detects that there is no ground beneath said object.
-        // There should be little to no need to call this method when defining a
-        // new method.
         public virtual void LeaveGround()
         {
             isOnGround = false;
             riding = null;
         }
 
+        /// <summary>
+        /// Changes all of the object's relevant properties to reflect that
+        /// the top side of its collision box is no longer touching a ceiling.
+        /// </summary>
         public virtual void LeaveCeiling()
         {
             ceilingAbove = false;
         }
         
         /// <summary>
-        /// Checks to see if if there is ground beneath the object at its current coordinates,
-        /// OR if there *will be* ground beneath the object if its coordinates are adjusted
-        /// by specified amounts in the x and/or y directions.
+        /// Checks to see if the object is touching ground at its current coordinates, OR
+        /// if the object *will be* touching ground if its coordinates are adjusted by
+        /// specified amounts in the x and/or y directions.
         /// Non-zero values may be input for dX and/or dY to test for ground at the coordinates
         /// equal to the object's coordinates plus the vector (dX, dY).
         /// </summary>
@@ -526,9 +478,6 @@ namespace Pyramid_Plunder.Classes
         /// <param name="dX">The value by which to adjust the x-coordinate in the test</param>
         /// <param name="dY">The value by which to adjust the y-coordinate in the test</param>
         /// <returns></returns>
-        // This method is only called by PhysicsEngine.Update(). If you need to see if this
-        // object is on the ground, use the IsOnGround property or even the isOnGround member
-        // bool for methods inside this class.
         public virtual bool CheckGround(Room room, int dX, int dY)
         {
             //row is the y-coordinate just beneath the object's hitbox at its
@@ -566,6 +515,17 @@ namespace Pyramid_Plunder.Classes
             return false;
         }
 
+        /// <summary>
+        /// Checks to see if the object is touching a ceiling at its current coordinates, OR
+        /// if the object *will be* touching a ceiling if its coordinates are adjusted by
+        /// specified amounts in the x and/or y directions.
+        /// Non-zero values may be input for dX and/or dY to test for ceilings at the coordinates
+        /// equal to the object's coordinates plus the vector (dX, dY).
+        /// </summary>
+        /// <param name="room">The room in which to test for a ceiling.</param>
+        /// <param name="dX">The value by which to adjust the x-coordinate in the test</param>
+        /// <param name="dY">The value by which to adjust the y-coordinate in the test</param>
+        /// <returns></returns>
         public virtual bool CheckCeiling(Room room, int dX, int dY)
         {
             //row is the y-coordinate just above the object's hitbox at its
@@ -635,6 +595,13 @@ namespace Pyramid_Plunder.Classes
             return true;
         }
 
+        /// <summary>
+        /// Tests whether an object that sticks to surfaces will lose contact with all
+        /// surfaces if its horizontal position in the room were adjusted by its horizontal
+        /// displacement for this frame.
+        /// </summary>
+        /// <param name="room">The room in which to test for surfaces.</param>
+        /// <returns></returns>
         public bool WillLoseSurface(Room room)
         {
             int column = (int)position.X;
@@ -754,10 +721,10 @@ namespace Pyramid_Plunder.Classes
         }
 
         /// <summary>
-        /// Checks to see if if there is a wall right of the object at its current coordinates,
-        /// OR if there *will be* a wall right of the object if its coordinates are adjusted
-        /// by specified amounts in the x and/or y directions.
-        /// Non-zero values may be input for dX and/or dY to test for a wall at the coordinates
+        /// Checks to see if the object is touching a wall on its right side at its current
+        /// coordinates, OR if the object *will be* touching a wall if its coordinates are
+        /// adjusted by specified amounts in the x and/or y directions.
+        /// Non-zero values may be input for dX and/or dY to test for walls at the coordinates
         /// equal to the object's coordinates plus the vector (dX, dY).
         /// </summary>
         /// <param name="room">The room in which to test for a wall</param>
@@ -800,10 +767,10 @@ namespace Pyramid_Plunder.Classes
         }
 
         /// <summary>
-        /// Checks to see if if there is a wall left of the object at its current coordinates,
-        /// OR if there *will be* a wall left of the object if its coordinates are adjusted by
-        /// specified amounts in the x and/or y directions.
-        /// Non-zero values may be input for dX and/or dY to test for a wall at the coordinates
+        /// Checks to see if the object is touching a wall on its left side at its current
+        /// coordinates, OR if the object *will be* touching a wall if its coordinates are
+        /// adjusted by specified amounts in the x and/or y directions.
+        /// Non-zero values may be input for dX and/or dY to test for walls at the coordinates
         /// equal to the object's coordinates plus the vector (dX, dY).
         /// </summary>
         /// <param name="room">The room in which to test for a wall</param>
@@ -846,9 +813,9 @@ namespace Pyramid_Plunder.Classes
         }
         
         /// <summary>
-        /// Checks to see if an object is stuck at its current coordinates, OR if it *will be*
-        /// stuck if its coordinates are adjusted by specified amounts in the x and/or y
-        /// positions.
+        /// Checks to see if an object is stuck inside of a solid region or object at its
+        /// current coordinates, OR if it *will be* stuck if its coordinates are adjusted
+        /// by specified amounts in the x and/or y positions.
         /// Non-zero values may be input for dX and/or dY to test for stuckness at the
         /// coordinates equal to the object's coordinates plus the vector (dX, dY).
         /// </summary>
@@ -900,9 +867,9 @@ namespace Pyramid_Plunder.Classes
         }
 
         /// <summary>
-        /// Actually moves the object and changes the Position based on the displacement values
+        /// Actually moves the object and changes the Position based on the displacement values.
+        /// Then resets the displacement values back to zero for use in the next frame.
         /// </summary>
-        //Only the GameManager class should call this method. No other methods should.
         public void Move()
         {
             //After the physics engine sets the displacements to the amounts the object actually

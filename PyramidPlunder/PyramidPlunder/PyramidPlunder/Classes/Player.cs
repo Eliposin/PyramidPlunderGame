@@ -11,11 +11,10 @@ namespace Pyramid_Plunder.Classes
 {
     public class Player : PhysicsObject
     {
-        public const int DEFAULT_SCREEN_POSITIONX = 610; //610
-        public const int DEFAULT_SCREEN_POSITIONY = 420; //420
+        public const int DEFAULT_SCREEN_POSITIONX = 610; //The player's ideal x-coordinates on the screen
+        public const int DEFAULT_SCREEN_POSITIONY = 420; //The player's ideal y-coordinates on the screen
 
         public const int PLAYER_WIDTH = 60;
-        public const int PLAYER_HEIGHT = 120;
 
         public const double POWERUP_JINGLE_LENGTH = 7; //In seconds
         
@@ -24,35 +23,39 @@ namespace Pyramid_Plunder.Classes
 
         private new AudioEngine soundEngine;
 
-        const short MAX_JUMP_HEIGHT = -250;
-        float JUMP_V;
-        float WALL_JUMP_V_X;
-        float WALL_JUMP_V_Y;
-        const float JUMP_DECAY = 14400;
-        const float WALL_FRICTION_DEC = -2160f;
-        const float MAX_WALL_SLIDE_V = 360;
-        const short MAX_FALL_V = 3000;
-        const byte MAX_MIDAIR_JUMPS = 1;
+        const short MAX_JUMP_HEIGHT = -250;     //How high the player jumps if the button is held until the apex. (Pixels)
+        float JUMP_V;                           //The resulting jump velocity from the max jump height. (Pixels/sec)
+        float WALL_JUMP_V_X;                    //x-component of velocity when jumping off a wall. (Pixels/sec)
+        float WALL_JUMP_V_Y;                    //y-component of velocity when jumping off a wall. (Pixels/sec)
+        const float JUMP_DECAY = 14400;         //How rate at which y-velocity decreases if the jump button is released early.
+                                                //(Pixels/sec/sec)
+        const float WALL_FRICTION_DEC = -2160f; //Deceleration caused from friction on the wall while wall-sliding (Pixels/sec/sec)
+        const float MAX_WALL_SLIDE_V = 360;     //The greatest y-velocity attainable while wall-sliding. (Pixels/sec)
+        const byte MAX_MIDAIR_JUMPS = 1;        //The most times the player may jump while in midair.
 
-        const short MAX_DASH_LENGTH = 300;
-        const float DASH_V = MAX_RUN_V * 3;
-        const float MAX_DASH_TIME = (MAX_DASH_LENGTH / DASH_V);
-        const sbyte MAX_MIDAIR_DASHES = 1;
+        const short MAX_DASH_LENGTH = 300;      //How far the player dashes if the button is held until a forced stop. (Pixels)
+        const float DASH_V = MAX_RUN_V * 3;     //How fast the player dashes. (Pixels/sec)
+        const float MAX_DASH_TIME = (MAX_DASH_LENGTH / DASH_V); //The longest possible time the character can dash for (Sec)
+        const sbyte MAX_MIDAIR_DASHES = 1;      //The most times the player may dash while in midair.
 
-        const sbyte DASH_NOT_ALLOWED = -1;
-        const float DASH_LAG_START = DASH_NOT_ALLOWED - 0.1f;
-        const sbyte DASH_ALLOWED = 0;
-        const float DASH_HELD = .001f;
-        const sbyte INFINITE_DASHES = -1;
+        //These constants are the various significant values that the dashStatus property is set to throughout play.
+        const sbyte DASH_NOT_ALLOWED = -1;      //Pressing the dash button will not cause the player to dash.
+        const float DASH_LAG_START = DASH_NOT_ALLOWED - 0.1f;   //The start of the time before another dash can be executed.
+        const sbyte DASH_ALLOWED = 0;           //Pressing the dash button will cause the player to dash if other conditions allow.
+        const float DASH_HELD = .001f;          //The dash button has just started to be held.
+        const sbyte INFINITE_DASHES = -1;       //The player may dash as many times as they wish.
 
-        const short MAX_RUN_V = 480;
-        const float RUN_ACC = 2700f;
-        const float TOO_FAST_DEC = -2700f;
-        const float STOP_DEC = -2160f;
-        const float BRAKE_DEC = 4320f;
-        const float KNOCK_BACK_V = 840;
+        const short MAX_RUN_V = 480;            //Fastest maintable running (not dashing) velocity by pressing the control stick. (Pixels/sec)
+        const float RUN_ACC = 2700f;            //Rate of acceleration while running (Pixels/sec/sec)
+        const float TOO_FAST_DEC = -2700f;      //Rate of deceleration when the player is running at a speed greater than its
+                                                //maximum maintable running speed. (Pixels/sec/sec)
+        const float STOP_DEC = -2160f;          //Rate of deceleration when the player stops pressing the arrow pad or
+                                                //joystick. (Pixels/sec/sec)
+        const float BRAKE_DEC = 4320f;          //Rate of deceleration when the player presses the arrowpad/joystick in the
+                                                //direction opposite of their current running direction. (Pixels/sec/sec)
+        const float KNOCK_BACK_V = 840;         //Velocity at which the character is knocked back after enemy collision. (Pixels/sec)
 
-        const int PIT_FALL_DAMAGE = 2;
+        const int PIT_FALL_DAMAGE = 2;          //Amount of Health points lost
         const int HAZARD_DAMAGE = 2;
         const float VULNERABLE = -1;
         const float INVINCIBLE_START = 0;
