@@ -14,9 +14,6 @@ namespace Pyramid_Plunder.Classes
     public class AudioEngine
     {
 
-        /// <summary>
-        /// 
-        /// </summary>
         public enum SoundEffects : byte
         {
             Jump = 0,
