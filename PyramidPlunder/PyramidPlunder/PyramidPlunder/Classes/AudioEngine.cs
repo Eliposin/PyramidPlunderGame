@@ -13,10 +13,13 @@ namespace Pyramid_Plunder.Classes
 
     public class AudioEngine
     {
+
+        /// <summary>
+        /// 
+        /// </summary>
         public enum SoundEffects : byte
         {
             Jump = 0,
-            WallJump = 1,
             Dash = 2,
             WallLand = 3,
             Attack = 4,
@@ -41,20 +44,20 @@ namespace Pyramid_Plunder.Classes
         private SoundEffect dash;
         private SoundEffect land;
         private SoundEffect wallLand;
-        //private SoundEffect wallJump;
         private SoundEffect doorOpen;
         private SoundEffect keyGet;
         private SoundEffect itemGet;
-        private SoundEffect menuSelect; //TODO
-        private SoundEffect menuClick;  //TODO
+        private SoundEffect menuSelect; 
+        private SoundEffect menuClick;  
         private SoundEffect saveChime; 
-        private SoundEffect platformCrumble; //TODO
+        private SoundEffect platformCrumble; 
         private SoundEffect torch;
         private SoundEffect lavaLoop;
         private SoundEffectInstance soundInstance;
 
-        private static float volume = 1f; //TODO: Call menu's volume parameter to get the user defined varaible.
+        private static float volume = 1f;
 
+        //Represents any zero float for the play method.
         private const float zero = 0f;
 
         // Stores the called object type for reference.
@@ -64,7 +67,7 @@ namespace Pyramid_Plunder.Classes
         private Random rnd = new Random();
 
         /// <summary>
-        /// 
+        /// this class is the handler of all audio in the game. 
         /// </summary>
         /// <param name="content">Pass the content manager.</param>
         /// <param name="tempObjType">Pass the desired object type.</param>
@@ -74,6 +77,7 @@ namespace Pyramid_Plunder.Classes
 
             try
             {
+                //Depending on what string name is passed, the relevant sound effects are loaded.
                 switch (objectName)
                 {
                     case "Player":
@@ -102,7 +106,6 @@ namespace Pyramid_Plunder.Classes
                         soundInstance = torch.CreateInstance();
                         soundInstance.Volume = volume;
                         soundInstance.IsLooped = true;
-                        //soundInstance.Play();
                         break;
 
 
@@ -116,7 +119,6 @@ namespace Pyramid_Plunder.Classes
                         soundInstance = lavaLoop.CreateInstance();
                         soundInstance.Volume = volume;
                         soundInstance.IsLooped = true;
-                        //soundInstance.Play();
                         break;
 
                     case "LavaAccess":
@@ -366,6 +368,7 @@ namespace Pyramid_Plunder.Classes
             }
         }
 
+        //called by game manager to handle pausing / unpausing.
         public void PauseMusic()
         {
             MediaPlayer.Pause();
@@ -376,6 +379,7 @@ namespace Pyramid_Plunder.Classes
             MediaPlayer.Resume();
         }
 
+        //Used to set and get the volume in other classes.
         public static float Volume
         {
             get { return volume; }
