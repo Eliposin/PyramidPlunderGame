@@ -17,6 +17,7 @@ namespace Pyramid_Plunder.Classes
         public enum SoundEffects : byte
         {
             Jump = 0,
+            WallJump = 1,
             Dash = 2,
             WallLand = 3,
             Attack = 4,
