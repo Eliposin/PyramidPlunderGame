@@ -36,7 +36,6 @@ namespace Pyramid_Plunder.Classes
         private GameGraphic deathScreen;
         private Room currentRoom;
         private Room oldRoom;
-        private Door loadingDoor;
         private Player player;
         private HUD gameHUD;
         private BGM musicManager;
@@ -49,8 +48,6 @@ namespace Pyramid_Plunder.Classes
         private float oldCount;
         private int drawCalls;
         private static bool isFrozen;
-        private double freezeTimerMax;
-        private double freezeTimer;
 
         /// <summary>
         /// A simple class to hold game settings
@@ -117,7 +114,6 @@ namespace Pyramid_Plunder.Classes
             drawCalls = 0;
 
             isFrozen = false;
-            freezeTimer = 0;
 
             isDeathScreenUp = false;
         }
@@ -391,7 +387,6 @@ namespace Pyramid_Plunder.Classes
                     {
                         isFrozen = true;
                         isPaused = true;
-                        freezeTimerMax = -1;
                         pauseMenu = new PauseMenu(MenuCallback, gameSettings);
                     }
                 }
@@ -597,8 +592,6 @@ namespace Pyramid_Plunder.Classes
             infoBox.Dispose();
             infoBox = null;
             isFrozen = false;
-            freezeTimerMax = -1;
-            freezeTimer = 0;
             musicManager.UnpauseMusic();
         }
 
@@ -608,7 +601,6 @@ namespace Pyramid_Plunder.Classes
         private void ShowDeathScreen()
         {
             isFrozen = true;
-            freezeTimerMax = -1;
             deathScreen = new GameGraphic("DeathScreen", gameContent);
             isDeathScreenUp = true;
         }

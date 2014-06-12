@@ -9,6 +9,9 @@ using Microsoft.Xna.Framework.Content;
 
 namespace Pyramid_Plunder.Classes
 {
+    /// <summary>
+    /// An abstract class that creates an infrastructure for menus to use
+    /// </summary>
     public abstract class GameMenu
     {
         public const float THUMBSTICK_THRESHOLD = 0.3f;
@@ -28,6 +31,12 @@ namespace Pyramid_Plunder.Classes
             public bool Selectable;
             public bool IsSelected;
             
+            /// <summary>
+            /// Draws the node to the designated spritebatch
+            /// </summary>
+            /// <param name="spriteBatch"></param>
+            /// <param name="font"></param>
+            /// <param name="color"></param>
             public void Draw(SpriteBatch spriteBatch, SpriteFont font, Color color)
             {
                 if (Name != null && Position != null)

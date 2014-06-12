@@ -116,9 +116,6 @@ namespace Pyramid_Plunder.Classes
         protected float damageStatus = VULNERABLE;
         protected float deathSequenceEndTime = DEATH_SEQUENCE_END_NO_RAGDOLL;
 
-        private double freezeTimerMax;
-        private bool upBtnFlag = false;
-        private bool downBtnFlag = false;
         private bool leftBtnFlag = false;
         private bool rightBtnFlag = false;
         private bool jumpBtnFlag = false;
@@ -755,11 +752,6 @@ namespace Pyramid_Plunder.Classes
                 LatestXArrow = XDirection.Left;
             }
 
-            if ((keyState.IsKeyUp(Keys.Up) && newKeyState.IsKeyDown(Keys.Up)) ||
-                    (keyState.IsKeyUp(Keys.W) && newKeyState.IsKeyDown(Keys.W)) ||
-                    (gpState.DPad.Up == ButtonState.Released && newGPState.DPad.Up == ButtonState.Pressed))
-                upBtnFlag = true;
-
             if ((keyState.IsKeyUp(Keys.Space) && newKeyState.IsKeyDown(Keys.Space)) ||
                     (keyState.IsKeyUp(Keys.X) && newKeyState.IsKeyDown(Keys.X)) ||
                     (gpState.Buttons.A == ButtonState.Released && newGPState.Buttons.A == ButtonState.Pressed))
@@ -819,13 +811,6 @@ namespace Pyramid_Plunder.Classes
                     else
                         LatestXArrow = XDirection.None;
                 }
-            }
-
-            if ((keyState.IsKeyDown(Keys.Up) && newKeyState.IsKeyUp(Keys.Up)) ||
-                (keyState.IsKeyDown(Keys.W) && newKeyState.IsKeyUp(Keys.W)) ||
-                (gpState.DPad.Up == ButtonState.Pressed && newGPState.DPad.Up == ButtonState.Released))
-            {
-                upBtnFlag = false;
             }
 
             if ((keyState.IsKeyDown(Keys.Space) && newKeyState.IsKeyUp(Keys.Space)) ||

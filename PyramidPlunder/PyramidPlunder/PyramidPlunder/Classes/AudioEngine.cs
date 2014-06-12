@@ -293,7 +293,6 @@ namespace Pyramid_Plunder.Classes
     {
         private Song menu;
         private Song main;
-        private Song levelMusicIntro;
         private Song levelMusicLoop;
         private Song saveMusicLoop;
         private Song deathMusic;
