@@ -19,6 +19,10 @@ namespace Pyramid_Plunder.Classes
         int musicVolume;
         int soundEffectsVolume;
 
+        /// <summary>
+        /// Constructor call
+        /// </summary>
+        /// <param name="settings">The game settings to write to</param>
         public OptionsMenu(GameManager.GameSettings settings)
         {
             gameSettings = settings;
@@ -41,6 +45,11 @@ namespace Pyramid_Plunder.Classes
             soundEffectsVolume = (int)(gameSettings.SoundEffectsVolume * 100);
         }
 
+        /// <summary>
+        /// Draws the menu to the spritebatch
+        /// </summary>
+        /// <param name="spriteBatch">The spritebatch to draw to</param>
+        /// <param name="gameTime">The gametime to use</param>
         public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             base.Draw(spriteBatch, gameTime);
@@ -48,6 +57,10 @@ namespace Pyramid_Plunder.Classes
             spriteBatch.DrawString(font, soundEffectsVolume.ToString(), new Vector2(SoundEffectsVolume.Position.X + 400, SoundEffectsVolume.Position.Y), unselectedColor);
         }
 
+        /// <summary>
+        /// Updates the state of the menu
+        /// </summary>
+        /// <param name="gameTime">The gametime to use</param>
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
@@ -79,6 +92,9 @@ namespace Pyramid_Plunder.Classes
                 Select(BackButton);
         }
 
+        /// <summary>
+        /// Sets up the buttons the menu will use.
+        /// </summary>
         protected override void InitializeButtons()
         {
             MusicVolume = new MenuNode();
@@ -113,6 +129,10 @@ namespace Pyramid_Plunder.Classes
             BackButton.Right = null;
         }
 
+        /// <summary>
+        /// Determines the action to be taken when a menu option is selected
+        /// </summary>
+        /// <param name="button">The button that was selected</param>
         protected override void Select(MenuNode button)
         {
             if (button == BackButton)

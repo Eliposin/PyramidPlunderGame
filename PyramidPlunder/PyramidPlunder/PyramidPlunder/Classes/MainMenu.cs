@@ -7,6 +7,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Pyramid_Plunder.Classes
 {
+    /// <summary>
+    /// The main menu for the game.
+    /// </summary>
     public class MainMenu : GameMenu
     {
         private MenuNode StartButton;
@@ -21,7 +24,12 @@ namespace Pyramid_Plunder.Classes
         private OptionsMenu optionsMenu;
         private bool isOptionsDisplayed;
 
-        public MainMenu(DelMenu c, GameManager.GameSettings settings)
+        /// <summary>
+        /// Constructor call.
+        /// </summary>
+        /// <param name="c">The callback method to use</param>
+        /// <param name="settings">The game settings to write to</param>
+        public MainMenu(DelMenu c, GameManager.GameSettings settings) : base()
         {
             gameSettings = settings;
             callback = c;
@@ -42,6 +50,11 @@ namespace Pyramid_Plunder.Classes
             isOptionsDisplayed = false;
         }
 
+        /// <summary>
+        /// Draws the menu to the spritebatch
+        /// </summary>
+        /// <param name="spriteBatch">The spritebatch to draw to</param>
+        /// <param name="gameTime">The gametime to use</param>
         public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             base.Draw(spriteBatch, gameTime);
@@ -50,6 +63,10 @@ namespace Pyramid_Plunder.Classes
                 optionsMenu.Draw(spriteBatch, gameTime);
         }
 
+        /// <summary>
+        /// Updates the state of the menu
+        /// </summary>
+        /// <param name="gameTime">The gametime to use</param>
         public override void Update(GameTime gameTime)
         {
             if (isOptionsDisplayed)
@@ -63,6 +80,9 @@ namespace Pyramid_Plunder.Classes
             base.Update(gameTime);
         }
 
+        /// <summary>
+        /// Sets up the buttons the menu will use.
+        /// </summary>
         protected override void InitializeButtons()
         {
             StartButton = new MenuNode();
@@ -108,6 +128,10 @@ namespace Pyramid_Plunder.Classes
             QuitButton.Right = null;
         }
 
+        /// <summary>
+        /// Determines the action to be taken when a menu option is selected
+        /// </summary>
+        /// <param name="button">The button that was selected</param>
         protected override void Select(MenuNode button)
         {
             if (button == StartButton)
@@ -124,6 +148,9 @@ namespace Pyramid_Plunder.Classes
             }
         }
 
+        /// <summary>
+        /// Releases the contents of the options menu
+        /// </summary>
         private void DisposeOptions()
         {
             isOptionsDisplayed = false;

@@ -126,11 +126,7 @@ namespace Pyramid_Plunder.Classes
         protected float deathSequenceEndTime = DEATH_SEQUENCE_END_NO_RAGDOLL;   //The damageStatus value at which the death sequence ends and
                                                                                 //the game over screen appears.
 
-        private double freezeTimerMax;
-
         //Flags which for each relevant button specifying if it it being pressed.
-        private bool upBtnFlag = false;
-        private bool downBtnFlag = false;
         private bool leftBtnFlag = false;
         private bool rightBtnFlag = false;
         private bool jumpBtnFlag = false;

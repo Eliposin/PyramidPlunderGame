@@ -34,9 +34,9 @@ namespace Pyramid_Plunder.Classes
             /// <summary>
             /// Draws the node to the designated spritebatch
             /// </summary>
-            /// <param name="spriteBatch"></param>
-            /// <param name="font"></param>
-            /// <param name="color"></param>
+            /// <param name="spriteBatch">The spritebatch to draw to</param>
+            /// <param name="font">The spritefont to use</param>
+            /// <param name="color">The color to draw the text</param>
             public void Draw(SpriteBatch spriteBatch, SpriteFont font, Color color)
             {
                 if (Name != null && Position != null)
@@ -44,6 +44,9 @@ namespace Pyramid_Plunder.Classes
             }
         }
 
+        /// <summary>
+        /// A representation of the four directions
+        /// </summary>
         private enum Directions : byte
         {
             Up, Down, Left, Right
@@ -68,7 +71,9 @@ namespace Pyramid_Plunder.Classes
         protected GamePadState oldGamePadState;
 
         
-
+        /// <summary>
+        /// Constructor call
+        /// </summary>
         public GameMenu()
         {
             Content = new ContentManager(GameResources.GameServices, "Content");
@@ -80,23 +85,29 @@ namespace Pyramid_Plunder.Classes
             oldGamePadState = GamePad.GetState(PlayerIndex.One);
         }
 
+        /// <summary>
+        /// Draws the menu to the designated spritebatch
+        /// </summary>
+        /// <param name="spriteBatch">The spritebatch to draw to</param>
+        /// <param name="gameTime">The gametime to use</param>
         public virtual void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
-            //if (hasFocus)
-            {
-                if (background != null)
-                    background.Draw(spriteBatch, gameTime);
+            if (background != null)
+                background.Draw(spriteBatch, gameTime);
 
-                foreach (MenuNode node in nodeList)
-                {
-                    if (node.IsSelected)
-                        node.Draw(spriteBatch, font, selectedColor);
-                    else
-                        node.Draw(spriteBatch, font, unselectedColor);
-                }
+            foreach (MenuNode node in nodeList)
+            {
+                if (node.IsSelected)
+                    node.Draw(spriteBatch, font, selectedColor);
+                else
+                    node.Draw(spriteBatch, font, unselectedColor);
             }
         }
 
+        /// <summary>
+        /// Checks the input state and updates the menu accordingly
+        /// </summary>
+        /// <param name="gameTime">The gametime to use</param>
         public virtual void Update(GameTime gameTime)
         {
             newKeyState = Keyboard.GetState();
@@ -126,6 +137,9 @@ namespace Pyramid_Plunder.Classes
             oldGamePadState = newGamePadState;
         }
 
+        /// <summary>
+        /// Releases unmanaged content from memory
+        /// </summary>
         public virtual void Dispose()
         {
             Content.Unload();
@@ -133,6 +147,11 @@ namespace Pyramid_Plunder.Classes
             Content = null;
         }
 
+        /// <summary>
+        /// Called when the user attempts to navigate through the menu.
+        /// Determines where to navigate next based on the input command.
+        /// </summary>
+        /// <param name="direction"></param>
         private void MoveSelection(Directions direction)
         {
             switch (direction)
@@ -176,13 +195,25 @@ namespace Pyramid_Plunder.Classes
             }
         }
 
+        /// <summary>
+        /// Whether this instance currently has focus or not.
+        /// </summary>
         public bool HasFocus
         {
             get { return hasFocus; }
             set { hasFocus = value; }
         }
 
+        /// <summary>
+        /// Initializes all the buttons in this particular menu.  Must be implemented in all child classes.
+        /// </summary>
         protected abstract void InitializeButtons();
+
+        /// <summary>
+        /// Determines what the menu should do when a particular item is selected.
+        /// This method must be implemented in all child classes.
+        /// </summary>
+        /// <param name="button">The button that is selected.</param>
         protected abstract void Select(MenuNode button);
     }
 }
