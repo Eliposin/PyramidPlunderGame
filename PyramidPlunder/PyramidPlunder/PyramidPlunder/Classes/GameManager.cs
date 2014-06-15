@@ -38,7 +38,7 @@ namespace Pyramid_Plunder.Classes
         private Room oldRoom;
         private Player player;
         private HUD gameHUD;
-        private BGM musicManager;
+        //private BGM musicManager;
         private InfoBox infoBox;
         private ContentManager gameContent;
         private StorageDevice currentStorageDevice;
@@ -72,7 +72,7 @@ namespace Pyramid_Plunder.Classes
             public void UpdateVolume()
             {
                 AudioEngine.Volume = SoundEffectsVolume;
-                BGM.UpdateVolume(MusicVolume);
+                StaticBGM.Volume = MusicVolume;
             }
         }
 
@@ -104,9 +104,9 @@ namespace Pyramid_Plunder.Classes
 
             gameMenu = new MainMenu(MenuCallback, gameSettings);
 
-            musicManager = new BGM(gContent);
+            StaticBGM.InitializeMusic(gContent);
 
-            musicManager.SwitchMusic("Main");
+            StaticBGM.SwitchMusic("Main");
 
             fpsFont = gameContent.Load<SpriteFont>("Fonts/FPSFont");
             fpsCount = 0;
@@ -151,11 +151,11 @@ namespace Pyramid_Plunder.Classes
                         if (player.DeathSequenceEnded)
                         {
                             ShowDeathScreen();
-                            musicManager.SwitchMusic("Death");
+                            StaticBGM.SwitchMusic("Death");
                         }
                         else if (player.IsDead)
                         {
-                            musicManager.PauseMusic();
+                            StaticBGM.Paused = true;
                             player.StartDeathSequence();
                         }
                         if (player.Position.Y >= currentRoom.CollisionMap.Height + player.HitBox.Height)
@@ -431,7 +431,7 @@ namespace Pyramid_Plunder.Classes
 
             GameResources.RoomSaves = new List<RoomSaveData>();
 
-            musicManager.SwitchMusic("Level");
+            StaticBGM.SwitchMusic("Level");
 
             currentRoom = new Room("StartRoom", -1);
             player = new Player(gameContent, SaveGame, SwitchRooms, DisplayInfoBox);
@@ -492,7 +492,7 @@ namespace Pyramid_Plunder.Classes
                         }
                     }
 
-                    musicManager.SwitchMusic(currentRoom.MusicName);
+                    StaticBGM.SwitchMusic(currentRoom.MusicName);
 
                 }
             }
@@ -562,7 +562,7 @@ namespace Pyramid_Plunder.Classes
             infoBox = new InfoBox(input, InfoBoxCallback, removable);
             isFrozen = true;
             if (pauseMusic)
-                musicManager.PauseMusic();
+                StaticBGM.Paused = true;
         }
 
         /// <summary>
@@ -573,7 +573,7 @@ namespace Pyramid_Plunder.Classes
             infoBox.Dispose();
             infoBox = null;
             isFrozen = false;
-            musicManager.UnpauseMusic();
+            StaticBGM.Paused = false;
         }
 
         /// <summary>
@@ -666,7 +666,7 @@ namespace Pyramid_Plunder.Classes
             oldRoom = currentRoom;
             currentRoom = whichRoom;
 
-            musicManager.SwitchMusic(currentRoom.MusicName);
+            StaticBGM.SwitchMusic(currentRoom.MusicName);
             currentRoom.PlaySoundInstance();
 
 

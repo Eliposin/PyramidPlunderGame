@@ -78,6 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\AudioEngine.cs" />
+    <Compile Include="Classes\Credits.cs" />
     <Compile Include="Classes\Door.cs" />
     <Compile Include="Classes\Enemy.cs" />
     <Compile Include="Classes\GameGraphic.cs" />

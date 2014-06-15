@@ -286,102 +286,224 @@ namespace Pyramid_Plunder.Classes
             set { volume = value; }
         }
     }
- 
-    ///Initiates background music and way of testing
-    ///  to see if a change of music is needed.
-    public class BGM
+
+    /// <summary>
+    /// A static version of the BGM class
+    /// </summary>
+    public static class StaticBGM
     {
-        private Song menu;
-        private Song main;
-        private Song levelMusicLoop;
-        private Song saveMusicLoop;
-        private Song deathMusic;
+        private static Song menu;
+        private static Song main;
+        private static Song levelMusicLoop;
+        private static Song saveMusicLoop;
+        private static Song deathMusic;
+        private static Song creditsMusic;
 
-        private string currentMusicName;
+        private static string musicName;
+        private static float volume = 0.75f;
+        private static bool isLoaded = false;
+        private static bool isPlaying = false;
 
-        private static float volume = 1f;
-
-        public BGM(ContentManager content)
+        /// <summary>
+        /// Initializes the music tracks and loads them into the content manager.
+        /// </summary>
+        /// <param name="content">The ContentManager to use.</param>
+        public static void InitializeMusic(ContentManager content)
         {
             menu = content.Load<Song>("Sounds/MenuScreen");
             main = content.Load<Song>("Sounds/MainTitle");
             levelMusicLoop = content.Load<Song>("Sounds/LevelMusicLoopish");
             saveMusicLoop = content.Load<Song>("Sounds/SaveMusicLoop");
             deathMusic = content.Load<Song>("Sounds/DeathMusic");
+            creditsMusic = content.Load<Song>("Sounds/SafeMusicLoop");
 
-            play();
+            isLoaded = true;
         }
 
-        public static void UpdateVolume(float newVolume)
+        /// <summary>
+        /// Switches the current music track to a new one.
+        /// </summary>
+        /// <param name="newMusicName">The name of the music to switch to.</param>
+        public static void SwitchMusic(string newMusicName)
         {
-            volume = newVolume;
-            MediaPlayer.Volume = volume;
-        }
-
-        public void play()
-        {
-            MediaPlayer.Volume = volume;
-            MediaPlayer.IsRepeating = true;
-            currentMusicName = "Null";
-        }
-
-        public void SwitchMusic(string musicName)
-        {
-            if (currentMusicName != musicName)
+            if (isLoaded)
             {
-                switch (musicName)
+                if (musicName != newMusicName)
                 {
-                    case "Main":
-                        MediaPlayer.Stop();
-                        MediaPlayer.Play(main);
-                        MediaPlayer.Volume = volume;
-                        currentMusicName = "Main";
-                        break;
-                    case "Menu":
-                        MediaPlayer.Stop();
-                        MediaPlayer.Play(menu);
-                        MediaPlayer.Volume = volume;
-                        currentMusicName = "Menu";
-                        break;
-                    case "Level":
-                        MediaPlayer.Stop();
-                        MediaPlayer.Play(levelMusicLoop);
-                        MediaPlayer.Volume = volume;
-                        currentMusicName = "Level";
-                        break;
-                    case "Save":
-                        MediaPlayer.Stop();
-                        MediaPlayer.Play(saveMusicLoop);
-                        MediaPlayer.Volume = volume;
-                        currentMusicName = "Save";
-                        break;
-                    case "Death":
-                        MediaPlayer.Stop();
-                        MediaPlayer.Play(deathMusic);
-                        MediaPlayer.Volume = volume;
-                        currentMusicName = "Death";
-                        break;
-                    default: break;
+                    switch (newMusicName)
+                    {
+                        case "Main":
+                            MediaPlayer.Stop();
+                            MediaPlayer.Play(main);
+                            musicName = newMusicName;
+                            isPlaying = true;
+                            break;
+                        case "Menu":
+                            MediaPlayer.Stop();
+                            MediaPlayer.Play(menu);
+                            musicName = newMusicName;
+                            isPlaying = true;
+                            break;
+                        case "Level":
+                            MediaPlayer.Stop();
+                            MediaPlayer.Play(levelMusicLoop);
+                            musicName = newMusicName;
+                            isPlaying = true;
+                            break;
+                        case "Save":
+                            MediaPlayer.Stop();
+                            MediaPlayer.Play(saveMusicLoop);
+                            musicName = newMusicName;
+                            isPlaying = true;
+                            break;
+                        case "Death":
+                            MediaPlayer.Stop();
+                            MediaPlayer.Play(deathMusic);
+                            musicName = newMusicName;
+                            isPlaying = true;
+                            break;
+                        case "Credits":
+                            MediaPlayer.Stop();
+                            MediaPlayer.Play(creditsMusic);
+                            musicName = newMusicName;
+                            isPlaying = true;
+                            break;
+                        default: break;
+                    }
                 }
             }
         }
 
-        //called by game manager to handle pausing / unpausing.
-        public void PauseMusic()
-        {
-            MediaPlayer.Pause();
-        }
-
-        public void UnpauseMusic()
-        {
-            MediaPlayer.Resume();
-        }
-
-        //Used to set and get the volume in other classes.
+        /// <summary>
+        /// The current volume to play music at.
+        /// </summary>
         public static float Volume
         {
             get { return volume; }
-            set { volume = value; }
+            set
+            {
+                volume = value;
+                MediaPlayer.Volume = volume;
+            }
+        }
+
+        /// <summary>
+        /// Whether or not the music is currently paused.
+        /// </summary>
+        public static bool Paused
+        {
+            get { return isPlaying; }
+            set
+            {
+                if (value == true)
+                {
+                    MediaPlayer.Pause();
+                    isPlaying = false;
+                }
+                else
+                {
+                    MediaPlayer.Resume();
+                    isPlaying = true;
+                }
+            }
         }
     }
+ 
+    ///Initiates background music and way of testing
+    ///  to see if a change of music is needed.
+    //public class BGM
+    //{
+    //    private Song menu;
+    //    private Song main;
+    //    private Song levelMusicLoop;
+    //    private Song saveMusicLoop;
+    //    private Song deathMusic;
+
+    //    private string currentMusicName;
+
+    //    private static float volume = 1f;
+
+    //    public BGM(ContentManager content)
+    //    {
+    //        menu = content.Load<Song>("Sounds/MenuScreen");
+    //        main = content.Load<Song>("Sounds/MainTitle");
+    //        levelMusicLoop = content.Load<Song>("Sounds/LevelMusicLoopish");
+    //        saveMusicLoop = content.Load<Song>("Sounds/SaveMusicLoop");
+    //        deathMusic = content.Load<Song>("Sounds/DeathMusic");
+
+    //        play();
+    //    }
+
+    //    public static void UpdateVolume(float newVolume)
+    //    {
+    //        volume = newVolume;
+    //        MediaPlayer.Volume = volume;
+    //    }
+
+    //    public void play()
+    //    {
+    //        MediaPlayer.Volume = volume;
+    //        MediaPlayer.IsRepeating = true;
+    //        currentMusicName = "Null";
+    //    }
+
+    //    public void SwitchMusic(string musicName)
+    //    {
+    //        if (currentMusicName != musicName)
+    //        {
+    //            switch (musicName)
+    //            {
+    //                case "Main":
+    //                    MediaPlayer.Stop();
+    //                    MediaPlayer.Play(main);
+    //                    MediaPlayer.Volume = volume;
+    //                    currentMusicName = "Main";
+    //                    break;
+    //                case "Menu":
+    //                    MediaPlayer.Stop();
+    //                    MediaPlayer.Play(menu);
+    //                    MediaPlayer.Volume = volume;
+    //                    currentMusicName = "Menu";
+    //                    break;
+    //                case "Level":
+    //                    MediaPlayer.Stop();
+    //                    MediaPlayer.Play(levelMusicLoop);
+    //                    MediaPlayer.Volume = volume;
+    //                    currentMusicName = "Level";
+    //                    break;
+    //                case "Save":
+    //                    MediaPlayer.Stop();
+    //                    MediaPlayer.Play(saveMusicLoop);
+    //                    MediaPlayer.Volume = volume;
+    //                    currentMusicName = "Save";
+    //                    break;
+    //                case "Death":
+    //                    MediaPlayer.Stop();
+    //                    MediaPlayer.Play(deathMusic);
+    //                    MediaPlayer.Volume = volume;
+    //                    currentMusicName = "Death";
+    //                    break;
+    //                default: break;
+    //            }
+    //        }
+    //    }
+
+    //    //called by game manager to handle pausing / unpausing.
+    //    public void PauseMusic()
+    //    {
+    //        MediaPlayer.Pause();
+    //    }
+
+    //    public void UnpauseMusic()
+    //    {
+    //        MediaPlayer.Resume();
+    //    }
+
+    //    //Used to set and get the volume in other classes.
+    //    public static float Volume
+    //    {
+    //        get { return volume; }
+    //        set { volume = value; }
+    //    }
+    //}
 }

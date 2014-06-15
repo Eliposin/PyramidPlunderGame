@@ -15,6 +15,7 @@ namespace Pyramid_Plunder.Classes
         private MenuNode StartButton;
         private MenuNode LoadButton;
         private MenuNode OptionsButton;
+        private MenuNode CreditsButton;
         private MenuNode QuitButton;
 
         private DelMenu callback;
@@ -22,7 +23,9 @@ namespace Pyramid_Plunder.Classes
         private GameManager.GameSettings gameSettings;
 
         private OptionsMenu optionsMenu;
+        private Credits credits;
         private bool isOptionsDisplayed;
+        private bool isCreditsDisplayed;
 
         /// <summary>
         /// Constructor call.
@@ -44,6 +47,7 @@ namespace Pyramid_Plunder.Classes
             nodeList.Add(StartButton);
             nodeList.Add(LoadButton);
             nodeList.Add(OptionsButton);
+            nodeList.Add(CreditsButton);
             nodeList.Add(QuitButton);
 
             hasFocus = true;
@@ -61,6 +65,9 @@ namespace Pyramid_Plunder.Classes
             
             if (isOptionsDisplayed)
                 optionsMenu.Draw(spriteBatch, gameTime);
+
+            if (isCreditsDisplayed)
+                credits.Draw(spriteBatch, gameTime);
         }
 
         /// <summary>
@@ -74,7 +81,30 @@ namespace Pyramid_Plunder.Classes
                 if (optionsMenu.HasFocus)
                     optionsMenu.Update(gameTime);
                 else
-                    DisposeOptions();
+                {
+                    isOptionsDisplayed = false;
+                    hasFocus = true;
+                    optionsMenu.Dispose();
+                    optionsMenu = null;
+                }
+            }
+
+            if (isCreditsDisplayed)
+            {
+                if (credits.HasFocus)
+                    credits.Update(gameTime);
+                else
+                {
+                    isCreditsDisplayed = false;
+                    hasFocus = true;
+                    credits.Dispose();
+                    credits = null;
+                    StaticBGM.SwitchMusic("Menu");
+
+                    selectedNode = StartButton;
+                    StartButton.IsSelected = true;
+                    CreditsButton.IsSelected = false;
+                }
             }
 
             base.Update(gameTime);
@@ -88,6 +118,7 @@ namespace Pyramid_Plunder.Classes
             StartButton = new MenuNode();
             LoadButton = new MenuNode();
             OptionsButton = new MenuNode();
+            CreditsButton = new MenuNode();
             QuitButton = new MenuNode();
 
 
@@ -114,15 +145,24 @@ namespace Pyramid_Plunder.Classes
             OptionsButton.IsSelected = false;
             OptionsButton.Position = new Vector2(150, 300);
             OptionsButton.Up = LoadButton;
-            OptionsButton.Down = QuitButton;
+            OptionsButton.Down = CreditsButton;
             OptionsButton.Left = null;
             OptionsButton.Right = null;
+
+            CreditsButton.Name = "Credits";
+            CreditsButton.Selectable = true;
+            CreditsButton.IsSelected = false;
+            CreditsButton.Position = new Vector2(150, 400);
+            CreditsButton.Up = OptionsButton;
+            CreditsButton.Down = QuitButton;
+            CreditsButton.Left = null;
+            CreditsButton.Right = null;
 
             QuitButton.Name = "Quit";
             QuitButton.Selectable = true;
             QuitButton.IsSelected = false;
-            QuitButton.Position = new Vector2(150, 400);
-            QuitButton.Up = OptionsButton;
+            QuitButton.Position = new Vector2(150, 500);
+            QuitButton.Up = CreditsButton;
             QuitButton.Down = StartButton;
             QuitButton.Left = null;
             QuitButton.Right = null;
@@ -146,17 +186,13 @@ namespace Pyramid_Plunder.Classes
                 isOptionsDisplayed = true;
                 hasFocus = false;
             }
-        }
-
-        /// <summary>
-        /// Releases the contents of the options menu
-        /// </summary>
-        private void DisposeOptions()
-        {
-            isOptionsDisplayed = false;
-            hasFocus = true;
-            optionsMenu.Dispose();
-            optionsMenu = null;
+            else if (button == CreditsButton)
+            {
+                credits = new Credits();
+                isCreditsDisplayed = true;
+                hasFocus = false;
+                StaticBGM.SwitchMusic("Credits");
+            }
         }
     }
 }
