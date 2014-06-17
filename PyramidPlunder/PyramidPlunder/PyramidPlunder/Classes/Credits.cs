@@ -67,7 +67,7 @@ namespace Pyramid_Plunder.Classes
                       "Lead Developer\n\n\n" +
                       "Character Artist\n\n\n" +
                       "Sound SFX Artst\n\n\n" +
-                      "Other Designers\n\n\n\n\n\n" +
+                      "Other Designers\n\n\n\n\n\n\n" +
                       "Other Developers\n\n\n\n\n\n\n" +
                       "Xbox 360 Expert\n\n\n" +
                       "GitHub Dealie-Person\n\n\n";
@@ -78,7 +78,7 @@ namespace Pyramid_Plunder.Classes
                        "Ryan Berge\n\n\n" +
                        "Huy Ngo\n\n\n" +
                        "Brandon Lasater\n\n\n" +
-                       "Josh Stratton\nBradley Pellegrini\nHuy Ngo\nBrandon Lasater\n\n\n" +
+                       "Josh Stratton\nBradley Pellegrini\nHuy Ngo\nBrandon Lasater\nRyan Berge\n\n\n" +
                        "Josh Stratton\nBradley Pellegrini\nHuy Ngo\nBrandon Lasater\nJon Ekdahl\n\n\n" +
                        "Brandon Lasater\n\n\n" +
                        "Bradley Pellegrini";
